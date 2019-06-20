@@ -2,7 +2,7 @@
 
 namespace ATN
 {
-	enum ParameterMarshallType : int
+	enum class ParameterMarshallType : int
 	{
 		Unknown = 0,
 		Constant = 2,
@@ -10,13 +10,13 @@ namespace ATN
 		AnotherNumber = 4		// ???
 	};
 
-	enum ResourceMarshallType : int
+	enum class ResourceMarshallType : int
 	{
 		Unknown = 0,
 		ResourceIndex = 11		// Access the network resource at specified index
 	};
 
-	enum ResourceType : int
+	enum class ResourceType : int
 	{
 		Unknown = 0,
 		Character = 5,			// i.e. genius, minions, agents, henchmen

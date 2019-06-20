@@ -2,17 +2,6 @@
 
 namespace ATN
 {
-	Entry::Entry()
-	{
-
-	}
-
-
-	Entry::~Entry()
-	{
-
-	}
-
 	std::uint32_t Entry::id() const
 	{
 		return this->m_id;
@@ -36,5 +25,19 @@ namespace ATN
 	bool Entry::isEditable() const
 	{
 		return true;
+	}
+
+	std::ostream &operator<<(std::ostream &stream, const Entry &e)
+	{
+		e.serialize(stream);
+
+		return stream;
+	}
+
+	std::istream &operator>>(std::istream &stream, Entry &e)
+	{
+		e.deserialize(stream);
+
+		return stream;
 	}
 }

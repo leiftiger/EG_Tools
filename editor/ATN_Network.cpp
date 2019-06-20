@@ -11,4 +11,10 @@ namespace ATN
 	{
 
 	}
+	void Network::serialize(std::ostream & stream) const
+	{
+	}
+	void Network::deserialize(std::istream & stream)
+	{
+	}
 }

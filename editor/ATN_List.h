@@ -6,6 +6,8 @@
 
 #include "IATN_Data.h"
 
+#include "ATN_Exception.h"
+
 namespace ATN
 {
 	template <class T>
@@ -20,7 +22,7 @@ namespace ATN
 		int m_numOrderNext = 0;
 		int m_numOrderMax = INT_MAX;
 
-		std::unordered_map<IATN_DATA*, int> m_numOrder;
+		std::unordered_map<IATN_Data*, int> m_numOrder;
 
 	public:
 
@@ -43,7 +45,7 @@ namespace ATN
 
 			m_nameMap[element.name()] = (IATN_Data*)&element;
 
-			m_numOrder[&element] = m_numOrderNext++;
+			m_numOrder[(IATN_Data*)&element] = m_numOrderNext++;
 		}
 
 		void remove(T &element)
@@ -55,30 +57,30 @@ namespace ATN
 			m_numOrderMax = m_numOrder[&element] >= m_numOrderMax ? m_numOrderMax : m_numOrder[&element]-1;
 		}
 
-		// Finds element by id, returns nullptr if it's not found
-		T *find(std::uint32_t id)
+		// Finds element by id, throws exception if it's not found
+		T &find(std::uint32_t id)
 		{
 			std::map<std::uint32_t, IATN_Data*>::iterator it = m_idMap.find(id);
 
 			if (it == m_idMap.end())
 			{
-				return it->second;
+				return *((T*)(it->second));
 			}
 
-			return nullptr;
+			throw Exception("Couldn't find ID \"%d\" in list", id);
 		}
 
-		// Finds element by name, returns nullptr if it's not found
-		T *find(const std::string &name)
+		// Finds element by name, throws exception if it's not found
+		T &find(const std::string &name)
 		{
 			std::unordered_map<std::string, IATN_Data*>::iterator it = m_nameMap.find(name);
 
 			if (it == m_nameMap.end())
 			{
-				return it->second;
+				return *((T*)(it->second));
 			}
 
-			return nullptr;
+			throw Exception("Couldn't find name \"%s\" in list", name);
 		}
 	};
 }

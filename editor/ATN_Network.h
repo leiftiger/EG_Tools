@@ -43,5 +43,8 @@ namespace ATN
 
 		std::vector<Resource> m_resources;
 		std::vector<Parameter> m_networkResources;
+
+		virtual void serialize(std::ostream & stream) const override;
+		virtual void deserialize(std::istream & stream) override;
 	};
 }
