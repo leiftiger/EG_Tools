@@ -5,7 +5,7 @@
 namespace ATN
 {
 	// A thread, it serves as the first point of entry to a sequence of states
-	class Thread : protected Entry
+	class Thread : public Entry
 	{
 		virtual const char * const typeName() const override;
 

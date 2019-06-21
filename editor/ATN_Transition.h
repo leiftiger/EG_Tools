@@ -4,7 +4,7 @@
 
 namespace ATN
 {
-	class Transition : protected Entry
+	class Transition : public Entry
 	{
 		virtual const char * const typeName() const override;
 

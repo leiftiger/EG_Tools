@@ -14,33 +14,43 @@ namespace ATN
 
 	const std::string &Percept::gameFunction() const
 	{
-		return this->m_gameFunction;
+		return m_gameFunction;
 	}
 
 	void Percept::setGameFunction(std::string &gameFunction)
 	{
-		this->m_gameFunction = gameFunction;
+		m_gameFunction = gameFunction;
 	}
 
 	const char * const Percept::typeName() const
 	{
-		return this->gameFunction().c_str();
+		return gameFunction().c_str();
 	}
 
 	void Percept::serialize(std::ostream &stream) const
 	{
+		Entry::serialize(stream);
 
+		stream << m_resources << m_parameters;
+
+		stream << "Compounds=0" << std::endl;
+		stream << "Graph=16" << std::endl;
+		stream << m_graphJunk;
 	}
 
 	void Percept::deserialize(std::istream &stream)
 	{
+		Entry::deserialize(stream);
+
+		stream >> m_resources >> m_parameters;
+
 		std::string line;
 
-		// PLACEHOLDER, read until end of object to skip this class for now
-		while (util::getline(stream, line))
-		{
-			if (line == "")
-				break;
-		}
+		util::getline(stream, line); // compounds, never used
+		util::getline(stream, line); // "Graph=16"
+
+		util::getline(stream, m_graphJunk);
+
+		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }

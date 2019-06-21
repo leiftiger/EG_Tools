@@ -135,7 +135,7 @@ namespace util
 
 			std::string objType = line.substr(strlen("TypeName="));
 
-			ATN::Entry *el;
+			ATN::Entry *el = nullptr;
 
 			if (!secondPass)
 			{

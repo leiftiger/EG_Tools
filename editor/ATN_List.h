@@ -36,20 +36,20 @@ namespace ATN
 		// Deletes the memory used by all elements in the list
 		void clear()
 		{
-			for (std::pair<std::uint32_t, IATN_Data*> pair : this->m_idMap)
+			for (std::pair<std::uint32_t, IATN_Data*> pair : m_idMap)
 			{
 				delete pair.second;
 			}
 
-			this->m_idMap.clear();
-			this->m_nameMap.clear();
-			this->m_numOrder.clear();
+			m_idMap.clear();
+			m_nameMap.clear();
+			m_numOrder.clear();
 		}
 
 		// Name of this ATN list for local references
 		const std::string &name() const
 		{
-			return this->m_name;
+			return m_name;
 		}
 
 		// The maximum ObjectNum value of which order can be safely and easily preserved
@@ -74,7 +74,7 @@ namespace ATN
 
 			m_nameMap.erase(element.name());
 
-			m_numOrderMax = m_numOrder[&element] >= m_numOrderMax ? m_numOrderMax : m_numOrder[&element]-1;
+			m_numOrderMax = m_numOrder[(IATN_Data*)&element] >= m_numOrderMax ? m_numOrderMax : m_numOrder[(IATN_Data*)&element]-1;
 		}
 
 		// Finds element by id, throws exception if it's not found
@@ -87,7 +87,7 @@ namespace ATN
 				return *((T*)(it->second));
 			}
 
-			throw ATN::Exception("Couldn't find ID \"%d\" in list \"%s\"", id, this->m_name);
+			throw ATN::Exception("Couldn't find ID \"%d\" in list \"%s\"", id, m_name);
 		}
 
 		// Finds element by name, throws exception if it's not found
@@ -100,7 +100,7 @@ namespace ATN
 				return *((T*)(it->second));
 			}
 
-			throw ATN::Exception("Couldn't find name \"%s\" in list \"%s\"", name, this->m_name);
+			throw ATN::Exception("Couldn't find name \"%s\" in list \"%s\"", name, m_name);
 		}
 	};
 }

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "ATN_List.h"
+#include "ATN_Property.h"
 
 namespace ATN
 {
@@ -21,7 +22,7 @@ namespace ATN
 
 			delete m_lists[0];
 
-			for (int i = 1; i < m_lists.size(); i++)
+			for (unsigned int i = 1; i < m_lists.size(); i++)
 			{
 				m_lists[i]->clear();
 

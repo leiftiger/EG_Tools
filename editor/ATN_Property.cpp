@@ -8,11 +8,11 @@ namespace ATN
 
 	std::uint32_t Property::id() const
 	{
-		return this->m_hash;
+		return m_hash;
 	}
 
 	const std::string & Property::name() const
 	{
-		return this->m_name;
+		return m_name;
 	}
 }

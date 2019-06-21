@@ -14,24 +14,24 @@ namespace ATN
 
 	const std::string &Effect::gameFunction() const
 	{
-		return this->m_gameFunction;
+		return m_gameFunction;
 	}
 
 	void Effect::setGameFunction(std::string &gameFunction)
 	{
-		this->m_gameFunction = gameFunction;
+		m_gameFunction = gameFunction;
 	}
 
 	const char * const Effect::typeName() const
 	{
-		return this->gameFunction().c_str();
+		return gameFunction().c_str();
 	}
 
 	void Effect::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);
 
-		stream << this->m_resources << this->m_parameters;
+		stream << m_resources << m_parameters;
 
 		// This always seems to be zero
 		stream << "Compounds=0" << std::endl;
@@ -46,7 +46,7 @@ namespace ATN
 
 		std::string line;
 
-		stream >> this->m_resources >> this->m_parameters;
+		stream >> m_resources >> m_parameters;
 
 		util::getline(stream, line); // compounds, never used...
 		util::getline(stream, line); // blank line - we reached the end of this object

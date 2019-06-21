@@ -8,7 +8,7 @@
 namespace ATN
 {
 	// A network, it serves as a container from which states can access its resources and send it parameters (?)
-	class Network : protected Entry
+	class Network : public Entry
 	{
 	protected:
 

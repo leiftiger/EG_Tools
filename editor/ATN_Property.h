@@ -4,7 +4,7 @@
 
 namespace ATN
 {
-	class Property : IATN_Data
+	class Property : public IATN_Data
 	{
 	private:
 		std::string m_name;

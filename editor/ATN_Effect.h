@@ -6,7 +6,7 @@
 namespace ATN
 {
 	// An action to the game engine, uneditable
-	class Effect : protected Entry
+	class Effect : public Entry
 	{
 	private:
 		std::string m_gameFunction;

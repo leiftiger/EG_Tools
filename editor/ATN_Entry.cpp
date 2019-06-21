@@ -17,7 +17,7 @@ namespace ATN
 
 		line = line.substr(strlen("Name="));
 
-		this->setName(line);
+		setName(line);
 	}
 
 	std::uint32_t Entry::id() const
