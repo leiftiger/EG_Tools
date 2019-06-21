@@ -16,6 +16,13 @@ namespace ATN
 		// Header for states
 		stream << "ContainerID=ATNData" << std::endl;
 
+		util::writeEntryIDs<State>(stream, "States=", this->m_states);
+
+		// Header for threads
+		stream << "ContainerID=ATNData" << std::endl;
+
+		util::writeEntryIDs<Thread>(stream, "Threads=", this->m_threads);
+
 		// Signify end of object
 		stream << std::endl;
 	}
@@ -33,7 +40,13 @@ namespace ATN
 		if (line != "ContainerID=ATNData")
 			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
 
-		util::getline(stream, line); // compounds, never used...
+		this->m_states = util::parseEntryIDs<State>(stream, "States=");
+
+		if (line != "ContainerID=ATNData")
+			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
+
+		this->m_threads = util::parseEntryIDs<Thread>(stream, "Threads=");
+
 		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }
