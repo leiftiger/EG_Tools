@@ -8,13 +8,18 @@ namespace ATN
 	// An action to the game engine, uneditable
 	class Effect : public Entry
 	{
-	private:
+	protected:
+
 		std::string m_gameFunction;
 
 		// Resources affected by this effect
 		std::vector<Resource> m_resources;
 		// Input parameters to this effect
 		std::vector<Parameter> m_parameters;
+
+		virtual void serialize(std::ostream & stream) const override;
+		virtual void deserialize(std::istream & stream) override;
+
 	public:
 
 		Effect(std::string &gameFunction);
@@ -27,8 +32,5 @@ namespace ATN
 		void setGameFunction(std::string &gameFunction);
 
 		virtual const char * const typeName() const override;
-
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
 	};
 }

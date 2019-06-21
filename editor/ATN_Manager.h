@@ -22,7 +22,7 @@ namespace ATN
 
 			delete m_lists[0];
 
-			for (unsigned int i = 1; i < m_lists.size(); i++)
+			for (size_t i = 1; i < m_lists.size(); i++)
 			{
 				m_lists[i]->clear();
 
@@ -54,6 +54,9 @@ namespace ATN
 
 		// Remove entry from global list (should only get called from ATN::List)
 		static void removeEntry(const Entry &el);
+
+		// Returns the maximum ID noted in the global list
+		static uint32_t maxID();
 
 		// Get all lists stored in this manager
 		static const std::vector<List<Entry>*> lists();

@@ -30,9 +30,11 @@ namespace ATN
 		// State to transition to if transition is taken
 		State *m_state = nullptr;
 
-		virtual const char * const typeName() const override;
-
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
+
+	public:
+
+		virtual const char * const typeName() const override;
 	};
 }

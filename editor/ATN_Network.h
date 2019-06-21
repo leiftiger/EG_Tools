@@ -22,9 +22,11 @@ namespace ATN
 		std::vector<Resource> m_resources;
 		std::vector<Parameter> m_parameters;
 
-		virtual const char * const typeName() const override;
-
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
+
+	public:
+
+		virtual const char * const typeName() const override;
 	};
 }

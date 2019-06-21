@@ -17,6 +17,11 @@ namespace ATN
 		instance().m_lists[0]->remove(el);
 	}
 
+	uint32_t Manager::maxID()
+	{
+		return instance().m_lists[0]->maxID();
+	}
+
 	const std::vector<List<Entry>*> Manager::lists()
 	{
 		return instance().m_lists;
@@ -39,7 +44,7 @@ namespace ATN
 
 	Entry &Manager::findByID(std::uint32_t id, List<Entry> *&outList)
 	{
-		for (unsigned int i = 1; i < instance().m_lists.size(); i++)
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
 		{
 			try
 			{
@@ -62,7 +67,7 @@ namespace ATN
 
 	Entry &Manager::findByName(const std::string &name, List<Entry> *&outList)
 	{
-		for (unsigned int i = 1; i < instance().m_lists.size(); i++)
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
 		{
 			try
 			{

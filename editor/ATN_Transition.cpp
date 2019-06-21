@@ -12,7 +12,7 @@ namespace ATN
 		Entry::serialize(stream);
 
 		stream << "ContainerID=ATNData" << std::endl;
-		stream << "Effect=" << (m_effect == nullptr ? -1 : m_effect->id()) << std::endl;
+		stream << "Effect=" << (int)(m_effect == nullptr ? -1 : m_effect->id()) << std::endl;
 
 		stream << m_effectResources << m_effectParameters;
 

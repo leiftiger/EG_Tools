@@ -217,4 +217,44 @@ namespace util
 
 		util::DEBUG_LINE = -1;
 	}
+
+	// Write ATN values to specified text file
+	// outList: list whose entries we'll add or update
+	// secondPass: if true, no entires will be added, but references will be updated
+	void writeATN(const std::string &filename, const ATN::List<ATN::Entry> &list)
+	{
+		DEBUG_LINE = -1;
+
+		std::ofstream stream(filename, std::ios::trunc);
+
+		if (stream.fail())
+		{
+			throw ATN::Exception("Couldn't create file %s", filename);
+		}
+
+		stream << "[Header]" << std::endl;
+
+		stream << "NumElements=" << list.size() << std::endl;
+
+		stream << "Identifier=ATNData" << std::endl << std::endl;
+
+		stream << "[Object headers]" << std::endl;
+
+		std::vector<ATN::Entry*> fileOrderHeader = list.getWriteOrderHeader();
+		std::vector<ATN::Entry*> fileOrderData = list.getWriteOrderData();
+
+		for (size_t i = 0; i < fileOrderHeader.size(); i++)
+		{
+			stream << "ObjectNum=" << i << std::endl;
+			stream << "TypeName=" << fileOrderHeader[i]->typeName() << std::endl;
+			stream << "UniqueID=" << fileOrderHeader[i]->id() << std::endl << std::endl;
+		}
+
+		stream << "[Object data]" << std::endl;
+
+		for (ATN::Entry *el : fileOrderData)
+		{
+			stream << *el;
+		}
+	}
 }

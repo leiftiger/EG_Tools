@@ -17,9 +17,6 @@ namespace ATN
 
 	protected:
 
-		// ATN type name of this class
-		virtual const char * const typeName() const = 0;
-
 		// Converts this object into an ATN string entry (not including object header)
 		virtual void serialize(std::ostream &stream) const;
 
@@ -27,6 +24,10 @@ namespace ATN
 		virtual void deserialize(std::istream &stream);
 
 	public:
+
+		// ATN type name of this class
+		virtual const char * const typeName() const = 0;
+
 		virtual std::uint32_t id() const override;
 		virtual const std::string &name() const override;
 

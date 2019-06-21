@@ -34,6 +34,9 @@ namespace util
 	// Parse all entries from specified file
 	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass);
 
+	// Write all ATN entries to specified file
+	void writeATN(const std::string &filename, const ATN::List<ATN::Entry> &list);
+
 	// Parse a series of entry IDs from an ATN entry
 	template <class T>
 	std::vector<T*> parseEntryIDs(std::istream &stream, const char * const header)
@@ -89,6 +92,6 @@ namespace util
 			stream << entry->id() << " ";
 		}
 
-		stream << "}";
+		stream << "}" << std::endl;
 	}
 }

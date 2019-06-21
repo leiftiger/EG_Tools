@@ -70,7 +70,7 @@ namespace ATN
 
 		for (const ParameterMarshall &param : params)
 		{
-			stream << (int)param.m_type << param.m_value << " ";
+			stream << (int)param.m_type << " " << param.m_value << " ";
 		}
 
 		stream << "}" << std::endl;
@@ -121,7 +121,7 @@ namespace ATN
 
 		for (const ResourceMarshall &resource : resources)
 		{
-			stream << "{ " << (int)resource.m_type << " " << resource.m_value << " ";
+			stream << (int)resource.m_type << " " << resource.m_value << " ";
 		}
 
 		stream << "}" << std::endl;

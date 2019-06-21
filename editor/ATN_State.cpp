@@ -21,7 +21,7 @@ namespace ATN
 		// Header for network transition
 		stream << "ContainerID=ATNData" << std::endl;
 
-		stream << "NetworkTransition=" << (m_networkTransition == nullptr ? -1 : m_networkTransition->id()) << std::endl;
+		stream << "NetworkTransition=" << (int)(m_networkTransition == nullptr ? -1 : m_networkTransition->id()) << std::endl;
 
 		stream << m_resourceMarshalls << m_parameterMarshalls;
 	}

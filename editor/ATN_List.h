@@ -29,6 +29,8 @@ namespace ATN
 		std::unordered_map<IATN_Data*, int> m_numOrderHeader;
 		std::unordered_map<IATN_Data*, int> m_numOrderData;
 
+		uint32_t m_maxUniqueID = 0;
+
 	public:
 		typedef std::unordered_map<std::uint32_t, IATN_Data*>::iterator iterator;
 		typedef std::unordered_map<std::uint32_t, IATN_Data*>::const_iterator const_iterator;
@@ -78,11 +80,15 @@ namespace ATN
 			return m_name;
 		}
 
-		// The maximum ObjectNum value of which order can be safely and easily preserved
-		// Beyond this, we just save in an arbitrary order
-		int maxPreservedNumOrderHeader() const
+		// Returns the maximum ID noted to appear in this list
+		uint32_t maxID() const
 		{
-			return m_numOrderHeaderMax;
+			return m_maxUniqueID;
+		}
+
+		size_t size() const
+		{
+			return m_idMap.size();
 		}
 
 		void add(const T &element)
@@ -107,6 +113,66 @@ namespace ATN
 		void recordOrderData(const T &element)
 		{
 			m_numOrderData[(IATN_Data*)&element] = m_numOrderDataNext++;
+		}
+
+		// Returns an ordered list of how this ATN list should be written as object headers
+		std::vector<T*> getWriteOrderHeader() const
+		{
+			std::vector<T*> order(size(), nullptr);
+
+			std::vector<T*> unordered;
+
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : this->m_idMap)
+			{
+				int id = m_numOrderHeader.at(pair.second);
+
+				if (id <= m_numOrderHeaderMax)
+				{
+					order[id] = (T*)pair.second;
+				}
+				else
+				{
+					unordered.push_back((T*)pair.second);
+				}
+			}
+
+			// Add the unordered elements in a random order
+			for (T *el : unordered)
+			{
+				order.push_back(el);
+			}
+
+			return order;
+		}
+
+		// Returns an ordered list of how this ATN list should be written as object data
+		std::vector<T*> getWriteOrderData() const
+		{
+			std::vector<T*> order(size(), nullptr);
+
+			std::vector<T*> unordered;
+
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : this->m_idMap)
+			{
+				int id = m_numOrderData.at(pair.second);
+
+				if (id <= m_numOrderDataMax)
+				{
+					order[id] = (T*)pair.second;
+				}
+				else
+				{
+					unordered.push_back((T*)pair.second);
+				}
+			}
+
+			// Add the unordered elements in a random order
+			for (T *el : unordered)
+			{
+				order.push_back(el);
+			}
+
+			return order;
 		}
 
 		void remove(const T &element)

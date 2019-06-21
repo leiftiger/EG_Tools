@@ -25,16 +25,22 @@ int main()
 			util::parseATN(file, *entries, false);
 		}
 
-		for (unsigned int i = 0; i < files.size(); i++)
+		for (size_t i = 0; i < files.size(); i++)
 		{
 			util::parseATN(files[i], *atns[i], true);
 		}
 
 		// Since names are added in the second pass, but the global ATN list required all IDs for that to run, we add the names afterwards here (for quick look-up)
-		for (unsigned int i = 1; i < ATN::Manager::lists().size(); i++)
+		for (size_t i = 1; i < ATN::Manager::lists().size(); i++)
 		{
 			for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : *ATN::Manager::lists()[i])
 				ATN::Manager::lists()[0]->updateName(*(ATN::Entry*)pair.second);
+		}
+
+		for (size_t i = 0; i < files.size(); i++)
+		{
+			std::string filename = files[i] + "_out";
+			util::writeATN(filename, *atns[i]);
 		}
 	}
 #ifndef _DEBUG
