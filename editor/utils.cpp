@@ -18,163 +18,193 @@
 
 #include "ATN_Exception.h"
 
-static const std::uint32_t prime = 16777619;
-
-// Taken from the lead programmer's response as well as Dameon's notes on the Evil Planet forums: http://web.archive.org/web/20111122124528/http://n1nj4.com/viewtopic.php?p=120931#120931
-std::uint32_t util::hashElixir(const std::string &str)
+namespace util
 {
-	// Hash is always of the lowercased string
-	std::string lCase = str;
+	int DEBUG_LINE = -1;
 
-	std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
+	static const std::uint32_t prime = 16777619;
 
-	std::uint8_t* buff = (std::uint8_t*)lCase.c_str();
-	int buffLength = lCase.length();
-
-	std::int32_t hash = 2166136261;
-
-	for (int i = 0; i < buffLength; ++i)
+	// Taken from the lead programmer's response as well as Dameon's notes on the Evil Planet forums: http://web.archive.org/web/20111122124528/http://n1nj4.com/viewtopic.php?p=120931#120931
+	std::int32_t hashElixir(const std::string &str)
 	{
-		hash *= prime;
-		hash ^= std::int32_t(*buff);
+		// Hash is always of the lowercased string
+		std::string lCase = str;
 
-		buff++;
+		std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
+
+		std::uint8_t* buff = (std::uint8_t*)lCase.c_str();
+		int buffLength = lCase.length();
+
+		std::int32_t hash = 2166136261;
+
+		for (int i = 0; i < buffLength; ++i)
+		{
+			hash *= prime;
+			hash ^= std::int32_t(*buff);
+
+			buff++;
+		}
+
+		return hash;
 	}
 
-	return hash;
-}
-
-ATN::List<ATN::Property> util::parseEvents(const std::string &filename)
-{
-	std::ifstream file(filename);
-
-	if (file.fail())
+	std::istream &getline(std::istream &stream, std::string &line)
 	{
-		throw ATN::Exception("Couldn't find file %s", filename);
+		DEBUG_LINE++;
+
+		return std::getline(stream, line);
 	}
 
-	std::string line;
-
-	ATN::List<ATN::Property> list;
-
-	while (getline(file, line))
+	ATN::List<ATN::Property> parseEvents(const std::string &filename)
 	{
-		ATN::Property *el = new ATN::Property(line, hashElixir(line));
+		DEBUG_LINE = -1;
 
-		std::cout << el->name() << "\t" << el->id() << std::endl;
+		std::ifstream file(filename);
 
-		list.add(*el);
+		if (file.fail())
+		{
+			throw ATN::Exception("Couldn't find file %s", filename);
+		}
+
+		std::string line;
+
+		ATN::List<ATN::Property> list(filename);
+
+		while (getline(file, line))
+		{
+			ATN::Property *el = new ATN::Property(line, hashElixir(line));
+
+			std::cout << el->name() << "\t" << el->id() << std::endl;
+
+			list.add(*el);
+		}
+
+		util::DEBUG_LINE = -1;
+
+		return list;
 	}
 
-	return list;
-}
-
-ATN::List<ATN::Entry> util::parseATN(const std::string &filename)
-{
-	std::ifstream file(filename);
-
-	if (file.fail())
+	// Parse ATN values from specified text file
+	// outList: list whose entries we'll add or update
+	// secondPass: if true, no entires will be added, but references will be updated
+	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass)
 	{
-		throw ATN::Exception("Couldn't find file %s", filename);
-	}
+		DEBUG_LINE = -1;
 
-	std::string line;
+		std::ifstream file(filename);
 
-	getline(file, line);
+		if (file.fail())
+		{
+			throw ATN::Exception("Couldn't find file %s", filename);
+		}
 
-	if (line != "[Header]")
-	{
-		throw ATN::Exception("Invalid ATN file, missing \"[Header]\"");
-	}
+		std::string line;
 
-	getline(file, line);
-
-	line = line.substr(strlen("NumElements="));
-
-	int numObjects = std::stoi(line);
-
-	getline(file, line);
-
-	if (line != "Identifier=ATNData")
-	{
-		throw ATN::Exception("Invalid ATN file, missing \"Identifier=ATNData\"");
-	}
-
-	getline(file, line); // blank line
-	getline(file, line);
-
-	if (line != "[Object headers]")
-	{
-		throw ATN::Exception("Invalid ATN file, missing \"[Object headers]\"");
-	}
-
-	ATN::List<ATN::Entry> list;
-
-	for (int i = 0; i < numObjects; i++)
-	{
-		getline(file, line); // redundant info (ObjectNum)
 		getline(file, line);
 
-		std::string objType = line.substr(strlen("TypeName="));
-
-		ATN::Entry *el;
-
-		if (objType == "TATNNetwork")
+		if (line != "[Header]")
 		{
-			el = (ATN::Entry*)new ATN::Network();
-		}
-		else if (objType == "TATNThread")
-		{
-			el = (ATN::Entry*)new ATN::Thread();
-		}
-		else if (objType == "TATNState")
-		{
-			el = (ATN::Entry*)new ATN::State();
-		}
-		else if (objType == "TATNStateTransition")
-		{
-			el = (ATN::Entry*)new ATN::Transition();
-		}
-		else if (objType.find("TATNEffect"))
-		{
-			el = (ATN::Entry*)new ATN::Effect(objType);
-		}
-		else if (objType.find("TATNPercept"))
-		{
-			el = (ATN::Entry*)new ATN::Percept(objType);
-		}
-		else
-		{
-			throw ATN::Exception("Couldn't interpret type of \"%s\"", objType);
+			throw ATN::Exception("Invalid ATN file, missing \"[Header]\"");
 		}
 
 		getline(file, line);
 
-		int objID = std::stoi(line.substr(strlen("UniqueID=")));
+		line = line.substr(strlen("NumElements="));
 
-		el->setID(objID);
+		int numObjects = std::stoi(line);
 
-		list.add(*el);
+		getline(file, line);
+
+		if (line != "Identifier=ATNData")
+		{
+			throw ATN::Exception("Invalid ATN file, missing \"Identifier=ATNData\"");
+		}
 
 		getline(file, line); // blank line
-	}
-
-	if (line != "[Object data]")
-	{
-		throw ATN::Exception("Invalid ATN file, missing \"[Object data]\"");
-	}
-
-	for (int i = 0; i < numObjects; i++)
-	{
-		getline(file, line); // redundant typename
 		getline(file, line);
 
-		int objID = std::stoi(line.substr(strlen("UniqueID=")));
+		if (line != "[Object headers]")
+		{
+			throw ATN::Exception("Invalid ATN file, missing \"[Object headers]\"");
+		}
 
-		ATN::Entry &el = list.find(objID);
+		for (int i = 0; i < numObjects; i++)
+		{
+			getline(file, line); // redundant info (ObjectNum)
+			getline(file, line);
 
-		file >> el;
+			std::string objType = line.substr(strlen("TypeName="));
+
+			ATN::Entry *el;
+
+			if (!secondPass)
+			{
+				if (objType == "TATNNetwork")
+				{
+					el = (ATN::Entry*)new ATN::Network();
+				}
+				else if (objType == "TATNThread")
+				{
+					el = (ATN::Entry*)new ATN::Thread();
+				}
+				else if (objType == "TATNState")
+				{
+					el = (ATN::Entry*)new ATN::State();
+				}
+				else if (objType == "TATNStateTransition")
+				{
+					el = (ATN::Entry*)new ATN::Transition();
+				}
+				else if (objType.find("TATNEffect"))
+				{
+					el = (ATN::Entry*)new ATN::Effect(objType);
+				}
+				else if (objType.find("TATNPercept"))
+				{
+					el = (ATN::Entry*)new ATN::Percept(objType);
+				}
+				else
+				{
+					throw ATN::Exception("Couldn't interpret type of \"%s\"", objType);
+				}
+			}
+
+			getline(file, line);
+
+			int objID = std::stoi(line.substr(strlen("UniqueID=")));
+
+			if (!secondPass)
+			{
+				el->setID(objID);
+
+				outList.add(*el);
+			}
+
+			getline(file, line); // blank line
+		}
+
+		getline(file, line);
+
+		if (line != "[Object data]")
+		{
+			throw ATN::Exception("Invalid ATN file, missing \"[Object data]\"");
+		}
+
+		if (secondPass)
+		{
+			for (int i = 0; i < numObjects; i++)
+			{
+				getline(file, line); // redundant typename
+				getline(file, line);
+
+				int objID = std::stoi(line.substr(strlen("UniqueID=")));
+
+				ATN::Entry &el = outList.find(objID);
+
+				file >> el;
+			}
+		}
+
+		util::DEBUG_LINE = -1;
 	}
-
-	return list;
 }

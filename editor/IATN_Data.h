@@ -12,7 +12,7 @@ namespace ATN
 		// Unique identifier of this ATN entry / event
 		virtual uint32_t id() const = 0;
 		// Human-readable name of this ATN entry / event
-		virtual const std::string & name() const = 0;
+		virtual const std::string &name() const = 0;
 
 		friend bool operator<(const IATN_Data &a, const IATN_Data &b);
 	};

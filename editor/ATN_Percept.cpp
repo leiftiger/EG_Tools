@@ -21,10 +21,26 @@ namespace ATN
 	{
 		this->m_gameFunction = gameFunction;
 	}
-	void Percept::serialize(std::ostream & stream) const
+
+	const char * const Percept::typeName() const
 	{
+		return this->gameFunction().c_str();
 	}
-	void Percept::deserialize(std::istream & stream)
+
+	void Percept::serialize(std::ostream &stream) const
 	{
+
+	}
+
+	void Percept::deserialize(std::istream &stream)
+	{
+		std::string line;
+
+		// PLACEHOLDER, read until end of object to skip this class for now
+		while (util::getline(stream, line))
+		{
+			if (line == "")
+				break;
+		}
 	}
 }

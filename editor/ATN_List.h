@@ -19,6 +19,8 @@ namespace ATN
 
 		std::unordered_map<std::string, IATN_Data*> m_nameMap;
 
+		std::string m_name;
+
 		int m_numOrderNext = 0;
 		int m_numOrderMax = INT_MAX;
 
@@ -27,9 +29,27 @@ namespace ATN
 	public:
 
 		// Ensures these pointers are always initialized correctly
-		List<T>() : m_numOrderNext(0), m_numOrderMax(INT_MAX)
-		{
+		List<T>() {}
 
+		List<T>(const std::string &name) : m_name(name) {}
+
+		// Deletes the memory used by all elements in the list
+		void clear()
+		{
+			for (std::pair<std::uint32_t, IATN_Data*> pair : this->m_idMap)
+			{
+				delete pair.second;
+			}
+
+			this->m_idMap.clear();
+			this->m_nameMap.clear();
+			this->m_numOrder.clear();
+		}
+
+		// Name of this ATN list for local references
+		const std::string &name() const
+		{
+			return this->m_name;
 		}
 
 		// The maximum ObjectNum value of which order can be safely and easily preserved
@@ -39,7 +59,7 @@ namespace ATN
 			return m_numOrderMax;
 		}
 
-		void add(T &element)
+		void add(const T &element)
 		{
 			m_idMap.insert(std::make_pair<std::uint32_t, IATN_Data*>(element.id(), (IATN_Data*)&element));
 
@@ -48,7 +68,7 @@ namespace ATN
 			m_numOrder[(IATN_Data*)&element] = m_numOrderNext++;
 		}
 
-		void remove(T &element)
+		void remove(const T &element)
 		{
 			m_idMap.erase(element.id());
 
@@ -62,12 +82,12 @@ namespace ATN
 		{
 			std::map<std::uint32_t, IATN_Data*>::iterator it = m_idMap.find(id);
 
-			if (it == m_idMap.end())
+			if (it != m_idMap.end())
 			{
 				return *((T*)(it->second));
 			}
 
-			throw Exception("Couldn't find ID \"%d\" in list", id);
+			throw ATN::Exception("Couldn't find ID \"%d\" in list \"%s\"", id, this->m_name);
 		}
 
 		// Finds element by name, throws exception if it's not found
@@ -75,12 +95,12 @@ namespace ATN
 		{
 			std::unordered_map<std::string, IATN_Data*>::iterator it = m_nameMap.find(name);
 
-			if (it == m_nameMap.end())
+			if (it != m_nameMap.end())
 			{
 				return *((T*)(it->second));
 			}
 
-			throw Exception("Couldn't find name \"%s\" in list", name);
+			throw ATN::Exception("Couldn't find name \"%s\" in list \"%s\"", name, this->m_name);
 		}
 	};
 }

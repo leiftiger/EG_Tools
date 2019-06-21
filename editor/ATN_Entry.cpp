@@ -2,6 +2,24 @@
 
 namespace ATN
 {
+	void Entry::serialize(std::ostream &stream) const
+	{
+		stream << "TypeName=" << this->typeName() << std::endl;
+		stream << "UniqueID=" << this->id() << std::endl;
+		stream << "Name=" << this->name() << std::endl;
+	}
+
+	void Entry::deserialize(std::istream &stream)
+	{
+		std::string line;
+
+		util::getline(stream, line);
+
+		line = line.substr(strlen("Name="));
+
+		this->setName(line);
+	}
+
 	std::uint32_t Entry::id() const
 	{
 		return this->m_id;

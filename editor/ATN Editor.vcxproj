@@ -154,6 +154,7 @@
     <ClInclude Include="ATN_Effect.h" />
     <ClInclude Include="ATN_Entry.h" />
     <ClInclude Include="ATN_Exception.h" />
+    <ClInclude Include="ATN_Manager.h" />
     <ClInclude Include="ATN_Network.h" />
     <ClInclude Include="ATN_Percept.h" />
     <ClInclude Include="ATN_Property.h" />
@@ -161,7 +162,7 @@
     <ClInclude Include="ATN_State.h" />
     <ClInclude Include="ATN_Thread.h" />
     <ClInclude Include="ATN_Transition.h" />
-    <ClInclude Include="ATN_Type.h" />
+    <ClInclude Include="ATN_Resources.h" />
     <ClInclude Include="IATN_Data.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -169,12 +170,14 @@
     <ClCompile Include="ATN_Effect.cpp" />
     <ClCompile Include="ATN_Entry.cpp" />
     <ClCompile Include="ATN_Exception.cpp" />
+    <ClCompile Include="ATN_Manager.cpp" />
     <ClCompile Include="ATN_Network.cpp" />
     <ClCompile Include="ATN_Percept.cpp" />
     <ClCompile Include="ATN_Property.cpp" />
     <ClCompile Include="ATN_State.cpp" />
     <ClCompile Include="ATN_Thread.cpp" />
     <ClCompile Include="ATN_Transition.cpp" />
+    <ClCompile Include="ATN_Resources.cpp" />
     <ClCompile Include="IATN_Data.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils.cpp" />

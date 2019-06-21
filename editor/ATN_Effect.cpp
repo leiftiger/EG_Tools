@@ -21,10 +21,34 @@ namespace ATN
 	{
 		this->m_gameFunction = gameFunction;
 	}
-	void Effect::serialize(std::ostream & stream) const
+
+	const char * const Effect::typeName() const
 	{
+		return this->gameFunction().c_str();
 	}
-	void Effect::deserialize(std::istream & stream)
+
+	void Effect::serialize(std::ostream &stream) const
 	{
+		Entry::serialize(stream);
+
+		stream << this->m_resources << this->m_parameters;
+
+		// This always seems to be zero
+		stream << "Compounds=0" << std::endl;
+
+		// Signify end of object
+		stream << std::endl;
+	}
+
+	void Effect::deserialize(std::istream &stream)
+	{
+		Entry::deserialize(stream);
+
+		std::string line;
+
+		stream >> this->m_resources >> this->m_parameters;
+
+		util::getline(stream, line); // compounds, never used...
+		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }

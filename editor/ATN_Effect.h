@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ATN_Entry.h"
+#include "ATN_Resources.h"
 
 namespace ATN
 {
@@ -9,6 +10,11 @@ namespace ATN
 	{
 	private:
 		std::string m_gameFunction;
+
+		// Resources affected by this effect
+		std::vector<Resource> m_resources;
+		// Input parameters to this effect
+		std::vector<Parameter> m_parameters;
 	public:
 
 		Effect(std::string &gameFunction);
@@ -19,6 +25,8 @@ namespace ATN
 		const std::string &gameFunction() const;
 
 		void setGameFunction(std::string &gameFunction);
+
+		virtual const char * const typeName() const override;
 
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
