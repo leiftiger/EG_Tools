@@ -7,6 +7,9 @@
 
 namespace ATN
 {
+	// Forward declared
+	class State; class Thread; class Transition;
+
 	// A network, it serves as a container from which states can access its resources and send it parameters (?)
 	class Network : public Entry
 	{

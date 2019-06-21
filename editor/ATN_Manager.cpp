@@ -4,71 +4,77 @@ namespace ATN
 {
 	void Manager::addList(List<Entry> *list)
 	{
-		m_lists.push_back(list);
+		// Copy all elements in this list to the global ATN list
+		for (const std::pair<std::uint32_t, IATN_Data*> &pair : *list)
+		{
+			instance().m_lists[0]->add(*(Entry*)pair.second);
+		}
+
+		instance().m_lists.push_back(list);
 	}
 	void Manager::removeEntry(const Entry &el)
 	{
-		m_lists[0]->remove(el);
+		instance().m_lists[0]->remove(el);
 	}
 
-	const std::vector<List<Entry>*> Manager::lists() const
+	const std::vector<List<Entry>*> Manager::lists()
 	{
-		return m_lists;
+		return instance().m_lists;
 	}
 
 	void Manager::setAnims(List<Property> &list)
 	{
-		m_descAnims = list;
+		instance().m_descAnims = list;
 	}
 
 	void Manager::setEvents(List<Property> &events)
 	{
-		m_descEvents = events;
+		instance().m_descEvents = events;
 	}
 
-	Entry &Manager::findByID(std::uint32_t id) const
+	Entry &Manager::findByID(std::uint32_t id)
 	{
-		return m_lists[0]->find(id);
+		return instance().m_lists[0]->find(id);
 	}
 
-	Entry &Manager::findByID(std::uint32_t id, List<Entry> *&outList) const
+	Entry &Manager::findByID(std::uint32_t id, List<Entry> *&outList)
 	{
-		for (unsigned int i = 1; i < m_lists.size(); i++)
+		for (unsigned int i = 1; i < instance().m_lists.size(); i++)
 		{
 			try
 			{
-				Entry &el = m_lists[i]->find(id);
+				Entry &el = instance().m_lists[i]->find(id);
 
-				outList = m_lists[i];
+				outList = instance().m_lists[i];
 
 				return el;
 			}
 			catch (Exception e) {}
 		}
 
-		throw Exception("Couldn't find ID \"%d\" in list \"%s\"", id, m_lists[0]->name());
+		throw Exception("Couldn't find ID \"%d\" in list \"%s\"", id, instance().m_lists[0]->name());
 	}
 
-	Entry &Manager::findByName(const std::string &name) const
+	Entry &Manager::findByName(const std::string &name)
 	{
-		return m_lists[0]->find(name);
+		return instance().m_lists[0]->find(name);
 	}
 
-	Entry &Manager::findByName(const std::string &name, List<Entry> *&outList) const
+	Entry &Manager::findByName(const std::string &name, List<Entry> *&outList)
 	{
-		for (unsigned int i = 1; i < m_lists.size(); i++)
+		for (unsigned int i = 1; i < instance().m_lists.size(); i++)
 		{
 			try
 			{
-				Entry &el = m_lists[i]->find(name);
+				Entry &el = instance().m_lists[i]->find(name);
 
-				outList = m_lists[i];
+				outList = instance().m_lists[i];
 
 				return el;
 			}
 			catch (Exception e) {}
 		}
 
-		throw Exception("Couldn't find name \"%s\" in list \"%s\"", name, m_lists[0]->name());
+		throw Exception("Couldn't find name \"%s\" in list \"%s\"", name, instance().m_lists[0]->name());
 	}
 }

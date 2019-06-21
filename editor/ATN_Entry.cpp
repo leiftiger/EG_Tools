@@ -49,12 +49,23 @@ namespace ATN
 	{
 		e.serialize(stream);
 
+		// Signify end of object
+		stream << std::endl;
+
 		return stream;
 	}
 
 	std::istream &operator>>(std::istream &stream, Entry &e)
 	{
 		e.deserialize(stream);
+
+		std::string line;
+
+		// blank line - we reached the end of this object
+		util::getline(stream, line);
+
+		if (line.length() != 0)
+			throw Exception("Expected end of object, got \"%s\"", line);
 
 		return stream;
 	}

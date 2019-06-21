@@ -22,9 +22,6 @@ namespace ATN
 		stream << "ContainerID=ATNData" << std::endl;
 
 		util::writeEntryIDs<Thread>(stream, "Threads=", m_threads);
-
-		// Signify end of object
-		stream << std::endl;
 	}
 
 	void Network::deserialize(std::istream &stream)
@@ -42,11 +39,11 @@ namespace ATN
 
 		m_states = util::parseEntryIDs<State>(stream, "States=");
 
+		util::getline(stream, line);
+
 		if (line != "ContainerID=ATNData")
 			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
 
 		m_threads = util::parseEntryIDs<Thread>(stream, "Threads=");
-
-		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }

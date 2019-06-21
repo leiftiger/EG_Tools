@@ -11,7 +11,8 @@ namespace ATN
 	class Exception : public std::exception
 	{
 	private:
-		static const int ERR_SIZE = 128;
+		// Some lines can get very long...
+		static const int ERR_SIZE = 1024;
 
 		std::string m_exceptionMessage;
 

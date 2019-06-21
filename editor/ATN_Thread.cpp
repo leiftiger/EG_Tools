@@ -9,18 +9,41 @@ namespace ATN
 
 	void Thread::serialize(std::ostream &stream) const
 	{
+		Entry::serialize(stream);
 
+		stream << "ContainerID=ATNData" << std::endl;
+		stream << "Network=" << m_network->id() << std::endl;
+
+		stream << "ContainerID=ATNData" << std::endl;
+		stream << "State=" << m_state->id() << std::endl;
 	}
 
 	void Thread::deserialize(std::istream &stream)
 	{
+		Entry::deserialize(stream);
+
 		std::string line;
 
-		// PLACEHOLDER, read until end of object to skip this class for now
-		while (util::getline(stream, line))
-		{
-			if (line == "")
-				break;
-		}
+		util::getline(stream, line);
+
+		if (line != "ContainerID=ATNData")
+			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
+
+		util::getline(stream, line);
+
+		int networkID = std::stoi(line.substr(strlen("Network=")));
+
+		m_network = (Network*)&Manager::findByID(networkID);
+
+		util::getline(stream, line);
+
+		if (line != "ContainerID=ATNData")
+			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
+
+		util::getline(stream, line);
+
+		int stateID = std::stoi(line.substr(strlen("State=")));
+
+		m_state = (State*)&Manager::findByID(stateID);
 	}
 }

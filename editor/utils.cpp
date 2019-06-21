@@ -35,12 +35,14 @@ namespace util
 		std::uint8_t* buff = (std::uint8_t*)lCase.c_str();
 		int buffLength = lCase.length();
 
-		std::int32_t hash = 2166136261;
+		// We hash using unsigned, to avoid any issues with the multiplication
+		// then we just return the signed value that is seemingly used in the ATNs
+		std::uint32_t hash = 2166136261;
 
 		for (int i = 0; i < buffLength; ++i)
 		{
 			hash *= prime;
-			hash ^= std::int32_t(*buff);
+			hash ^= std::uint32_t(*buff);
 
 			buff++;
 		}
@@ -74,7 +76,7 @@ namespace util
 		{
 			ATN::Property *el = new ATN::Property(line, hashElixir(line));
 
-			std::cout << el->name() << "\t" << el->id() << std::endl;
+			//std::cout << el->name() << "\t" << el->id() << std::endl;
 
 			list.add(*el);
 		}
@@ -155,11 +157,11 @@ namespace util
 				{
 					el = (ATN::Entry*)new ATN::Transition();
 				}
-				else if (objType.find("TATNEffect"))
+				else if (objType.find("TATNEffect") != -1)
 				{
 					el = (ATN::Entry*)new ATN::Effect(objType);
 				}
-				else if (objType.find("TATNPercept"))
+				else if (objType.find("TATNPercept") != -1)
 				{
 					el = (ATN::Entry*)new ATN::Percept(objType);
 				}
@@ -178,6 +180,7 @@ namespace util
 				el->setID(objID);
 
 				outList.add(*el);
+				outList.recordOrderHeader(*el);
 			}
 
 			getline(file, line); // blank line
@@ -201,8 +204,15 @@ namespace util
 
 				ATN::Entry &el = outList.find(objID);
 
+				outList.recordOrderData(el);
+				outList.updateName(el);
+
 				file >> el;
 			}
+		}
+		else
+		{
+			ATN::Manager::addList(&outList);
 		}
 
 		util::DEBUG_LINE = -1;

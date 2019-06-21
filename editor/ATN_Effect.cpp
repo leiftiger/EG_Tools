@@ -35,9 +35,6 @@ namespace ATN
 
 		// This always seems to be zero
 		stream << "Compounds=0" << std::endl;
-
-		// Signify end of object
-		stream << std::endl;
 	}
 
 	void Effect::deserialize(std::istream &stream)
@@ -52,7 +49,5 @@ namespace ATN
 
 		if (line != "Compounds=0")
 			throw Exception("Expected \"Compounds=0\", got \"%s\"", line);
-
-		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }

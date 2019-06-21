@@ -29,7 +29,6 @@ namespace ATN
 				delete m_lists[i];
 			}
 		}
-	public:
 
 		static Manager &instance()
 		{
@@ -37,6 +36,7 @@ namespace ATN
 
 			return m;
 		}
+	public:
 
 		// Ensure the singleton cannot be copied
 		Manager(Manager const &other) = delete;
@@ -50,32 +50,32 @@ namespace ATN
 
 	public:
 
-		void addList(List<Entry> *list);
+		static void addList(List<Entry> *list);
 
 		// Remove entry from global list (should only get called from ATN::List)
-		void removeEntry(const Entry &el);
+		static void removeEntry(const Entry &el);
 
 		// Get all lists stored in this manager
-		const std::vector<List<Entry>*> lists() const;
+		static const std::vector<List<Entry>*> lists();
 
 		// Set animation hash definitions
-		void setAnims(List<Property> &list);
+		static void setAnims(List<Property> &list);
 
 		// Set event hash definitions
-		void setEvents(List<Property> &events);
+		static void setEvents(List<Property> &events);
 
 		// Finds an ATN entry by ID
-		Entry &findByID(std::uint32_t id) const;
+		static Entry &findByID(std::uint32_t id);
 
 		// Finds an ATN entry by ID and return the ATN list it belongs to
 		// Slightly slower due to searching multiple ATN files
-		Entry &findByID(std::uint32_t id, List<Entry> *&outList) const;
+		static Entry &findByID(std::uint32_t id, List<Entry> *&outList);
 
 		// Finds an ATN entry by name
-		Entry &findByName(const std::string &name) const;
+		static Entry &findByName(const std::string &name);
 
 		// Finds an ATN entry by ID and return the ATN list it belongs to
 		// Slightly slower due to searching multiple ATN files
-		Entry &findByName(const std::string &name, List<Entry> *&outList) const;
+		static Entry &findByName(const std::string &name, List<Entry> *&outList);
 	};
 }

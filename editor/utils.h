@@ -66,7 +66,7 @@ namespace util
 				{
 					uint32_t id = std::stoi(matches[1]);
 
-					entries.push_back((T*)&ATN::Manager::instance().findByID(id));
+					entries.push_back((T*)&ATN::Manager::findByID(id));
 
 					subLine = matches.suffix();
 				}
