@@ -35,7 +35,10 @@ namespace ATN
 
 		stream << "Compounds=0" << std::endl;
 		stream << "Graph=16" << std::endl;
-		stream << m_graphJunk;
+		stream << m_graphJunk << std::endl;
+
+		// Signify end of object
+		stream << std::endl;
 	}
 
 	void Percept::deserialize(std::istream &stream)
@@ -46,8 +49,15 @@ namespace ATN
 
 		std::string line;
 
-		util::getline(stream, line); // compounds, never used
-		util::getline(stream, line); // "Graph=16"
+		util::getline(stream, line);
+
+		if (line != "Compounds=0")
+			throw Exception("Expected \"Compounds=0\", got \"%s\"", line);
+
+		util::getline(stream, line);
+
+		if (line != "Graph=16")
+			throw Exception("Expected \"Graph=16\", got \"%s\"", line);
 
 		util::getline(stream, m_graphJunk);
 

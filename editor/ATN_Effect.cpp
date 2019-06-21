@@ -48,7 +48,11 @@ namespace ATN
 
 		stream >> m_resources >> m_parameters;
 
-		util::getline(stream, line); // compounds, never used...
+		util::getline(stream, line);
+
+		if (line != "Compounds=0")
+			throw Exception("Expected \"Compounds=0\", got \"%s\"", line);
+
 		util::getline(stream, line); // blank line - we reached the end of this object
 	}
 }

@@ -17,6 +17,13 @@ namespace ATN
 		std::vector<Resource> m_resources;
 		std::vector<Parameter> m_parameters;
 
+	protected:
+
+		virtual const char * const typeName() const override;
+
+		virtual void serialize(std::ostream & stream) const override;
+		virtual void deserialize(std::istream & stream) override;
+
 	public:
 
 		Percept(std::string &gameFunction);
@@ -27,10 +34,5 @@ namespace ATN
 		const std::string &gameFunction() const;
 
 		void setGameFunction(std::string &gameFunction);
-
-		virtual const char * const typeName() const override;
-
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
 	};
 }

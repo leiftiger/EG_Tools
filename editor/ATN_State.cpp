@@ -16,6 +16,11 @@ namespace ATN
 	{
 		std::string line;
 
+		util::getline(stream, line);
+
+		if (line != "ContainerID=ATNData")
+			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
+
 		// PLACEHOLDER, read until end of object to skip this class for now
 		while (util::getline(stream, line))
 		{
