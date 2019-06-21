@@ -64,6 +64,8 @@ $RECYCLE.BIN/
 *.tlog
 *.ilk
 *.idb
+*.iobj
+*.ipdb
 *.pdb
 .suo
 
