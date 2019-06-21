@@ -33,12 +33,12 @@ namespace ATN
 		typedef std::unordered_map<std::uint32_t, IATN_Data*>::iterator iterator;
 		typedef std::unordered_map<std::uint32_t, IATN_Data*>::const_iterator const_iterator;
 
-		const_iterator begin()
+		iterator begin()
 		{
 			return m_idMap.begin();
 		}
 
-		const_iterator end()
+		iterator end()
 		{
 			return m_idMap.end();
 		}
