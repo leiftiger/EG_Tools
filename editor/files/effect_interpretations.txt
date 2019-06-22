@@ -1,0 +1,48 @@
+TATNEffectNone
+do nothing
+TATNEffectPlayAnimation
+play "::hash_param0::"
+TATNEffectCreateNumber
+::resource0:: = ::param0::
+TATNEffectCreateNumber
+::resource0:: = randn(::param0::, ::param1::)
+TATNEffectAddToNumber
+::resource0:: += ::param0::
+TATNEffectSubtractFromNumber
+::resource0:: -= ::param0::
+TATNEffectTimerStart
+start ::resource0:: at ::param1:: (realtime: ::bool_param0::)
+TATNEffectGuiLogMessageToPlayer
+show "::hash_param0::" (and video: ::bool_param1::)
+TATNEffectCreateEntity
+::resource0:: = new instance of desc id ::param0::
+TATNEffectDestroyEntity
+destroy 
+TATNEffectSetTouristPopulation
+set number of tourists from region ::param1:: to ::param0::
+TATNEffectSetObjectiveStatus
+set "::hash_param0::" visible: ::bool_param1::, complete: ::bool_param2::, parent: ::bool_param3::
+TATNEffectRunGameRuleATN
+run game rule "::network_param0::"
+TATNEffectSleepThread
+sleep current thread for ::param0:: frames
+TATNEffectGetEntityOfType
+::resource0:: = entity instance of desc id ::param0::
+TATNEffectGetCharacterOfType
+::resource0:: = character instance of desc id ::param0::
+TATNEffectGetObjectOfType
+::resource0:: = object instance of desc id ::param0:: (invalid: ::bool_param1::)
+TATNEffectGameOver
+trigger game over
+TATNEffectPlayVoiceOver
+play sound effect "::hash_param1:": (category "::hash_param0::")
+TATNEffectMakeCharacterInteractWithObject
+tell ::resource1:: to interact with ::resource0::
+TATNEffectLockActOfInfamy
+set lock of AoI ::param0:: to ::bool_param1::
+TATNEffectGetWorldDominationTotalCashIncome
+::resource0:: = player's current cash income
+TATNEffectSetCharacterTag
+set tag of :resource0:: to ::param0::
+TATNEffectSubstituteObject
+replace ::resource0:: with instance of desc id ::param0::

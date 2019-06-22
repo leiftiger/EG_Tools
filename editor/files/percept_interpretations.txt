@@ -1,0 +1,30 @@
+TATNPerceptTrue
+true
+TATNPerceptWaitForEvent
+wait for "::hash_param0::"
+TATNPerceptNumberEquals
+::resource0:: == ::param0::
+TATNPerceptNumberLessThan
+::resource0:: < ::param0::
+TATNPerceptNumberGreaterThan
+::resource0:: > ::param0::
+TATNPerceptEntityIsOfType
+::resource0:: is instantiated from desc id ::param0::
+TATNPerceptParameterDifference
+::param0:: == ::param1::
+TATNPerceptPlayerNotoriety
+player's notoriety >= ::param0:: in region ::region_param1::
+TATNPerceptPlayerCash
+player's cash >= ::param0::
+TATNPerceptObjectiveAvailable
+"::hash_param0::" is available
+TATNPerceptObjectiveComplete
+"::hash_param0::" is complete
+TATNPerceptTimerPaused
+::resource0:: is paused
+TATNPerceptIsCaptured
+::resource0:: is captured
+TATNPerceptHasHeat
+::resource0:: has heat
+TATNPerceptCanInteractWithObject
+::resource0:: can interact with ::resource1::
