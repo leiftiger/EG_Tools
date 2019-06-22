@@ -302,8 +302,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="UI_MainWindow.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
