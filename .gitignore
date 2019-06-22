@@ -71,3 +71,8 @@ $RECYCLE.BIN/
 
 # The ATN files
 *.ros
+
+# Qt auto-generated files
+
+*.qrc
+GeneratedFiles/

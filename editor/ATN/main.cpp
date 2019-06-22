@@ -1,7 +1,11 @@
 #include <iostream>
 #include "utils.h"
 
-int main()
+#include <QApplication>
+
+#include "UI/UI_MainWindow.h"
+
+int main(int argc, char *argv[])
 {
 #ifndef _DEBUG
 	try
@@ -42,6 +46,12 @@ int main()
 			std::string filename = files[i] + "_out";
 			util::writeATN(filename, *atns[i]);
 		}
+
+		QApplication a(argc, argv);
+		UI_MainWindow w;
+		w.show();
+
+		return a.exec();
 	}
 #ifndef _DEBUG
 	catch (std::exception &e)
