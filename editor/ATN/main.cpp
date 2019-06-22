@@ -15,7 +15,8 @@ int main(int argc, char *argv[])
 
 		ATN::List<ATN::Property> events = util::parseEvents("files/events.txt");
 
-		ATN::Manager::setEvents(events);
+		// TODO: More than events use hashed values in ATN files (objective IDs, objective descriptions and more)
+		ATN::Manager::setHashValues(events);
 
 		std::vector<std::string> files = {"files/ATNData.ros", "files/ATNData_Objects.ros", "files/ATNData_Tutorials.ros"};
 		std::vector<ATN::List<ATN::Entry>*> atns;

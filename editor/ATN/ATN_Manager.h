@@ -45,8 +45,7 @@ namespace ATN
 	private:
 		std::vector<List<Entry>*> m_lists;
 
-		List<Property> m_descAnims;
-		List<Property> m_descEvents;
+		List<Property> m_descValues;
 
 	public:
 
@@ -61,11 +60,8 @@ namespace ATN
 		// Get all lists stored in this manager
 		static const std::vector<List<Entry>*> lists();
 
-		// Set animation hash definitions
-		static void setAnims(List<Property> &list);
-
-		// Set event hash definitions
-		static void setEvents(List<Property> &events);
+		// Set hash definitions
+		static void setHashValues(List<Property> &list);
 
 		// Finds an ATN entry by ID
 		static Entry &findByID(std::uint32_t id);

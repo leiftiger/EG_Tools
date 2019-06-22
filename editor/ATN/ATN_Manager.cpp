@@ -27,15 +27,11 @@ namespace ATN
 		return instance().m_lists;
 	}
 
-	void Manager::setAnims(List<Property> &list)
+	void Manager::setHashValues(List<Property> &list)
 	{
-		instance().m_descAnims = list;
+		instance().m_descValues = list;
 	}
 
-	void Manager::setEvents(List<Property> &events)
-	{
-		instance().m_descEvents = events;
-	}
 
 	Entry &Manager::findByID(std::uint32_t id)
 	{
