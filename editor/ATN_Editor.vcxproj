@@ -27,7 +27,11 @@
     <ClCompile Include="ATN\utils.cpp" />
     <ClCompile Include="UI\UI_MainWindow.cpp" />
     <ClCompile Include="UI\UI_NetworkContainer.cpp" />
-    <ClCompile Include="UI\UI_MainViewer.cpp" />
+    <ClCompile Include="UI\UI_NetworkState.cpp" />
+    <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
+    <ClCompile Include="UI\UI_ConnectorStart.cpp" />
+    <ClCompile Include="UI\UI_Connector.cpp" />
+    <ClCompile Include="UI\UI_NetworkTransition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATN\ATN_Effect.h" />
@@ -44,14 +48,22 @@
     <ClInclude Include="ATN\ATN_Transition.h" />
     <ClInclude Include="ATN\IATN_Data.h" />
     <ClInclude Include="ATN\utils.h" />
-    <QtMoc Include="UI\UI_MainViewer.h" />
+    <QtMoc Include="UI\UI_NetworkTransition.h" />
+    <QtMoc Include="UI\UI_Connector.h" />
+    <QtMoc Include="UI\UI_ConnectorStart.h" />
+    <QtMoc Include="UI\UI_ConnectorEnd.h" />
+    <QtMoc Include="UI\UI_NetworkState.h" />
     <QtMoc Include="UI\UI_MainWindow.h" />
     <QtMoc Include="UI\UI_NetworkContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="UI\UI_MainWindow.ui" />
     <QtUic Include="UI\UI_NetworkContainer.ui" />
-    <QtUic Include="UI\UI_MainViewer.ui" />
+    <QtUic Include="UI\UI_NetworkState.ui" />
+    <QtUic Include="UI\UI_ConnectorEnd.ui" />
+    <QtUic Include="UI\UI_ConnectorStart.ui" />
+    <QtUic Include="UI\UI_Connector.ui" />
+    <QtUic Include="UI\UI_NetworkTransition.ui" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>

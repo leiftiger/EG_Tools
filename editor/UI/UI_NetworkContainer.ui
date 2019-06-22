@@ -335,7 +335,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QFrame" name="frameNetwork_2">
+  <widget class="QFrame" name="frameTransition">
    <property name="geometry">
     <rect>
      <x>750</x>
@@ -712,8 +712,42 @@
     </property>
    </widget>
   </widget>
+  <widget class="QFrame" name="frameStates">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>240</y>
+     <width>431</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>230</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_ConnectorEnd</class>
+   <extends>QWidget</extends>
+   <header>UI_ConnectorEnd.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

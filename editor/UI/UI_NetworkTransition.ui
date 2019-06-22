@@ -1,8 +1,8 @@
 <UI version="4.0" >
- <class>UI_MainViewer</class>
- <widget class="QWidget" name="UI_MainViewer" >
+ <class>UI_NetworkTransition</class>
+ <widget class="QWidget" name="UI_NetworkTransition" >
   <property name="objectName" >
-   <string notr="true">UI_MainViewer</string>
+   <string notr="true">UI_NetworkTransition</string>
   </property>
   <property name="geometry" >
    <rect>
@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>UI_MainViewer</string>
+   <string>UI_NetworkTransition</string>
   </property>
  </widget>
  <layoutDefault spacing="6" margin="11" />
