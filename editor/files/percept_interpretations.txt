@@ -1,30 +1,65 @@
 TATNPerceptTrue
 true
+
 TATNPerceptWaitForEvent
 wait for "::hash_param0::"
+
 TATNPerceptNumberEquals
 ::resource0:: == ::param0::
+
 TATNPerceptNumberLessThan
 ::resource0:: < ::param0::
+
 TATNPerceptNumberGreaterThan
 ::resource0:: > ::param0::
+
 TATNPerceptEntityIsOfType
-::resource0:: is instantiated from desc id ::param0::
+::resource0:: is instance of desc id ::param0::
+
+TATNPerceptEntityIsInRoomType
+::resource0:: is in room desc id ::param0::
+
 TATNPerceptParameterDifference
 ::param0:: == ::param1::
+
 TATNPerceptPlayerNotoriety
 player's notoriety >= ::param0:: in region ::region_param1::
+
 TATNPerceptPlayerCash
 player's cash >= ::param0::
+
 TATNPerceptObjectiveAvailable
 "::hash_param0::" is available
+
 TATNPerceptObjectiveComplete
 "::hash_param0::" is complete
+
 TATNPerceptTimerPaused
 ::resource0:: is paused
+
+TATNPerceptTimerCheck
+::resource0:: >= ::param0:: ms
+
 TATNPerceptIsCaptured
 ::resource0:: is captured
+
 TATNPerceptHasHeat
 ::resource0:: has heat
+
 TATNPerceptCanInteractWithObject
 ::resource0:: can interact with ::resource1::
+
+TATNPerceptInteractionTerminationConditions
+::resource0:: should stop interacting
+
+TATNPerceptNumberInteractionSlotsInUseGreaterEqual
+vacant ::resource0:: interaction slots >= ::param0::
+
+TATNPerceptNumberInteractionSlotsInUseLessEqual
+vacant ::resource0:: interaction slots <= ::param0::
+
+TATNPerceptIsCharacterMale
+::resource0:: is male
+
+TATNPerceptEntityAtPosition
+pos of ::resource0:: == (::param0:: cm, ::param1:: cm)

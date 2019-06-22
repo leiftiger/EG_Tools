@@ -21,10 +21,11 @@ namespace ATN
 		Unknown = 0,
 		Resource = 1,	// TODO: probably get/set is ambiguous and we only get the type here
 		SetResourceIndexEntity = 2,	// Set the network resource at the specified index as the return value entity
-		Mysterious = 6,
+		ResourceIndexTimer = 6,
 		GetResourceIndex = 11,			// Access the network resource at specified index (number resource?)
 		SetResourceIndexCharacter = 12,	// Set the network resource at the specified index as the return value character
 		SetResourceIndexObject = 13,	// Likewise for objects
+		SetResourceIndexItem = 15,
 		Number = 20						// character resource?
 	};
 
