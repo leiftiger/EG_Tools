@@ -10,16 +10,22 @@ namespace ATN
 	enum class ParameterMarshallType : int
 	{
 		Unknown = 0,
+		Mysterious = 1,
 		Constant = 2,			// This number is what will be sent in the marshall
 		ParameterIndex = 3,		// Access the network parameter value at specified index
-		AnotherNumber = 4		// ???
+		ParameterNumber = 4		// Parameter value is distinguished from other numbers...?
 	};
 
 	enum class ResourceMarshallType : int
 	{
 		Unknown = 0,
-		ResourceIndex = 11,		// Access the network resource at specified index (number resource?)
-		Number = 20				// character resource?
+		Resource = 1,	// TODO: probably get/set is ambiguous and we only get the type here
+		SetResourceIndexEntity = 2,	// Set the network resource at the specified index as the return value entity
+		Mysterious = 6,
+		GetResourceIndex = 11,			// Access the network resource at specified index (number resource?)
+		SetResourceIndexCharacter = 12,	// Set the network resource at the specified index as the return value character
+		SetResourceIndexObject = 13,	// Likewise for objects
+		Number = 20						// character resource?
 	};
 
 	enum class ResourceType : int
