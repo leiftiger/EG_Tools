@@ -478,7 +478,7 @@
       <x>10</x>
       <y>80</y>
       <width>361</width>
-      <height>141</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="font">
@@ -590,7 +590,7 @@
       <x>380</x>
       <y>80</y>
       <width>361</width>
-      <height>141</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="font">
