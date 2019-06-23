@@ -87,6 +87,9 @@ namespace ATN
 
 		Parameter(std::string type, std::int64_t defaultValue, std::string desc);
 
+		const std::string &translateValue(std::int64_t value) const;
+		std::int64_t translateName(const std::string &name) const;
+
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<Parameter> &params);
 		// Serialize to ATN string

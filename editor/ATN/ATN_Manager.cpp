@@ -81,6 +81,11 @@ namespace ATN
 		return instance().m_descValues[strType];
 	}
 
+	bool Manager::hasHashValues(const char * const strType)
+	{
+		return instance().m_descValues.find(strType) != m_descValues.end();
+	}
+
 
 	Entry &Manager::findByID(std::uint32_t id)
 	{
