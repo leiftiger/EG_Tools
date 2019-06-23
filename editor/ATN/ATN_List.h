@@ -186,7 +186,7 @@ namespace ATN
 		}
 
 		// Finds element by id, throws exception if it's not found
-		T &find(std::uint32_t id)
+		T &find(std::uint32_t id) const
 		{
 			iterator it = m_idMap.find(id);
 
@@ -199,7 +199,7 @@ namespace ATN
 		}
 
 		// Finds element by name, throws exception if it's not found
-		T &find(const std::string &name)
+		T &find(const std::string &name) const
 		{
 			std::unordered_map<std::string, IATN_Data*>::iterator it = m_nameMap.find(name);
 

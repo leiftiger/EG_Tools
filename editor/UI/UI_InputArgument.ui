@@ -30,12 +30,12 @@
    </property>
    <item>
     <property name="text">
-     <string>0: TrayAnim (M_M_bar_table_put_away_drinks_tray)</string>
+     <string>0: TrayAnim (bar_table_put_away_drinks_tray)</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>M_M_bar_table_put_away_drinks_tray</string>
+     <string>bar_table_put_away_drinks_tray</string>
     </property>
    </item>
   </widget>

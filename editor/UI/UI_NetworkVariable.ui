@@ -27,7 +27,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Animation Flags</string>
+     <string>Animation Biped Type</string>
     </property>
    </item>
   </widget>
