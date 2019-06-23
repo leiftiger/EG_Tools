@@ -13,7 +13,7 @@ namespace ATN
 		Mysterious = 1,
 		Constant = 2,			// This number is what will be sent in the marshall
 		ParameterIndex = 3,		// Access the network parameter value at specified index
-		ParameterNumber = 4		// Parameter value is distinguished from other numbers...?
+		Bool = 4				// (not confirmed)
 	};
 
 	enum class ResourceMarshallType : int
@@ -22,11 +22,11 @@ namespace ATN
 		ResourceIndex = 1,				// Generic resource index (used for not null checks)
 		ResourceIndexEntity = 2,		// Resource index of type Entity
 		ResourceIndexTimer = 6,			// Resource index of type Timer
-		ResourceIndexNumer = 11,		// Resource index of type Number
+		ResourceIndexNumber = 11,		// Resource index of type Number
 		ResourceIndexCharacter = 12,	// Resource index of type Character
 		ResourceIndexObject = 13,		// Resource index of type Object
 		ResourceIndexItem = 15,			// Resource index of type Item
-		Number = 20						// N/A
+		ResourceIndexAny = 20			// Resource index of any type (?)
 	};
 
 	enum class ResourceType : int
@@ -100,9 +100,9 @@ namespace ATN
 
 		ResourceType m_type;
 		std::string m_desc;
-		std::int64_t m_defaultValue;
+		bool m_optionalResource;
 
-		Resource(ResourceType type, std::string desc, std::int64_t defaultValue);
+		Resource(ResourceType type, std::string desc, bool optionalResource);
 
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<Resource> &resources);

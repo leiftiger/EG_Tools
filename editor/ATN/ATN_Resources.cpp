@@ -12,7 +12,7 @@ namespace ATN
 
 	}
 
-	Resource::Resource(ResourceType type, std::string desc, std::int64_t defaultValue) : m_type(type), m_desc(desc), m_defaultValue(defaultValue)
+	Resource::Resource(ResourceType type, std::string desc, bool optionalResource) : m_type(type), m_desc(desc), m_optionalResource(optionalResource)
 	{
 
 	}
@@ -206,7 +206,7 @@ namespace ATN
 				}
 				else
 				{
-					resources.push_back(Resource((ResourceType)std::stoi(matches[1]), matches[2], std::stoll(matches[3])));
+					resources.push_back(Resource((ResourceType)std::stoi(matches[1]), matches[2], std::stoi(matches[3])));
 					subLine = matches.suffix();
 				}
 			}
@@ -223,7 +223,7 @@ namespace ATN
 
 		for (const Resource &resource : resources)
 		{
-			stream << "{ " << (int)resource.m_type << " \"" << resource.m_desc << "\" " << resource.m_defaultValue << " } ";
+			stream << "{ " << (int)resource.m_type << " \"" << resource.m_desc << "\" " << (int)resource.m_optionalResource << " } ";
 		}
 
 		stream << "}" << std::endl;
