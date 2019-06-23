@@ -13,6 +13,8 @@ int main(int argc, char *argv[])
 	{
 		std::cout << "Parsing\n";
 
+		// TODO: string hashes (objective and hint strings)
+		ATN::Manager::setHashValues("anim", util::parseHashes("files/anims.txt"));
 		ATN::Manager::setHashValues("event", util::parseHashes("files/events.txt"));
 
 		QApplication a(argc, argv);
