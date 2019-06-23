@@ -13,10 +13,7 @@ int main(int argc, char *argv[])
 	{
 		std::cout << "Parsing\n";
 
-		ATN::List<ATN::Property> events = util::parseEvents("files/events.txt");
-
-		// TODO: More than events use hashed values in ATN files (objective IDs, objective descriptions and more)
-		ATN::Manager::setHashValues(events);
+		ATN::Manager::setHashValues("event", util::parseHashes("files/events.txt"));
 
 		QApplication a(argc, argv);
 		UI_MainWindow w;

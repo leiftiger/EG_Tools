@@ -58,7 +58,7 @@ namespace util
 		return std::getline(stream, line);
 	}
 
-	ATN::List<ATN::Property> parseEvents(const std::string &filename)
+	ATN::List<ATN::Property> parseHashes(const std::string &filename)
 	{
 		DEBUG_LINE = -1;
 

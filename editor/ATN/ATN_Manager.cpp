@@ -71,9 +71,14 @@ namespace ATN
 		return instance().m_lists;
 	}
 
-	void Manager::setHashValues(List<Property> &list)
+	void Manager::setHashValues(const char * const strType, List<Property> &list)
 	{
-		instance().m_descValues = list;
+		instance().m_descValues[strType] = list;
+	}
+
+	const List<Property> &Manager::getHashValues(const char * const strType)
+	{
+		return instance().m_descValues[strType];
 	}
 
 

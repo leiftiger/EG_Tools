@@ -29,7 +29,7 @@ namespace util
 	std::istream &getline(std::istream &stream, std::string &line);
 
 	// Reads all events
-	ATN::List<ATN::Property> parseEvents(const std::string &filename);
+	ATN::List<ATN::Property> parseHashes(const std::string &filename);
 
 	// Parse all entries from specified file
 	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass);

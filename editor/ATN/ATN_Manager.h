@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include "ATN_List.h"
@@ -30,7 +31,7 @@ namespace ATN
 	private:
 		std::vector<List<Entry>*> m_lists;
 
-		List<Property> m_descValues;
+		std::unordered_map<std::string, List<Property>> m_descValues;
 
 	public:
 
@@ -48,7 +49,10 @@ namespace ATN
 		static const std::vector<List<Entry>*> lists();
 
 		// Set hash definitions
-		static void setHashValues(List<Property> &list);
+		static void setHashValues(const char * const strType, List<Property> &list);
+
+		// Get hash definitions
+		const List<Property> &Manager::getHashValues(const char * const strType);
 
 		// Finds an ATN entry by ID
 		static Entry &findByID(std::uint32_t id);
