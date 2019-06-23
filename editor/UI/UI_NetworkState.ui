@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>141</height>
+    <width>400</width>
+    <height>190</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>60</y>
+     <y>80</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -27,9 +27,9 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>0</y>
+     <y>20</y>
      <width>361</width>
-     <height>141</height>
+     <height>171</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -160,12 +160,70 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QCheckBox" name="checkBoxExternalNetworkConnector">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>140</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Start a subnetwork from this state</string>
+    </property>
+    <property name="text">
+     <string>Subnetwork transition</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="textExternalNetwork">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>72</x>
+      <y>140</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Unique ID of the subnetwork to start (external resource)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>Unique ID of the subnetwork to start (external resource)</string>
+    </property>
+    <property name="text">
+     <string>Unique ID:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="UI_ConnectorStart" name="connectorOut" native="true">
    <property name="geometry">
     <rect>
      <x>380</x>
-     <y>60</y>
+     <y>80</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="UI_ConnectorStart" name="connectOutNetwork" native="true">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>0</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -175,15 +233,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>UI_ConnectorStart</class>
-   <extends>QWidget</extends>
-   <header>UI_ConnectorStart.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>UI_ConnectorEnd</class>
    <extends>QWidget</extends>
    <header>UI_ConnectorEnd.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UI_ConnectorStart</class>
+   <extends>QWidget</extends>
+   <header>UI_ConnectorStart.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
