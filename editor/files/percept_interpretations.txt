@@ -2,7 +2,7 @@ TATNPerceptTrue
 true
 
 TATNPerceptWaitForEvent
-wait for "::hash_param0::"
+wait for "::param0::"
 
 TATNPerceptNumberEquals
 ::resource0:: == ::param0::
@@ -29,10 +29,10 @@ TATNPerceptPlayerCash
 player's cash >= ::param0::
 
 TATNPerceptObjectiveAvailable
-"::hash_param0::" is available
+"::param0::" is available
 
 TATNPerceptObjectiveComplete
-"::hash_param0::" is complete
+"::param0::" is complete
 
 TATNPerceptTimerPaused
 ::resource0:: is paused

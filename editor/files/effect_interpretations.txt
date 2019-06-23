@@ -2,7 +2,7 @@ TATNEffectNone
 do nothing
 
 TATNEffectPlayAnimation
-play "::hash_param0::"
+play "::param0::"
 
 TATNEffectCreateNumber
 ::resource0:: = ::param0::
@@ -20,10 +20,10 @@ TATNEffectMultiplyNumbers
 ::resource2:: = ::resource0:: * ::resource1::
 
 TATNEffectTimerStart
-start ::resource0:: at ::param1:: ms (realtime: ::bool_param0::)
+start ::resource0:: at ::param1:: ms (realtime: ::param0::)
 
 TATNEffectGuiLogMessageToPlayer
-show "::hash_param0::" (and video: ::bool_param1::)
+show "::param0::" (and video: ::param1::)
 
 TATNEffectCreateEntity
 ::resource0:: = new instance of desc id ::param0::
@@ -35,7 +35,7 @@ TATNEffectSetTouristPopulation
 set number of tourists from region ::param1:: to ::param0::
 
 TATNEffectSetObjectiveStatus
-set "::hash_param0::" visible: ::bool_param1::, complete: ::bool_param2::, parent: ::bool_param3::
+set "::param0::" visible: ::param1::, complete: ::param2::, parent: ::param3::
 
 TATNEffectRunGameRuleATN
 run game rule "::network_param0::"
@@ -50,19 +50,19 @@ TATNEffectGetCharacterOfType
 ::resource0:: = character instance of desc id ::param0::
 
 TATNEffectGetObjectOfType
-::resource0:: = object instance of desc id ::param0:: (invalid: ::bool_param1::)
+::resource0:: = object instance of desc id ::param0:: (invalid: ::param1::)
 
 TATNEffectGameOver
 trigger game over
 
 TATNEffectPlayVoiceOver
-play sound effect "::hash_param1:": (category "::hash_param0::")
+play sound effect "::param1:": (category "::param0::")
 
 TATNEffectMakeCharacterInteractWithObject
 tell ::resource1:: to interact with ::resource0::
 
 TATNEffectLockActOfInfamy
-set lock of AoI ::param0:: to ::bool_param1::
+set lock of AoI ::param0:: to ::param1::
 
 TATNEffectGetWorldDominationTotalCashIncome
 ::resource0:: = player's current cash income
@@ -77,13 +77,13 @@ TATNEffectCreateItemInHand
 give ::resource0:: an item with desc id ::param0:: (stored in ::resource1::)
 
 TATNEffectLockEntity
-lock interaction slot "::hash_param0::" of ::resource0::
+lock interaction slot "::param0::" of ::resource0::
 
 TATNEffectUnlockEntity
-unlock interaction slot "::hash_param0::" of ::resource0::
+unlock interaction slot "::param0::" of ::resource0::
 
 TATNEffectDropItem
 drop ::resource1:: held by ::resource0::
 
 TATNEffectPickUpItem
-::resource0:: should pick up ::resource1:: (must move: ::bool_param0::)
+::resource0:: should pick up ::resource1:: (must move: ::param0::)
