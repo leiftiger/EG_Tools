@@ -395,5 +395,42 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>textName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>search(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>126</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>377</x>
+     <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoad_ATN</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>openFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>511</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>search(QString)</slot>
+  <slot>openFiles()</slot>
+ </slots>
 </ui>

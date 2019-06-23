@@ -11,24 +11,9 @@ namespace ATN
 	class Manager
 	{
 	private:
-		Manager()
-		{
-			m_lists.push_back(new List<Entry>(":Global:"));
-		}
+		Manager();
 
-		~Manager()
-		{
-			// As we hold all state references in mind, we will clean up any references left in memory when the application terminates
-
-			delete m_lists[0];
-
-			for (size_t i = 1; i < m_lists.size(); i++)
-			{
-				m_lists[i]->clear();
-
-				delete m_lists[i];
-			}
-		}
+		~Manager();
 
 		static Manager &instance()
 		{
@@ -48,6 +33,8 @@ namespace ATN
 		List<Property> m_descValues;
 
 	public:
+
+		static void loadFromFiles(const std::vector<std::string> &filenames);
 
 		static void addList(List<Entry> *list);
 

@@ -2,6 +2,50 @@
 
 namespace ATN
 {
+	Manager::Manager()
+	{
+		m_lists.push_back(new List<Entry>(":Global:"));
+	}
+
+	Manager::~Manager()
+	{
+		// As we hold all state references in mind, we will clean up any references left in memory when the application terminates
+
+		delete m_lists[0];
+
+		for (size_t i = 1; i < m_lists.size(); i++)
+		{
+			m_lists[i]->clear();
+
+			delete m_lists[i];
+		}
+	}
+	void Manager::loadFromFiles(const std::vector<std::string> &files)
+	{
+		std::vector<List<Entry>*> atns;
+
+		for (const std::string &file : files)
+		{
+			List<Entry> *entries = new List<Entry>(file);
+
+			atns.push_back(entries);
+
+			util::parseATN(file, *entries, false);
+		}
+
+		for (size_t i = 0; i < files.size(); i++)
+		{
+			util::parseATN(files[i], *atns[i], true);
+		}
+
+		// Since names are added in the second pass, but the global ATN list required all IDs for that to run, we add the names afterwards here (for quick look-up)
+		for (size_t i = 1; i < lists().size(); i++)
+		{
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : *lists()[i])
+				lists()[0]->updateName(*(Entry*)pair.second);
+		}
+	}
+
 	void Manager::addList(List<Entry> *list)
 	{
 		// Copy all elements in this list to the global ATN list

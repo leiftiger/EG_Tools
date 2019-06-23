@@ -26,7 +26,12 @@
     <ClCompile Include="ATN\main.cpp" />
     <ClCompile Include="ATN\utils.cpp" />
     <ClCompile Include="ATN\ATN_Object.cpp" />
-    <ClCompile Include="UI\UI_MainWindow.cpp" />
+    <ClCompile Include="UI\UI_MainWindow.cpp">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+    </ClCompile>
     <ClCompile Include="UI\UI_NetworkContainer.cpp" />
     <ClCompile Include="UI\UI_NetworkState.cpp" />
     <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
