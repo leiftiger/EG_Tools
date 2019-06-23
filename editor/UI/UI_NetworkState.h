@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "GeneratedFiles/ui_UI_NetworkState.h"
+#include <QStyle>
 
 class UI_NetworkState : public QWidget
 {

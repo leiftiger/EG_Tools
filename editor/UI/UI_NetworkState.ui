@@ -6,17 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>391</height>
+    <width>401</width>
+    <height>141</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>UI_NetworkState</string>
   </property>
-  <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
+  <widget class="UI_ConnectorEnd" name="connectorIn" native="true">
    <property name="geometry">
     <rect>
-     <x>-20</x>
+     <x>0</x>
      <y>60</y>
      <width>21</width>
      <height>21</height>
@@ -26,7 +26,7 @@
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>20</x>
      <y>0</y>
      <width>361</width>
      <height>141</height>
@@ -64,7 +64,7 @@
      <string>State name:</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="textStateName">
+   <widget class="QLineEdit" name="textStateName">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -81,13 +81,7 @@
     <property name="inputMethodHints">
      <set>Qt::ImhNone</set>
     </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -167,10 +161,10 @@
     </property>
    </widget>
   </widget>
-  <widget class="UI_ConnectorStart" name="connectorNetwork_2" native="true">
+  <widget class="UI_ConnectorStart" name="connectorOut" native="true">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>380</x>
      <y>60</y>
      <width>21</width>
      <height>21</height>
@@ -181,15 +175,15 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>UI_ConnectorEnd</class>
-   <extends>QWidget</extends>
-   <header>UI_ConnectorEnd.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>UI_ConnectorStart</class>
    <extends>QWidget</extends>
    <header>UI_ConnectorStart.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UI_ConnectorEnd</class>
+   <extends>QWidget</extends>
+   <header>UI_ConnectorEnd.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -78,4 +78,10 @@ namespace ATN
 
 		throw Exception("Couldn't find name \"%s\" in list \"%s\"", name, instance().m_lists[0]->name());
 	}
+
+	std::vector<std::pair<Entry*, List<Entry>*>> Manager::searchName(const std::string &namePart)
+	{
+		// TODO
+		return std::vector<std::pair<Entry*, List<Entry>*>>();
+	}
 }

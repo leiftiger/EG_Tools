@@ -28,7 +28,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPlainTextEdit" name="textNetworkName">
+   <widget class="QLineEdit" name="textNetworkName">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -45,13 +45,7 @@
     <property name="inputMethodHints">
      <set>Qt::ImhNone</set>
     </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -133,7 +127,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="textNetworkID">
+   <widget class="QLineEdit" name="textNetworkID">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -153,16 +147,10 @@
     <property name="inputMethodHints">
      <set>Qt::ImhDigitsOnly</set>
     </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -350,7 +338,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QPlainTextEdit" name="textTransitionName">
+   <widget class="QLineEdit" name="textTransitionName">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -367,13 +355,7 @@
     <property name="inputMethodHints">
      <set>Qt::ImhNone</set>
     </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>
@@ -400,7 +382,7 @@
      <string>Transition name:</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="textTransitionID">
+   <widget class="QLineEdit" name="textTransitionID">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -420,16 +402,10 @@
     <property name="inputMethodHints">
      <set>Qt::ImhDigitsOnly</set>
     </property>
-    <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
     <property name="readOnly">
      <bool>true</bool>
     </property>
-    <property name="plainText">
+    <property name="plainText" stdset="0">
      <string/>
     </property>
    </widget>

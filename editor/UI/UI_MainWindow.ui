@@ -104,7 +104,7 @@
         <string>Name:</string>
        </property>
       </widget>
-      <widget class="QPlainTextEdit" name="textName">
+      <widget class="QLineEdit" name="textName">
        <property name="geometry">
         <rect>
          <x>70</x>
@@ -121,13 +121,7 @@
        <property name="inputMethodHints">
         <set>Qt::ImhNone</set>
        </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="plainText">
+       <property name="plainText" stdset="0">
         <string/>
        </property>
       </widget>
@@ -144,7 +138,7 @@
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-      <widget class="QPlainTextEdit" name="textUniqueID">
+      <widget class="QLineEdit" name="textUniqueID">
        <property name="geometry">
         <rect>
          <x>440</x>
@@ -161,13 +155,7 @@
        <property name="inputMethodHints">
         <set>Qt::ImhDigitsOnly</set>
        </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="plainText">
+       <property name="plainText" stdset="0">
         <string/>
        </property>
       </widget>
@@ -189,7 +177,7 @@
         <string>Unique ID:</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="buttonNewNetwork">
        <property name="geometry">
         <rect>
          <x>850</x>
@@ -210,28 +198,118 @@
         <string>Create new network</string>
        </property>
       </widget>
+      <widget class="QComboBox" name="comboATNList">
+       <property name="geometry">
+        <rect>
+         <x>668</x>
+         <y>50</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="Line" name="line_2">
+       <property name="geometry">
+        <rect>
+         <x>560</x>
+         <y>0</y>
+         <width>41</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>10</y>
+         <width>201</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Create new network</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>590</x>
+         <y>50</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>ATN file:</string>
+       </property>
+      </widget>
       <zorder>line</zorder>
       <zorder>label</zorder>
       <zorder>label_2</zorder>
       <zorder>textName</zorder>
       <zorder>textUniqueID</zorder>
       <zorder>label_3</zorder>
-      <zorder>pushButton</zorder>
+      <zorder>buttonNewNetwork</zorder>
+      <zorder>comboATNList</zorder>
+      <zorder>line_2</zorder>
+      <zorder>label_4</zorder>
+      <zorder>label_5</zorder>
      </widget>
     </item>
     <item row="2" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QListView" name="searchResults"/>
-      </item>
-      <item>
-       <widget class="QFrame" name="searchNetworkFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="tabShape">
+         <enum>QTabWidget::Rounded</enum>
         </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+        <property name="currentIndex">
+         <number>0</number>
         </property>
+        <property name="elideMode">
+         <enum>Qt::ElideNone</enum>
+        </property>
+        <property name="tabsClosable">
+         <bool>true</bool>
+        </property>
+        <property name="movable">
+         <bool>true</bool>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="tabSearchResults">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <attribute name="title">
+          <string>Search results</string>
+         </attribute>
+         <widget class="QListWidget" name="listSearchResults">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>120</y>
+            <width>256</width>
+            <height>192</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </item>
      </layout>

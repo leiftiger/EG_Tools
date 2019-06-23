@@ -76,5 +76,8 @@ namespace ATN
 		// Finds an ATN entry by ID and return the ATN list it belongs to
 		// Slightly slower due to searching multiple ATN files
 		static Entry &findByName(const std::string &name, List<Entry> *&outList);
+
+		// Retrieves a list of entries that contain the specified name as well as the ATN list they belong to
+		static std::vector<std::pair<Entry*, List<Entry>*>> searchName(const std::string &namePart);
 	};
 }
