@@ -11,6 +11,7 @@
 
 #include "ATN_Effect.h"
 #include "ATN_Network.h"
+#include "ATN_Object.h"
 #include "ATN_Percept.h"
 #include "ATN_State.h"
 #include "ATN_Thread.h"
@@ -156,6 +157,10 @@ namespace util
 				else if (objType == "TATNStateTransition")
 				{
 					el = (ATN::Entry*)new ATN::Transition();
+				}
+				else if (objType == "TATNObjectType")
+				{
+					el = (ATN::Entry*)new ATN::Object();
 				}
 				else if (objType.find("TATNEffect") != -1)
 				{

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 		// TODO: More than events use hashed values in ATN files (objective IDs, objective descriptions and more)
 		ATN::Manager::setHashValues(events);
 
-		std::vector<std::string> files = {"files/ATNData.ros", "files/ATNData_Objects.ros", "files/ATNData_Tutorials.ros"};
+		std::vector<std::string> files = {"files/ATNData.ros", "files/ATNData_Objects.ros", "files/ATNData_Tutorials.ros", "files/ATNResources.ros"};
 		std::vector<ATN::List<ATN::Entry>*> atns;
 
 		for (const std::string &file : files)

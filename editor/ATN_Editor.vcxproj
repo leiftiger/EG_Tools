@@ -25,6 +25,7 @@
     <ClCompile Include="ATN\IATN_Data.cpp" />
     <ClCompile Include="ATN\main.cpp" />
     <ClCompile Include="ATN\utils.cpp" />
+    <ClCompile Include="ATN\ATN_Object.cpp" />
     <ClCompile Include="UI\UI_MainWindow.cpp" />
     <ClCompile Include="UI\UI_NetworkContainer.cpp" />
     <ClCompile Include="UI\UI_NetworkState.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="ATN\ATN_Transition.h" />
     <ClInclude Include="ATN\IATN_Data.h" />
     <ClInclude Include="ATN\utils.h" />
+    <ClInclude Include="ATN\ATN_Object.h" />
     <QtMoc Include="UI\UI_InputArgument.h" />
     <QtMoc Include="UI\UI_InputResource.h" />
     <QtMoc Include="UI\UI_NetworkVariable.h" />
