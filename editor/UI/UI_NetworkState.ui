@@ -69,7 +69,7 @@
      <rect>
       <x>90</x>
       <y>10</y>
-      <width>261</width>
+      <width>191</width>
       <height>21</height>
      </rect>
     </property>
@@ -127,6 +127,9 @@
       <bold>true</bold>
      </font>
     </property>
+    <property name="toolTip">
+     <string>Arguments sent in network transition</string>
+    </property>
     <property name="text">
      <string>Arguments</string>
     </property>
@@ -151,7 +154,7 @@
      </font>
     </property>
     <property name="toolTip">
-     <string>Resources that will be </string>
+     <string>Resources sent in network transition</string>
     </property>
     <property name="text">
      <string>Resources</string>
@@ -206,6 +209,66 @@
     </property>
     <property name="text">
      <string>Unique ID:</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="buttonSortDown">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>10</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DN</string>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::RightArrow</enum>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="buttonSortUp">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>10</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>UP</string>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::LeftArrow</enum>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="buttonDelete">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>10</y>
+      <width>21</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>Delete state</string>
+    </property>
+    <property name="text">
+     <string>X</string>
+    </property>
+    <property name="toolButtonStyle">
+     <enum>Qt::ToolButtonIconOnly</enum>
+    </property>
+    <property name="arrowType">
+     <enum>Qt::NoArrow</enum>
     </property>
    </widget>
   </widget>

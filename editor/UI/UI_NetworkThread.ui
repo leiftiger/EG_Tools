@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>119</width>
+    <width>120</width>
     <height>20</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
     <rect>
      <x>20</x>
      <y>0</y>
-     <width>61</width>
+     <width>41</width>
      <height>21</height>
     </rect>
    </property>
@@ -42,7 +42,7 @@
   <widget class="QToolButton" name="buttonSortUp">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>60</x>
      <y>0</y>
      <width>21</width>
      <height>21</height>
@@ -58,7 +58,7 @@
   <widget class="QToolButton" name="buttonSortDown">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>80</x>
      <y>0</y>
      <width>21</width>
      <height>21</height>
@@ -69,6 +69,34 @@
    </property>
    <property name="arrowType">
     <enum>Qt::DownArrow</enum>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="buttonDelete">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>0</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="toolTip">
+    <string>Delete thread</string>
+   </property>
+   <property name="text">
+    <string>X</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
+   <property name="arrowType">
+    <enum>Qt::NoArrow</enum>
    </property>
   </widget>
  </widget>

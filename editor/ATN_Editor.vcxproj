@@ -36,6 +36,8 @@
     <ClCompile Include="UI\UI_NetworkThread.cpp" />
     <ClCompile Include="UI\UI_NetworkResource.cpp" />
     <ClCompile Include="UI\UI_NetworkVariable.cpp" />
+    <ClCompile Include="UI\UI_InputArgument.cpp" />
+    <ClCompile Include="UI\UI_InputResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATN\ATN_Effect.h" />
@@ -52,6 +54,8 @@
     <ClInclude Include="ATN\ATN_Transition.h" />
     <ClInclude Include="ATN\IATN_Data.h" />
     <ClInclude Include="ATN\utils.h" />
+    <QtMoc Include="UI\UI_InputArgument.h" />
+    <QtMoc Include="UI\UI_InputResource.h" />
     <QtMoc Include="UI\UI_NetworkVariable.h" />
     <QtMoc Include="UI\UI_NetworkResource.h" />
     <QtMoc Include="UI\UI_NetworkThread.h" />
@@ -76,6 +80,8 @@
     <QtUic Include="UI\UI_NetworkThread.ui" />
     <QtUic Include="UI\UI_NetworkResource.ui" />
     <QtUic Include="UI\UI_NetworkVariable.ui" />
+    <QtUic Include="UI\UI_InputArgument.ui" />
+    <QtUic Include="UI\UI_InputResource.ui" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
