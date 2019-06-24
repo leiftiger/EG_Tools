@@ -11,6 +11,5 @@ public:
 	UI_NetworkVariable(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkVariable();
 
-private:
 	Ui::UI_NetworkVariable ui;
 };

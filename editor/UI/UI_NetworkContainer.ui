@@ -279,7 +279,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QListWidget" name="listTransitionPerceptResources">
+        <widget class="QListView" name="listTransitionPerceptResources">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -292,7 +292,7 @@
           <set>Qt::AlignLeading</set>
          </property>
         </widget>
-        <widget class="QListWidget" name="listTransitionPerceptArguments">
+        <widget class="QListView" name="listTransitionPerceptArguments">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -352,7 +352,7 @@
           </property>
          </item>
         </widget>
-        <widget class="QListWidget" name="listTransitionPerceptArguments_2">
+        <widget class="QListView" name="listTransitionPerceptArguments_2">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -388,7 +388,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QListWidget" name="listTransitionPerceptResources_2">
+        <widget class="QListView" name="listTransitionPerceptResources_2">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -519,9 +519,9 @@
        <widget class="QLabel" name="label_3">
         <property name="geometry">
          <rect>
-          <x>150</x>
+          <x>180</x>
           <y>80</y>
-          <width>301</width>
+          <width>271</width>
           <height>31</height>
          </rect>
         </property>
@@ -545,9 +545,9 @@
        <widget class="QLabel" name="label_4">
         <property name="geometry">
          <rect>
-          <x>450</x>
+          <x>470</x>
           <y>80</y>
-          <width>301</width>
+          <width>281</width>
           <height>31</height>
          </rect>
         </property>
@@ -724,12 +724,12 @@
          <string>Add thread</string>
         </property>
        </widget>
-       <widget class="QListWidget" name="listNetworkResources">
+       <widget class="QListView" name="listNetworkResources">
         <property name="geometry">
          <rect>
-          <x>160</x>
+          <x>180</x>
           <y>110</y>
-          <width>281</width>
+          <width>271</width>
           <height>121</height>
          </rect>
         </property>
@@ -737,12 +737,12 @@
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
-       <widget class="QListWidget" name="listNetworkVariables">
+       <widget class="QListView" name="listNetworkVariables">
         <property name="geometry">
          <rect>
-          <x>460</x>
+          <x>470</x>
           <y>110</y>
-          <width>281</width>
+          <width>271</width>
           <height>121</height>
          </rect>
         </property>
@@ -750,19 +750,44 @@
          <set>Qt::AlignLeading</set>
         </property>
        </widget>
-       <widget class="QListWidget" name="listNetworkThreads">
+       <widget class="QScrollArea" name="scrollArea_2">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>110</y>
-          <width>131</width>
+          <width>151</width>
           <height>121</height>
          </rect>
         </property>
-        <property name="itemAlignment">
-         <set>Qt::AlignLeading</set>
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
+        <widget class="QWidget" name="listNetworkThreads">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>149</width>
+           <height>119</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
+       <zorder>scrollArea_2</zorder>
+       <zorder>textNetworkName</zorder>
+       <zorder>label_2</zorder>
+       <zorder>label_3</zorder>
+       <zorder>label_4</zorder>
+       <zorder>textNetworkID</zorder>
+       <zorder>label_5</zorder>
+       <zorder>buttonNewState</zorder>
+       <zorder>buttonNewResource</zorder>
+       <zorder>buttonNewVariable</zorder>
+       <zorder>buttonDeleteNetwork</zorder>
+       <zorder>label_6</zorder>
+       <zorder>buttonNewThread</zorder>
+       <zorder>listNetworkResources</zorder>
+       <zorder>listNetworkVariables</zorder>
       </widget>
      </widget>
     </widget>

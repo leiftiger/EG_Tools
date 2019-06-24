@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>120</width>
+    <width>131</width>
     <height>20</height>
    </rect>
   </property>
@@ -28,7 +28,7 @@
     <rect>
      <x>20</x>
      <y>0</y>
-     <width>41</width>
+     <width>51</width>
      <height>21</height>
     </rect>
    </property>
@@ -42,7 +42,7 @@
   <widget class="QToolButton" name="buttonSortUp">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>70</x>
      <y>0</y>
      <width>21</width>
      <height>21</height>
@@ -58,7 +58,7 @@
   <widget class="QToolButton" name="buttonSortDown">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>0</y>
      <width>21</width>
      <height>21</height>
@@ -74,7 +74,7 @@
   <widget class="QToolButton" name="buttonDelete">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>110</x>
      <y>0</y>
      <width>21</width>
      <height>21</height>

@@ -11,6 +11,5 @@ public:
 	UI_InputResource(QWidget *parent = Q_NULLPTR);
 	~UI_InputResource();
 
-private:
 	Ui::UI_InputResource ui;
 };

@@ -85,7 +85,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QListWidget" name="listTransitionPerceptResources">
+   <widget class="QListView" name="listTransitionPerceptResources">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -98,7 +98,7 @@
      <set>Qt::AlignLeading</set>
     </property>
    </widget>
-   <widget class="QListWidget" name="listTransitionPerceptArguments">
+   <widget class="QListView" name="listTransitionPerceptArguments">
     <property name="geometry">
      <rect>
       <x>190</x>

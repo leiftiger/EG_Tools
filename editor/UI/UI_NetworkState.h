@@ -12,6 +12,5 @@ public:
 	UI_NetworkState(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkState();
 
-private:
 	Ui::UI_NetworkState ui;
 };

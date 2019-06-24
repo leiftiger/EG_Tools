@@ -11,6 +11,5 @@ public:
 	UI_NetworkTransition(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkTransition();
 
-private:
 	Ui::UI_NetworkTransition ui;
 };

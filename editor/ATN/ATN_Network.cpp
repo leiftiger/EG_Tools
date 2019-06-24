@@ -7,6 +7,138 @@ namespace ATN
 		return "TATNNetwork";
 	}
 
+	const std::vector<State*> &Network::states() const
+	{
+		return m_states;
+	}
+
+	void Network::add(State &state)
+	{
+		m_states.push_back(&state);
+	}
+
+	void Network::moveUp(State &state)
+	{
+		m_states.insert(--remove(state), &state);
+	}
+
+	void Network::moveDown(State &state)
+	{
+		m_states.insert(++remove(state), &state);
+	}
+
+	std::vector<State*>::iterator Network::remove(State &state)
+	{
+		for (std::vector<State*>::iterator it = m_states.begin(); it != m_states.end(); it++)
+		{
+			if (*it == &state)
+			{
+				return m_states.erase(it);
+			}
+		}
+
+		return m_states.end();
+	}
+
+	const std::vector<Thread*>& Network::threads() const
+	{
+		return m_threads;
+	}
+
+	void Network::add(Thread &thread)
+	{
+		m_threads.push_back(&thread);
+	}
+
+	void Network::moveUp(Thread &thread)
+	{
+		m_threads.insert(--remove(thread), &thread);
+	}
+
+	void Network::moveDown(Thread &thread)
+	{
+		m_threads.insert(++remove(thread), &thread);
+	}
+
+	std::vector<Thread*>::iterator Network::remove(Thread &thread)
+	{
+		for (std::vector<Thread*>::iterator it = m_threads.begin(); it != m_threads.end(); it++)
+		{
+			if (*it == &thread)
+			{
+				return m_threads.erase(it);
+			}
+		}
+
+		return m_threads.end();
+	}
+
+	const std::vector<Resource>& Network::resources() const
+	{
+		return m_resources;
+	}
+
+	void Network::add(Resource &resource)
+	{
+		m_resources.push_back(resource);
+	}
+
+	void Network::moveUp(Resource &resource)
+	{
+		m_resources.insert(--remove(resource), resource);
+	}
+
+	void Network::moveDown(Resource &resource)
+	{
+		m_resources.insert(++remove(resource), resource);
+	}
+
+	std::vector<Resource>::iterator Network::remove(Resource &resource)
+	{
+		for (std::vector<Resource>::iterator it = m_resources.begin(); it != m_resources.end(); it++)
+		{
+			if (&(*it) == &resource)
+			{
+				return m_resources.erase(it);
+			}
+		}
+
+		return m_resources.end();
+	}
+
+	const std::vector<Parameter>& Network::parameters() const
+	{
+		return m_parameters;
+	}
+
+	void Network::add(Parameter &param)
+	{
+		m_parameters.push_back(param);
+	}
+
+	void Network::moveUp(Parameter &param)
+	{
+		m_parameters.insert(--remove(param), param);
+	}
+
+	void Network::moveDown(Parameter &param)
+	{
+		m_parameters.insert(++remove(param), param);
+	}
+
+	std::vector<Parameter>::iterator Network::remove(Parameter &param)
+	{
+		for (std::vector<Parameter>::iterator it = m_parameters.begin(); it != m_parameters.end(); it++)
+		{
+			if (&(*it) == &param)
+			{
+				return m_parameters.erase(it);
+			}
+		}
+
+		return m_parameters.end();
+	}
+
 	void Network::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

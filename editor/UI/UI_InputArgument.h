@@ -11,6 +11,5 @@ public:
 	UI_InputArgument(QWidget *parent = Q_NULLPTR);
 	~UI_InputArgument();
 
-private:
 	Ui::UI_InputArgument ui;
 };

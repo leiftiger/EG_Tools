@@ -11,6 +11,5 @@ public:
 	UI_NetworkResource(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkResource();
 
-private:
 	Ui::UI_NetworkResource ui;
 };

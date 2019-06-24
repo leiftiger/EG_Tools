@@ -7,6 +7,26 @@ namespace ATN
 		return "TATNThread";
 	}
 
+	const Network &Thread::network() const
+	{
+		return *m_network;
+	}
+
+	void Thread::setNetwork(Network &network)
+	{
+		m_network = &network;
+	}
+
+	const State &Thread::state() const
+	{
+		return *m_state;
+	}
+
+	void Thread::setState(State &state)
+	{
+		m_state = &state;
+	}
+
 	void Thread::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);
