@@ -49,13 +49,13 @@ int main(int argc, char *argv[])
 		Research card status			int
 		Room Type						int - from desc id
 		ScaleType						int
-		Sound Category ID
+		Sound Category ID		hash
 		Sound ID				hash
-		Spawn Type
-		SpecialEffect
+		Spawn Type						int
+		SpecialEffect			hash
 		String ID				hash
 		Terminate Interaction Priority	small int
-		UI State
+		UI State				hash
 		Video ID				hash
 		World Map Region				int - from desc id
 		World Region					int
