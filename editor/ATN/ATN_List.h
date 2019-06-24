@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "IATN_Data.h"
+#include "ATN_Property.h"
 
 #include "ATN_Exception.h"
 
@@ -188,7 +189,7 @@ namespace ATN
 		// Finds element by id, throws exception if it's not found
 		T &find(std::uint32_t id) const
 		{
-			iterator it = m_idMap.find(id);
+			const_iterator it = m_idMap.find(id);
 
 			if (it != m_idMap.end())
 			{
@@ -201,7 +202,7 @@ namespace ATN
 		// Finds element by name, throws exception if it's not found
 		T &find(const std::string &name) const
 		{
-			std::unordered_map<std::string, IATN_Data*>::iterator it = m_nameMap.find(name);
+			std::unordered_map<std::string, IATN_Data*>::const_iterator it = m_nameMap.find(name);
 
 			if (it != m_nameMap.end())
 			{

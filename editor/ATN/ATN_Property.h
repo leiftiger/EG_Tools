@@ -8,11 +8,11 @@ namespace ATN
 	{
 	private:
 		std::string m_name;
-		std::uint32_t m_hash;
+		std::int32_t m_hash;
 	public:
-		Property(std::string name, std::uint32_t hash);
+		Property(std::string name, std::int32_t hash);
 
-		virtual std::uint32_t id() const override;
+		virtual std::int32_t id() const override;
 		virtual const std::string &name() const override;
 	};
 }

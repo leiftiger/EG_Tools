@@ -4,16 +4,22 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
+
+// Some inputs appear to be null, sending this value instead
+// Not to be confused with -1, as that seems different as well
+constexpr unsigned long ATN_NULL_VALUE = 4294967295;
 
 namespace ATN
 {
+
 	enum class ParameterMarshallType : int
 	{
 		Unknown = 0,
 		Mysterious = 1,
 		Constant = 2,			// This number is what will be sent in the marshall
 		ParameterIndex = 3,		// Access the network parameter value at specified index
-		Bool = 4				// (not confirmed)
+		SmallInt = 4			// Seen used for small numbers, especially booleans
 	};
 
 	enum class ResourceMarshallType : int
@@ -87,7 +93,7 @@ namespace ATN
 
 		Parameter(std::string type, std::int64_t defaultValue, std::string desc);
 
-		const std::string &translateValue(std::int64_t value) const;
+		std::string translateValue(std::int64_t value) const;
 		std::int64_t translateName(const std::string &name) const;
 
 		// Deserialize from ATN string

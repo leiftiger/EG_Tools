@@ -19,6 +19,12 @@ namespace ATN
 
 			delete m_lists[i];
 		}
+
+		// Also clear definitions
+		for (const std::pair<std::string, List<Property>> &pair : m_descValues)
+		{
+			m_descValues.at(pair.first).clear();
+		}
 	}
 	void Manager::loadFromFiles(const std::vector<std::string> &files)
 	{
@@ -71,19 +77,19 @@ namespace ATN
 		return instance().m_lists;
 	}
 
-	void Manager::setHashValues(const char * const strType, List<Property> &list)
+	void Manager::setDefinitions(const std::string &strType, List<Property> &list)
 	{
 		instance().m_descValues[strType] = list;
 	}
 
-	const List<Property> &Manager::getHashValues(const char * const strType)
+	const List<Property> &Manager::getDefinitions(const std::string &strType)
 	{
 		return instance().m_descValues[strType];
 	}
 
-	bool Manager::hasHashValues(const char * const strType)
+	bool Manager::hasDefinitions(const std::string &strType)
 	{
-		return instance().m_descValues.find(strType) != m_descValues.end();
+		return instance().m_descValues.find(strType) != instance().m_descValues.end();
 	}
 
 

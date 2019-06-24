@@ -12,83 +12,14 @@ namespace ATN
 
 	}
 
-	/*
-
-	All existing parameter types:
-
-	3D Gui Element
-	Act Of Infamy ID
-	Agent Group Type
-	Agent Operation Type
-	Animation Attachment
-	Animation Biped Type
-	Animation Flags
-	Animation
-	Boolean Value
-	Camera View ID
-	Character Tag
-	Dialog Type
-	Effect return value
-	Entity Class
-	Entity Type
-	Event
-	Floating Graphic
-	Game Feature
-	Game Flag
-	GUI Control
-	Hotspot
-	Integer
-	Interaction Reason
-	LockName
-	Mouse Button
-	Move Flag
-	Network ID
-	Objective ID
-	Region Activity
-	Research card status
-	Room Type
-	ScaleType
-	Sound Category ID
-	Sound ID
-	Spawn Type
-	SpecialEffect
-	String ID
-	Terminate Interaction Priority
-	UI State
-	Video ID
-	World Map Region
-	World Region
-	
-	*/
-
-	const std::string &Parameter::translateValue(std::int64_t value) const
+	std::string Parameter::translateValue(std::int64_t value) const
 	{
-		if (m_type == "Boolean Value")
-		{
-			if (value == 1)
-				return "true";
-			else
-				return "false";
-		}
-		else if (m_type == "Character Tag")
-		{
-			// TODO: Confirm
-			switch (value)
-			{
-			case 0:
-				return "IGNORE";
-			case 1:
-				return "KILL";
-			case 2:
-				return "CAPTURE";
-			case 3:
-				return "WEAKEN";
-			}
-		}
+		if (value == ATN_NULL_VALUE)
+			return "NULL";
 
-		if (Manager::hasHashValues(m_type.c_str()))
+		if (Manager::hasDefinitions(m_type))
 		{
-			return Manager::getHashValues(m_type.c_str()).find((std::uint32_t)value).name();
+			return Manager::getDefinitions(m_type).find((std::uint32_t)value).name();
 		}
 
 		return std::to_string(value);
@@ -96,28 +27,12 @@ namespace ATN
 
 	std::int64_t Parameter::translateName(const std::string &name) const
 	{
-		if (m_type == "Boolean Value")
-		{
-			if (name == "true")
-				return 1;
-			else
-				return 0;
-		}
-		else if (m_type == "Character Tag")
-		{
-			if (name == "IGNORE")
-				return 0;
-			else if (name == "KILL")
-				return 1;
-			else if (name == "CAPTURE")
-				return 2;
-			else if (name == "WEAKEN")
-				return 3;
-		}
+		if (name == "NULL")
+			return ATN_NULL_VALUE;
 
-		if (Manager::hasHashValues(m_type.c_str()))
+		if (Manager::hasDefinitions(m_type))
 		{
-			return (std::int64_t)Manager::getHashValues(m_type.c_str()).find(name).id();
+			return (std::int64_t)Manager::getDefinitions(m_type).find(name).id();
 		}
 
 		return std::stoll(name);

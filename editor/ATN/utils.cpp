@@ -87,6 +87,20 @@ namespace util
 		return list;
 	}
 
+	ATN::List<ATN::Property> createDefinition(std::initializer_list<std::pair<std::string, std::int32_t>> list)
+	{
+		ATN::List<ATN::Property> defList;
+
+		for (std::pair<std::string, std::int32_t> pair : list)
+		{
+			ATN::Property *el = new ATN::Property(pair.first, pair.second);
+
+			defList.add(*el);
+		}
+		
+		return defList;
+	}
+
 	// Parse ATN values from specified text file
 	// outList: list whose entries we'll add or update
 	// secondPass: if true, no entires will be added, but references will be updated

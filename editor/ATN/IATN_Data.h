@@ -10,7 +10,7 @@ namespace ATN
 	{
 	public:
 		// Unique identifier of this ATN entry / event
-		virtual uint32_t id() const = 0;
+		virtual int32_t id() const = 0;
 		// Human-readable name of this ATN entry / event
 		virtual const std::string &name() const = 0;
 

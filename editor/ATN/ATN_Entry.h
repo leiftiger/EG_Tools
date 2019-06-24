@@ -10,7 +10,7 @@ namespace ATN
 	class Entry : public IATN_Data
 	{
 	private:
-		std::uint32_t m_id;
+		std::int32_t m_id;
 		std::string m_name;
 
 		std::string *m_file = nullptr;
@@ -28,11 +28,11 @@ namespace ATN
 		// ATN type name of this class
 		virtual const char * const typeName() const = 0;
 
-		virtual std::uint32_t id() const override;
+		virtual std::int32_t id() const override;
 		virtual const std::string &name() const override;
 
 		virtual void setName(const std::string &name);
-		virtual void setID(std::uint32_t id);
+		virtual void setID(std::int32_t id);
 
 		// Whether or not this entry can be edited by the user (editing it may cause adverse game crashing effects!)
 		virtual bool isEditable() const;

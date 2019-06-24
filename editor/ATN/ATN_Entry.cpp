@@ -20,7 +20,7 @@ namespace ATN
 		setName(line);
 	}
 
-	std::uint32_t Entry::id() const
+	std::int32_t Entry::id() const
 	{
 		return this->m_id;
 	}
@@ -35,7 +35,7 @@ namespace ATN
 		this->m_name = name;
 	}
 
-	void Entry::setID(std::uint32_t id)
+	void Entry::setID(std::int32_t id)
 	{
 		this->m_id = id;
 	}

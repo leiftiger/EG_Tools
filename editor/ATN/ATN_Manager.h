@@ -49,13 +49,13 @@ namespace ATN
 		static const std::vector<List<Entry>*> lists();
 
 		// Set hash definitions
-		static void setHashValues(const char * const strType, List<Property> &list);
+		static void setDefinitions(const std::string &strType, List<Property> &list);
 
 		// Get hash definitions
-		static const List<Property> &Manager::getHashValues(const char * const strType);
+		static const List<Property> &Manager::getDefinitions(const std::string &strType);
 
 		// Do we have hash definitions for this type?
-		static bool Manager::hasHashValues(const char * const strType);
+		static bool Manager::hasDefinitions(const std::string &strType);
 
 		// Finds an ATN entry by ID
 		static Entry &findByID(std::uint32_t id);

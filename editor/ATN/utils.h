@@ -31,6 +31,8 @@ namespace util
 	// Reads all events
 	ATN::List<ATN::Property> parseHashes(const std::string &filename);
 
+	ATN::List<ATN::Property> createDefinition(std::initializer_list<std::pair<std::string, std::int32_t>> list);
+
 	// Parse all entries from specified file
 	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass);
 
