@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 		Agent Group Type				int - from desc id
 		Agent Operation Type			int
 		Animation Attachment	hash
-		Animation Biped Type	hash
+		Animation Biped Type	  (unused)
 		Animation Flags					int flag
 		Animation				hash
 		Boolean Value					small int
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 		Dialog Type						int
 		Effect return value				int
 		Entity Class			hash
-		Entity Type						int
+		Entity Type						int desc id
 		Event					hash
 		Floating Graphic		hash
 		Game Feature					int flag
@@ -81,6 +81,13 @@ int main(int argc, char *argv[])
 				{"WEAKEN",	3},
 			}));
 
+		// TODO: Are there more values?
+		ATN::Manager::setDefinitions("Mouse Button", util::createDefinition(
+			{
+				{"LeftClick", 0},
+				{"RightClick", 1},
+			}));
+
 		// TODO: Confirm
 		ATN::Manager::setDefinitions("Research card status", util::createDefinition(
 			{
@@ -99,6 +106,13 @@ int main(int argc, char *argv[])
 				{"Smarts",		2},
 				{"Attention",	3},
 				{"Endurance",	4},
+			}));
+
+		// TODO: Are there more values?
+		ATN::Manager::setDefinitions("Terminate Interaction Priority", util::createDefinition(
+			{
+				{"Normal", 0},
+				{"Terminate", 1},
 			}));
 
 		ATN::Manager::setDefinitions("World Map Region", util::createDefinition(

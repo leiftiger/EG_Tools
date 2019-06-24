@@ -12,7 +12,7 @@ namespace ATN
 
 		std::string m_gameFunction;
 
-		// stored to be able to properly restore it again
+		// Just like so-called DNA junk, this thing is important, but we don't know what it does
 		std::string m_graphJunk;
 
 		std::vector<Resource> m_resources;
