@@ -15,5 +15,9 @@ namespace ATN
 		virtual const std::string &name() const = 0;
 
 		friend bool operator<(const IATN_Data &a, const IATN_Data &b);
+
+		friend bool compareLessThanPointersIATN(const IATN_Data *a, const IATN_Data *b);
+
+		friend bool compareEqualPointersIATN(const IATN_Data *a, const IATN_Data *b);
 	};
 }

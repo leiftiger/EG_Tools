@@ -26,6 +26,22 @@ namespace ATN
 			m_descValues.at(pair.first).clear();
 		}
 	}
+
+	void Manager::addInterpretation(const std::string &type, const std::string &format)
+	{
+		instance().m_interpretationFormats[type] = format;
+	}
+
+	bool Manager::hasInterpretation(const std::string &type)
+	{
+		return instance().m_interpretationFormats.find(type) != instance().m_interpretationFormats.end();
+	}
+
+	const std::string & Manager::getInterpreration(const std::string &type)
+	{
+		return instance().m_interpretationFormats[type];
+	}
+
 	void Manager::loadFromFiles(const std::vector<std::string> &files)
 	{
 		std::vector<List<Entry>*> atns;
@@ -48,7 +64,7 @@ namespace ATN
 		for (size_t i = 1; i < lists().size(); i++)
 		{
 			for (const std::pair<std::uint32_t, IATN_Data*> &pair : *lists()[i])
-				lists()[0]->updateName(*(Entry*)pair.second);
+				lists()[0]->registerName(*(Entry*)pair.second);
 		}
 	}
 
@@ -58,10 +74,56 @@ namespace ATN
 		for (const std::pair<std::uint32_t, IATN_Data*> &pair : *list)
 		{
 			instance().m_lists[0]->add(*(Entry*)pair.second);
+
+			// Elixir-specified effects and percepts should all be captured here
+			if (typeid(*pair.second) == typeid(Effect))
+			{
+				instance().m_effects.push_back((Effect*)pair.second);
+
+				// Ensure these are always sorted
+				std::sort(instance().m_effects.begin(), instance().m_effects.end(), compareLessThanPointersIATN);
+
+				instance().m_effects.erase(std::unique(instance().m_effects.begin(), instance().m_effects.end(), compareEqualPointersIATN), instance().m_effects.end());
+			}
+			else if (typeid(*pair.second) == typeid(Percept))
+			{
+				instance().m_percepts.push_back((Percept*)pair.second);
+
+				// Ensure these are always sorted (and clear duplicates)
+				std::sort(instance().m_percepts.begin(), instance().m_percepts.end(), compareLessThanPointersIATN);
+
+				instance().m_percepts.erase(std::unique(instance().m_percepts.begin(), instance().m_percepts.end(), compareEqualPointersIATN), instance().m_percepts.end());
+			}
 		}
 
 		instance().m_lists.push_back(list);
 	}
+
+	void Manager::addEntry(Entry &el)
+	{
+		instance().m_lists[0]->add(el);
+
+		// This should never be called, but is here in case we do want to allow this in the future
+		if (typeid(el) == typeid(Effect))
+		{
+			instance().m_effects.push_back((Effect*)&el);
+
+			// Ensure these are always sorted
+			std::sort(instance().m_effects.begin(), instance().m_effects.end(), compareLessThanPointersIATN);
+
+			instance().m_effects.erase(std::unique(instance().m_effects.begin(), instance().m_effects.end(), compareEqualPointersIATN), instance().m_effects.end());
+		}
+		else if (typeid(el) == typeid(Percept))
+		{
+			instance().m_percepts.push_back((Percept*)&el);
+
+			// Ensure these are always sorted
+			std::sort(instance().m_percepts.begin(), instance().m_percepts.end(), compareLessThanPointersIATN);
+
+			instance().m_percepts.erase(std::unique(instance().m_percepts.begin(), instance().m_percepts.end(), compareEqualPointersIATN), instance().m_percepts.end());
+		}
+	}
+
 	void Manager::removeEntry(const Entry &el)
 	{
 		instance().m_lists[0]->remove(el);
@@ -141,7 +203,39 @@ namespace ATN
 
 	std::vector<std::pair<Entry*, List<Entry>*>> Manager::searchName(const std::string &namePart)
 	{
-		// TODO
-		return std::vector<std::pair<Entry*, List<Entry>*>>();
+		// TODO: improve to make search faster
+
+		std::vector<std::pair<Entry*, List<Entry>*>> results;
+
+
+		std::string lCaseSearch = namePart;
+
+		std::transform(lCaseSearch.begin(), lCaseSearch.end(), lCaseSearch.begin(), ::tolower);
+
+
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
+		{
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : *instance().m_lists[i])
+			{
+				Entry *e = (Entry*)pair.second;
+
+				std::string lCase = e->name();
+
+				std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
+
+				if (lCase.find(lCaseSearch) != -1)
+					results.push_back(std::make_pair(e, instance().m_lists[i]));
+			}
+		}
+
+		return results;
+	}
+	const std::vector<Effect*> Manager::getEffects()
+	{
+		return instance().m_effects;
+	}
+	const std::vector<Percept*> Manager::getPercepts()
+	{
+		return instance().m_percepts;
 	}
 }

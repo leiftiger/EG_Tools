@@ -7,6 +7,13 @@
 #include <typeinfo>
 
 #include <QFileDialog>
+#include <QVBoxLayout>
+
+#include "UI_MainWindowSearchResult.h"
+#include "UI_NetworkContainer.h"
+
+#include <QListWidgetItem>
+#include <QToolTip>
 
 UI_MainWindow::UI_MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -19,14 +26,34 @@ UI_MainWindow::UI_MainWindow(QWidget *parent)
 
 void UI_MainWindow::setNetworkResults(std::vector<ATN::Network*> results)
 {
-	m_curResults = results;
+	ui.listSearchResults->clear();
 
+	for (ATN::Network *net : results)
+	{
+		UI_MainWindowSearchResult *res = new UI_MainWindowSearchResult();
 
+		res->ui.textName->setText(QString::fromStdString(net->name()));
+		res->ui.textUniqueID->setText(QString::fromStdString(std::to_string(net->id())));
+
+		connect(res->ui.buttonOpenNetwork, SIGNAL(pressed()), this, SLOT(openNetworkButton()));
+
+		QListWidgetItem *item = new QListWidgetItem();
+		item->setSizeHint(res->size());
+
+		ui.listSearchResults->addItem(item);
+		ui.listSearchResults->setItemWidget(item, res);
+	}
 }
 
 void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 {
+	UI_NetworkContainer *tab = new UI_NetworkContainer;
 
+	tab->initializeFromID(el.id());
+
+	ui.tabWidget->addTab(tab, tr("Network ") + QString::fromStdString(std::to_string(el.id())));
+
+	ui.tabWidget->setCurrentIndex(ui.tabWidget->count() - 1);
 }
 
 void UI_MainWindow::reloadFileList()
@@ -62,11 +89,18 @@ void UI_MainWindow::openFiles()
 	reloadFileList();
 }
 
-void UI_MainWindow::search(const QString &str)
+void UI_MainWindow::searchName(const QString &str)
 {
-	std::vector<std::pair<ATN::Entry*, ATN::List<ATN::Entry>*>> res = ATN::Manager::searchName(str.toStdString());
-
 	std::vector<ATN::Network*> netResults;
+
+	// Too laggy and often irrelevant to search on first character
+	if (str.length() <= 1)
+	{
+		setNetworkResults(netResults);
+		return;
+	}
+
+	std::vector<std::pair<ATN::Entry*, ATN::List<ATN::Entry>*>> res = ATN::Manager::searchName(str.toStdString());
 
 	for (std::pair<ATN::Entry*, ATN::List<ATN::Entry>*> &pair : res)
 	{
@@ -79,10 +113,15 @@ void UI_MainWindow::search(const QString &str)
 	setNetworkResults(netResults);
 }
 
-void UI_MainWindow::search(int id)
+void UI_MainWindow::searchID(const QString &str)
 {
+	// Clear current results
+	setNetworkResults(std::vector<ATN::Network*>());
+
 	try
 	{
+		int id = std::atoi(str.toStdString().c_str());
+
 		ATN::Entry &el = ATN::Manager::findByID(id);
 
 		if (typeid(el) == typeid(ATN::Network))
@@ -95,4 +134,24 @@ void UI_MainWindow::search(int id)
 		}
 	}
 	catch (ATN::Exception e) {}
+}
+
+void UI_MainWindow::openNetworkButton()
+{
+	UI_MainWindowSearchResult *res = (UI_MainWindowSearchResult*)sender()->parent();
+
+	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(std::stoi(res->ui.textUniqueID->text().toStdString()));
+
+	createNetworkResourceTab(*net);
+}
+
+void UI_MainWindow::closeTab(int tab)
+{
+	QWidget* tabItem = ui.tabWidget->widget(tab);
+	// Removes the tab at position index from this stack of widgets.
+	// The page widget itself is not deleted.
+	ui.tabWidget->removeTab(tab);
+
+	delete tabItem;
+	tabItem = nullptr;
 }

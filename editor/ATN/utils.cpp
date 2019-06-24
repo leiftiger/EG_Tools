@@ -101,6 +101,35 @@ namespace util
 		return defList;
 	}
 
+	std::vector<std::pair<std::string, std::string>> parseInterpretations(const std::string &filename)
+	{
+		std::ifstream file(filename);
+
+		if (file.fail())
+		{
+			throw ATN::Exception("Couldn't find file %s", filename);
+		}
+
+		std::vector<std::pair<std::string, std::string>> list;
+
+		std::string line;
+
+		while (std::getline(file, line))
+		{
+			std::string type = line;
+			std::string format;
+
+			std::getline(file, format);
+
+			list.push_back(std::make_pair(type, format));
+
+			// Blank line for readability
+			std::getline(file, line);
+		}
+
+		return list;
+	}
+
 	// Parse ATN values from specified text file
 	// outList: list whose entries we'll add or update
 	// secondPass: if true, no entires will be added, but references will be updated
@@ -224,7 +253,7 @@ namespace util
 				ATN::Entry &el = outList.find(objID);
 
 				outList.recordOrderData(el);
-				outList.updateName(el);
+				outList.registerName(el);
 
 				file >> el;
 			}

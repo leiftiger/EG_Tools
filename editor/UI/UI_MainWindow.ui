@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>553</height>
+    <width>1559</width>
+    <height>636</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
+    <width>1200</width>
     <height>0</height>
    </size>
   </property>
@@ -45,231 +45,6 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="1" column="0">
-     <widget class="QFrame" name="frame">
-      <property name="minimumSize">
-       <size>
-        <width>1024</width>
-        <height>96</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>96</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>161</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Search networks</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>61</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Name:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="textName">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>50</y>
-         <width>261</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="inputMethodHints">
-        <set>Qt::ImhNone</set>
-       </property>
-       <property name="plainText" stdset="0">
-        <string/>
-       </property>
-      </widget>
-      <widget class="Line" name="line">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>30</y>
-         <width>2291</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="textUniqueID">
-       <property name="geometry">
-        <rect>
-         <x>440</x>
-         <y>50</y>
-         <width>121</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="inputMethodHints">
-        <set>Qt::ImhDigitsOnly</set>
-       </property>
-       <property name="plainText" stdset="0">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_3">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>50</y>
-         <width>111</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Unique ID:</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="buttonNewNetwork">
-       <property name="geometry">
-        <rect>
-         <x>850</x>
-         <y>50</y>
-         <width>161</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string extracomment="Create a new network, you will be assigned a unique ID"/>
-       </property>
-       <property name="text">
-        <string>Create new network</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="comboATNList">
-       <property name="geometry">
-        <rect>
-         <x>668</x>
-         <y>50</y>
-         <width>171</width>
-         <height>31</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="Line" name="line_2">
-       <property name="geometry">
-        <rect>
-         <x>560</x>
-         <y>0</y>
-         <width>41</width>
-         <height>101</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_4">
-       <property name="geometry">
-        <rect>
-         <x>590</x>
-         <y>10</y>
-         <width>201</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Create new network</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_5">
-       <property name="geometry">
-        <rect>
-         <x>590</x>
-         <y>50</y>
-         <width>81</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>ATN file:</string>
-       </property>
-      </widget>
-      <zorder>line</zorder>
-      <zorder>label</zorder>
-      <zorder>label_2</zorder>
-      <zorder>textName</zorder>
-      <zorder>textUniqueID</zorder>
-      <zorder>label_3</zorder>
-      <zorder>buttonNewNetwork</zorder>
-      <zorder>comboATNList</zorder>
-      <zorder>line_2</zorder>
-      <zorder>label_4</zorder>
-      <zorder>label_5</zorder>
-     </widget>
-    </item>
     <item row="2" column="0">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -299,20 +74,277 @@
          <attribute name="title">
           <string>Search results</string>
          </attribute>
-         <widget class="QListWidget" name="listSearchResults">
-          <property name="geometry">
-           <rect>
-            <x>310</x>
-            <y>120</y>
-            <width>256</width>
-            <height>192</height>
-           </rect>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QListWidget" name="listSearchResults"/>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>1024</width>
+        <height>96</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>96</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1" alignment="Qt::AlignRight">
+        <widget class="QFrame" name="frame_3">
+         <property name="minimumSize">
+          <size>
+           <width>420</width>
+           <height>76</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QPushButton" name="buttonNewNetwork">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>40</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string extracomment="Create a new network, you will be assigned a unique ID"/>
+          </property>
+          <property name="text">
+           <string>Create new network</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>81</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>ATN file:</string>
+          </property>
+         </widget>
+         <widget class="Line" name="line_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>20</y>
+            <width>191</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_4">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>201</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Create new network</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="comboATNList">
+          <property name="geometry">
+           <rect>
+            <x>78</x>
+            <y>40</y>
+            <width>171</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="0" alignment="Qt::AlignLeft">
+        <widget class="QFrame" name="frame_2">
+         <property name="minimumSize">
+          <size>
+           <width>720</width>
+           <height>76</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLineEdit" name="textUniqueID">
+          <property name="geometry">
+           <rect>
+            <x>590</x>
+            <y>40</y>
+            <width>131</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Find by exact unique ID</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhDigitsOnly</set>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>61</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Name:</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="textName">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>40</y>
+            <width>411</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Type at least 2 letters to start search</string>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhNone</set>
+          </property>
+          <property name="placeholderText">
+           <string/>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>16</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Search networks</string>
+          </property>
+         </widget>
+         <widget class="Line" name="line">
+          <property name="geometry">
+           <rect>
+            <x>-10</x>
+            <y>20</y>
+            <width>171</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_3">
+          <property name="geometry">
+           <rect>
+            <x>490</x>
+            <y>40</y>
+            <width>111</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Unique ID:</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -321,7 +353,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1559</width>
      <height>21</height>
     </rect>
    </property>
@@ -397,22 +429,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>textName</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>UI_MainWindowClass</receiver>
-   <slot>search(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>126</x>
-     <y>85</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>377</x>
-     <y>-10</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionLoad_ATN</sender>
    <signal>triggered()</signal>
    <receiver>UI_MainWindowClass</receiver>
@@ -428,9 +444,59 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>tabWidget</sender>
+   <signal>tabCloseRequested(int)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>closeTab(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>-12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textUniqueID</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>searchID(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>492</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>538</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>searchName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>364</x>
+     <y>-15</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
-  <slot>search(QString)</slot>
+  <slot>searchName(QString)</slot>
   <slot>openFiles()</slot>
+  <slot>searchID(QString)</slot>
+  <slot>closeTab(int)</slot>
  </slots>
 </ui>

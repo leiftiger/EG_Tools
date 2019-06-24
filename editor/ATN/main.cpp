@@ -148,6 +148,16 @@ int main(int argc, char *argv[])
 				{"SMASH",	4},
 			}));
 
+		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("files/effect_interpretations.txt"))
+		{
+			ATN::Manager::addInterpretation(pair.first, pair.second);
+		}
+
+		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("files/percept_interpretations.txt"))
+		{
+			ATN::Manager::addInterpretation(pair.first, pair.second);
+		}
+
 		QApplication a(argc, argv);
 		UI_MainWindow w;
 		w.show();

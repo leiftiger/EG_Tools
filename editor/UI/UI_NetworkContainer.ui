@@ -6,740 +6,768 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1500</width>
-    <height>510</height>
+    <width>1544</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1500</width>
+    <width>0</width>
     <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>UI_NetworkContainer</string>
   </property>
-  <widget class="QFrame" name="frameNetwork">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>751</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QLineEdit" name="textNetworkName">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>10</y>
-      <width>401</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhNone</set>
-    </property>
-    <property name="plainText" stdset="0">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>This name is used to launch game rules</string>
-    </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
-    <property name="text">
-     <string>Network name:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>80</y>
-      <width>301</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Network resources that can be accessed by states and transitions in the network</string>
-    </property>
-    <property name="text">
-     <string>Resources</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>80</y>
-      <width>301</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Network variables that can be accessed by states and transitions in the network</string>
-    </property>
-    <property name="text">
-     <string>Variables</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textNetworkID">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>10</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhDigitsOnly</set>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="plainText" stdset="0">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>10</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Internal unique ID, non-editable</string>
-    </property>
-    <property name="text">
-     <string>Unique ID:</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonNewState">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Add a new state to this network</string>
-    </property>
-    <property name="whatsThis">
-     <string/>
-    </property>
-    <property name="text">
-     <string>Add state</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonNewResource">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>50</y>
-      <width>91</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Add a new network resource</string>
-    </property>
-    <property name="text">
-     <string>Add resource</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonNewVariable">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>50</y>
-      <width>91</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Add a new network variable</string>
-    </property>
-    <property name="text">
-     <string>Add variable</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonDeleteNetwork">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>50</y>
-      <width>101</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Deletes this network and all its components</string>
-    </property>
-    <property name="text">
-     <string>Delete network</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>80</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Threads</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonNewThread">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>50</y>
-      <width>91</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Add a new network thread (starting state)</string>
-    </property>
-    <property name="text">
-     <string>Add thread</string>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listNetworkResources">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>110</y>
-      <width>281</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="itemAlignment">
-     <set>Qt::AlignLeading</set>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listNetworkVariables">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>110</y>
-      <width>281</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="itemAlignment">
-     <set>Qt::AlignLeading</set>
-    </property>
-   </widget>
-   <widget class="QListWidget" name="listNetworkThreads">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>131</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="itemAlignment">
-     <set>Qt::AlignLeading</set>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QFrame" name="frameTransition">
-   <property name="geometry">
-    <rect>
-     <x>750</x>
-     <y>0</y>
-     <width>751</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QLineEdit" name="textTransitionName">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>10</y>
-      <width>391</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhNone</set>
-    </property>
-    <property name="plainText" stdset="0">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>A description for this transition</string>
-    </property>
-    <property name="text">
-     <string>Transition name:</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textTransitionID">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>10</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="inputMethodHints">
-     <set>Qt::ImhDigitsOnly</set>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="plainText" stdset="0">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_15">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>10</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string>Internal unique ID, non-editable</string>
-    </property>
-    <property name="text">
-     <string>Unique ID:</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="buttonNewState_3">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>50</y>
-      <width>111</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string>Deletes this transition</string>
-    </property>
-    <property name="text">
-     <string>Delete transition</string>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>361</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string/>
-    </property>
-    <property name="title">
-     <string>Percept</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <widget class="QComboBox" name="comboTransitionPercept">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>341</width>
-       <height>22</height>
-      </rect>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
-     <property name="toolTip">
-      <string>Required condition for this transition to be taken</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>18: &quot;Just exited subnetwork&quot; (LastEffectReturnValue)</string>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1524</width>
+        <height>425</height>
+       </rect>
       </property>
-     </item>
-    </widget>
-    <widget class="QLabel" name="label_13">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>50</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Resources sent to the percept</string>
-     </property>
-     <property name="text">
-      <string>Resources</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_14">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>50</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Arguments</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listTransitionPerceptResources">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>161</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="itemAlignment">
-      <set>Qt::AlignLeading</set>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listTransitionPerceptArguments">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>80</y>
-       <width>161</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="itemAlignment">
-      <set>Qt::AlignLeading</set>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>80</y>
-      <width>361</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <property name="toolTip">
-     <string/>
-    </property>
-    <property name="title">
-     <string>Effect</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <widget class="QComboBox" name="comboTransitionEffect">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>341</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="toolTip">
-      <string>Effect to perform if this transition is taken</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>16: &quot;Terminate&quot; (SetLastEffectReturnValue)</string>
+      <property name="minimumSize">
+       <size>
+        <width>1524</width>
+        <height>425</height>
+       </size>
       </property>
-     </item>
+      <widget class="QFrame" name="frameStates">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>240</y>
+         <width>431</width>
+         <height>181</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frameTransition">
+       <property name="geometry">
+        <rect>
+         <x>750</x>
+         <y>0</y>
+         <width>751</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLineEdit" name="textTransitionName">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>10</y>
+          <width>391</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhNone</set>
+        </property>
+        <property name="plainText" stdset="0">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_12">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>A description for this transition</string>
+        </property>
+        <property name="text">
+         <string>Transition name:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="textTransitionID">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>620</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="plainText" stdset="0">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_15">
+        <property name="geometry">
+         <rect>
+          <x>540</x>
+          <y>10</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Internal unique ID, non-editable</string>
+        </property>
+        <property name="text">
+         <string>Unique ID:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonNewState_3">
+        <property name="geometry">
+         <rect>
+          <x>630</x>
+          <y>50</y>
+          <width>111</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Deletes this transition</string>
+        </property>
+        <property name="text">
+         <string>Delete transition</string>
+        </property>
+       </widget>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>80</y>
+          <width>361</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="title">
+         <string>Percept</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <widget class="QComboBox" name="comboTransitionPercept">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>341</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Required condition for this transition to be taken</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>18: &quot;Just exited subnetwork&quot; (LastEffectReturnValue)</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QLabel" name="label_13">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>50</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Resources sent to the percept</string>
+         </property>
+         <property name="text">
+          <string>Resources</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_14">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>50</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Arguments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="listTransitionPerceptResources">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="itemAlignment">
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="listTransitionPerceptArguments">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="itemAlignment">
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>80</y>
+          <width>361</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="title">
+         <string>Effect</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <widget class="QComboBox" name="comboTransitionEffect">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>341</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Effect to perform if this transition is taken</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>16: &quot;Terminate&quot; (SetLastEffectReturnValue)</string>
+          </property>
+         </item>
+        </widget>
+        <widget class="QListWidget" name="listTransitionPerceptArguments_2">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="itemAlignment">
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_16">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>50</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Arguments</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="listTransitionPerceptResources_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="itemAlignment">
+          <set>Qt::AlignLeading</set>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_17">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>50</y>
+           <width>181</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Resources</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QLabel" name="labelTransitionInterpretation">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>611</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Interpretation: </string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
+       <property name="geometry">
+        <rect>
+         <x>440</x>
+         <y>230</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QFrame" name="frameNetwork">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>751</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+       <widget class="QLineEdit" name="textNetworkName">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>401</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhNone</set>
+        </property>
+        <property name="plainText" stdset="0">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>This name is used to launch game rules</string>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Network name:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>80</y>
+          <width>301</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Network resources that can be accessed by states and transitions in the network</string>
+        </property>
+        <property name="text">
+         <string>Resources</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>450</x>
+          <y>80</y>
+          <width>301</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Network variables that can be accessed by states and transitions in the network</string>
+        </property>
+        <property name="text">
+         <string>Variables</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="textNetworkID">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>620</x>
+          <y>10</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="plainText" stdset="0">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_5">
+        <property name="geometry">
+         <rect>
+          <x>540</x>
+          <y>10</y>
+          <width>81</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Internal unique ID, non-editable</string>
+        </property>
+        <property name="text">
+         <string>Unique ID:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonNewState">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Add a new state to this network</string>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Add state</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonNewResource">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>50</y>
+          <width>91</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Add a new network resource</string>
+        </property>
+        <property name="text">
+         <string>Add resource</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonNewVariable">
+        <property name="geometry">
+         <rect>
+          <x>320</x>
+          <y>50</y>
+          <width>91</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Add a new network variable</string>
+        </property>
+        <property name="text">
+         <string>Add variable</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonDeleteNetwork">
+        <property name="geometry">
+         <rect>
+          <x>430</x>
+          <y>50</y>
+          <width>101</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Deletes this network and all its components</string>
+        </property>
+        <property name="text">
+         <string>Delete network</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>80</y>
+          <width>151</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Threads</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="buttonNewThread">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>50</y>
+          <width>91</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Add a new network thread (starting state)</string>
+        </property>
+        <property name="text">
+         <string>Add thread</string>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="listNetworkResources">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>110</y>
+          <width>281</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="itemAlignment">
+         <set>Qt::AlignLeading</set>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="listNetworkVariables">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>110</y>
+          <width>281</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="itemAlignment">
+         <set>Qt::AlignLeading</set>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="listNetworkThreads">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>110</y>
+          <width>131</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="itemAlignment">
+         <set>Qt::AlignLeading</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </widget>
-    <widget class="QListWidget" name="listTransitionPerceptArguments_2">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>80</y>
-       <width>161</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="itemAlignment">
-      <set>Qt::AlignLeading</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_16">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>50</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Arguments</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listTransitionPerceptResources_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>161</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="itemAlignment">
-      <set>Qt::AlignLeading</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_17">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>50</y>
-       <width>181</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Resources</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QLabel" name="labelTransitionInterpretation">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>611</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Interpretation: </string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QFrame" name="frameStates">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>240</y>
-     <width>431</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
-  <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>230</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

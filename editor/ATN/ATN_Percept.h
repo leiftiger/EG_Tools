@@ -20,8 +20,8 @@ namespace ATN
 
 	protected:
 
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
 
 	public:
 

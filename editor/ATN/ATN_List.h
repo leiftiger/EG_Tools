@@ -92,14 +92,14 @@ namespace ATN
 			return m_idMap.size();
 		}
 
-		void add(const T &element)
+		void add(T &element)
 		{
 			m_idMap.insert(std::make_pair<std::uint32_t, IATN_Data*>(element.id(), (IATN_Data*)&element));
 
-			updateName(element);
+			registerName(element);
 		}
 
-		void updateName(const T &element)
+		void registerName(const T &element)
 		{
 			m_nameMap[element.name()] = (IATN_Data*)&element;
 		}
@@ -184,6 +184,8 @@ namespace ATN
 
 			m_numOrderHeaderMax = m_numOrderHeader[(IATN_Data*)&element] >= m_numOrderHeaderMax ? m_numOrderHeaderMax : m_numOrderHeader[(IATN_Data*)&element]-1;
 			m_numOrderDataMax = m_numOrderData[(IATN_Data*)&element] >= m_numOrderDataMax ? m_numOrderDataMax : m_numOrderData[(IATN_Data*)&element] - 1;
+
+			Manager::removeEntry(element);
 		}
 
 		// Finds element by id, throws exception if it's not found

@@ -33,6 +33,8 @@ namespace util
 
 	ATN::List<ATN::Property> createDefinition(std::initializer_list<std::pair<std::string, std::int32_t>> list);
 
+	std::vector<std::pair<std::string, std::string>> parseInterpretations(const std::string &filename);
+
 	// Parse all entries from specified file
 	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass);
 
