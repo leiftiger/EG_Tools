@@ -876,18 +876,162 @@
  <resources/>
  <connections>
   <connection>
+   <sender>buttonNewState</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>stateCreate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>52</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>53</x>
+     <y>-20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewResource</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>resourceCreate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>267</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>-22</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewVariable</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>variableCreate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>375</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>376</x>
+     <y>-15</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonDeleteNetwork</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>deleteNetwork()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>72</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>490</x>
+     <y>-18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>buttonNewThread</sender>
    <signal>pressed()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>threadCreate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>164</x>
-     <y>71</y>
+     <x>154</x>
+     <y>72</y>
     </hint>
     <hint type="destinationlabel">
-     <x>235</x>
+     <x>155</x>
+     <y>-16</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewState_3</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>deleteTransition()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1445</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1446</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textNetworkName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>setNetworkName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>35</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
      <y>-14</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textTransitionName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>setTransitionName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1096</x>
+     <y>31</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1096</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboTransitionPercept</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>setTransitionPercept(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>951</x>
+     <y>130</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>951</x>
+     <y>-12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboTransitionEffect</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>setTransitionEffect(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1321</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1322</x>
+     <y>-9</y>
     </hint>
    </hints>
   </connection>
@@ -897,5 +1041,11 @@
   <slot>stateCreate()</slot>
   <slot>resourceCreate()</slot>
   <slot>variableCreate()</slot>
+  <slot>deleteNetwork()</slot>
+  <slot>deleteTransition()</slot>
+  <slot>setNetworkName(QString)</slot>
+  <slot>setTransitionName(QString)</slot>
+  <slot>setTransitionPercept(int)</slot>
+  <slot>setTransitionEffect(int)</slot>
  </slots>
 </ui>

@@ -22,5 +22,5 @@ public:
 
 
 public slots:
-	void setName(const QString &str);
+	void setName(const QString &name);
 };

@@ -11,11 +11,11 @@ UI_NetworkThread::~UI_NetworkThread()
 }
 
 
-void UI_NetworkThread::setName(const QString &str)
+void UI_NetworkThread::setName(const QString &name)
 {
 	// Not fully initialized yet (will be called by initial value loaded)
 	if (m_thread == nullptr)
 		return;
 
-	m_thread->setName(str.toStdString());
+	m_thread->setName(name.toStdString());
 }

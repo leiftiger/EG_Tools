@@ -31,7 +31,7 @@ class UI_NetworkContainer : public QWidget
 
 private:
 
-	ATN::Network *m_network;
+	ATN::Network *m_network = nullptr;
 
 	QStringList m_effectList;
 	QStringList m_perceptList;
@@ -163,6 +163,15 @@ public slots:
 	void variableMoveUp();
 	void variableMoveDown();
 	void variableRemove();
+
+	void setNetworkName(const QString &name);
+	void setTransitionName(const QString &name);
+
+	void setTransitionPercept(int index);
+	void setTransitionEffect(int index);
+
+	void deleteNetwork();
+	void deleteTransition();
 
 private:
 	Ui::UI_NetworkContainer ui;

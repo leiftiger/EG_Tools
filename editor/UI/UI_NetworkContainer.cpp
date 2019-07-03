@@ -178,6 +178,41 @@ void UI_NetworkContainer::variableRemove()
 
 }
 
+void UI_NetworkContainer::setNetworkName(const QString &name)
+{
+	// Because of initial loading, this may be called unnecessarily
+	if (m_network->name() == name.toStdString())
+		return;
+
+	m_network->setName(name.toStdString());
+}
+
+void UI_NetworkContainer::setTransitionName(const QString &name)
+{
+
+}
+
+void UI_NetworkContainer::setTransitionPercept(int index)
+{
+
+}
+
+void UI_NetworkContainer::setTransitionEffect(int index)
+{
+
+}
+
+void UI_NetworkContainer::deleteNetwork()
+{
+	// TODO: Prompt user to confirm this very dangerous action
+	// TODO: Check if any states not owned by this network transitions to it and force user to remove those references first
+}
+
+void UI_NetworkContainer::deleteTransition()
+{
+
+}
+
 
 void UI_NetworkContainer::initializeResources()
 {
