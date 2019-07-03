@@ -33,7 +33,7 @@ namespace util
 
 		std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
 
-		std::uint8_t* buff = (std::uint8_t*)lCase.c_str();
+		std::uint8_t *buff = (std::uint8_t*)lCase.c_str();
 		size_t buffLength = lCase.length();
 
 		// We hash using unsigned, to avoid any issues with the multiplication
