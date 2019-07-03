@@ -279,7 +279,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QListView" name="listTransitionPerceptResources">
+        <widget class="QScrollArea" name="scrollArea_5">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -288,11 +288,21 @@
            <height>61</height>
           </rect>
          </property>
-         <property name="itemAlignment">
-          <set>Qt::AlignLeading</set>
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
+         <widget class="QWidget" name="listTransitionPerceptResources">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>159</width>
+            <height>59</height>
+           </rect>
+          </property>
+         </widget>
         </widget>
-        <widget class="QListView" name="listTransitionPerceptArguments">
+        <widget class="QScrollArea" name="scrollArea_6">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -301,10 +311,25 @@
            <height>61</height>
           </rect>
          </property>
-         <property name="itemAlignment">
-          <set>Qt::AlignLeading</set>
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
+         <widget class="QWidget" name="listTransitionPerceptArguments">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>159</width>
+            <height>59</height>
+           </rect>
+          </property>
+         </widget>
         </widget>
+        <zorder>scrollArea_6</zorder>
+        <zorder>scrollArea_5</zorder>
+        <zorder>comboTransitionPercept</zorder>
+        <zorder>label_13</zorder>
+        <zorder>label_14</zorder>
        </widget>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
@@ -352,19 +377,6 @@
           </property>
          </item>
         </widget>
-        <widget class="QListView" name="listTransitionPerceptArguments_2">
-         <property name="geometry">
-          <rect>
-           <x>190</x>
-           <y>80</y>
-           <width>161</width>
-           <height>61</height>
-          </rect>
-         </property>
-         <property name="itemAlignment">
-          <set>Qt::AlignLeading</set>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_16">
          <property name="geometry">
           <rect>
@@ -386,19 +398,6 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QListView" name="listTransitionPerceptResources_2">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>161</width>
-           <height>61</height>
-          </rect>
-         </property>
-         <property name="itemAlignment">
-          <set>Qt::AlignLeading</set>
          </property>
         </widget>
         <widget class="QLabel" name="label_17">
@@ -424,6 +423,57 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
+        <widget class="QScrollArea" name="scrollArea_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="listTransitionEffectResources">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>159</width>
+            <height>59</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QScrollArea" name="scrollArea_8">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>80</y>
+           <width>161</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="listTransitionEffectArguments">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>159</width>
+            <height>59</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <zorder>scrollArea_8</zorder>
+        <zorder>scrollArea_7</zorder>
+        <zorder>comboTransitionEffect</zorder>
+        <zorder>label_16</zorder>
+        <zorder>label_17</zorder>
        </widget>
        <widget class="QLabel" name="labelTransitionInterpretation">
         <property name="geometry">
@@ -724,32 +774,6 @@
          <string>Add thread</string>
         </property>
        </widget>
-       <widget class="QListView" name="listNetworkResources">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>110</y>
-          <width>271</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <property name="itemAlignment">
-         <set>Qt::AlignLeading</set>
-        </property>
-       </widget>
-       <widget class="QListView" name="listNetworkVariables">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>110</y>
-          <width>271</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <property name="itemAlignment">
-         <set>Qt::AlignLeading</set>
-        </property>
-       </widget>
        <widget class="QScrollArea" name="scrollArea_2">
         <property name="geometry">
          <rect>
@@ -773,6 +797,54 @@
          </property>
         </widget>
        </widget>
+       <widget class="QScrollArea" name="scrollArea_3">
+        <property name="geometry">
+         <rect>
+          <x>180</x>
+          <y>110</y>
+          <width>271</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="listNetworkResources">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>269</width>
+           <height>119</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QScrollArea" name="scrollArea_4">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>110</y>
+          <width>271</width>
+          <height>121</height>
+         </rect>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="listNetworkVariables_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>269</width>
+           <height>119</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <zorder>scrollArea_4</zorder>
+       <zorder>scrollArea_3</zorder>
        <zorder>scrollArea_2</zorder>
        <zorder>textNetworkName</zorder>
        <zorder>label_2</zorder>
@@ -786,8 +858,6 @@
        <zorder>buttonDeleteNetwork</zorder>
        <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
-       <zorder>listNetworkResources</zorder>
-       <zorder>listNetworkVariables</zorder>
       </widget>
      </widget>
     </widget>
@@ -804,5 +874,28 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonNewThread</sender>
+   <signal>pressed()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>threadCreate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>-14</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>threadCreate()</slot>
+  <slot>stateCreate()</slot>
+  <slot>resourceCreate()</slot>
+  <slot>variableCreate()</slot>
+ </slots>
 </ui>

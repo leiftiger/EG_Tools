@@ -48,6 +48,9 @@ namespace ATN
 		std::vector<Effect*> m_effects;
 		std::vector<Percept*> m_percepts;
 
+		// Protect against infinite recursions when removeEntry is called
+		bool m_removingGlobalElement = false;
+
 	public:
 
 		// Adds a format interpretation for the specified type name

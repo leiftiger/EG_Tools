@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QWidget>
+#include <QScrollBar>
+
 #include "GeneratedFiles/ui_UI_NetworkContainer.h"
 
 #include "ATN/ATN_Effect.h"
@@ -41,6 +43,94 @@ private:
 
 	void initializeThreads();
 
+	// Orders a list of objects inside a listObject according to the list
+	// (essentially a QListWidget, but containing dynamic objects)
+	template <class T>
+	void layoutSortables(std::vector<T*> &list, QWidget *listObject)
+	{
+		int x = 0, y = 0;
+
+		for (size_t i = 0; i < list.size(); i++)
+		{
+			T *ut = list[i];
+
+			// Disable first and last sort buttons
+			ut->ui.buttonSortUp->setEnabled(i != 0);
+			ut->ui.buttonSortDown->setEnabled(i != list.size() - 1);
+
+			ut->move(0, y);
+
+			y += ut->size().height();
+		}
+
+		listObject->setMinimumHeight(y);
+	}
+
+	// Moves an item up or down in the list, assuming it's possible
+	template <class T>
+	void itemMove(std::vector<T*> &list, T *item, bool up)
+	{
+		size_t originalIndex = -1;
+
+		for (size_t i = 0; i < list.size(); i++)
+		{
+			T *o = list[i];
+
+			if (o == item)
+			{
+				originalIndex = i;
+				break;
+			}
+		}
+
+		int dir = (!up ? 1 : -1);
+
+		T *temp = list[originalIndex + dir];
+
+		list[originalIndex + dir] = item;
+		list[originalIndex] = temp;
+	}
+
+	// Removes an item from the list
+	template <class T>
+	void itemRemove(std::vector<T*> &list, T *item)
+	{
+		size_t originalIndex = -1;
+
+		for (size_t i = 0; i < list.size(); i++)
+		{
+			T *o = list[i];
+
+			if (o == item)
+			{
+				originalIndex = i;
+				break;
+			}
+		}
+
+		// Move all items after this index up one step
+		for (size_t i = originalIndex; i < list.size()-1; i++)
+		{
+			list[i] = list[i + 1];
+		}
+
+		list.pop_back();
+	}
+
+	// Removes an ATN object from all lists and clears its used memory
+	template <class T>
+	void deleteATN(T *obj)
+	{
+		// Find list it belongs to
+		ATN::List<ATN::Entry> *outList;
+
+		ATN::Manager::findByID(obj->id(), outList);
+
+		outList->remove(*(ATN::Entry*)obj);
+
+		delete obj;
+	}
+
 	void initializeResources();
 	void initializeVariables();
 
@@ -54,9 +144,25 @@ public:
 	const ATN::Network &network();
 
 public slots:
+	void threadCreate();
 	void threadMoveUp();
 	void threadMoveDown();
 	void threadRemove();
+
+	void stateCreate();
+	void stateMoveUp();
+	void stateMoveDown();
+	void stateRemove();
+
+	void resourceCreate();
+	void resourceMoveUp();
+	void resourceMoveDown();
+	void resourceRemove();
+
+	void variableCreate();
+	void variableMoveUp();
+	void variableMoveDown();
+	void variableRemove();
 
 private:
 	Ui::UI_NetworkContainer ui;

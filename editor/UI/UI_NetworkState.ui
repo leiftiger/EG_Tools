@@ -85,32 +85,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QListView" name="listTransitionPerceptResources">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>70</y>
-      <width>161</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="itemAlignment">
-     <set>Qt::AlignLeading</set>
-    </property>
-   </widget>
-   <widget class="QListView" name="listTransitionPerceptArguments">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>70</y>
-      <width>161</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="itemAlignment">
-     <set>Qt::AlignLeading</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_14">
     <property name="geometry">
      <rect>
@@ -270,6 +244,52 @@
     <property name="arrowType">
      <enum>Qt::NoArrow</enum>
     </property>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea_6">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>70</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="listTransitionArguments">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>159</width>
+       <height>59</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QScrollArea" name="scrollArea_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>161</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="listTransitionResources">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>159</width>
+       <height>59</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="UI_ConnectorStart" name="connectorOut" native="true">

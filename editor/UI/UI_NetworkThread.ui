@@ -110,5 +110,25 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>textThreadName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_NetworkThread</receiver>
+   <slot>setName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>36</x>
+     <y>6</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>60</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setName(QString)</slot>
+ </slots>
 </ui>

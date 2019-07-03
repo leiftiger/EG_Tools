@@ -126,7 +126,16 @@ namespace ATN
 
 	void Manager::removeEntry(const Entry &el)
 	{
+		// Because the remove call from the global list will inevitably call this function again,
+		// we protect against further calls until the main one is finished
+		if (instance().m_removingGlobalElement)
+			return;
+
+		instance().m_removingGlobalElement = true;
+
 		instance().m_lists[0]->remove(el);
+
+		instance().m_removingGlobalElement = false;
 	}
 
 	uint32_t Manager::maxID()

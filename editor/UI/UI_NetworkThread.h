@@ -15,8 +15,12 @@ public:
 	UI_NetworkThread(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkThread();
 
-	ATN::Thread *m_thread;
+	ATN::Thread *m_thread = nullptr;
 	QListWidgetItem *m_listItemParent;
 
 	Ui::UI_NetworkThread ui;
+
+
+public slots:
+	void setName(const QString &str);
 };
