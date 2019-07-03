@@ -13,6 +13,10 @@ namespace ATN
 	// Forward-declared
 	class Effect;
 	class Percept;
+	
+	// Forward-declared, defined in IATN_Data
+	bool compareLessThanPointersIATN(const IATN_Data *a, const IATN_Data *b);
+	bool compareEqualPointersIATN(const IATN_Data *a, const IATN_Data *b);
 
 	// Singleton manager that keeps a record of all open ATN files and such can provide references to every object, regardless of where they're stored
 	class Manager
@@ -75,10 +79,10 @@ namespace ATN
 		static void setDefinitions(const std::string &strType, List<Property> &list);
 
 		// Get hash definitions
-		static const List<Property> &Manager::getDefinitions(const std::string &strType);
+		static const List<Property> &getDefinitions(const std::string &strType);
 
 		// Do we have hash definitions for this type?
-		static bool Manager::hasDefinitions(const std::string &strType);
+		static bool hasDefinitions(const std::string &strType);
 
 		// Finds an ATN entry by ID
 		static Entry &findByID(std::uint32_t id);

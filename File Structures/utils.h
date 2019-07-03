@@ -6,10 +6,10 @@
 #include <vector>
 #include <string>
 
-#include "ATN_Entry.h"
-#include "ATN_List.h"
-#include "ATN_Manager.h"
-#include "ATN_Property.h"
+#include "ATN/ATN_Entry.h"
+#include "ATN/ATN_List.h"
+#include "ATN/ATN_Manager.h"
+#include "ATN/ATN_Property.h"
 
 // Forward declared because of circular dependency
 namespace ATN

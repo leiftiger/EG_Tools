@@ -9,15 +9,15 @@
 
 #include <iostream>
 
-#include "ATN_Effect.h"
-#include "ATN_Network.h"
-#include "ATN_Object.h"
-#include "ATN_Percept.h"
-#include "ATN_State.h"
-#include "ATN_Thread.h"
-#include "ATN_Transition.h"
+#include "ATN/ATN_Effect.h"
+#include "ATN/ATN_Network.h"
+#include "ATN/ATN_Object.h"
+#include "ATN/ATN_Percept.h"
+#include "ATN/ATN_State.h"
+#include "ATN/ATN_Thread.h"
+#include "ATN/ATN_Transition.h"
 
-#include "ATN_Exception.h"
+#include "ATN/ATN_Exception.h"
 
 namespace util
 {
@@ -34,13 +34,13 @@ namespace util
 		std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
 
 		std::uint8_t* buff = (std::uint8_t*)lCase.c_str();
-		int buffLength = lCase.length();
+		size_t buffLength = lCase.length();
 
 		// We hash using unsigned, to avoid any issues with the multiplication
 		// then we just return the signed value that is seemingly used in the ATNs
 		std::uint32_t hash = 2166136261;
 
-		for (int i = 0; i < buffLength; ++i)
+		for (size_t i = 0; i < buffLength; ++i)
 		{
 			hash *= prime;
 			hash ^= std::uint32_t(*buff);

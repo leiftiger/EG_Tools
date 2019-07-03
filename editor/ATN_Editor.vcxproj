@@ -11,56 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ATN\ATN_Effect.cpp" />
-    <ClCompile Include="ATN\ATN_Entry.cpp" />
-    <ClCompile Include="ATN\ATN_Exception.cpp" />
-    <ClCompile Include="ATN\ATN_Manager.cpp" />
-    <ClCompile Include="ATN\ATN_Network.cpp" />
-    <ClCompile Include="ATN\ATN_Percept.cpp" />
-    <ClCompile Include="ATN\ATN_Property.cpp" />
-    <ClCompile Include="ATN\ATN_Resources.cpp" />
-    <ClCompile Include="ATN\ATN_State.cpp" />
-    <ClCompile Include="ATN\ATN_Thread.cpp" />
-    <ClCompile Include="ATN\ATN_Transition.cpp" />
-    <ClCompile Include="ATN\IATN_Data.cpp" />
-    <ClCompile Include="ATN\main.cpp" />
-    <ClCompile Include="ATN\utils.cpp" />
-    <ClCompile Include="ATN\ATN_Object.cpp" />
-    <ClCompile Include="UI\UI_MainWindow.cpp">
-      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
-      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-    </ClCompile>
-    <ClCompile Include="UI\UI_NetworkContainer.cpp" />
-    <ClCompile Include="UI\UI_NetworkState.cpp" />
-    <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
-    <ClCompile Include="UI\UI_ConnectorStart.cpp" />
-    <ClCompile Include="UI\UI_Connector.cpp" />
-    <ClCompile Include="UI\UI_NetworkTransition.cpp" />
-    <ClCompile Include="UI\UI_MainWindowSearchResult.cpp" />
-    <ClCompile Include="UI\UI_NetworkThread.cpp" />
-    <ClCompile Include="UI\UI_NetworkResource.cpp" />
-    <ClCompile Include="UI\UI_NetworkVariable.cpp" />
-    <ClCompile Include="UI\UI_InputArgument.cpp" />
-    <ClCompile Include="UI\UI_InputResource.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ATN\ATN_Effect.h" />
-    <ClInclude Include="ATN\ATN_Entry.h" />
-    <ClInclude Include="ATN\ATN_Exception.h" />
-    <ClInclude Include="ATN\ATN_List.h" />
-    <ClInclude Include="ATN\ATN_Manager.h" />
-    <ClInclude Include="ATN\ATN_Network.h" />
-    <ClInclude Include="ATN\ATN_Percept.h" />
-    <ClInclude Include="ATN\ATN_Property.h" />
-    <ClInclude Include="ATN\ATN_Resources.h" />
-    <ClInclude Include="ATN\ATN_State.h" />
-    <ClInclude Include="ATN\ATN_Thread.h" />
-    <ClInclude Include="ATN\ATN_Transition.h" />
-    <ClInclude Include="ATN\IATN_Data.h" />
-    <ClInclude Include="ATN\utils.h" />
-    <ClInclude Include="ATN\ATN_Object.h" />
     <QtMoc Include="UI\UI_InputArgument.h" />
     <QtMoc Include="UI\UI_InputResource.h" />
     <QtMoc Include="UI\UI_NetworkVariable.h" />
@@ -89,6 +39,32 @@
     <QtUic Include="UI\UI_NetworkVariable.ui" />
     <QtUic Include="UI\UI_InputArgument.ui" />
     <QtUic Include="UI\UI_InputResource.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="UI\UI_Connector.cpp" />
+    <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
+    <ClCompile Include="UI\UI_ConnectorStart.cpp" />
+    <ClCompile Include="UI\UI_InputArgument.cpp" />
+    <ClCompile Include="UI\UI_InputResource.cpp" />
+    <ClCompile Include="UI\UI_MainWindow.cpp">
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\%(Filename).moc</OutputFile>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+    </ClCompile>
+    <ClCompile Include="UI\UI_MainWindowSearchResult.cpp" />
+    <ClCompile Include="UI\UI_NetworkContainer.cpp" />
+    <ClCompile Include="UI\UI_NetworkResource.cpp" />
+    <ClCompile Include="UI\UI_NetworkState.cpp" />
+    <ClCompile Include="UI\UI_NetworkThread.cpp" />
+    <ClCompile Include="UI\UI_NetworkTransition.cpp" />
+    <ClCompile Include="UI\UI_NetworkVariable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\File Structures\File Structures.vcxproj">
+      <Project>{f08ed980-a123-49c0-881f-06c1fe97486c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
@@ -133,7 +109,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -156,7 +132,7 @@
     </QtRcc>
     <QtMoc>
       <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath>.\GeneratedFiles;.;..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
@@ -165,7 +141,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -187,7 +163,7 @@
     </QtRcc>
     <QtMoc>
       <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath>.\GeneratedFiles;.;..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
