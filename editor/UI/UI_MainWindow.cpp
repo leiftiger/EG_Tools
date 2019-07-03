@@ -142,6 +142,18 @@ void UI_MainWindow::openNetworkButton()
 
 	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(std::stoi(res->ui.textUniqueID->text().toStdString()));
 
+	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	{
+		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
+
+		// Focus the existing tab if network is already opened
+		if (tabItem->network().id() == net->id())
+		{
+			ui.tabWidget->setCurrentIndex(i);
+			return;
+		}
+	}
+
 	createNetworkResourceTab(*net);
 }
 
