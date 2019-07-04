@@ -5,8 +5,6 @@
 
 #include "ATN/ATN_Thread.h"
 
-#include <QListWidgetItem>
-
 class UI_NetworkThread : public QWidget
 {
 	Q_OBJECT
@@ -16,7 +14,6 @@ public:
 	~UI_NetworkThread();
 
 	ATN::Thread *m_thread = nullptr;
-	QListWidgetItem *m_listItemParent;
 
 	Ui::UI_NetworkThread ui;
 

@@ -64,7 +64,7 @@ namespace ATN
 		// Deletes the memory used by all elements in the list
 		void clear()
 		{
-			for (std::pair<std::uint32_t, IATN_Data*> pair : m_idMap)
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : m_idMap)
 			{
 				delete pair.second;
 			}
@@ -96,8 +96,8 @@ namespace ATN
 		{
 			m_idMap.insert(std::make_pair<std::uint32_t, IATN_Data*>(element.id(), (IATN_Data*)&element));
 
-			if (m_maxUniqueID < element.id())
-				m_maxUniqueID = element.id();
+			if (m_maxUniqueID < (std::uint32_t)element.id())
+				m_maxUniqueID = (std::uint32_t)element.id();
 
 			registerName(element);
 		}

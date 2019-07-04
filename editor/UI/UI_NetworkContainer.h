@@ -23,6 +23,12 @@
 #include "UI_NetworkTransition.h"
 #include "UI_NetworkVariable.h"
 
+#include "UI_ConnectFlags.h"
+
+#include "UI_Connector.h"
+#include "UI_ConnectorStart.h"
+#include "UI_ConnectorEnd.h"
+
 #include <vector>
 
 class UI_NetworkContainer : public QWidget
@@ -36,7 +42,24 @@ private:
 	QStringList m_effectList;
 	QStringList m_perceptList;
 
+	// Hardcoded since there are no other types
+	QStringList m_variableTypes = QStringList({
+			tr("3D Gui Element"), tr("Act Of Infamy ID"), tr("Agent Group Type"), tr("Agent Operation Type"), tr("Animation Attachment"), tr("Animation Biped Type"),
+			tr("Animation Flags"), tr("Animation"), tr("Boolean Value"), tr("Camera View ID"), tr("Character Tag"), tr("Dialog Type"), tr("Effect return value"),
+			tr("Entity Class"), tr("Entity Type"), tr("Event"), tr("Floating Graphic"), tr("Game Feature"), tr("Game Flag"), tr("GUI Control"), tr("Hotspot"),
+			tr("Integer"), tr("Interaction Reason"), tr("LockName"), tr("Mouse Button"), tr("Move Flag"), tr("Network ID"), tr("Objective ID"), tr("Region Activity"),
+			tr("Research card status"), tr("Room Type"), tr("ScaleType"), tr("Sound Category ID"), tr("Sound ID"), tr("Spawn Type"), tr("SpecialEffect"), tr("String ID"),
+			tr("Terminate Interaction Priority"), tr("UI State"), tr("Video ID"), tr("World Map Region"), tr("World Region"),
+		});
+
+	QStringList m_resourceTypes;
+
 	std::vector<UI_NetworkThread*> m_threads;
+	std::vector<UI_NetworkResource*> m_resources;
+	std::vector<UI_NetworkVariable*> m_variables;
+
+	// How far from the states that transition connection lines should go
+	const double CONNECTOR_HEIGHT_OFFSET = 5;
 
 	// Initializes the two comboboxes used to select effect/percepts in the editor
 	void initializeArgumentLists();
@@ -133,6 +156,8 @@ private:
 
 	void initializeResources();
 	void initializeVariables();
+	void initializeStates();
+	void initializeTransitions();
 
 public:
 	UI_NetworkContainer(QWidget *parent = Q_NULLPTR);
@@ -142,6 +167,12 @@ public:
 
 	// Gets the network this container represents
 	const ATN::Network &network();
+
+	// Returns true if the line avoids colliding with any states
+	bool isLineClear(const QLineF &line) const;
+
+	// Gets the height that is above or below the states according to the used flags
+	double stateHeight(ConnectFlags flags) const;
 
 public slots:
 	void threadCreate();

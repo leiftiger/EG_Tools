@@ -4,6 +4,7 @@
 #include <QApplication>
 
 #include "UI/UI_MainWindow.h"
+#include "UI/UI_ErrorWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +12,6 @@ int main(int argc, char *argv[])
 	try
 #endif
 	{
-		std::cout << "Parsing\n";
-
 		/*
 
 		All existing parameter types:
@@ -65,6 +64,7 @@ int main(int argc, char *argv[])
 		// TODO: more string hashes in above list
 		ATN::Manager::setDefinitions("Animation", util::parseHashes("files/anims.txt"));
 		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
+
 
 		ATN::Manager::setDefinitions("Boolean Value", util::createDefinition(
 			{
@@ -167,10 +167,12 @@ int main(int argc, char *argv[])
 #ifndef _DEBUG
 	catch (std::exception &e)
 	{
-		std::cout << "An unexpected error occured:" << std::endl;
-		std::cout << e.what() << std::endl;
+		QApplication a(argc, argv);
+		UI_ErrorWindow w;
+		w.setErrorMessage(e.what());
+		w.show();
+
+		return a.exec();
 	}
 #endif
-
-	std::cout << "end" << std::endl;
 }

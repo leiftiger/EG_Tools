@@ -39,6 +39,8 @@
     <QtUic Include="UI\UI_NetworkVariable.ui" />
     <QtUic Include="UI\UI_InputArgument.ui" />
     <QtUic Include="UI\UI_InputResource.ui" />
+    <QtUic Include="UI\UI_ErrorWindow.ui" />
+    <QtUic Include="UI\UI_ConnectorBranch.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -60,11 +62,28 @@
     <ClCompile Include="UI\UI_NetworkThread.cpp" />
     <ClCompile Include="UI\UI_NetworkTransition.cpp" />
     <ClCompile Include="UI\UI_NetworkVariable.cpp" />
+    <ClCompile Include="UI\UI_ErrorWindow.cpp" />
+    <ClCompile Include="UI\UI_ConnectorBranch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\File Structures\File Structures.vcxproj">
       <Project>{f08ed980-a123-49c0-881f-06c1fe97486c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="UI\UI_ErrorWindow.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="UI\UI_ConnectorBranch.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UI\UI_ConnectFlags.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>

@@ -6,9 +6,14 @@
 #include <string>
 #include <unordered_map>
 
+// Better enums for reflections
+#include "enum.h"
+
 // Some inputs appear to be null, sending this value instead
 // Not to be confused with -1, as that seems different as well
 constexpr unsigned long ATN_NULL_VALUE = 4294967295;
+// When a parameter is unintialized, it is often 0, so we need to make this a valid translation
+constexpr unsigned long ATN_UNDEF_VALUE = 0;
 
 namespace ATN
 {
@@ -35,8 +40,7 @@ namespace ATN
 		ResourceIndexAny = 20			// Resource index of any type (?)
 	};
 
-	enum class ResourceType : int
-	{
+	BETTER_ENUM(ResourceType, int,
 		Unknown = 0,
 		Resource = 4,
 		Character = 5,			// i.e. genius, minions, agents, henchmen
@@ -47,8 +51,7 @@ namespace ATN
 		Item = 6634,			// i.e. weapons, briefcases
 		GUIControl = 7682,
 		EntityGroup = 8927,
-		CharacterGroup = 8949
-	};
+		CharacterGroup = 8949)
 
 	// Triple for storing parameter marshalls
 	class ParameterMarshall
@@ -61,9 +64,9 @@ namespace ATN
 		ParameterMarshall(ParameterMarshallType type, std::int64_t value);
 
 		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall> &params);
+		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
 		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall> &params);
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall*> &params);
 	};
 
 	// Triple for resource marshalls
@@ -77,9 +80,9 @@ namespace ATN
 		ResourceMarshall(ResourceMarshallType type, std::int64_t value);
 
 		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall> &resources);
+		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources);
 		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall> &resources);
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall*> &resources);
 	};
 
 	// Triple for storing parameters
@@ -97,9 +100,9 @@ namespace ATN
 		std::int64_t translateName(const std::string &name) const;
 
 		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<Parameter> &params);
+		friend std::istream &operator>>(std::istream &stream, std::vector<Parameter*> &params);
 		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Parameter> &params);
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Parameter*> &params);
 	};
 
 	// Triple for resources
@@ -114,8 +117,8 @@ namespace ATN
 		Resource(ResourceType type, std::string desc, bool optionalResource);
 
 		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<Resource> &resources);
+		friend std::istream &operator>>(std::istream &stream, std::vector<Resource*> &resources);
 		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Resource> &resources);
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Resource*> &resources);
 	};
 }

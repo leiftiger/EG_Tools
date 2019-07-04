@@ -7,6 +7,19 @@ namespace ATN
 
 	}
 
+	Effect::~Effect()
+	{
+		for (Resource *r : m_resources)
+		{
+			delete r;
+		}
+
+		for (Parameter *r : m_parameters)
+		{
+			delete r;
+		}
+	}
+
 	bool Effect::isEditable() const
 	{
 		return false;

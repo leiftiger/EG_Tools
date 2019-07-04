@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>280</width>
-    <height>22</height>
+    <width>250</width>
+    <height>57</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>UI_NetworkVariable</string>
   </property>
-  <widget class="QComboBox" name="argumentType">
+  <widget class="QComboBox" name="variableType">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>101</width>
+     <width>111</width>
      <height>22</height>
     </rect>
    </property>
@@ -31,12 +31,12 @@
     </property>
    </item>
   </widget>
-  <widget class="QLineEdit" name="argumentDesc">
+  <widget class="QLineEdit" name="variableDesc">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>120</x>
      <y>0</y>
-     <width>51</width>
+     <width>131</width>
      <height>21</height>
     </rect>
    </property>
@@ -47,30 +47,11 @@
     <string>Name</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="argumentValue">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>0</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="toolTip">
-    <string>Variable value</string>
-   </property>
-   <property name="readOnly">
-    <bool>false</bool>
-   </property>
-   <property name="placeholderText">
-    <string>Value</string>
-   </property>
-  </widget>
   <widget class="QToolButton" name="buttonSortDown">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>0</y>
+     <x>210</x>
+     <y>20</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -85,8 +66,8 @@
   <widget class="QToolButton" name="buttonSortUp">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>0</y>
+     <x>190</x>
+     <y>20</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -101,8 +82,8 @@
   <widget class="QToolButton" name="buttonDelete">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>0</y>
+     <x>230</x>
+     <y>20</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -126,6 +107,47 @@
     <enum>Qt::NoArrow</enum>
    </property>
   </widget>
+  <widget class="QComboBox" name="variableValue">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>20</y>
+     <width>191</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string>Default value</string>
+   </property>
+   <property name="editable">
+    <bool>true</bool>
+   </property>
+   <item>
+    <property name="text">
+     <string>bar_table_put_away_drinks_tray</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>40</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <zorder>variableType</zorder>
+  <zorder>variableDesc</zorder>
+  <zorder>buttonSortUp</zorder>
+  <zorder>variableValue</zorder>
+  <zorder>buttonSortDown</zorder>
+  <zorder>buttonDelete</zorder>
+  <zorder>line</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

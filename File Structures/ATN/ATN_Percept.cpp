@@ -7,6 +7,19 @@ namespace ATN
 
 	}
 
+	Percept::~Percept()
+	{
+		for (Resource *r : m_resources)
+		{
+			delete r;
+		}
+
+		for (Parameter *r : m_parameters)
+		{
+			delete r;
+		}
+	}
+
 	bool Percept::isEditable() const
 	{
 		return false;

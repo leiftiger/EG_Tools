@@ -4,6 +4,7 @@ void UI_NetworkContainer::initializeArgumentLists()
 {
 	m_effectList.clear();
 	m_perceptList.clear();
+	m_resourceTypes.clear();
 
 	m_effectList.append("-1: Do nothing (preferred)");
 
@@ -15,6 +16,11 @@ void UI_NetworkContainer::initializeArgumentLists()
 	for (const ATN::Percept *e : ATN::Manager::getPercepts())
 	{
 		m_perceptList.append(QString::fromStdString(std::to_string(e->id()) + ": " + e->name() + " (" + std::string(e->typeName()).substr(strlen("TATNPercept")) + ")"));
+	}
+
+	for (const char *name : ATN::ResourceType::_names())
+	{
+		m_resourceTypes.append(tr(name));
 	}
 
 	ui.comboTransitionEffect->clear();
@@ -216,10 +222,71 @@ void UI_NetworkContainer::deleteTransition()
 
 void UI_NetworkContainer::initializeResources()
 {
+	for (ATN::Resource *r : m_network->resources())
+	{
+		UI_NetworkResource *ut = new UI_NetworkResource(ui.listNetworkResources);
 
+		ut->m_resource = r;
+
+		// Remove placeholder option
+		ut->ui.resourceType->clear();
+
+		ut->ui.resourceType->addItems(m_resourceTypes);
+		ut->ui.resourceType->setCurrentIndex(r->m_type._to_index());
+
+		ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
+
+		ut->ui.resourceIsParameter->setChecked(!r->m_optionalResource);
+
+		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(resourceRemove()));
+
+		m_resources.push_back(ut);
+	}
+
+	layoutSortables(m_resources, ui.listNetworkResources);
 }
 
 void UI_NetworkContainer::initializeVariables()
+{
+	for (ATN::Parameter *p : m_network->parameters())
+	{
+		UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
+
+		ut->m_variable = p;
+
+		// Remove placeholder option
+		ut->ui.variableType->clear();
+
+		ut->ui.variableType->addItems(m_variableTypes);
+		ut->ui.variableType->setCurrentText(QString::fromStdString(p->m_type));
+
+		ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
+
+		// Remove placeholder option
+		ut->ui.variableValue->clear();
+
+		ut->loadTranslations();
+
+		ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
+
+		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(variableMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(variableMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(variableRemove()));
+
+		m_variables.push_back(ut);
+	}
+
+	layoutSortables(m_variables, ui.listNetworkVariables);
+}
+
+void UI_NetworkContainer::initializeStates()
+{
+
+}
+
+void UI_NetworkContainer::initializeTransitions()
 {
 
 }
@@ -250,9 +317,26 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 	initializeThreads();
 	initializeResources();
 	initializeVariables();
+	initializeStates();
+	initializeTransitions();
 }
 
 const ATN::Network &UI_NetworkContainer::network()
 {
 	return *m_network;
+}
+
+bool UI_NetworkContainer::isLineClear(const QLineF &pos) const
+{
+	return false;
+}
+
+double UI_NetworkContainer::stateHeight(ConnectFlags flags) const
+{
+	if (flags & ConnectFlags::Above)
+	{
+		return ui.frameStates->y() - CONNECTOR_HEIGHT_OFFSET;
+	}
+
+	return ui.frameStates->y() + ui.frameStates->height() + CONNECTOR_HEIGHT_OFFSET;
 }

@@ -13,6 +13,26 @@ UI_ConnectorStart::~UI_ConnectorStart()
 {
 }
 
+const UI_Connector *UI_ConnectorStart::connector() const
+{
+	return m_connector;
+}
+
+void UI_ConnectorStart::setConnector(UI_Connector *connector)
+{
+	m_connector = connector;
+}
+
+ConnectFlags UI_ConnectorStart::connectFlags()
+{
+	return m_connectFlags;
+}
+
+void UI_ConnectorStart::setConnectFlags(ConnectFlags flags)
+{
+	m_connectFlags = flags;
+}
+
 void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 {
 	QStyleOption option = QStyleOption();
@@ -43,7 +63,20 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 		painter.setBrush(Qt::BrushStyle::NoBrush);
 
 		painter.drawEllipse(QRectF(rect().center() - QPointF(CONNECTOR_SIZE.width() * 0.75f, CONNECTOR_SIZE.height() * 0.75f), QSizeF(CONNECTOR_SIZE.width() * 1.5f, CONNECTOR_SIZE.height() * 1.5f)));
+
+		if (m_connector != nullptr)
+			m_connector->setHovered(true);
+	}
+	else
+	{
+		if (m_connector != nullptr)
+			m_connector->setHovered(false);
 	}
 
 	painter.end();
+}
+
+QPointF UI_ConnectorStart::center() const
+{
+	return QPointF(x() + width() * 0.5f, y() + height() * 0.5f);
 }

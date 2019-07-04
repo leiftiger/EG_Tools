@@ -13,9 +13,9 @@ namespace ATN
 		std::string m_gameFunction;
 
 		// Resources affected by this effect
-		std::vector<Resource> m_resources;
+		std::vector<Resource*> m_resources;
 		// Input parameters to this effect
-		std::vector<Parameter> m_parameters;
+		std::vector<Parameter*> m_parameters;
 
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
@@ -23,6 +23,7 @@ namespace ATN
 	public:
 
 		Effect(std::string &gameFunction);
+		~Effect();
 
 		// NOT EDITABLE FOR YOUR OWN SAFETY
 		virtual bool isEditable() const override;

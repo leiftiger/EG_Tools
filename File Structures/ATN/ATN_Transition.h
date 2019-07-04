@@ -18,14 +18,14 @@ namespace ATN
 		// Effect to perform if transition is taken
 		Effect *m_effect = nullptr;
 
-		std::vector<ResourceMarshall> m_effectResources;
-		std::vector<ParameterMarshall> m_effectParameters;
+		std::vector<ResourceMarshall*> m_effectResources;
+		std::vector<ParameterMarshall*> m_effectParameters;
 
 		// Percept to check if this transition should be taken
 		Percept *m_percept = nullptr;
 
-		std::vector<ResourceMarshall> m_perceptResources;
-		std::vector<ParameterMarshall> m_perceptParameters;
+		std::vector<ResourceMarshall*> m_perceptResources;
+		std::vector<ParameterMarshall*> m_perceptParameters;
 
 		// State to transition to if transition is taken
 		State *m_state = nullptr;

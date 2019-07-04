@@ -19,13 +19,15 @@ namespace ATN
 		std::vector<State*> m_states;
 		std::vector<Thread*> m_threads;
 
-		std::vector<Resource> m_resources;
-		std::vector<Parameter> m_parameters;
+		std::vector<Resource*> m_resources;
+		std::vector<Parameter*> m_parameters;
 
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
 
 	public:
+
+		~Network();
 
 		virtual const char * const typeName() const override;
 
@@ -54,7 +56,7 @@ namespace ATN
 		std::vector<Thread*>::iterator remove(Thread &thread);
 
 		// Gets all resources belonging to this network
-		const std::vector<Resource> &resources() const;
+		const std::vector<Resource*> &resources() const;
 
 		// Add a new resource in the network at the last position
 		void add(Resource &resource);
@@ -63,10 +65,10 @@ namespace ATN
 		// Move this resource downwards in the resource list
 		void moveDown(Resource &resource);
 		// Remove this resource from the network
-		std::vector<Resource>::iterator remove(Resource &resource);
+		std::vector<Resource*>::iterator remove(Resource &resource);
 
 		// Gets all parameters belonging to this network
-		const std::vector<Parameter> &parameters() const;
+		const std::vector<Parameter*> &parameters() const;
 
 		// Add a new parameter in the network at the last position
 		void add(Parameter &param);
@@ -75,6 +77,6 @@ namespace ATN
 		// Move this parameter downwards in the parameter list
 		void moveDown(Parameter &param);
 		// Remove this parameter from the network
-		std::vector<Parameter>::iterator remove(Parameter &param);
+		std::vector<Parameter*>::iterator remove(Parameter &param);
 	};
 }

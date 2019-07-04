@@ -19,7 +19,18 @@ namespace ATN
 
 		if (Manager::hasDefinitions(m_type))
 		{
-			return Manager::getDefinitions(m_type).find((std::uint32_t)value).name();
+			if (value == ATN_UNDEF_VALUE)
+				return "UNDEFINED";
+
+			try
+			{
+				const std::string &name = Manager::getDefinitions(m_type).find((int32_t)value).name();
+			}
+			catch (ATN::Exception e)
+			{
+				// Sometimes undefined values are set to something random
+				return "INVALID";
+			}
 		}
 
 		return std::to_string(value);
@@ -32,6 +43,9 @@ namespace ATN
 
 		if (Manager::hasDefinitions(m_type))
 		{
+			if (name == "UNDEFINED" || name == "INVALID")
+				return ATN_UNDEF_VALUE;
+
 			return (std::int64_t)Manager::getDefinitions(m_type).find(name).id();
 		}
 
@@ -53,7 +67,7 @@ namespace ATN
 
 	}
 
-	std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall> &params)
+	std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params)
 	{
 		std::string line;
 
@@ -79,7 +93,7 @@ namespace ATN
 				}
 				else
 				{
-					params.push_back(ParameterMarshall((ParameterMarshallType)std::stoll(matches[1]), std::stoll(matches[2])));
+					params.push_back(new ParameterMarshall((ParameterMarshallType)std::stoll(matches[1]), std::stoll(matches[2])));
 					subLine = matches.suffix();
 				}
 			}
@@ -88,15 +102,15 @@ namespace ATN
 		return stream;
 	}
 
-	std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall> &params)
+	std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall*> &params)
 	{
 		stream << "ParameterMarshall=" << params.size()*2 << std::endl;
 
 		stream << "{ ";
 
-		for (const ParameterMarshall &param : params)
+		for (const ParameterMarshall *param : params)
 		{
-			stream << (int)param.m_type << " " << param.m_value << " ";
+			stream << (int)param->m_type << " " << param->m_value << " ";
 		}
 
 		stream << "}" << std::endl;
@@ -104,7 +118,7 @@ namespace ATN
 		return stream;
 	}
 
-	std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall> &resources)
+	std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources)
 	{
 		std::string line;
 
@@ -130,7 +144,7 @@ namespace ATN
 				}
 				else
 				{
-					resources.push_back(ResourceMarshall((ResourceMarshallType)std::stoll(matches[1]), std::stoll(matches[2])));
+					resources.push_back(new ResourceMarshall((ResourceMarshallType)std::stoll(matches[1]), std::stoll(matches[2])));
 					subLine = matches.suffix();
 				}
 			}
@@ -139,15 +153,15 @@ namespace ATN
 		return stream;
 	}
 
-	std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall> &resources)
+	std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall*> &resources)
 	{
 		stream << "ResourceMarshall=" << resources.size()*2 << std::endl;
 
 		stream << "{ ";
 
-		for (const ResourceMarshall &resource : resources)
+		for (const ResourceMarshall *resource : resources)
 		{
-			stream << (int)resource.m_type << " " << resource.m_value << " ";
+			stream << (int)resource->m_type << " " << resource->m_value << " ";
 		}
 
 		stream << "}" << std::endl;
@@ -155,7 +169,7 @@ namespace ATN
 		return stream;
 	}
 
-	std::istream &operator>>(std::istream &stream, std::vector<Parameter> &params)
+	std::istream &operator>>(std::istream &stream, std::vector<Parameter*> &params)
 	{
 		std::string line;
 
@@ -181,7 +195,7 @@ namespace ATN
 				}
 				else
 				{
-					params.push_back(Parameter(matches[1], std::stoll(matches[2]), matches[3]));
+					params.push_back(new Parameter(matches[1], std::stoll(matches[2]), matches[3]));
 					subLine = matches.suffix();
 				}
 			}
@@ -190,15 +204,15 @@ namespace ATN
 		return stream;
 	}
 
-	std::ostream &operator<<(std::ostream &stream, const std::vector<Parameter> &params)
+	std::ostream &operator<<(std::ostream &stream, const std::vector<Parameter*> &params)
 	{
 		stream << "Parameters=" << params.size() << std::endl;
 
 		stream << "{ ";
 
-		for (const Parameter &param : params)
+		for (const Parameter *param : params)
 		{
-			stream << "{ \"" << param.m_type << "\" " << param.m_defaultValue << " \"" << param.m_desc << "\" } ";
+			stream << "{ \"" << param->m_type << "\" " << param->m_defaultValue << " \"" << param->m_desc << "\" } ";
 		}
 
 		stream << "}" << std::endl;
@@ -206,7 +220,7 @@ namespace ATN
 		return stream;
 	}
 
-	std::istream &operator>>(std::istream &stream, std::vector<Resource> &resources)
+	std::istream &operator>>(std::istream &stream, std::vector<Resource*> &resources)
 	{
 		std::string line;
 
@@ -232,7 +246,7 @@ namespace ATN
 				}
 				else
 				{
-					resources.push_back(Resource((ResourceType)std::stoi(matches[1]), matches[2], std::stoi(matches[3])));
+					resources.push_back(new Resource(ResourceType::_from_integral(std::stoi(matches[1])), matches[2], std::stoi(matches[3])));
 					subLine = matches.suffix();
 				}
 			}
@@ -241,15 +255,15 @@ namespace ATN
 		return stream;
 	}
 
-	std::ostream &operator<<(std::ostream &stream, const std::vector<Resource> &resources)
+	std::ostream &operator<<(std::ostream &stream, const std::vector<Resource*> &resources)
 	{
 		stream << "Resources=" << resources.size() << std::endl;
 
 		stream << "{ ";
 
-		for (const Resource &resource : resources)
+		for (const Resource *resource : resources)
 		{
-			stream << "{ " << (int)resource.m_type << " \"" << resource.m_desc << "\" " << (int)resource.m_optionalResource << " } ";
+			stream << "{ " << (int)resource->m_type << " \"" << resource->m_desc << "\" " << (int)resource->m_optionalResource << " } ";
 		}
 
 		stream << "}" << std::endl;

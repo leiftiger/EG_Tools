@@ -10,6 +10,16 @@ UI_ConnectorEnd::~UI_ConnectorEnd()
 {
 }
 
+ConnectFlags UI_ConnectorEnd::connectFlags()
+{
+	return m_connectFlags;
+}
+
+void UI_ConnectorEnd::setConnectFlags(ConnectFlags flags)
+{
+	m_connectFlags = flags;
+}
+
 
 void UI_ConnectorEnd::paintEvent(QPaintEvent *e)
 {
@@ -35,4 +45,9 @@ void UI_ConnectorEnd::paintEvent(QPaintEvent *e)
 	painter.drawEllipse(QRectF(rect().center() - QPointF(CONNECTOR_SIZE.width() * 0.5f, CONNECTOR_SIZE.height() * 0.5f), CONNECTOR_SIZE));
 
 	painter.end();
+}
+
+QPointF UI_ConnectorEnd::center() const
+{
+	return QPointF(x() + width() * 0.5f, y() + height() * 0.5f);
 }

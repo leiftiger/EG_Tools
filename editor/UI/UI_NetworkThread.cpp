@@ -4,6 +4,8 @@ UI_NetworkThread::UI_NetworkThread(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	ui.connector->setConnectFlags((ConnectFlags)(ConnectFlags::Above | ConnectFlags::OffsetLeft));
 }
 
 UI_NetworkThread::~UI_NetworkThread()

@@ -15,8 +15,8 @@ namespace ATN
 		// Just like so-called DNA junk, this thing is important, but we don't know what it does
 		std::string m_graphJunk;
 
-		std::vector<Resource> m_resources;
-		std::vector<Parameter> m_parameters;
+		std::vector<Resource*> m_resources;
+		std::vector<Parameter*> m_parameters;
 
 	protected:
 
@@ -26,6 +26,7 @@ namespace ATN
 	public:
 
 		Percept(std::string &gameFunction);
+		~Percept();
 
 		// NOT EDITABLE FOR YOUR OWN SAFETY
 		virtual bool isEditable() const override;

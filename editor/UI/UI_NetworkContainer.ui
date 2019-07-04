@@ -47,9 +47,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>240</y>
+         <y>260</y>
          <width>431</width>
-         <height>181</height>
+         <height>161</height>
         </rect>
        </property>
        <property name="frameShape">
@@ -559,9 +559,9 @@
        <widget class="QLabel" name="label_3">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>220</x>
           <y>80</y>
-          <width>271</width>
+          <width>231</width>
           <height>31</height>
          </rect>
         </property>
@@ -587,7 +587,7 @@
          <rect>
           <x>470</x>
           <y>80</y>
-          <width>281</width>
+          <width>271</width>
           <height>31</height>
          </rect>
         </property>
@@ -728,9 +728,9 @@
        <widget class="QLabel" name="label_6">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>10</x>
           <y>80</y>
-          <width>151</width>
+          <width>191</width>
           <height>31</height>
          </rect>
         </property>
@@ -769,7 +769,7 @@
          <rect>
           <x>10</x>
           <y>110</y>
-          <width>151</width>
+          <width>191</width>
           <height>121</height>
          </rect>
         </property>
@@ -781,7 +781,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>149</width>
+           <width>189</width>
            <height>119</height>
           </rect>
          </property>
@@ -790,9 +790,9 @@
        <widget class="QScrollArea" name="scrollArea_3">
         <property name="geometry">
          <rect>
-          <x>180</x>
+          <x>220</x>
           <y>110</y>
-          <width>271</width>
+          <width>231</width>
           <height>121</height>
          </rect>
         </property>
@@ -804,7 +804,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>269</width>
+           <width>229</width>
            <height>119</height>
           </rect>
          </property>
@@ -822,7 +822,7 @@
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="listNetworkVariables_2">
+        <widget class="QWidget" name="listNetworkVariables">
          <property name="geometry">
           <rect>
            <x>0</x>

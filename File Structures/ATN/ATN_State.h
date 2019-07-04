@@ -18,8 +18,8 @@ namespace ATN
 
 		Network *m_networkTransition = nullptr;
 
-		std::vector<ResourceMarshall> m_resourceMarshalls;
-		std::vector<ParameterMarshall> m_parameterMarshalls;
+		std::vector<ResourceMarshall*> m_resourceMarshalls;
+		std::vector<ParameterMarshall*> m_parameterMarshalls;
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
 
