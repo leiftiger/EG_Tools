@@ -494,16 +494,6 @@
         </property>
        </widget>
       </widget>
-      <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
-       <property name="geometry">
-        <rect>
-         <x>440</x>
-         <y>230</y>
-         <width>21</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QFrame" name="frameNetwork">
        <property name="geometry">
         <rect>
@@ -858,6 +848,16 @@
        <zorder>buttonDeleteNetwork</zorder>
        <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
+      </widget>
+      <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>220</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
       </widget>
      </widget>
     </widget>
