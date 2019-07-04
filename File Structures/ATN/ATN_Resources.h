@@ -41,7 +41,6 @@ namespace ATN
 	};
 
 	BETTER_ENUM(ResourceType, int,
-		Unknown = 0,
 		Resource = 4,
 		Character = 5,			// i.e. genius, minions, agents, henchmen
 		Entity = 23,

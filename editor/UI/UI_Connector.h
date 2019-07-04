@@ -42,6 +42,7 @@ private:
 	UI_ConnectorStart *m_start = nullptr;
 	UI_ConnectorEnd *m_end = nullptr;
 
+	// Commented due to insane circular dependency if trying to access the network container
 	//UI_NetworkContainer *m_network = nullptr;
 
 	// How large the connector lines should be

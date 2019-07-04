@@ -146,42 +146,145 @@ void UI_NetworkContainer::stateRemove()
 
 void UI_NetworkContainer::resourceCreate()
 {
+	UI_NetworkResource *ut = new UI_NetworkResource(ui.listNetworkResources);
 
+	ATN::Resource *r = new ATN::Resource(ATN::ResourceType::Number, std::string("Resource ") + std::to_string(m_resources.size() + 1), true);
+
+	ut->m_resource = r;
+
+	m_network->add(*r);
+
+	// Remove placeholder option
+	ut->ui.resourceType->clear();
+
+	ut->ui.resourceType->addItems(m_resourceTypes);
+	ut->ui.resourceType->setCurrentIndex(r->m_type._to_index());
+
+	ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
+
+	ut->ui.resourceIsParameter->setChecked(!r->m_optionalResource);
+
+	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(resourceRemove()));
+
+	m_resources.push_back(ut);
+
+	ut->show();
+
+	layoutSortables(m_resources, ui.listNetworkResources);
+
+	// Scroll to bottom in case we have many threads
+	QScrollArea *scroller = (QScrollArea*)ui.listNetworkResources->parent()->parent();
+
+	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 }
 
 void UI_NetworkContainer::resourceMoveUp()
 {
+	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
 
+	itemMove(m_resources, ut, true);
+	layoutSortables(m_resources, ui.listNetworkResources);
+
+	m_network->moveUp(*ut->m_resource);
 }
 
 void UI_NetworkContainer::resourceMoveDown()
 {
+	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
 
+	itemMove(m_resources, ut, false);
+	layoutSortables(m_resources, ui.listNetworkResources);
+
+	m_network->moveDown(*ut->m_resource);
 }
 
 void UI_NetworkContainer::resourceRemove()
 {
+	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
 
+	itemRemove(m_resources, ut);
+	layoutSortables(m_resources, ui.listNetworkResources);
+
+	m_network->remove(*ut->m_resource);
+
+	delete ut->m_resource;
+
+	ut->deleteLater();
 }
 
 void UI_NetworkContainer::variableCreate()
 {
+	UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
 
+	ATN::Parameter *p = new ATN::Parameter("Integer", 0, std::string("Variable ") + std::to_string(m_variables.size() + 1));
+
+	ut->m_variable = p;
+
+	// Remove placeholder option
+	ut->ui.variableType->clear();
+
+	ut->ui.variableType->addItems(m_variableTypes);
+	ut->ui.variableType->setCurrentText(QString::fromStdString(p->m_type));
+
+	ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
+
+	// Remove placeholder option
+	ut->ui.variableValue->clear();
+
+	ut->loadTranslations();
+
+	ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
+
+	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(variableMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(variableMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(variableRemove()));
+
+	m_variables.push_back(ut);
+
+	ut->show();
+
+	layoutSortables(m_variables, ui.listNetworkVariables);
+
+	// Scroll to bottom in case we have many threads
+	QScrollArea *scroller = (QScrollArea*)ui.listNetworkVariables->parent()->parent();
+
+	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 }
 
 void UI_NetworkContainer::variableMoveUp()
 {
+	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
 
+	itemMove(m_variables, ut, true);
+	layoutSortables(m_variables, ui.listNetworkVariables);
+
+	m_network->moveUp(*ut->m_variable);
 }
 
 void UI_NetworkContainer::variableMoveDown()
 {
+	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
 
+	itemMove(m_variables, ut, false);
+	layoutSortables(m_variables, ui.listNetworkVariables);
+
+	m_network->moveDown(*ut->m_variable);
 }
 
 void UI_NetworkContainer::variableRemove()
 {
+	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
 
+	itemRemove(m_variables, ut);
+	layoutSortables(m_variables, ui.listNetworkVariables);
+
+	m_network->remove(*ut->m_variable);
+
+	delete ut->m_variable;
+
+	ut->deleteLater();
 }
 
 void UI_NetworkContainer::setNetworkName(const QString &name)
