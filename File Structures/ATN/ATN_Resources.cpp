@@ -19,6 +19,15 @@ namespace ATN
 			// For integers, it appears we save as an unsigned int but really convert it to a signed int
 			return std::to_string((std::int32_t)(std::uint32_t)value);
 		}
+		else if (m_type == "Network ID")
+		{
+			if (value == ATN_UNDEF_VALUE)
+				return "UNDEFINED";
+
+			Network *net = (Network*)&ATN::Manager::findByID((std::uint32_t)value);
+
+			return std::to_string(net->id()) + std::string(": ") + net->name();
+		}
 
 		if (value == ATN_NULL_VALUE)
 			return "NULL";
@@ -47,6 +56,13 @@ namespace ATN
 		if (m_type == "Integer")
 		{
 			return (std::uint32_t)(std::int32_t)std::stoi(name);
+		}
+		else if (m_type == "Network ID")
+		{
+			if (name == "UNDEFINED")
+				return ATN_UNDEF_VALUE;
+
+			return std::stoll(name.substr(0, name.find(":")));
 		}
 
 		if (name == "NULL")
