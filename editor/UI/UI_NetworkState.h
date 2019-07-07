@@ -23,7 +23,7 @@ private:
 	std::vector<UI_InputArgument*> m_arguments;
 
 	// Populates the network transition arguments from the marshalls
-	void populateArguments(const ATN::Network *net);
+	void populateArguments();
 
 public:
 	UI_NetworkState(QWidget *parent = Q_NULLPTR);
@@ -32,6 +32,7 @@ public:
 	Ui::UI_NetworkState ui;
 
 	ATN::State *m_state = nullptr;
+	const ATN::Network *m_network = nullptr;
 
 	// Initializes state from object
 	void initialize(ATN::State *s, const ATN::Network *net);

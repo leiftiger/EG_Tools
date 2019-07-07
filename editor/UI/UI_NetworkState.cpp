@@ -1,11 +1,14 @@
 #include "UI_NetworkState.h"
 
-void UI_NetworkState::populateArguments(const ATN::Network *net)
+void UI_NetworkState::populateArguments()
 {
 	for (UI_InputArgument *ut : m_arguments)
 		ut->deleteLater();
 	for (UI_InputResource *ut : m_resources)
 		ut->deleteLater();
+
+	m_arguments.clear();
+	m_resources.clear();
 
 	int x = 0, y = 0;
 
@@ -24,11 +27,14 @@ void UI_NetworkState::populateArguments(const ATN::Network *net)
 	{
 		UI_InputResource *ut = new UI_InputResource(ui.listTransitionResources);
 
-		ut->initialize(m_state->resourceMarshalls()[i], resources[i], net);
+		ut->initialize(m_state->resourceMarshalls()[i], resources[i], m_network);
 
 		ut->move(0, y);
+		ut->show();
 
 		y += ut->size().height();
+
+		m_resources.push_back(ut);
 	}
 
 	x = 0, y = 0;
@@ -37,11 +43,14 @@ void UI_NetworkState::populateArguments(const ATN::Network *net)
 	{
 		UI_InputArgument *ut = new UI_InputArgument(ui.listTransitionArguments);
 
-		ut->initialize(m_state->parameterMarshalls()[i], m_state->networkTransition()->parameters()[i], net);
+		ut->initialize(m_state->parameterMarshalls()[i], m_state->networkTransition()->parameters()[i], m_network);
 
 		ut->move(0, y);
+		ut->show();
 
 		y += ut->size().height();
+
+		m_arguments.push_back(ut);
 	}
 
 	ui.listTransitionArguments->setMinimumHeight(y);
@@ -77,7 +86,10 @@ void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
 	}
 
 	m_state = s;
-	populateArguments(net);
+
+	m_network = net;
+
+	populateArguments();
 }
 
 void UI_NetworkState::selectExternalNetwork(int index)
@@ -86,15 +98,15 @@ void UI_NetworkState::selectExternalNetwork(int index)
 	{
 		const std::string &str = ui.comboBoxExternalNetwork->itemText(index).toStdString();
 
-		int index = str.find(':');
-
-		int netID = std::stoi(str.substr(0, index));
+		int netID = std::stoi(str.substr(0, str.find(':')));
 
 		ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(netID);
 
 		m_state->setNetworkTransition(net);
 
 		ui.labelExternalNetworkName->setText(QString::fromStdString(std::string("<extern transition: ") + net->name() + std::string(">")));
+
+		populateArguments();
 	}
 }
 
