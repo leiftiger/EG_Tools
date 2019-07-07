@@ -60,10 +60,6 @@ UI_NetworkState::UI_NetworkState(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-
-	ui.labelExternalNetworkName->setText(tr(""));
-
-	ui.connectOutNetwork->setConnectFlags(ConnectFlags::Above);
 }
 
 UI_NetworkState::~UI_NetworkState()
@@ -82,7 +78,6 @@ void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
 		enableExternalNetwork(true);
 
 		ui.comboBoxExternalNetwork->setCurrentIndex(ui.comboBoxExternalNetwork->findText(QString::fromStdString(std::to_string(s->networkTransition()->id()) + std::string(": ") + s->networkTransition()->name())));
-		ui.labelExternalNetworkName->setText(QString::fromStdString(std::string("<extern transition: ") + s->networkTransition()->name() + std::string(">")));
 	}
 
 	m_state = s;
@@ -104,8 +99,6 @@ void UI_NetworkState::selectExternalNetwork(int index)
 
 		m_state->setNetworkTransition(net);
 
-		ui.labelExternalNetworkName->setText(QString::fromStdString(std::string("<extern transition: ") + net->name() + std::string(">")));
-
 		populateArguments();
 	}
 }
@@ -121,7 +114,6 @@ void UI_NetworkState::setStateName(const QString &name)
 void UI_NetworkState::enableExternalNetwork(bool enable)
 {
 	ui.comboBoxExternalNetwork->setEnabled(enable);
-	ui.connectOutNetwork->setHidden(enable);
 
 	if (enable)
 	{
@@ -131,9 +123,5 @@ void UI_NetworkState::enableExternalNetwork(bool enable)
 		{
 			ui.comboBoxExternalNetwork->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
-	}
-	else
-	{
-		ui.labelExternalNetworkName->setText(tr(""));
 	}
 }

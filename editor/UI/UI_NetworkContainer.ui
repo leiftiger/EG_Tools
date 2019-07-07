@@ -849,30 +849,12 @@
        <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
       </widget>
-      <widget class="UI_ConnectorEnd" name="connectorNetwork" native="true">
-       <property name="geometry">
-        <rect>
-         <x>450</x>
-         <y>220</y>
-         <width>21</width>
-         <height>21</height>
-        </rect>
-       </property>
-      </widget>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>UI_ConnectorEnd</class>
-   <extends>QWidget</extends>
-   <header>UI_ConnectorEnd.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

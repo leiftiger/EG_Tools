@@ -343,40 +343,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="UI_ConnectorStart" name="connectOutNetwork" native="true">
-   <property name="geometry">
-    <rect>
-     <x>260</x>
-     <y>0</y>
-     <width>21</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="labelExternalNetworkName">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>0</y>
-     <width>501</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;external network&gt;</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <zorder>labelExternalNetworkName</zorder>
-  <zorder>connectorIn</zorder>
-  <zorder>frame</zorder>
-  <zorder>connectorOut</zorder>
-  <zorder>connectOutNetwork</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -384,12 +350,6 @@
    <class>UI_ConnectorEnd</class>
    <extends>QWidget</extends>
    <header>UI_ConnectorEnd.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>UI_ConnectorStart</class>
-   <extends>QWidget</extends>
-   <header>UI_ConnectorStart.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
