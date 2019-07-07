@@ -4,13 +4,41 @@
 #include "GeneratedFiles/ui_UI_NetworkState.h"
 #include <QStyle>
 
+#include <vector>
+
+#include "ATN/ATN_State.h"
+#include "ATN/ATN_Network.h"
+#include "ATN/ATN_Manager.h"
+
+#include "UI_InputArgument.h"
+#include "UI_InputResource.h"
+
 class UI_NetworkState : public QWidget
 {
 	Q_OBJECT
+
+private:
+
+	std::vector<UI_InputResource*> m_resources;
+	std::vector<UI_InputArgument*> m_arguments;
+
+	// Populates the network transition arguments from the marshalls
+	void populateArguments(const ATN::Network *net);
 
 public:
 	UI_NetworkState(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkState();
 
 	Ui::UI_NetworkState ui;
+
+	ATN::State *m_state = nullptr;
+
+	// Initializes state from object
+	void initialize(ATN::State *s, const ATN::Network *net);
+
+public slots:
+	void enableExternalNetwork(bool enable);
+	void selectExternalNetwork(int index);
+
+	void setStateName(const QString &name);
 };

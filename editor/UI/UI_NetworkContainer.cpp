@@ -126,22 +126,70 @@ void UI_NetworkContainer::threadRemove()
 
 void UI_NetworkContainer::stateCreate()
 {
+	ATN::State *s = new ATN::State();
 
+	s->setID(ATN::Manager::maxID() + 1);
+	s->setName(std::string("State ") + std::to_string(m_states.size() + 1));
+
+	// Add this object to the same ATN list the network belongs to
+	ATN::List<ATN::Entry> *outList;
+
+	ATN::Manager::findByID(m_network->id(), outList);
+
+	outList->add(*(ATN::Entry*)s);
+	ATN::Manager::addEntry(*(ATN::Entry*)s);
+
+	m_network->add(*s);
+
+	UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
+
+	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(stateMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(stateMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(stateRemove()));
+
+	ut->initialize(s, m_network);
+	ut->show();
+
+	m_states.push_back(ut);
+
+	layoutStates();
 }
 
 void UI_NetworkContainer::stateMoveUp()
 {
+	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
 
+	itemMove(m_states, ut, true);
+
+	layoutStates();
+
+	m_network->moveUp(*ut->m_state);
 }
 
 void UI_NetworkContainer::stateMoveDown()
 {
+	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
 
+	itemMove(m_states, ut, false);
+
+	layoutStates();
+
+	m_network->moveDown(*ut->m_state);
 }
 
 void UI_NetworkContainer::stateRemove()
 {
+	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
 
+	itemRemove(m_states, ut);
+
+	layoutStates();
+
+	m_network->remove(*ut->m_state);
+
+	deleteATN(ut->m_state);
+
+	ut->deleteLater();
 }
 
 void UI_NetworkContainer::resourceCreate()
@@ -162,7 +210,7 @@ void UI_NetworkContainer::resourceCreate()
 
 	ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
 
-	ut->ui.resourceIsParameter->setChecked(!r->m_optionalResource);
+	ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
 
 	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
 	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
@@ -226,7 +274,7 @@ void UI_NetworkContainer::variableCreate()
 	ut->ui.variableType->clear();
 
 	ut->ui.variableType->addItems(m_variableTypes);
-	ut->ui.variableType->setCurrentText(QString::fromStdString(p->m_type));
+	ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(p->m_type)));
 
 	ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
 
@@ -339,7 +387,7 @@ void UI_NetworkContainer::initializeResources()
 
 		ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
 
-		ut->ui.resourceIsParameter->setChecked(!r->m_optionalResource);
+		ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
 
 		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
 		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
@@ -363,7 +411,7 @@ void UI_NetworkContainer::initializeVariables()
 		ut->ui.variableType->clear();
 
 		ut->ui.variableType->addItems(m_variableTypes);
-		ut->ui.variableType->setCurrentText(QString::fromStdString(p->m_type));
+		ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(p->m_type)));
 
 		ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
 
@@ -384,20 +432,54 @@ void UI_NetworkContainer::initializeVariables()
 	layoutSortables(m_variables, ui.listNetworkVariables);
 }
 
-void UI_NetworkContainer::initializeStates()
+void UI_NetworkContainer::layoutStates()
 {
+	int x = 0, y = 0;
 
+	for (size_t i = 0; i < m_states.size(); i++)
+	{
+		UI_NetworkState *ut = m_states[i];
+
+		// Disable first and last sort buttons
+		ut->ui.buttonSortUp->setEnabled(i != 0);
+		ut->ui.buttonSortDown->setEnabled(i != m_states.size() - 1);
+
+		ut->move(x, 0);
+
+		x += ut->width() + STATE_MARGIN;
+	}
+
+	ui.frameStates->adjustSize();
+
+	// Adjust scroller to recognize the total area
+	ui.networkContents->setMinimumWidth(std::max(m_networkContentsMinimumSize.width(), ui.frameStates->width() + ui.frameStates->x()));
+	ui.networkContents->setMinimumHeight(std::max(m_networkContentsMinimumSize.height(), ui.frameStates->height() + ui.frameStates->y() + CONNECTOR_HEIGHT_OFFSET*4));
 }
 
-void UI_NetworkContainer::initializeTransitions()
+void UI_NetworkContainer::initializeStates()
 {
+	for (ATN::State *s : m_network->states())
+	{
+		UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
 
+		ut->initialize(s, m_network);
+
+		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(stateMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(stateMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(stateRemove()));
+
+		m_states.push_back(ut);
+	}
+
+	layoutStates();
 }
 
 UI_NetworkContainer::UI_NetworkContainer(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	m_networkContentsMinimumSize = ui.networkContents->minimumSize();
 
 	// Only enabled when highlighting a transition
 	ui.frameTransition->setEnabled(false);
@@ -421,7 +503,6 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 	initializeResources();
 	initializeVariables();
 	initializeStates();
-	initializeTransitions();
 }
 
 const ATN::Network &UI_NetworkContainer::network()

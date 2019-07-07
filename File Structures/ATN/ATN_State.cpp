@@ -2,9 +2,59 @@
 
 namespace ATN
 {
+	State::~State()
+	{
+		for (ResourceMarshall *r : m_resourceMarshalls)
+			delete r;
+		for (ParameterMarshall *p : m_parameterMarshalls)
+			delete p;
+	}
+
 	const char * const State::typeName() const
 	{
 		return "TATNState";
+	}
+
+	const Network *State::networkTransition() const
+	{
+		return m_networkTransition;
+	}
+
+	void State::setNetworkTransition(Network *net)
+	{
+		m_networkTransition = net;
+
+		for (ResourceMarshall *r : m_resourceMarshalls)
+			delete r;
+		for (ParameterMarshall *p : m_parameterMarshalls)
+			delete p;
+
+		m_resourceMarshalls.clear();
+		m_parameterMarshalls.clear();
+
+		if (m_networkTransition != nullptr)
+		{
+			for (Resource *r : net->resources())
+			{
+				if (!r->m_internalResource)
+					m_resourceMarshalls.push_back(new ResourceMarshall(r, -1));
+			}
+
+			for (Parameter *p : net->parameters())
+			{
+				m_parameterMarshalls.push_back(new ParameterMarshall(ParameterMarshallType::Constant, 0));
+			}
+		}
+	}
+
+	const std::vector<ResourceMarshall*>& State::resourceMarshalls() const
+	{
+		return m_resourceMarshalls;
+	}
+
+	const std::vector<ParameterMarshall*>& State::parameterMarshalls() const
+	{
+		return m_parameterMarshalls;
 	}
 
 	void State::serialize(std::ostream &stream) const

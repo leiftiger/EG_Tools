@@ -5,6 +5,7 @@
 
 #include "ATN_Effect.h"
 #include "ATN_List.h"
+#include "ATN_Network.h"
 #include "ATN_Percept.h"
 #include "ATN_Property.h"
 
@@ -13,6 +14,7 @@ namespace ATN
 	// Forward-declared
 	class Effect;
 	class Percept;
+	class Network;
 	
 	// Forward-declared, defined in IATN_Data
 	bool compareLessThanPointersIATN(const IATN_Data *a, const IATN_Data *b);
@@ -47,6 +49,7 @@ namespace ATN
 
 		std::vector<Effect*> m_effects;
 		std::vector<Percept*> m_percepts;
+		std::vector<Network*> m_networks;
 
 		// Protect against infinite recursions when removeEntry is called
 		bool m_removingGlobalElement = false;
@@ -109,5 +112,8 @@ namespace ATN
 
 		// Returns all percepts currently loaded
 		static const std::vector<Percept*> getPercepts();
+
+		// Returns all networks currently loaded
+		static const std::vector<Network*> getNetworks();
 	};
 }

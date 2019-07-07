@@ -94,6 +94,15 @@ namespace ATN
 
 				instance().m_percepts.erase(std::unique(instance().m_percepts.begin(), instance().m_percepts.end(), compareEqualPointersIATN), instance().m_percepts.end());
 			}
+			else if (typeid(*pair.second) == typeid(Network))
+			{
+				instance().m_networks.push_back((Network*)pair.second);
+
+				// Ensure these are always sorted
+				std::sort(instance().m_networks.begin(), instance().m_networks.end(), compareLessThanPointersIATN);
+
+				instance().m_networks.erase(std::unique(instance().m_networks.begin(), instance().m_networks.end(), compareEqualPointersIATN), instance().m_networks.end());
+			}
 		}
 
 		instance().m_lists.push_back(list);
@@ -121,6 +130,15 @@ namespace ATN
 			std::sort(instance().m_percepts.begin(), instance().m_percepts.end(), compareLessThanPointersIATN);
 
 			instance().m_percepts.erase(std::unique(instance().m_percepts.begin(), instance().m_percepts.end(), compareEqualPointersIATN), instance().m_percepts.end());
+		}
+		else if (typeid(el) == typeid(Network))
+		{
+			instance().m_networks.push_back((Network*)&el);
+
+			// Ensure these are always sorted
+			std::sort(instance().m_networks.begin(), instance().m_networks.end(), compareLessThanPointersIATN);
+
+			instance().m_networks.erase(std::unique(instance().m_networks.begin(), instance().m_networks.end(), compareEqualPointersIATN), instance().m_networks.end());
 		}
 	}
 
@@ -246,5 +264,9 @@ namespace ATN
 	const std::vector<Percept*> Manager::getPercepts()
 	{
 		return instance().m_percepts;
+	}
+	const std::vector<Network*> Manager::getNetworks()
+	{
+		return instance().m_networks;
 	}
 }

@@ -20,7 +20,6 @@ namespace ATN
 
 	enum class ParameterMarshallType : int
 	{
-		Unknown = 0,
 		Mysterious = 1,
 		Constant = 2,			// This number is what will be sent in the marshall
 		ParameterIndex = 3,		// Access the network parameter value at specified index
@@ -29,15 +28,16 @@ namespace ATN
 
 	enum class ResourceMarshallType : int
 	{
-		Unknown = 0,
-		ResourceIndex = 1,				// Generic resource index (used for not null checks)
-		ResourceIndexEntity = 2,		// Resource index of type Entity
-		ResourceIndexTimer = 6,			// Resource index of type Timer
-		ResourceIndexNumber = 11,		// Resource index of type Number
-		ResourceIndexCharacter = 12,	// Resource index of type Character
-		ResourceIndexObject = 13,		// Resource index of type Object
-		ResourceIndexItem = 15,			// Resource index of type Item
-		ResourceIndexAny = 20			// Resource index of any type (?)
+		ResourceIndex = 1,					// Generic resource index (used for not null checks)
+		ResourceIndexEntity = 2,			// Resource index of type Entity
+		ResourceIndexTimer = 6,				// Resource index of type Timer
+		ResourceIndexNumber = 11,			// Resource index of type Number
+		ResourceIndexCharacter = 12,		// Resource index of type Character
+		ResourceIndexObject = 13,			// Resource index of type Object
+		ResourceIndexItem = 15,				// Resource index of type Item
+		ResourceIndexGUIControl = 19,		// Resource index of type GUI Control
+		ResourceIndexEntityGroup = 20,		// Resource index of entity group
+		ResourceIndexCharacterGroup = 21,	// Resource index of character group
 	};
 
 	BETTER_ENUM(ResourceType, int,
@@ -51,38 +51,6 @@ namespace ATN
 		GUIControl = 7682,
 		EntityGroup = 8927,
 		CharacterGroup = 8949)
-
-	// Triple for storing parameter marshalls
-	class ParameterMarshall
-	{
-	public:
-
-		ParameterMarshallType m_type;
-		std::int64_t m_value;
-
-		ParameterMarshall(ParameterMarshallType type, std::int64_t value);
-
-		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
-		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall*> &params);
-	};
-
-	// Triple for resource marshalls
-	class ResourceMarshall
-	{
-	public:
-
-		ResourceMarshallType m_type;
-		std::int64_t m_value;
-
-		ResourceMarshall(ResourceMarshallType type, std::int64_t value);
-
-		// Deserialize from ATN string
-		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources);
-		// Serialize to ATN string
-		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall*> &resources);
-	};
 
 	// Triple for storing parameters
 	class Parameter
@@ -111,13 +79,48 @@ namespace ATN
 
 		ResourceType m_type;
 		std::string m_desc;
-		bool m_optionalResource;
+		bool m_internalResource;
 
-		Resource(ResourceType type, std::string desc, bool optionalResource);
+		Resource(ResourceType type, std::string desc, bool internalResource);
 
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<Resource*> &resources);
 		// Serialize to ATN string
 		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Resource*> &resources);
+	};
+
+	// Triple for storing parameter marshalls
+	class ParameterMarshall
+	{
+	public:
+
+		ParameterMarshallType m_type;
+		std::int64_t m_value;
+
+		ParameterMarshall(ParameterMarshallType type, std::int64_t value);
+
+		// Deserialize from ATN string
+		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
+		// Serialize to ATN string
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall*> &params);
+	};
+
+	// Triple for resource marshalls
+	class ResourceMarshall
+	{
+	public:
+
+		ResourceMarshallType m_type;
+		std::int64_t m_value;
+
+		ResourceMarshall(ResourceMarshallType type, std::int64_t value);
+		ResourceMarshall(const Resource *resource, std::int64_t value);
+
+		static ResourceMarshallType toResourceMarshallType(const ResourceType &t);
+
+		// Deserialize from ATN string
+		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources);
+		// Serialize to ATN string
+		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall*> &resources);
 	};
 }

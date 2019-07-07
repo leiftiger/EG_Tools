@@ -8,7 +8,7 @@
 namespace ATN
 {
 	// Forward declared
-	class Network;
+	class Network; class Transition;
 
 	class State : public Entry
 	{
@@ -25,6 +25,19 @@ namespace ATN
 
 	public:
 
+		~State();
+
 		virtual const char * const typeName() const override;
+
+		// Gets the network transition call from this state if set
+		const Network *networkTransition() const;
+		// Sets the network transition call from this state, recreating resource and parameter marshalls to suit new call
+		void setNetworkTransition(Network *net);
+
+		// Resource arguments sent in network transition, set automatically based on network transition
+		const std::vector<ResourceMarshall*> &resourceMarshalls() const;
+
+		// Parameter arguments sent in network transition, set automatically based on network transition
+		const std::vector<ParameterMarshall*> &parameterMarshalls() const;
 	};
 }

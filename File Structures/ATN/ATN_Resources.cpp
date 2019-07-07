@@ -14,6 +14,12 @@ namespace ATN
 
 	std::string Parameter::translateValue(std::int64_t value) const
 	{
+		if (m_type == "Integer")
+		{
+			// For integers, it appears we save as an unsigned int but really convert it to a signed int
+			return std::to_string((std::int32_t)(std::uint32_t)value);
+		}
+
 		if (value == ATN_NULL_VALUE)
 			return "NULL";
 
@@ -24,7 +30,7 @@ namespace ATN
 
 			try
 			{
-				const std::string &name = Manager::getDefinitions(m_type).find((int32_t)value).name();
+				return Manager::getDefinitions(m_type).find((int32_t)value).name();
 			}
 			catch (ATN::Exception e)
 			{
@@ -38,6 +44,11 @@ namespace ATN
 
 	std::int64_t Parameter::translateName(const std::string &name) const
 	{
+		if (m_type == "Integer")
+		{
+			return (std::uint32_t)(std::int32_t)std::stoi(name);
+		}
+
 		if (name == "NULL")
 			return ATN_NULL_VALUE;
 
@@ -52,7 +63,7 @@ namespace ATN
 		return std::stoll(name);
 	}
 
-	Resource::Resource(ResourceType type, std::string desc, bool optionalResource) : m_type(type), m_desc(desc), m_optionalResource(optionalResource)
+	Resource::Resource(ResourceType type, std::string desc, bool optionalResource) : m_type(type), m_desc(desc), m_internalResource(optionalResource)
 	{
 
 	}
@@ -65,6 +76,42 @@ namespace ATN
 	ResourceMarshall::ResourceMarshall(ResourceMarshallType type, std::int64_t value) : m_type(type), m_value(value)
 	{
 
+	}
+
+	ResourceMarshall::ResourceMarshall(const Resource *resource, std::int64_t value) : m_value(value)
+	{
+		m_type = toResourceMarshallType(resource->m_type);
+	}
+
+	ResourceMarshallType ResourceMarshall::toResourceMarshallType(const ResourceType &t)
+	{
+		switch (t)
+		{
+		case ResourceType::Resource:
+			return ResourceMarshallType::ResourceIndex;
+		case ResourceType::Character:
+			return ResourceMarshallType::ResourceIndexCharacter;
+		case ResourceType::Entity:
+			return ResourceMarshallType::ResourceIndexEntity;
+		case ResourceType::Object:
+			return ResourceMarshallType::ResourceIndexObject;
+		case ResourceType::Number:
+			return ResourceMarshallType::ResourceIndexNumber;
+		case ResourceType::Timer:
+			return ResourceMarshallType::ResourceIndexTimer;
+		case ResourceType::Item:
+			return ResourceMarshallType::ResourceIndexItem;
+		case ResourceType::GUIControl:
+			return ResourceMarshallType::ResourceIndexGUIControl;
+		case ResourceType::EntityGroup:
+			return ResourceMarshallType::ResourceIndexEntityGroup;
+		case ResourceType::CharacterGroup:
+			return ResourceMarshallType::ResourceIndexCharacterGroup;
+		}
+
+		throw Exception("Unknown resource type!");
+
+		return ResourceMarshallType::ResourceIndex;
 	}
 
 	std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params)
@@ -263,7 +310,7 @@ namespace ATN
 
 		for (const Resource *resource : resources)
 		{
-			stream << "{ " << (int)resource->m_type << " \"" << resource->m_desc << "\" " << (int)resource->m_optionalResource << " } ";
+			stream << "{ " << (int)resource->m_type << " \"" << resource->m_desc << "\" " << (int)resource->m_internalResource << " } ";
 		}
 
 		stream << "}" << std::endl;

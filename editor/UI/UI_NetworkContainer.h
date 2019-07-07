@@ -58,8 +58,16 @@ private:
 	std::vector<UI_NetworkResource*> m_resources;
 	std::vector<UI_NetworkVariable*> m_variables;
 
+	std::vector<UI_NetworkState*> m_states;
+
+	// Total size of network container
+	QSize m_networkContentsMinimumSize;
+
+	// Minimum distance between two states
+	const int STATE_MARGIN = 50;
+
 	// How far from the states that transition connection lines should go
-	const double CONNECTOR_HEIGHT_OFFSET = 5;
+	const int CONNECTOR_HEIGHT_OFFSET = 5;
 
 	// Initializes the two comboboxes used to select effect/percepts in the editor
 	void initializeArgumentLists();
@@ -156,8 +164,10 @@ private:
 
 	void initializeResources();
 	void initializeVariables();
+
+	void layoutStates();
+
 	void initializeStates();
-	void initializeTransitions();
 
 public:
 	UI_NetworkContainer(QWidget *parent = Q_NULLPTR);

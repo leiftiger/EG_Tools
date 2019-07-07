@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>161</width>
+    <width>211</width>
     <height>22</height>
    </rect>
   </property>
@@ -16,9 +16,9 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>90</x>
      <y>0</y>
-     <width>161</width>
+     <width>121</width>
      <height>22</height>
     </rect>
    </property>
@@ -30,6 +30,27 @@
      <string>0: ProgressTimer</string>
     </property>
    </item>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>0</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Reduce Stat 3:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -2,6 +2,19 @@
 
 namespace ATN
 {
+	Transition::~Transition()
+	{
+		for (ResourceMarshall *r : m_effectResources)
+			delete r;
+		for (ResourceMarshall *r : m_perceptResources)
+			delete r;
+
+		for (ParameterMarshall *p : m_effectParameters)
+			delete p;
+		for (ParameterMarshall *p : m_perceptParameters)
+			delete p;
+	}
+
 	const char * const Transition::typeName() const
 	{
 		return "TATNStateTransition";

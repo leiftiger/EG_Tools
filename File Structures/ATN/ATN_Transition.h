@@ -9,7 +9,7 @@
 namespace ATN
 {
 	// Forward declaration
-	class State;
+	class State; class Effect; class Percept;
 
 	class Transition : public Entry
 	{
@@ -34,6 +34,8 @@ namespace ATN
 		virtual void deserialize(std::istream & stream) override;
 
 	public:
+
+		~Transition();
 
 		virtual const char * const typeName() const override;
 	};
