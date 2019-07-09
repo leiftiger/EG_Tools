@@ -21,9 +21,26 @@ void NetworkContainerProxy::setLowerHeight(int height)
 	m_lowerHeight = height + CONNECTOR_HEIGHT_OFFSET;
 }
 
-bool NetworkContainerProxy::isLineClear(const QLine &line) const
+void NetworkContainerProxy::setStateSpaces(std::vector<QRect> stateSpaces)
 {
-	return false;
+	m_stateSpaces = stateSpaces;
+}
+
+bool NetworkContainerProxy::isLineClear(const QLine &arbitraryLine) const
+{
+	QLine line = arbitraryLine;
+
+	// No way to connect directly backwards!
+	if (line.x1() > line.x2())
+		return false;
+
+	for (const QRect &rect : m_stateSpaces)
+	{
+		if ((line.x1() <= rect.x() && (rect.x() + rect.width()) <= line.x2()) || (rect.x() <= line.x1() && line.x1() <= (rect.x() + rect.width())))
+			return false;
+	}
+
+	return true;
 }
 
 int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connector* connector)

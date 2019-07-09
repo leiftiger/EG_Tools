@@ -436,6 +436,8 @@ void UI_NetworkContainer::layoutStates()
 {
 	int x = 0, y = 0;
 
+	std::vector<QRect> stateSpaces;
+
 	for (size_t i = 0; i < m_states.size(); i++)
 	{
 		UI_NetworkState *ut = m_states[i];
@@ -447,6 +449,12 @@ void UI_NetworkContainer::layoutStates()
 		ut->move(x, 0);
 
 		x += ut->width() + STATE_MARGIN;
+
+		QPoint pos = ut->pos();
+
+		QRect rect(pos.x(), pos.y(), ut->width(), ut->height());
+
+		stateSpaces.push_back(rect);
 	}
 
 	ui.frameStates->adjustSize();
@@ -459,6 +467,8 @@ void UI_NetworkContainer::layoutStates()
 
 	m_proxy.setUpperHeight(ui.frameStates->y());
 	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height() + 24); // TODO: Why doesn't the height go to +24 automatically?
+
+	m_proxy.setStateSpaces(stateSpaces);
 }
 
 void UI_NetworkContainer::initializeStates()

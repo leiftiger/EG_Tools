@@ -109,8 +109,10 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	else
 		targetPoint = mapFromGlobal(m_end->mapToGlobal(m_end->center()));
 
+	bool bLineClear = m_network->isLineClear(QLine(lastPoint, targetPoint));
+
 	// If we can't go straight to the target, then we will bend the line towards it
-	if (!m_network->isLineClear(QLine(lastPoint, targetPoint)))
+	if (!bLineClear)
 	{
 		points.append(lastPoint);
 		points.append(QPoint(lastPoint.x(), m_network->stateHeight(flagsStart, this)));
@@ -135,7 +137,7 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 		targetOffset = targetPoint + QPoint(0, CONNECTOR_OFFSET);
 	}
 
-	if (!m_network->isLineClear(QLine(lastPoint, targetPoint)))
+	if (!bLineClear)
 	{
 		points.append(points[points.size() - 1]);
 		points.append(QPoint(targetOffset.x(), m_network->stateHeight(flagsStart, this)));

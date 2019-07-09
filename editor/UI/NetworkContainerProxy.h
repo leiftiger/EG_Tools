@@ -2,6 +2,7 @@
 
 #include <QLine>
 
+#include <vector>
 #include <unordered_map>
 
 #include "UI_ConnectFlags.h"
@@ -25,6 +26,9 @@ private:
 	std::unordered_map<const UI_Connector*, int> m_heightOffsetsAbove;
 	std::unordered_map<const UI_Connector*, int> m_heightOffsetsBelow;
 
+	// Spaces occupied by states
+	std::vector<QRect> m_stateSpaces;
+
 public:
 	NetworkContainerProxy();
 	~NetworkContainerProxy();
@@ -33,11 +37,13 @@ public:
 	static const int CONNECTOR_HEIGHT_OFFSET = 15;
 
 	// When connectors share path, they should be at least this far away from each other
-	static const int CONNECTOR_MARGIN = 4;
+	static const int CONNECTOR_MARGIN = 2;
 
 	void setUpperHeight(int height);
 
 	void setLowerHeight(int height);
+
+	void setStateSpaces(std::vector<QRect> stateSpaces);
 
 	// Returns true if the line avoids colliding with any states
 	bool isLineClear(const QLine &line) const;
