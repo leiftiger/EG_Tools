@@ -35,7 +35,7 @@ void UI_MainWindow::setNetworkResults(std::vector<ATN::Network*> results)
 		res->ui.textName->setText(QString::fromStdString(net->name()));
 		res->ui.textUniqueID->setText(QString::fromStdString(std::to_string(net->id())));
 
-		connect(res->ui.buttonOpenNetwork, SIGNAL(pressed()), this, SLOT(openNetworkButton()));
+		connect(res->ui.buttonOpenNetwork, SIGNAL(clicked()), this, SLOT(openNetworkButton()));
 
 		QListWidgetItem *item = new QListWidgetItem();
 		item->setSizeHint(res->size());
@@ -50,6 +50,9 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 	UI_NetworkContainer *tab = new UI_NetworkContainer;
 
 	tab->initializeFromID(el.id());
+
+
+	connect(tab, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 
 	ui.tabWidget->addTab(tab, tr("Network ") + QString::fromStdString(std::to_string(el.id())));
 
@@ -166,4 +169,23 @@ void UI_MainWindow::closeTab(int tab)
 
 	delete tabItem;
 	tabItem = nullptr;
+}
+
+void UI_MainWindow::receiveOpenNetworkRequest(int id)
+{
+	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	{
+		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
+
+		// Focus the existing tab if network is already opened
+		if (tabItem->network().id() == id)
+		{
+			ui.tabWidget->setCurrentIndex(i);
+			return;
+		}
+	}
+
+	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(id);
+
+	createNetworkResourceTab(*net);
 }

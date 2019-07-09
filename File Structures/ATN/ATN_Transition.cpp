@@ -20,14 +20,54 @@ namespace ATN
 		return "TATNStateTransition";
 	}
 
-	const State &Transition::state() const
+	const Effect *Transition::effect() const
 	{
-		return *m_state;
+		return m_effect;
 	}
 
-	void Transition::setState(State &state)
+	void Transition::setEffect(Effect *effect)
 	{
-		m_state = &state;
+		m_effect = effect;
+	}
+
+	const std::vector<ResourceMarshall*> &Transition::effectResourceMarshalls() const
+	{
+		return m_effectResources;
+	}
+
+	const std::vector<ParameterMarshall*> &Transition::effectParameterMarshalls() const
+	{
+		return m_effectParameters;
+	}
+
+	const Percept *Transition::percept() const
+	{
+		return m_percept;
+	}
+
+	void Transition::setPercept(Percept *percept)
+	{
+		m_percept = percept;
+	}
+
+	const std::vector<ResourceMarshall*> &Transition::perceptResourceMarshalls() const
+	{
+		return m_perceptResources;
+	}
+
+	const std::vector<ParameterMarshall*> &Transition::perceptParameterMarshalls() const
+	{
+		return m_perceptParameters;
+	}
+
+	const State *Transition::state() const
+	{
+		return m_state;
+	}
+
+	void Transition::setState(State *state)
+	{
+		m_state = state;
 	}
 
 	void Transition::serialize(std::ostream &stream) const

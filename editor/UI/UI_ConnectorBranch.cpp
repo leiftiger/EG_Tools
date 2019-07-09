@@ -59,18 +59,25 @@ void UI_ConnectorBranch::addTransition(UI_NetworkTransition *ut)
 	m_transitions.push_back(ut);
 
 	layout();
-	repaint();
+	update();
 }
 
 void UI_ConnectorBranch::layout()
 {
 	int totalBranches = m_transitions.size() + 1;
 
-	int desiredHeight = m_newTransitionConnector->height()-TRANSITION_PADDING_BOTTOM;
+	int transitionPadding = TRANSITION_PADDING_BOTTOM;
+
+	if (totalBranches > TRANSITION_PADDING_BOTTOM_THRESHOLD)
+	{
+		transitionPadding = TRANSITION_PADDING_BOTTOM_TIGHT;
+	}
+
+	int desiredHeight = m_newTransitionConnector->height() - transitionPadding;
 
 	for (UI_NetworkTransition *ut : m_transitions)
 	{
-		desiredHeight += ut->height() + TRANSITION_PADDING_BOTTOM;
+		desiredHeight += ut->height() + transitionPadding;
 	}
 
 	QPointF center = QPointF(width()*0.5f, height()*0.5f);
@@ -79,9 +86,7 @@ void UI_ConnectorBranch::layout()
 
 	move(x(), y() + center.y() - desiredHeight / 2);
 
-	double branchHeight = height() / (totalBranches - 1);
-
-	double branchY = 0;
+	int branchY = 0;
 
 	for (UI_NetworkTransition *ut : m_transitions)
 	{
@@ -89,7 +94,7 @@ void UI_ConnectorBranch::layout()
 
 		ut->move(parentWidget()->mapFromGlobal(pos));
 
-		branchY += ut->height() + TRANSITION_PADDING_BOTTOM;
+		branchY += ut->height() + transitionPadding;
 	}
 
 	m_newTransitionConnector->move(parentWidget()->mapFromGlobal(mapToGlobal(QPoint(width() + TRANSITION_PADDING_LEFTRIGHT, branchY - (m_newTransitionConnector->height() / 2)))));

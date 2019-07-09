@@ -31,6 +31,8 @@ public slots:
 
 	void closeTab(int tab);
 
+	void receiveOpenNetworkRequest(int id);
+
 private:
 	Ui::UI_MainWindowClass ui;
 };

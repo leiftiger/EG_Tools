@@ -40,9 +40,9 @@ void UI_NetworkContainer::initializeThreads()
 
 		ut->m_thread = t;
 
-		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(threadMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(threadMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(threadRemove()));
+		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
 
 		m_threads.push_back(ut);
 	}
@@ -74,9 +74,9 @@ void UI_NetworkContainer::threadCreate()
 
 	ut->m_thread = t;
 
-	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(threadMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(threadMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(threadRemove()));
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
 
 	m_threads.push_back(ut);
 
@@ -143,9 +143,11 @@ void UI_NetworkContainer::stateCreate()
 
 	UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
 
-	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(stateMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(stateMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(stateRemove()));
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(stateMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(stateMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
+
+	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 
 	ut->initialize(s, m_network);
 	ut->show();
@@ -212,9 +214,9 @@ void UI_NetworkContainer::resourceCreate()
 
 	ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
 
-	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(resourceRemove()));
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(resourceMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
 
 	m_resources.push_back(ut);
 
@@ -285,9 +287,9 @@ void UI_NetworkContainer::variableCreate()
 
 	ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
 
-	connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(variableMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(variableMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(variableRemove()));
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
 
 	m_variables.push_back(ut);
 
@@ -370,6 +372,11 @@ void UI_NetworkContainer::deleteTransition()
 
 }
 
+void UI_NetworkContainer::receiveOpenNetworkRequest(int id)
+{
+	emit openNetworkRequest(id);
+}
+
 
 void UI_NetworkContainer::initializeResources()
 {
@@ -389,9 +396,9 @@ void UI_NetworkContainer::initializeResources()
 
 		ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
 
-		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(resourceMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(resourceMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(resourceRemove()));
+		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(resourceMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
 
 		m_resources.push_back(ut);
 	}
@@ -420,11 +427,20 @@ void UI_NetworkContainer::initializeVariables()
 
 		ut->loadTranslations();
 
-		ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
+		QString strValue = QString::fromStdString(p->translateValue(p->m_defaultValue));
 
-		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(variableMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(variableMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(variableRemove()));
+		ut->ui.variableValue->setCurrentText(strValue);
+
+		int index = ut->ui.variableValue->findText(strValue);
+
+		if (index != -1)
+			ut->ui.variableValue->setCurrentIndex(index);
+		else
+			ut->ui.variableValue->setCurrentText(strValue);
+
+		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
 
 		m_variables.push_back(ut);
 	}
@@ -450,6 +466,7 @@ void UI_NetworkContainer::layoutStates()
 
 		x += ut->width() + STATE_MARGIN;
 
+		// Important that these positions are in the same coordinate space as UI_Connector
 		QPoint pos = ut->pos();
 
 		QRect rect(pos.x(), pos.y(), ut->width(), ut->height());
@@ -481,9 +498,11 @@ void UI_NetworkContainer::initializeStates()
 
 		ut->initialize(s, m_network);
 
-		connect(ut->ui.buttonSortUp, SIGNAL(released()), this, SLOT(stateMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(released()), this, SLOT(stateMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(stateRemove()));
+		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(stateMoveUp()));
+		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(stateMoveDown()));
+		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
+
+		connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 
 		m_states.push_back(ut);
 
@@ -515,9 +534,9 @@ void UI_NetworkContainer::initializeStates()
 		{
 			UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
 
-			uiTransition->m_transition = t;
+			uiTransition->initialize(t, m_network);
 
-			UI_NetworkState *uiStateTo = uiStates[&t->state()];
+			UI_NetworkState *uiStateTo = uiStates[t->state()];
 
 			UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
 

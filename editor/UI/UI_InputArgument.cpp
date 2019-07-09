@@ -26,7 +26,7 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 		{
 			char str[STR_FORMAT_BUFF];
 
-			sprintf_s(str, "<%d: %s>", (int)i, netParam->m_desc.c_str());
+			sprintf_s(str, "[%d: %s]", (int)i, netParam->m_desc.c_str());
 
 			ui.comboBox->addItem(QString::fromStdString(str));
 

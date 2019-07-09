@@ -899,7 +899,7 @@
  <connections>
   <connection>
    <sender>buttonNewState</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>stateCreate()</slot>
    <hints>
@@ -915,7 +915,7 @@
   </connection>
   <connection>
    <sender>buttonNewResource</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>resourceCreate()</slot>
    <hints>
@@ -931,7 +931,7 @@
   </connection>
   <connection>
    <sender>buttonNewVariable</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>variableCreate()</slot>
    <hints>
@@ -947,7 +947,7 @@
   </connection>
   <connection>
    <sender>buttonDeleteNetwork</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>deleteNetwork()</slot>
    <hints>
@@ -963,7 +963,7 @@
   </connection>
   <connection>
    <sender>buttonNewThread</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>threadCreate()</slot>
    <hints>
@@ -979,13 +979,13 @@
   </connection>
   <connection>
    <sender>buttonDeleteTransition</sender>
-   <signal>pressed()</signal>
+   <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>deleteTransition()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1445</x>
-     <y>73</y>
+     <x>1680</x>
+     <y>50</y>
     </hint>
     <hint type="destinationlabel">
      <x>1446</x>

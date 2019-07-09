@@ -40,6 +40,16 @@ namespace ATN
 		return gameFunction().c_str();
 	}
 
+	const std::vector<Parameter*> &Effect::parameters() const
+	{
+		return m_parameters;
+	}
+
+	const std::vector<Resource*> &Effect::resources() const
+	{
+		return m_resources;
+	}
+
 	void Effect::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

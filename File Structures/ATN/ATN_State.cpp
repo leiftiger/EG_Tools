@@ -97,14 +97,16 @@ namespace ATN
 		// Header for transitions
 		stream << "ContainerID=ATNData" << std::endl;
 
+		/*
 		std::vector<Transition*> revTransitions;
 
 		for (int i = (int)m_stateTransitions.size() - 1; i >= 0; i--)
 		{
 			revTransitions.push_back(m_stateTransitions[i]);
 		}
+		*/
 
-		util::writeEntryIDs<Transition>(stream, "StateTransitions=", revTransitions);
+		util::writeEntryIDs<Transition>(stream, "StateTransitions=", m_stateTransitions);
 
 		stream << "NetworkThreshold=0.0001" << std::endl;
 
@@ -127,14 +129,19 @@ namespace ATN
 		if (line != "ContainerID=ATNData")
 			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
 
+		m_stateTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
+
+		/*
 		std::vector<Transition*> revTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
 
 		// It appears that the transitions are sorted according from 0 = [least priority] to n = [most priority]
 		// So the list is reversed to keep all methods working the same way
+		
 		for (int i = (int)revTransitions.size() - 1; i >= 0; i--)
 		{
 			m_stateTransitions.push_back(revTransitions[i]);
 		}
+		*/
 
 		util::getline(stream, line);
 

@@ -42,4 +42,9 @@ public slots:
 	void selectExternalNetwork(int index);
 
 	void setStateName(const QString &name);
+
+	void viewExternalNetwork();
+
+signals:
+	void openNetworkRequest(int id);
 };

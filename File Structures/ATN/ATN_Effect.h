@@ -1,12 +1,13 @@
 #pragma once
 
 #include "ATN_Entry.h"
+#include "ATN_IResourceHolder.h"
 #include "ATN_Resources.h"
 
 namespace ATN
 {
 	// An action to the game engine, uneditable
-	class Effect : public Entry
+	class Effect : public Entry, IResourceHolder
 	{
 	protected:
 
@@ -33,5 +34,10 @@ namespace ATN
 		void setGameFunction(std::string &gameFunction);
 
 		virtual const char * const typeName() const override;
+
+		// Gets all parameters expected by this effect
+		virtual const std::vector<Parameter*> &parameters() const override;
+		// Gets all resources expected by this percept
+		virtual const std::vector<Resource*> &resources() const override;
 	};
 }

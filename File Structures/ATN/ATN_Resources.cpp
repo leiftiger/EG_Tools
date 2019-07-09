@@ -34,15 +34,15 @@ namespace ATN
 
 		if (Manager::hasDefinitions(m_type))
 		{
-			if (value == ATN_UNDEF_VALUE)
-				return "UNDEFINED";
-
 			try
 			{
 				return Manager::getDefinitions(m_type).find((int32_t)value).name();
 			}
 			catch (ATN::Exception e)
 			{
+				if (value == ATN_UNDEF_VALUE)
+					return "UNDEFINED";
+
 				// Sometimes undefined values are set to something random
 				return "INVALID";
 			}

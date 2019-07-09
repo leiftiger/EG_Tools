@@ -38,7 +38,7 @@ TATNEffectSetObjectiveStatus
 set "::param0::" visible: ::param1::, complete: ::param2::, parent: ::param3::
 
 TATNEffectRunGameRuleATN
-run game rule "::network_param0::"
+run game rule "::param0::"
 
 TATNEffectSleepThread
 sleep current thread for ::param0:: frames

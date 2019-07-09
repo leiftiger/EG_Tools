@@ -39,10 +39,34 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
+		// Get effect to perform if transition is taken
+		const Effect *effect() const;
+
+		// Set effect to perform if transition is taken
+		void setEffect(Effect *effect);
+
+		// Resource arguments sent to effect, populated from current set effect
+		const std::vector<ResourceMarshall*> &effectResourceMarshalls() const;
+
+		// Parameter arguments sent to effect, populated from current set effect
+		const std::vector<ParameterMarshall*> &effectParameterMarshalls() const;
+
+		// Get percept to check if this transition should be taken
+		const Percept *percept() const;
+
+		// Set percept to check if this transition should be taken
+		void setPercept(Percept *percept);
+
+		// Resource arguments sent to percept, populated from current set percept
+		const std::vector<ResourceMarshall*> &perceptResourceMarshalls() const;
+
+		// Parameter arguments sent to percept, populated from current set percept
+		const std::vector<ParameterMarshall*> &perceptParameterMarshalls() const;
+
 		// Get state to transition to if transition is taken
-		const State &state() const;
+		const State *state() const;
 
 		// Set state to transition to if transition is taken
-		void setState(State &state);
+		void setState(State *state);
 	};
 }

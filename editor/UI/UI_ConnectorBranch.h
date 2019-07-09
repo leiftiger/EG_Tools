@@ -23,6 +23,8 @@ public:
 
 	void addTransition(UI_NetworkTransition *ut);
 
+	void layout();
+
 private:
 	Ui::UI_ConnectorBranch ui;
 
@@ -33,8 +35,13 @@ private:
 	// Padding between transitions
 	static const int TRANSITION_PADDING_BOTTOM = 20;
 
+	// Maximum number of transitions capable of being displayed with above padding
+	// once breached, we use the tight padding
+	static const int TRANSITION_PADDING_BOTTOM_THRESHOLD = 6;
+
+	// If we have more than the above transitions, we should use a smaller padding to fit all of them
+	static const int TRANSITION_PADDING_BOTTOM_TIGHT = 5;
+
 	// Padding between transitions
 	static const int TRANSITION_PADDING_LEFTRIGHT = 5;
-
-	void layout();
 };

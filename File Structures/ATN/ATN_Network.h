@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ATN_Entry.h"
+#include "ATN_IResourceHolder.h"
 #include "ATN_State.h"
 #include "ATN_Thread.h"
 #include "ATN_Resources.h"
@@ -11,7 +12,7 @@ namespace ATN
 	class State; class Thread; class Transition;
 
 	// A network, it serves as a container from which states can access its resources and send it parameters (?)
-	class Network : public Entry
+	class Network : public Entry, IResourceHolder
 	{
 	protected:
 
@@ -56,7 +57,7 @@ namespace ATN
 		std::vector<Thread*>::iterator remove(Thread &thread);
 
 		// Gets all resources belonging to this network
-		const std::vector<Resource*> &resources() const;
+		virtual const std::vector<Resource*> &resources() const override;
 
 		// Add a new resource in the network at the last position
 		void add(Resource &resource);
@@ -68,7 +69,7 @@ namespace ATN
 		std::vector<Resource*>::iterator remove(Resource &resource);
 
 		// Gets all parameters belonging to this network
-		const std::vector<Parameter*> &parameters() const;
+		virtual const std::vector<Parameter*> &parameters() const override;
 
 		// Add a new parameter in the network at the last position
 		void add(Parameter &param);

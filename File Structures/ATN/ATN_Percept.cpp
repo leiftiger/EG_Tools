@@ -40,6 +40,16 @@ namespace ATN
 		return gameFunction().c_str();
 	}
 
+	const std::vector<Parameter*> &Percept::parameters() const
+	{
+		return m_parameters;
+	}
+
+	const std::vector<Resource*> &Percept::resources() const
+	{
+		return m_resources;
+	}
+
 	void Percept::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

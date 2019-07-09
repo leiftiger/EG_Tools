@@ -111,9 +111,15 @@ void UI_NetworkState::setStateName(const QString &name)
 	}
 }
 
+void UI_NetworkState::viewExternalNetwork()
+{
+	emit openNetworkRequest(m_state->networkTransition()->id());
+}
+
 void UI_NetworkState::enableExternalNetwork(bool enable)
 {
 	ui.comboBoxExternalNetwork->setEnabled(enable);
+	ui.buttonViewExternalNetwork->setEnabled(enable);
 
 	if (enable)
 	{

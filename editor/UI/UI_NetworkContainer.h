@@ -210,6 +210,11 @@ public slots:
 	void deleteNetwork();
 	void deleteTransition();
 
+	void receiveOpenNetworkRequest(int id);
+
+	signals:
+		void openNetworkRequest(int id);
+
 private:
 	Ui::UI_NetworkContainer ui;
 };
