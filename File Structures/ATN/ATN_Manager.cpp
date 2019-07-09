@@ -171,7 +171,7 @@ namespace ATN
 		instance().m_descValues[strType] = list;
 	}
 
-	const List<Property> &Manager::getDefinitions(const std::string &strType)
+	List<Property> &Manager::getDefinitions(const std::string &strType)
 	{
 		return instance().m_descValues[strType];
 	}

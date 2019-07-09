@@ -41,8 +41,7 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 	{
 		QStringList translations;
 
-		// TODO: This call is super-expensive - need to get a proper iterator for ATN::List
-		ATN::List<ATN::Property> defs = ATN::Manager::getDefinitions(parameter->m_type);
+		ATN::List<ATN::Property> &defs = ATN::Manager::getDefinitions(parameter->m_type);
 
 		for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : defs)
 		{

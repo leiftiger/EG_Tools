@@ -85,7 +85,7 @@ namespace ATN
 		static void setDefinitions(const std::string &strType, List<Property> &list);
 
 		// Get hash definitions
-		static const List<Property> &getDefinitions(const std::string &strType);
+		static List<Property> &getDefinitions(const std::string &strType);
 
 		// Do we have hash definitions for this type?
 		static bool hasDefinitions(const std::string &strType);

@@ -19,7 +19,7 @@ void UI_NetworkVariable::loadTranslations()
 	{
 		QStringList translations;
 
-		ATN::List<ATN::Property> defs = ATN::Manager::getDefinitions(ui.variableType->currentText().toStdString());
+		ATN::List<ATN::Property> &defs = ATN::Manager::getDefinitions(ui.variableType->currentText().toStdString());
 
 		for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : defs)
 		{
