@@ -15,6 +15,39 @@ namespace ATN
 		return "TATNState";
 	}
 
+	const std::vector<Transition*>& State::transitions() const
+	{
+		return m_stateTransitions;
+	}
+
+	void State::add(Transition &t)
+	{
+		m_stateTransitions.push_back(&t);
+	}
+
+	void State::moveUp(Transition &t)
+	{
+		m_stateTransitions.insert(--remove(t), &t);
+	}
+
+	void State::moveDown(Transition &t)
+	{
+		m_stateTransitions.insert(++remove(t), &t);
+	}
+
+	std::vector<Transition*>::iterator State::remove(Transition &t)
+	{
+		for (std::vector<Transition*>::iterator it = m_stateTransitions.begin(); it != m_stateTransitions.end(); it++)
+		{
+			if (*it == &t)
+			{
+				return m_stateTransitions.erase(it);
+			}
+		}
+
+		return m_stateTransitions.end();
+	}
+
 	const Network *State::networkTransition() const
 	{
 		return m_networkTransition;
@@ -64,7 +97,14 @@ namespace ATN
 		// Header for transitions
 		stream << "ContainerID=ATNData" << std::endl;
 
-		util::writeEntryIDs<Transition>(stream, "StateTransitions=", m_stateTransitions);
+		std::vector<Transition*> revTransitions;
+
+		for (int i = (int)m_stateTransitions.size() - 1; i >= 0; i--)
+		{
+			revTransitions.push_back(m_stateTransitions[i]);
+		}
+
+		util::writeEntryIDs<Transition>(stream, "StateTransitions=", revTransitions);
 
 		stream << "NetworkThreshold=0.0001" << std::endl;
 
@@ -87,7 +127,14 @@ namespace ATN
 		if (line != "ContainerID=ATNData")
 			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
 
-		m_stateTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
+		std::vector<Transition*> revTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
+
+		// It appears that the transitions are sorted according from 0 = [least priority] to n = [most priority]
+		// So the list is reversed to keep all methods working the same way
+		for (int i = (int)revTransitions.size() - 1; i >= 0; i--)
+		{
+			m_stateTransitions.push_back(revTransitions[i]);
+		}
 
 		util::getline(stream, line);
 

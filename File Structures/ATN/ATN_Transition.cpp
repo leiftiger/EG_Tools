@@ -20,6 +20,16 @@ namespace ATN
 		return "TATNStateTransition";
 	}
 
+	const State &Transition::state() const
+	{
+		return *m_state;
+	}
+
+	void Transition::setState(State &state)
+	{
+		m_state = &state;
+	}
+
 	void Transition::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

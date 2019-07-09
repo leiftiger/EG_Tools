@@ -29,6 +29,18 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
+		// Gets the possible transitions from this state
+		const std::vector<Transition*> &transitions() const;
+
+		// Add a transition from this state to be evaluated last
+		void add(Transition &t);
+		// Move specified transition higher in evaluation order
+		void moveUp(Transition &t);
+		// Move specified transition lower in evaluation order
+		void moveDown(Transition &t);
+		// Remove specified transition from this state
+		std::vector<Transition*>::iterator remove(Transition &t);
+
 		// Gets the network transition call from this state if set
 		const Network *networkTransition() const;
 		// Sets the network transition call from this state, recreating resource and parameter marshalls to suit new call

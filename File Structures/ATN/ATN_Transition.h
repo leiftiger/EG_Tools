@@ -38,5 +38,11 @@ namespace ATN
 		~Transition();
 
 		virtual const char * const typeName() const override;
+
+		// Get state to transition to if transition is taken
+		const State &state() const;
+
+		// Set state to transition to if transition is taken
+		void setState(State &state);
 	};
 }
