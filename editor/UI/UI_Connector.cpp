@@ -4,6 +4,14 @@ UI_Connector::UI_Connector(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	// TODO: Better way of rendering over entire network container
+	setFixedSize(parent->size()*100);
+
+	this->setAttribute(Qt::WA_InputMethodEnabled, false);
+	this->setAttribute(Qt::WA_InputMethodTransparent, true);
+	this->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	this->setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 UI_Connector::~UI_Connector()
@@ -24,7 +32,10 @@ void UI_Connector::setHovered(bool hovered)
 	// Only repaint when needed
 	if (bDifferent)
 	{
-		repaint();
+		if (hovered)
+			raise();
+
+		update();
 	}
 }
 
@@ -48,11 +59,10 @@ void UI_Connector::setEnd(UI_ConnectorEnd *end)
 	m_end = end;
 }
 
-/*
-void UI_Connector::setNetwork(UI_NetworkContainer *net)
+void UI_Connector::setNetwork(NetworkContainerProxy *network)
 {
-	m_network = net;
-}*/
+	m_network = network;
+}
 
 void UI_Connector::paintEvent(QPaintEvent *e)
 {
@@ -60,9 +70,9 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	painter.begin(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	QVector<QPointF> points;
+	QVector<QPoint> points;
 
-	points.append(m_start->center());
+	points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center())));
 
 	ConnectFlags flagsStart = m_start->connectFlags();
 	ConnectFlags flagsEnd = ConnectFlags::None;
@@ -72,24 +82,24 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 
 	if (flagsStart & ConnectFlags::OffsetRight)
 	{
-		points.append(m_start->center() + QPointF(CONNECTOR_OFFSET, 0));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(CONNECTOR_OFFSET, 0))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetLeft)
 	{
-		points.append(m_start->center() + QPointF(-CONNECTOR_OFFSET, 0));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(-CONNECTOR_OFFSET, 0))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetDown)
 	{
-		points.append(m_start->center() + QPointF(0, CONNECTOR_OFFSET));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, CONNECTOR_OFFSET))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetUp)
 	{
-		points.append(m_start->center() + QPointF(0, -CONNECTOR_OFFSET));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, -CONNECTOR_OFFSET))));
 	}
 
-	QPointF &lastPoint = points[points.size() - 1];
+	QPoint &lastPoint = points[points.size() - 1];
 
-	QPointF targetPoint;
+	QPoint targetPoint;
 
 	// If no end is in sight, we go towards the mouse
 	if (m_end == nullptr)
@@ -97,44 +107,58 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 		targetPoint = mapFromGlobal(QCursor::pos());
 	}
 	else
-		targetPoint = m_end->center();
+		targetPoint = mapFromGlobal(m_end->mapToGlobal(m_end->center()));
 
 	// If we can't go straight to the target, then we will bend the line towards it
-	//if (!m_network->isLineClear(QLineF(lastPoint, targetPoint)))
+	if (!m_network->isLineClear(QLine(lastPoint, targetPoint)))
 	{
-		//points.append(QPointF(lastPoint.x(), m_network->stateHeight(flagsStart)));
+		points.append(lastPoint);
+		points.append(QPoint(lastPoint.x(), m_network->stateHeight(flagsStart, this)));
 	}
 
-	QPointF targetOffset = targetPoint;
+	QPoint targetOffset = targetPoint;
 
 	if (flagsEnd & ConnectFlags::OffsetLeft)
 	{
-		targetOffset = targetPoint + QPointF(-CONNECTOR_OFFSET, 0);
+		targetOffset = targetPoint + QPoint(-CONNECTOR_OFFSET, 0);
 	}
 	else if (flagsEnd & ConnectFlags::OffsetRight)
 	{
-		targetOffset = targetPoint + QPointF(CONNECTOR_OFFSET, 0);
+		targetOffset = targetPoint + QPoint(CONNECTOR_OFFSET, 0);
 	}
 	else if (flagsEnd & ConnectFlags::OffsetUp)
 	{
-		targetOffset = targetPoint + QPointF(0, -CONNECTOR_OFFSET);
+		targetOffset = targetPoint + QPoint(0, -CONNECTOR_OFFSET);
 	}
 	else if (flagsEnd & ConnectFlags::OffsetDown)
 	{
-		targetOffset = targetPoint + QPointF(0, CONNECTOR_OFFSET);
+		targetOffset = targetPoint + QPoint(0, CONNECTOR_OFFSET);
 	}
 
-	//if (!m_network->isLineClear(QLineF(lastPoint, targetPoint)))
+	if (!m_network->isLineClear(QLine(lastPoint, targetPoint)))
 	{
-		//points.append(QPointF(targetOffset.x(), m_network->stateHeight(flagsStart)));
+		points.append(points[points.size() - 1]);
+		points.append(QPoint(targetOffset.x(), m_network->stateHeight(flagsStart, this)));
+		points.append(QPoint(targetOffset.x(), m_network->stateHeight(flagsStart, this)));
+		points.append(targetOffset);
 	}
-
-	points.append(targetOffset);
+	else
+	{
+		points.append(lastPoint);
+		points.append(targetOffset);
+	}
 
 	if (targetOffset != targetPoint)
+	{
+		points.append(targetOffset);
 		points.append(targetPoint);
+	}
 
-	painter.setPen(QPen(QColor(0, 0, 0, 255), CONNECTOR_SIZE));
+	if (m_hovered)
+		painter.setPen(QPen(QColor(255, 128, 0, 255), CONNECTOR_SIZE));
+	else
+		painter.setPen(QPen(QColor(0, 0, 0, 255), CONNECTOR_SIZE));
+
 	painter.setBrush(Qt::BrushStyle::NoBrush);
 
 	painter.drawLines(points);

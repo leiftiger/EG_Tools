@@ -29,7 +29,7 @@ public:
 	virtual void paintEvent(QPaintEvent *e) override;
 
 	// Gets the center of this connector
-	QPointF center() const;
+	QPoint center() const;
 
 private:
 	Ui::UI_ConnectorStart ui;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QWidget>
+#include <QPaintEvent>
+
 #include "GeneratedFiles/ui_UI_Connector.h"
 
 #include "UI_ConnectorStart.h"
@@ -8,9 +10,12 @@
 
 #include "UI_ConnectFlags.h"
 
+#include "NetworkContainerProxy.h"
+
 // Forward declared
 class UI_ConnectorStart;
 class UI_ConnectorEnd;
+class NetworkContainerProxy;
 
 class UI_Connector : public QWidget
 {
@@ -29,8 +34,7 @@ public:
 	const UI_ConnectorEnd *end() const;
 	void setEnd(UI_ConnectorEnd *end);
 
-	//void setNetwork(UI_NetworkContainer *net);
-
+	void setNetwork(NetworkContainerProxy *network);
 
 	virtual void paintEvent(QPaintEvent *e) override;
 
@@ -42,12 +46,5 @@ private:
 	UI_ConnectorStart *m_start = nullptr;
 	UI_ConnectorEnd *m_end = nullptr;
 
-	// Commented due to insane circular dependency if trying to access the network container
-	//UI_NetworkContainer *m_network = nullptr;
-
-	// How large the connector lines should be
-	const double CONNECTOR_SIZE = 4;
-
-	// How long the connector offset to the left or right should be
-	const double CONNECTOR_OFFSET = 32;
+	NetworkContainerProxy *m_network;
 };

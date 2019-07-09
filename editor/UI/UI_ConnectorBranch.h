@@ -21,13 +21,20 @@ public:
 
 	virtual void paintEvent(QPaintEvent *e) override;
 
+	void addTransition(UI_NetworkTransition *ut);
+
 private:
 	Ui::UI_ConnectorBranch ui;
 
 	std::vector<UI_NetworkTransition*> m_transitions;
-	std::vector<UI_ConnectorStart*> m_transitionConnectors;
 
 	UI_ConnectorStart *m_newTransitionConnector;
 
-	const double CONNECTOR_SIZE = 4;
+	// Padding between transitions
+	static const int TRANSITION_PADDING_BOTTOM = 20;
+
+	// Padding between transitions
+	static const int TRANSITION_PADDING_LEFTRIGHT = 5;
+
+	void layout();
 };

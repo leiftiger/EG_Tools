@@ -47,7 +47,7 @@ void UI_ConnectorEnd::paintEvent(QPaintEvent *e)
 	painter.end();
 }
 
-QPointF UI_ConnectorEnd::center() const
+QPoint UI_ConnectorEnd::center() const
 {
-	return QPointF(x() + width() * 0.5f, y() + height() * 0.5f);
+	return QPoint(width() / 2, height() / 2);
 }

@@ -46,8 +46,8 @@
       <widget class="QFrame" name="frameStates">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>310</y>
+         <x>20</x>
+         <y>340</y>
          <width>431</width>
          <height>201</height>
         </rect>
@@ -62,7 +62,7 @@
       <widget class="QFrame" name="frameTransition">
        <property name="geometry">
         <rect>
-         <x>750</x>
+         <x>760</x>
          <y>0</y>
          <width>1031</width>
          <height>291</height>
@@ -124,7 +124,7 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>770</x>
+          <x>700</x>
           <y>10</y>
           <width>121</width>
           <height>31</height>
@@ -148,7 +148,7 @@
        <widget class="QLabel" name="label_15">
         <property name="geometry">
          <rect>
-          <x>690</x>
+          <x>620</x>
           <y>10</y>
           <width>81</width>
           <height>31</height>
@@ -168,7 +168,7 @@
          <string>Unique ID:</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="buttonNewState_3">
+       <widget class="QPushButton" name="buttonDeleteTransition">
         <property name="geometry">
          <rect>
           <x>910</x>
@@ -480,7 +480,7 @@
          <rect>
           <x>10</x>
           <y>50</y>
-          <width>891</width>
+          <width>1011</width>
           <height>21</height>
          </rect>
         </property>
@@ -493,11 +493,51 @@
          <string>Interpretation: </string>
         </property>
        </widget>
+       <widget class="QToolButton" name="buttonTransitionSortDown">
+        <property name="geometry">
+         <rect>
+          <x>870</x>
+          <y>10</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>DN</string>
+        </property>
+        <property name="autoRaise">
+         <bool>false</bool>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::DownArrow</enum>
+        </property>
+       </widget>
+       <widget class="QToolButton" name="buttonTransitionSortUp">
+        <property name="geometry">
+         <rect>
+          <x>830</x>
+          <y>10</y>
+          <width>31</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>UP</string>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::UpArrow</enum>
+        </property>
+       </widget>
       </widget>
       <widget class="QFrame" name="frameNetwork">
        <property name="geometry">
         <rect>
-         <x>0</x>
+         <x>10</x>
          <y>0</y>
          <width>751</width>
          <height>291</height>
@@ -767,7 +807,7 @@
        <widget class="QScrollArea" name="scrollArea_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>9</x>
           <y>110</y>
           <width>191</width>
           <height>171</height>
@@ -938,7 +978,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonNewState_3</sender>
+   <sender>buttonDeleteTransition</sender>
    <signal>pressed()</signal>
    <receiver>UI_NetworkContainer</receiver>
    <slot>deleteTransition()</slot>

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="UI\NetworkContainerProxy.cpp" />
     <ClCompile Include="UI\UI_Connector.cpp" />
     <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
     <ClCompile Include="UI\UI_ConnectorStart.cpp" />
@@ -83,6 +84,7 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\NetworkContainerProxy.h" />
     <ClInclude Include="UI\UI_ConnectFlags.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

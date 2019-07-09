@@ -29,7 +29,10 @@
 #include "UI_ConnectorStart.h"
 #include "UI_ConnectorEnd.h"
 
+#include "NetworkContainerProxy.h"
+
 #include <vector>
+#include <unordered_map>
 
 class UI_NetworkContainer : public QWidget
 {
@@ -63,11 +66,10 @@ private:
 	// Total size of network container
 	QSize m_networkContentsMinimumSize;
 
-	// Minimum distance between two states
-	const int STATE_MARGIN = 50;
+	NetworkContainerProxy m_proxy;
 
-	// How far from the states that transition connection lines should go
-	const int CONNECTOR_HEIGHT_OFFSET = 5;
+	// Minimum distance between two states
+	const int STATE_MARGIN = 100;
 
 	// Initializes the two comboboxes used to select effect/percepts in the editor
 	void initializeArgumentLists();
@@ -177,12 +179,6 @@ public:
 
 	// Gets the network this container represents
 	const ATN::Network &network();
-
-	// Returns true if the line avoids colliding with any states
-	bool isLineClear(const QLineF &line) const;
-
-	// Gets the height that is above or below the states according to the used flags
-	double stateHeight(ConnectFlags flags) const;
 
 public slots:
 	void threadCreate();

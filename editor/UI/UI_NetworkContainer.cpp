@@ -451,13 +451,20 @@ void UI_NetworkContainer::layoutStates()
 
 	ui.frameStates->adjustSize();
 
+	ui.frameStates->setFixedWidth(ui.frameStates->width() + STATE_MARGIN);
+
 	// Adjust scroller to recognize the total area
 	ui.networkContents->setMinimumWidth(std::max(m_networkContentsMinimumSize.width(), ui.frameStates->width() + ui.frameStates->x()));
-	ui.networkContents->setMinimumHeight(std::max(m_networkContentsMinimumSize.height(), ui.frameStates->height() + ui.frameStates->y() + CONNECTOR_HEIGHT_OFFSET*4));
+	ui.networkContents->setMinimumHeight(std::max(m_networkContentsMinimumSize.height(), ui.frameStates->height() + ui.frameStates->y() + NetworkContainerProxy::CONNECTOR_HEIGHT_OFFSET*4));
+
+	m_proxy.setUpperHeight(ui.frameStates->y());
+	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height() + 24); // TODO: Why doesn't the height go to +24 automatically?
 }
 
 void UI_NetworkContainer::initializeStates()
 {
+	std::unordered_map<const ATN::State*, UI_NetworkState*> uiStates;
+
 	for (ATN::State *s : m_network->states())
 	{
 		UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
@@ -469,6 +476,52 @@ void UI_NetworkContainer::initializeStates()
 		connect(ut->ui.buttonDelete, SIGNAL(released()), this, SLOT(stateRemove()));
 
 		m_states.push_back(ut);
+
+		uiStates[s] = ut;
+	}
+
+	for (UI_NetworkThread *uiThread : m_threads)
+	{
+		const ATN::State *state = &uiThread->m_thread->state();
+
+		if (state != nullptr)
+		{
+			UI_NetworkState *uiState = uiStates[state];
+
+			UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+
+			uiConnector->setNetwork(&m_proxy);
+
+			uiConnector->setStart(uiThread->ui.connector);
+			uiConnector->setEnd(uiState->ui.connectorIn);
+
+			uiThread->ui.connector->setConnector(uiConnector);
+		}
+	}
+
+	for (UI_NetworkState *uiStateFrom : m_states)
+	{
+		for (ATN::Transition *t : uiStateFrom->m_state->transitions())
+		{
+			UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
+
+			uiTransition->m_transition = t;
+
+			UI_NetworkState *uiStateTo = uiStates[&t->state()];
+
+			UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+
+			uiConnector->setNetwork(&m_proxy);
+
+			uiConnector->setStart(uiTransition->m_connector);
+			uiConnector->setEnd(uiStateTo->ui.connectorIn);
+
+			uiTransition->m_connector->setConnector(uiConnector);
+
+			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
+
+			uiStateFrom->adjustSize();
+		}
 	}
 
 	layoutStates();
@@ -508,19 +561,4 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 const ATN::Network &UI_NetworkContainer::network()
 {
 	return *m_network;
-}
-
-bool UI_NetworkContainer::isLineClear(const QLineF &pos) const
-{
-	return false;
-}
-
-double UI_NetworkContainer::stateHeight(ConnectFlags flags) const
-{
-	if (flags & ConnectFlags::Above)
-	{
-		return ui.frameStates->y() - CONNECTOR_HEIGHT_OFFSET;
-	}
-
-	return ui.frameStates->y() + ui.frameStates->height() + CONNECTOR_HEIGHT_OFFSET;
 }
