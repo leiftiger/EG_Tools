@@ -487,14 +487,14 @@ void UI_NetworkContainer::layoutStates()
 
 	ui.frameStates->adjustSize();
 
-	ui.frameStates->setFixedWidth(ui.frameStates->width() + STATE_MARGIN);
+	ui.frameStates->resize(ui.frameStates->width() + STATE_MARGIN, ui.frameStates->height());
 
 	// Adjust scroller to recognize the total area
 	ui.networkContents->setMinimumWidth(std::max(m_networkContentsMinimumSize.width(), ui.frameStates->width() + ui.frameStates->x()));
 	ui.networkContents->setMinimumHeight(std::max(m_networkContentsMinimumSize.height(), ui.frameStates->height() + ui.frameStates->y() + NetworkContainerProxy::CONNECTOR_HEIGHT_OFFSET*4));
 
 	m_proxy.setUpperHeight(ui.frameStates->y());
-	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height()); // TODO: Why doesn't the height go to +24 automatically?
+	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height());
 
 	m_proxy.setStateSpaces(stateSpaces);
 }
