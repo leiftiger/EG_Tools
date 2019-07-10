@@ -873,6 +873,22 @@
          </property>
         </widget>
        </widget>
+       <widget class="QPushButton" name="buttonFindTransitions">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>50</y>
+          <width>191</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>Find networks that transition to this network as a subnetwork</string>
+        </property>
+        <property name="text">
+         <string>Find transitions to this network</string>
+        </property>
+       </widget>
        <zorder>scrollArea_4</zorder>
        <zorder>scrollArea_3</zorder>
        <zorder>scrollArea_2</zorder>
@@ -888,6 +904,7 @@
        <zorder>buttonDeleteNetwork</zorder>
        <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
+       <zorder>buttonFindTransitions</zorder>
       </widget>
      </widget>
     </widget>
@@ -1057,6 +1074,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonFindTransitions</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>findTransitions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>584</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>585</x>
+     <y>-11</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>threadCreate()</slot>
@@ -1069,5 +1102,6 @@
   <slot>setTransitionName(QString)</slot>
   <slot>setTransitionPercept(int)</slot>
   <slot>setTransitionEffect(int)</slot>
+  <slot>findTransitions()</slot>
  </slots>
 </ui>

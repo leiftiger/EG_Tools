@@ -373,6 +373,11 @@ void UI_NetworkContainer::deleteTransition()
 
 }
 
+void UI_NetworkContainer::findTransitions()
+{
+	emit findTransitionsRequest(m_network->id());
+}
+
 void UI_NetworkContainer::receiveOpenNetworkRequest(int id)
 {
 	emit openNetworkRequest(id);

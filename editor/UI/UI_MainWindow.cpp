@@ -51,8 +51,8 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 
 	tab->initializeFromID(el.id());
 
-
 	connect(tab, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
+	connect(tab, SIGNAL(findTransitionsRequest(int)), this, SLOT(receiveTransitionsRequest(int)));
 
 	ui.tabWidget->addTab(tab, tr("Network ") + QString::fromStdString(std::to_string(el.id())));
 
@@ -131,6 +131,9 @@ void UI_MainWindow::searchID(const QString &str)
 	// Clear current results
 	setNetworkResults(std::vector<ATN::Network*>());
 
+	// Focus on search results
+	ui.tabWidget->setCurrentIndex(0);
+
 	try
 	{
 		int id = std::atoi(str.toStdString().c_str());
@@ -198,4 +201,38 @@ void UI_MainWindow::receiveOpenNetworkRequest(int id)
 	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(id);
 
 	createNetworkResourceTab(*net);
+}
+
+void UI_MainWindow::receiveTransitionsRequest(int id)
+{
+	blockSignals(true);
+
+	ui.textName->setText("");
+	ui.textUniqueID->setText("");
+
+	blockSignals(false);
+
+	ATN::Network *transitionNetwork = (ATN::Network*)&ATN::Manager::findByID(id);
+
+	// Clear current results
+	setNetworkResults(std::vector<ATN::Network*>());
+
+	// Focus on search results
+	ui.tabWidget->setCurrentIndex(0);
+
+	std::vector<ATN::Network*> netResults;
+
+	for (ATN::Network *net : ATN::Manager::getNetworks())
+	{
+		for (ATN::State *state : net->states())
+		{
+			if (state->networkTransition() == transitionNetwork)
+			{
+				netResults.push_back(net);
+				break;
+			}
+		}
+	}
+
+	setNetworkResults(netResults);
 }

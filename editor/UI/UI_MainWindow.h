@@ -40,6 +40,7 @@ public slots:
 	void closeTab(int tab);
 
 	void receiveOpenNetworkRequest(int id);
+	void receiveTransitionsRequest(int id);
 
 private:
 	Ui::UI_MainWindowClass ui;

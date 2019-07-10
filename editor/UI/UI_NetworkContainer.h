@@ -210,12 +210,15 @@ public slots:
 	void deleteNetwork();
 	void deleteTransition();
 
+	void findTransitions();
+
 	void receiveOpenNetworkRequest(int id);
 
 	void receiveStateLayoutRequest();
 
 	signals:
 		void openNetworkRequest(int id);
+		void findTransitionsRequest(int id);
 
 private:
 	Ui::UI_NetworkContainer ui;
