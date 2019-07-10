@@ -107,6 +107,9 @@ void UI_ConnectorBranch::layout()
 
 	setFixedHeight(desiredHeight);
 
+	// Align the branch to center on same plane as connector
+	desiredHeight -= CONNECTOR_SIZE + 1;
+
 	move(x(), y() + center.y() - desiredHeight / 2);
 
 	int branchY = 0;

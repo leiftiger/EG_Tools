@@ -106,6 +106,9 @@ void UI_MainWindow::searchName(const QString &str)
 {
 	std::vector<ATN::Network*> netResults;
 
+	// Focus on search results
+	ui.tabWidget->setCurrentIndex(0);
+
 	// Too laggy and often irrelevant to search on first character
 	if (str.length() <= 1)
 	{
