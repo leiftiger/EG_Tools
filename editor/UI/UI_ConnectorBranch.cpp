@@ -7,6 +7,8 @@ UI_ConnectorBranch::UI_ConnectorBranch(QWidget *parent)
 
 	m_newTransitionConnector = new UI_ConnectorStart(parent);
 	m_newTransitionConnector->setFixedSize(21, 21);
+
+	layout();
 }
 
 UI_ConnectorBranch::~UI_ConnectorBranch()
@@ -40,6 +42,10 @@ void UI_ConnectorBranch::paintEvent(QPaintEvent *e)
 
 		for (int i = 0; i < totalBranches; i++)
 		{
+			// Ensure the middle branch is centered properly and not off by one when we have odd branches
+			if (i == totalBranches / 2)
+				branchY -= 1;
+
 			painter.drawLine(center.x(), branchY, width(), branchY);
 
 			branchY += branchHeight;
@@ -73,7 +79,7 @@ void UI_ConnectorBranch::layout()
 		transitionPadding = TRANSITION_PADDING_BOTTOM_TIGHT;
 	}
 
-	int desiredHeight = m_newTransitionConnector->height() - transitionPadding;
+	int desiredHeight = m_newTransitionConnector->height()/2;
 
 	int farthestConnectorDistance = 0;
 
@@ -83,6 +89,14 @@ void UI_ConnectorBranch::layout()
 
 		if (ut->m_connector->mapToParent(ut->m_connector->center()).x() > farthestConnectorDistance)
 			farthestConnectorDistance = ut->m_connector->mapToParent(ut->m_connector->center()).x();
+	}
+
+	// Remove the space unused by the first element and add missing odd halves from connector and first element
+	if (totalBranches > 1)
+	{
+		desiredHeight -= m_transitions[0]->height() / 2;
+
+		desiredHeight += 2;
 	}
 
 	QPointF center = QPointF(width()*0.5f, height()*0.5f);
