@@ -72,12 +72,16 @@ void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
 	ui.textStateName->setText(QString::fromStdString(s->name()));
 	ui.textUniqueID->setText(QString::fromStdString(std::to_string(s->id())));
 
-	if (s->networkTransition() != nullptr && s->networkTransition() != net)
+	if (s->networkTransition() != nullptr)
 	{
 		ui.checkBoxExternalNetworkConnector->setChecked(true);
 		enableExternalNetwork(true);
 
 		ui.comboBoxExternalNetwork->setCurrentIndex(ui.comboBoxExternalNetwork->findText(QString::fromStdString(std::to_string(s->networkTransition()->id()) + std::string(": ") + s->networkTransition()->name())));
+	}
+	else
+	{
+		setMinimized(true);
 	}
 
 	m_state = s;
@@ -88,6 +92,65 @@ void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
 
 	ui.connectorOut->layout();
 	adjustSize();
+}
+
+void UI_NetworkState::setMinimized(bool minimize)
+{
+	QWidget *widgets[] = { 
+		ui.frame, ui.textStateName, ui.buttonSortUp, ui.buttonSortDown,
+		ui.buttonDelete, ui.labelResources, ui.labelArguments,
+		ui.scrollAreaResources, ui.scrollAreaArguments, ui.comboBoxExternalNetwork,
+		ui.connectorOut
+	};
+
+	if (minimize)
+	{
+		if (m_geometries.size() == 0)
+		{
+			for (QWidget *widget : widgets)
+			{
+				m_geometries.push_back(QRect(widget->geometry()));
+			}
+		}
+
+		// Note: setGeometry is unreliable, so always use move and setFixedSize
+		ui.textStateName->setFixedWidth(101);
+
+		ui.buttonSortUp->move(200, 10);
+		ui.buttonSortDown->move(220, 10);
+		ui.buttonDelete->move(240, 10);
+
+		ui.labelResources->setFixedWidth(121);
+		ui.labelArguments->move(140, 30);
+		ui.labelArguments->setFixedSize(121, 31);
+
+		ui.scrollAreaResources->setFixedWidth(121);
+		ui.scrollAreaArguments->move(140, 60);
+		ui.scrollAreaArguments->setFixedSize(121, 121);
+
+		ui.comboBoxExternalNetwork->setFixedWidth(111);
+
+		ui.frame->setFixedWidth(271);
+
+		ui.connectorOut->move(290, ui.connectorOut->y());
+	}
+	else
+	{
+		for (size_t i = 0; i < m_geometries.size(); i++)
+		{
+			widgets[i]->move(m_geometries[i].topLeft());
+			widgets[i]->setFixedSize(m_geometries[i].size());
+		}
+	}
+
+	ui.connectorOut->layout();
+
+	int height = this->height();
+
+	adjustSize();
+	setFixedHeight(height);
+
+	emit requestLayout();
 }
 
 void UI_NetworkState::selectExternalNetwork(int index)
@@ -123,6 +186,7 @@ void UI_NetworkState::enableExternalNetwork(bool enable)
 {
 	ui.comboBoxExternalNetwork->setEnabled(enable);
 	ui.buttonViewExternalNetwork->setEnabled(enable);
+	setMinimized(!enable);
 
 	if (enable)
 	{
@@ -132,5 +196,10 @@ void UI_NetworkState::enableExternalNetwork(bool enable)
 		{
 			ui.comboBoxExternalNetwork->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
+	}
+	else
+	{
+		m_state->setNetworkTransition(nullptr);
+		populateArguments();
 	}
 }

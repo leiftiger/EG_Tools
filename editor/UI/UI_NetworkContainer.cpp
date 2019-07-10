@@ -148,6 +148,7 @@ void UI_NetworkContainer::stateCreate()
 	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
 
 	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
+	connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
 
 	ut->initialize(s, m_network);
 	ut->show();
@@ -377,6 +378,11 @@ void UI_NetworkContainer::receiveOpenNetworkRequest(int id)
 	emit openNetworkRequest(id);
 }
 
+void UI_NetworkContainer::receiveStateLayoutRequest()
+{
+	layoutStates();
+}
+
 
 void UI_NetworkContainer::initializeResources()
 {
@@ -483,7 +489,7 @@ void UI_NetworkContainer::layoutStates()
 	ui.networkContents->setMinimumHeight(std::max(m_networkContentsMinimumSize.height(), ui.frameStates->height() + ui.frameStates->y() + NetworkContainerProxy::CONNECTOR_HEIGHT_OFFSET*4));
 
 	m_proxy.setUpperHeight(ui.frameStates->y());
-	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height() + 24); // TODO: Why doesn't the height go to +24 automatically?
+	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height()); // TODO: Why doesn't the height go to +24 automatically?
 
 	m_proxy.setStateSpaces(stateSpaces);
 }
@@ -503,6 +509,7 @@ void UI_NetworkContainer::initializeStates()
 		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
 
 		connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
+		connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
 
 		m_states.push_back(ut);
 
@@ -549,7 +556,10 @@ void UI_NetworkContainer::initializeStates()
 
 			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
 
+			int height = uiStateFrom->height();
+
 			uiStateFrom->adjustSize();
+			uiStateFrom->setFixedHeight(height);
 		}
 	}
 

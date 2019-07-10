@@ -212,6 +212,8 @@ public slots:
 
 	void receiveOpenNetworkRequest(int id);
 
+	void receiveStateLayoutRequest();
+
 	signals:
 		void openNetworkRequest(int id);
 

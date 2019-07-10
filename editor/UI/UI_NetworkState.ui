@@ -94,7 +94,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_14">
+   <widget class="QLabel" name="labelArguments">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -120,7 +120,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="QLabel" name="labelResources">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -275,7 +275,7 @@
      <enum>Qt::NoArrow</enum>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea_5">
+   <widget class="QScrollArea" name="scrollAreaResources">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -314,7 +314,7 @@
      <string>Unique ID of the subnetwork to start (external resource)</string>
     </property>
    </widget>
-   <widget class="QScrollArea" name="scrollArea_6">
+   <widget class="QScrollArea" name="scrollAreaArguments">
     <property name="geometry">
      <rect>
       <x>260</x>
@@ -362,11 +362,11 @@
      <string>View network</string>
     </property>
    </widget>
-   <zorder>scrollArea_5</zorder>
+   <zorder>scrollAreaResources</zorder>
    <zorder>label_2</zorder>
    <zorder>textStateName</zorder>
-   <zorder>label_14</zorder>
-   <zorder>label_13</zorder>
+   <zorder>labelArguments</zorder>
+   <zorder>labelResources</zorder>
    <zorder>checkBoxExternalNetworkConnector</zorder>
    <zorder>textUniqueID</zorder>
    <zorder>label</zorder>
@@ -374,7 +374,7 @@
    <zorder>buttonSortUp</zorder>
    <zorder>buttonDelete</zorder>
    <zorder>comboBoxExternalNetwork</zorder>
-   <zorder>scrollArea_6</zorder>
+   <zorder>scrollAreaArguments</zorder>
    <zorder>buttonViewExternalNetwork</zorder>
   </widget>
   <widget class="UI_ConnectorBranch" name="connectorOut" native="true">
