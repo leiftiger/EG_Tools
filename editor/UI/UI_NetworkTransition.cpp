@@ -144,7 +144,7 @@ std::string UI_NetworkTransition::interpret()
 
 void UI_NetworkTransition::layout()
 {
-	ui.label->setText(QString::fromStdString(interpret()));
+	ui.label->setText(QString::fromStdString(m_transition->name()));
 
 	// Height is fixed so the connector fits the transition container
 	int height = ui.label->height();
