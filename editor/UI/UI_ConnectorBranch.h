@@ -32,6 +32,8 @@ private:
 
 	UI_ConnectorStart *m_newTransitionConnector;
 
+	int m_centerHeight = -1;
+
 	// Padding between transitions
 	static const int TRANSITION_PADDING_BOTTOM = 20;
 

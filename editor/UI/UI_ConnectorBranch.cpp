@@ -103,14 +103,16 @@ void UI_ConnectorBranch::layout()
 		desiredHeight += 2;
 	}
 
-	QPointF center = QPointF(width()*0.5f, height()*0.5f);
+	// Keep track of what height the designer set for us, to ensure we're always in center
+	if (m_centerHeight == -1)
+		m_centerHeight = height() / 2;
 
 	setFixedHeight(desiredHeight);
 
 	// Align the branch to center on same plane as connector
 	desiredHeight -= CONNECTOR_SIZE + 1;
 
-	move(x(), y() + center.y() - desiredHeight / 2);
+	move(x(), m_centerHeight - desiredHeight / 2);
 
 	int branchY = 0;
 
