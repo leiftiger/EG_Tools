@@ -145,7 +145,7 @@ namespace ATN
 		}
 		catch (ATN::Exception e)
 		{
-			throw ATN::Exception("Cannot decipher resource dependencies! Make sure ATNResources.ros is loaded!");
+			throw ATN::Exception("Cannot find resource dependencies! Make sure ATNResources.ros is loaded!");
 		}
 
 		while (e != nullptr)

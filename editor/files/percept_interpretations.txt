@@ -2,7 +2,7 @@ TATNPerceptTrue
 true
 
 TATNPerceptWaitForEvent
-wait for "::param0::"
+"::param0::" has occurred
 
 TATNPerceptNumberEquals
 ::resource0:: == ::param0::
@@ -93,3 +93,9 @@ TATNPerceptResourceExists::46
 
 TATNPerceptResourceExists::8830
 ::resource0:: exists (?)
+
+TATNPerceptWaitForEventWithEntityTypes::5498
+"::param0::" has occurred with desc ids ::param1:: and ::param2::
+
+TATNPerceptWaitForEventWithEntityTypes::15382
+"::param0::" has occurred with AoI ::param1:: and desc id ::param2::

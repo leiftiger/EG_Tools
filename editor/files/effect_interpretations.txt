@@ -96,3 +96,9 @@ tell ::resource0:: to move to hotspot "::param0::" of ::resource1::
 
 TATNEffectSetLastEffectReturnValue
 terminate thread and return ::param0::
+
+TATNEffectGetGenius
+::resource0:: = get genius instance
+
+TATNEffectSetEntityAvailable
+set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
