@@ -54,6 +54,10 @@ void UI_ConnectorBranch::paintEvent(QPaintEvent *e)
 				branchY = (height() - CONNECTOR_SIZE/2);
 		}
 	}
+	else
+	{
+		//painter.drawLine(center.x(), center.y()-1, width(), center.y()-1);
+	}
 
 	painter.end();
 }
@@ -121,9 +125,25 @@ void UI_ConnectorBranch::layout()
 		ut->m_connector->setConnectorOffset(dist + CONNECTOR_OFFSET);
 	}
 
-	m_newTransitionConnector->move(parentWidget()->mapFromGlobal(mapToGlobal(QPoint(width() + TRANSITION_PADDING_LEFTRIGHT, branchY - (m_newTransitionConnector->height() / 2)))));
+	int connectorX = width();
 
-	int dist = farthestConnectorDistance - mapToParent(m_newTransitionConnector->pos()).x();
+	// With only one connection, we only show the initial branching point with the connector closer to it
+	if (totalBranches == 1)
+	{
+		connectorX = width() / 2;
+		branchY += m_newTransitionConnector->height() / 4 - 1;
+	}
 
-	m_newTransitionConnector->setConnectorOffset(dist + CONNECTOR_OFFSET);
+	m_newTransitionConnector->move(parentWidget()->mapFromGlobal(mapToGlobal(QPoint(connectorX + TRANSITION_PADDING_LEFTRIGHT, branchY - (m_newTransitionConnector->height() / 2)))));
+
+	if (totalBranches > 1)
+	{
+		int dist = farthestConnectorDistance - mapToParent(m_newTransitionConnector->pos()).x();
+
+		m_newTransitionConnector->setConnectorOffset(dist + CONNECTOR_OFFSET);
+	}
+	else
+	{
+		m_newTransitionConnector->setConnectorOffset(CONNECTOR_OFFSET);
+	}
 }

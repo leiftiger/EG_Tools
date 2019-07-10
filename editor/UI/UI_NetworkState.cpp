@@ -85,6 +85,9 @@ void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
 	m_network = net;
 
 	populateArguments();
+
+	ui.connectorOut->layout();
+	adjustSize();
 }
 
 void UI_NetworkState::selectExternalNetwork(int index)
