@@ -8,8 +8,8 @@
 
 namespace ATN
 {
-	// Forward declaration
-	class State; class Effect; class Percept;
+	// Forward declared
+	class State; class Effect; class Percept; class ResourceMarshall; class ParameterMarshall;
 
 	class Transition : public Entry
 	{

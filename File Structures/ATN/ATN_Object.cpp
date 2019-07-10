@@ -7,6 +7,11 @@ namespace ATN
 		return "TATNObjectType";
 	}
 
+	const Object *Object::parent() const
+	{
+		return m_parent;
+	}
+
 	void Object::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);
@@ -37,7 +42,7 @@ namespace ATN
 		int parentID = std::stoi(line.substr(strlen("Parent=")));
 
 		if (parentID != 0)
-			m_parent = (State*)&Manager::findByID(parentID);
+			m_parent = (Object*)&Manager::findByID(parentID);
 
 		util::getline(stream, line);
 

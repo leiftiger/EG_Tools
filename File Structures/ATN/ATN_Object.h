@@ -1,20 +1,22 @@
 #pragma once
 
 #include "ATN_Entry.h"
-#include "ATN_State.h"
 
 namespace ATN
 {
-	// An object type, appears to be a remnant and not really necessary, but is included for completion's sake
+	// An object type, used to parse resource type hierarchies (i.e. EntityGroup <- Entity)
 	class Object : public Entry
 	{
 	protected:
-		State *m_parent = nullptr;
+		Object *m_parent = nullptr;
 
 		virtual void serialize(std::ostream &stream) const override;
 		virtual void deserialize(std::istream &stream) override;
 	public:
 
 		virtual const char * const typeName() const override;
+
+		// Gets the parent of this resource type
+		const Object *parent() const;
 	};
 }

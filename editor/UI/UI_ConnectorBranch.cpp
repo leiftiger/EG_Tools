@@ -75,9 +75,14 @@ void UI_ConnectorBranch::layout()
 
 	int desiredHeight = m_newTransitionConnector->height() - transitionPadding;
 
+	int farthestConnectorDistance = 0;
+
 	for (UI_NetworkTransition *ut : m_transitions)
 	{
 		desiredHeight += ut->height() + transitionPadding;
+
+		if (ut->m_connector->mapToParent(ut->m_connector->center()).x() > farthestConnectorDistance)
+			farthestConnectorDistance = ut->m_connector->mapToParent(ut->m_connector->center()).x();
 	}
 
 	QPointF center = QPointF(width()*0.5f, height()*0.5f);
@@ -95,7 +100,16 @@ void UI_ConnectorBranch::layout()
 		ut->move(parentWidget()->mapFromGlobal(pos));
 
 		branchY += ut->height() + transitionPadding;
+
+		// Set a longer offset for transitions that are further in
+		int dist = farthestConnectorDistance - ut->m_connector->mapToParent(ut->m_connector->center()).x();
+
+		ut->m_connector->setConnectorOffset(dist + CONNECTOR_OFFSET);
 	}
 
 	m_newTransitionConnector->move(parentWidget()->mapFromGlobal(mapToGlobal(QPoint(width() + TRANSITION_PADDING_LEFTRIGHT, branchY - (m_newTransitionConnector->height() / 2)))));
+
+	int dist = farthestConnectorDistance - mapToParent(m_newTransitionConnector->pos()).x();
+
+	m_newTransitionConnector->setConnectorOffset(dist + CONNECTOR_OFFSET);
 }

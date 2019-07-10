@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1866</width>
-    <height>864</height>
+    <height>985</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -373,9 +373,19 @@
     </property>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionHash_string"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionView_help"/>
+    <addaction name="actionAbout_ATN_Editor"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="enabled">
@@ -424,6 +434,21 @@
     <string>Ctrl+Y</string>
    </property>
   </action>
+  <action name="actionHash_string">
+   <property name="text">
+    <string>Hash string...</string>
+   </property>
+  </action>
+  <action name="actionView_help">
+   <property name="text">
+    <string>View help</string>
+   </property>
+  </action>
+  <action name="actionAbout_ATN_Editor">
+   <property name="text">
+    <string>About ATN Editor</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -467,8 +492,8 @@
    <slot>searchID(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>492</x>
-     <y>87</y>
+     <x>600</x>
+     <y>101</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
@@ -492,11 +517,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionHash_string</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>openHashTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>932</x>
+     <y>431</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>searchName(QString)</slot>
   <slot>openFiles()</slot>
   <slot>searchID(QString)</slot>
   <slot>closeTab(int)</slot>
+  <slot>openHashTool()</slot>
  </slots>
 </ui>

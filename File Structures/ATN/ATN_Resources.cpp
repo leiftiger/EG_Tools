@@ -44,7 +44,8 @@ namespace ATN
 					return "UNDEFINED";
 
 				// Sometimes undefined values are set to something random
-				return "INVALID";
+				// but it's also possible that we're somehow missing a defined string
+				return std::string("MISSING: ") + std::to_string((int32_t)value);
 			}
 		}
 
@@ -70,8 +71,12 @@ namespace ATN
 
 		if (Manager::hasDefinitions(m_type))
 		{
-			if (name == "UNDEFINED" || name == "INVALID")
+			if (name == "UNDEFINED")
 				return ATN_UNDEF_VALUE;
+
+			if (name.size() >= strlen("MISSING: ") && name.substr(0, strlen("MISSING: ")) == "MISSING: ")
+				return std::stoll(name);
+
 
 			return (std::int64_t)Manager::getDefinitions(m_type).find(name).id();
 		}
@@ -128,6 +133,30 @@ namespace ATN
 		throw Exception("Unknown resource type!");
 
 		return ResourceMarshallType::ResourceIndex;
+	}
+
+	bool ResourceMarshall::acceptsResourceType(const ResourceType &t) const
+	{
+		const ATN::Object *e;
+
+		try
+		{
+			e = (ATN::Object*)&ATN::Manager::findByID(t);
+		}
+		catch (ATN::Exception e)
+		{
+			throw ATN::Exception("Cannot decipher resource dependencies! Make sure ATNResources.ros is loaded!");
+		}
+
+		while (e != nullptr)
+		{
+			if (m_type == toResourceMarshallType(ResourceType::_from_integral(e->id())))
+				return true;
+
+			e = e->parent();
+		}
+
+		return false;
 	}
 
 	std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params)

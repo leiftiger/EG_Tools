@@ -40,7 +40,7 @@ private:
 	static const int TRANSITION_PADDING_BOTTOM_THRESHOLD = 6;
 
 	// If we have more than the above transitions, we should use a smaller padding to fit all of them
-	static const int TRANSITION_PADDING_BOTTOM_TIGHT = 5;
+	static const int TRANSITION_PADDING_BOTTOM_TIGHT = 2;
 
 	// Padding between transitions
 	static const int TRANSITION_PADDING_LEFTRIGHT = 5;

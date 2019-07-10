@@ -31,11 +31,17 @@ public:
 	// Gets the center of this connector
 	QPoint center() const;
 
+	int connectorOffset() const;
+
+	void setConnectorOffset(int offset);
+
 private:
 	Ui::UI_ConnectorStart ui;
 
 	const QSizeF CONNECTOR_SIZE = QSizeF(5, 5);
 	const double CONNECTOR_SCALE = 0.6f;
+
+	int m_connectorOffset = CONNECTOR_OFFSET;
 
 	UI_Connector *m_connector = nullptr;
 

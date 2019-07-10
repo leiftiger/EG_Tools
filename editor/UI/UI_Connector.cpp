@@ -80,21 +80,23 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	if (m_end != nullptr)
 		flagsEnd = m_end->connectFlags();
 
+	int startOffset = m_start->connectorOffset();
+
 	if (flagsStart & ConnectFlags::OffsetRight)
 	{
-		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(CONNECTOR_OFFSET, 0))));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(startOffset, 0))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetLeft)
 	{
-		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(-CONNECTOR_OFFSET, 0))));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(-startOffset, 0))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetDown)
 	{
-		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, CONNECTOR_OFFSET))));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, startOffset))));
 	}
 	else if (flagsStart & ConnectFlags::OffsetUp)
 	{
-		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, -CONNECTOR_OFFSET))));
+		points.append(mapFromGlobal(m_start->mapToGlobal(m_start->center() + QPoint(0, -startOffset))));
 	}
 
 	QPoint &lastPoint = points[points.size() - 1];

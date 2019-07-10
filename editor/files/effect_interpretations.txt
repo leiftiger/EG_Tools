@@ -2,7 +2,10 @@ TATNEffectNone
 do nothing
 
 TATNEffectPlayAnimation
-play "::param0::"
+::resource0:: should play "::param0::"
+
+TATNPerceptAnimationFinished
+::resource0:: has finished playing "::param0::"
 
 TATNEffectCreateNumber
 ::resource0:: = ::param0::
@@ -44,13 +47,13 @@ TATNEffectSleepThread
 sleep current thread for ::param0:: frames
 
 TATNEffectGetEntityOfType
-::resource0:: = entity instance of desc id ::param0::
+::resource0:: = get entity instance of desc id ::param0::
 
 TATNEffectGetCharacterOfType
-::resource0:: = character instance of desc id ::param0::
+::resource0:: = get character instance of desc id ::param0::
 
 TATNEffectGetObjectOfType
-::resource0:: = object instance of desc id ::param0:: (invalid: ::param1::)
+::resource0:: = get object instance of desc id ::param0:: (invalid: ::param1::)
 
 TATNEffectGameOver
 trigger game over
@@ -87,3 +90,9 @@ drop ::resource1:: held by ::resource0::
 
 TATNEffectPickUpItem
 ::resource0:: should pick up ::resource1:: (must move: ::param0::)
+
+TATNEffectMoveToEntityHotspot
+tell ::resource0:: to move to hotspot "::param0::" of ::resource1::
+
+TATNEffectSetLastEffectReturnValue
+terminate thread and return ::param0::

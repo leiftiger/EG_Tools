@@ -22,7 +22,7 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 	{
 		ATN::Resource *param = net->resources()[i];
 
-		if (argument->m_type == argument->toResourceMarshallType(param->m_type))
+		if (argument->acceptsResourceType(param->m_type))
 		{
 			char str[STR_FORMAT_BUFF];
 

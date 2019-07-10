@@ -4,6 +4,9 @@
 
 namespace ATN
 {
+	// Forward declared
+	class Parameter; class Resource;
+
 	class IResourceHolder
 	{
 	public:

@@ -107,9 +107,17 @@ std::string UI_NetworkTransition::interpret()
 {
 	std::string str = "if ";
 
-	if (ATN::Manager::hasInterpretation(m_transition->percept()->gameFunction()))
+	std::string perceptFunc = m_transition->percept()->gameFunction();
+	std::string perceptFuncID = perceptFunc + std::string("::") + std::to_string(m_transition->percept()->id());
+
+	if (ATN::Manager::hasInterpretation(perceptFunc))
 	{
-		str += parseInterpretation(ATN::Manager::getInterpreration(m_transition->percept()->gameFunction()), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
+		str += parseInterpretation(ATN::Manager::getInterpreration(perceptFunc), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
+	}
+	// The percepts' graph data may differ, so we format based on unique ID
+	else if (ATN::Manager::hasInterpretation(perceptFuncID))
+	{
+		str += parseInterpretation(ATN::Manager::getInterpreration(perceptFuncID), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
 	}
 	else
 	{

@@ -81,6 +81,12 @@ int main(int argc, char *argv[])
 				{"WEAKEN",	3},
 			}));
 
+		ATN::Manager::setDefinitions("Effect return value", util::createDefinition(
+			{
+				{"false",	1},
+				{"true",	3},
+			}));
+
 		// TODO: Are there more values?
 		ATN::Manager::setDefinitions("Mouse Button", util::createDefinition(
 			{

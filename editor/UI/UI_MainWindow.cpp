@@ -59,6 +59,11 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 	ui.tabWidget->setCurrentIndex(ui.tabWidget->count() - 1);
 }
 
+void UI_MainWindow::closeEvent(QCloseEvent *event)
+{
+	m_hashWindow.close();
+}
+
 void UI_MainWindow::reloadFileList()
 {
 	ui.comboATNList->clear();
@@ -90,6 +95,11 @@ void UI_MainWindow::openFiles()
 	ATN::Manager::loadFromFiles(strFiles);
 
 	reloadFileList();
+}
+
+void UI_MainWindow::openHashTool()
+{
+	m_hashWindow.show();
 }
 
 void UI_MainWindow::searchName(const QString &str)

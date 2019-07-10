@@ -80,3 +80,13 @@ QPoint UI_ConnectorStart::center() const
 {
 	return QPoint(width() / 2, height() / 2);
 }
+
+int UI_ConnectorStart::connectorOffset() const
+{
+	return m_connectorOffset;
+}
+
+void UI_ConnectorStart::setConnectorOffset(int offset)
+{
+	m_connectorOffset = offset;
+}

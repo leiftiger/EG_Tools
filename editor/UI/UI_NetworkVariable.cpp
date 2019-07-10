@@ -15,11 +15,13 @@ void UI_NetworkVariable::loadTranslations()
 	// Always clear from previous type so the user is required to input a new one
 	ui.variableValue->clear();
 
-	if (ATN::Manager::hasDefinitions(ui.variableType->currentText().toStdString()))
+	std::string variableType = ui.variableType->currentText().toStdString();
+
+	if (ATN::Manager::hasDefinitions(variableType))
 	{
 		QStringList translations;
 
-		ATN::List<ATN::Property> &defs = ATN::Manager::getDefinitions(ui.variableType->currentText().toStdString());
+		ATN::List<ATN::Property> &defs = ATN::Manager::getDefinitions(variableType);
 
 		for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : defs)
 		{
@@ -29,5 +31,13 @@ void UI_NetworkVariable::loadTranslations()
 		translations.sort(Qt::CaseSensitivity::CaseSensitive);
 
 		ui.variableValue->addItems(translations);
+	}
+	// Networks are handled separately due to being pointers
+	else if (variableType == "Network ID")
+	{
+		for (ATN::Network *net : ATN::Manager::getNetworks())
+		{
+			ui.variableValue->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
+		}
 	}
 }

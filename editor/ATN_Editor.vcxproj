@@ -41,6 +41,7 @@
     <QtUic Include="UI\UI_InputResource.ui" />
     <QtUic Include="UI\UI_ErrorWindow.ui" />
     <QtUic Include="UI\UI_ConnectorBranch.ui" />
+    <QtUic Include="UI\UI_HashWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="UI\UI_NetworkVariable.cpp" />
     <ClCompile Include="UI\UI_ErrorWindow.cpp" />
     <ClCompile Include="UI\UI_ConnectorBranch.cpp" />
+    <ClCompile Include="UI\UI_HashWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\File Structures\File Structures.vcxproj">
@@ -86,6 +88,10 @@
   <ItemGroup>
     <ClInclude Include="UI\NetworkContainerProxy.h" />
     <ClInclude Include="UI\UI_ConnectFlags.h" />
+    <QtMoc Include="UI\UI_HashWindow.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\File Structures;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>

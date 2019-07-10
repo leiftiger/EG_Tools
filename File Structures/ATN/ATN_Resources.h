@@ -9,6 +9,8 @@
 // Better enums for reflections
 #include "enum.h"
 
+#include "ATN_Object.h"
+
 // Some inputs appear to be null, sending this value instead
 // Not to be confused with -1, as that seems different as well
 constexpr unsigned long ATN_NULL_VALUE = 4294967295;
@@ -117,6 +119,8 @@ namespace ATN
 		ResourceMarshall(const Resource *resource, std::int64_t value);
 
 		static ResourceMarshallType toResourceMarshallType(const ResourceType &t);
+
+		bool acceptsResourceType(const ResourceType &t) const;
 
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources);
