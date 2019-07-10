@@ -102,3 +102,6 @@ TATNEffectGetGenius
 
 TATNEffectSetEntityAvailable
 set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
+
+TATNEffectSetTouristPopulation
+set tourists coming from ::param1:: to ::param0::
