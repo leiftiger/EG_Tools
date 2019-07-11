@@ -7,10 +7,53 @@ UI_NetworkTransition::UI_NetworkTransition(QWidget *parent)
 
 	m_connector = new UI_ConnectorStart(this);
 	m_connector->setFixedSize(21, 21);
+
+	// Ensure widget is redrawn on hover
+	this->setAttribute(Qt::WA_Hover);
+
+	setMouseTracking(true);
 }
 
 UI_NetworkTransition::~UI_NetworkTransition()
 {
+}
+
+void UI_NetworkTransition::paintEvent(QPaintEvent *e)
+{
+	QStyleOption option = QStyleOption();
+	option.initFrom(this);
+
+	QPainter painter;
+	painter.begin(this);
+	painter.setRenderHint(QPainter::Antialiasing);
+
+	bool hovered = (option.state & QStyle::State_MouseOver) > 0;
+
+	if (hovered || m_highlighted)
+	{
+		if (m_highlighted)
+		{
+			painter.setBrush(QBrush(TRANSITION_COLOR_HIGHLIGHTED, Qt::BrushStyle::SolidPattern));
+		}
+		else
+		{
+			painter.setBrush(QBrush(TRANSITION_COLOR_HOVERED, Qt::BrushStyle::SolidPattern));
+		}
+
+		painter.setPen(QPen(TRANSITION_COLOR_BORDER, TRANSITION_SIZE_BORDER));
+
+		painter.drawRect(0, 0, width(), height());
+	}
+
+	painter.end();
+}
+
+void UI_NetworkTransition::mousePressEvent(QMouseEvent *e)
+{
+	if (e->button() == Qt::MouseButton::LeftButton)
+	{
+		emit unlockTransitionEditor();
+	}
 }
 
 void UI_NetworkTransition::initialize(ATN::Transition *transition, ATN::Network *network)
@@ -19,9 +62,16 @@ void UI_NetworkTransition::initialize(ATN::Transition *transition, ATN::Network 
 	m_network = network;
 }
 
-void UI_NetworkTransition::setState(ATN::State *state)
+ATN::Transition * UI_NetworkTransition::transition() const
 {
-	m_transition->setState(state);
+	return m_transition;
+}
+
+void UI_NetworkTransition::setHighlighted(bool highlighted)
+{
+	m_highlighted = highlighted;
+
+	update();
 }
 
 std::string UI_NetworkTransition::translateParameter(const ATN::ParameterMarshall *paramMarshall, const ATN::Parameter *parameter) const

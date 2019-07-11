@@ -20,9 +20,17 @@ private:
 	static const int LABEL_PADDING = 5;
 	static const int STR_FORMAT_BUFF = 1024;
 
+	const QColor TRANSITION_COLOR_HOVERED = QColor(0, 0, 0, 32);
+	const QColor TRANSITION_COLOR_HIGHLIGHTED = QColor(255, 255, 255, 255);
+
+	const QColor TRANSITION_COLOR_BORDER = QColor(0, 0, 0, 255);
+	static const int TRANSITION_SIZE_BORDER = 1;
+
 	ATN::Transition *m_transition;
 
 	ATN::Network *m_network;
+
+	bool m_highlighted = false;
 
 	std::string translateParameter(const ATN::ParameterMarshall *paramMarshall, const ATN::Parameter *parameter) const;
 	std::string translateResource(const ATN::ResourceMarshall *resourceMarshall, const ATN::Resource *resource) const;
@@ -35,16 +43,27 @@ public:
 	UI_NetworkTransition(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkTransition();
 
-	void initialize(ATN::Transition *transition, ATN::Network *network);
+	virtual void paintEvent(QPaintEvent *e) override;
+	virtual void mousePressEvent(QMouseEvent *e) override;
 
-	void setState(ATN::State *state);
+	void initialize(ATN::Transition *transition, ATN::Network *network);
 
 	Ui::UI_NetworkTransition ui;
 
 	UI_ConnectorStart *m_connector;
 
+	// Stored as QObject to avoid circular class dependencies
+	QObject *m_state;
+
 	// Returns an user-friendly string of what this transition does
 	std::string interpret();
 
 	void layout();
+
+	ATN::Transition *transition() const;
+
+	void setHighlighted(bool highlighted);
+
+signals:
+	void unlockTransitionEditor();
 };

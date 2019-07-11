@@ -16,6 +16,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 	ui.label->setText(QString::fromStdString(parameter->m_desc + std::string(":")));
 	ui.label->setToolTip(ui.label->text());
 
+	ui.comboBox->setToolTip(QString::fromStdString(parameter->m_type));
+
 	ui.comboBox->clear();
 
 	for (size_t i = 0; i < net->parameters().size(); i++)

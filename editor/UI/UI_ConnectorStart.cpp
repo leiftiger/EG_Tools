@@ -117,3 +117,9 @@ void UI_ConnectorStart::setConnectorOffset(int offset)
 {
 	m_connectorOffset = offset;
 }
+
+void UI_ConnectorStart::updateConnector()
+{
+	if (m_connector != nullptr)
+		m_connector->update();
+}

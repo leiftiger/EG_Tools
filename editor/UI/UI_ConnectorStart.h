@@ -39,6 +39,9 @@ public:
 
 	void setConnectorOffset(int offset);
 
+	// Repaints the connector attached to this connector point if it exists
+	void updateConnector();
+
 private:
 	Ui::UI_ConnectorStart ui;
 

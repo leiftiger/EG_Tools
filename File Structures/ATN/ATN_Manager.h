@@ -108,12 +108,12 @@ namespace ATN
 		static std::vector<std::pair<Entry*, List<Entry>*>> searchName(const std::string &namePart);
 
 		// Returns all effects currently loaded
-		static const std::vector<Effect*> getEffects();
+		static const std::vector<Effect*> &getEffects();
 
 		// Returns all percepts currently loaded
-		static const std::vector<Percept*> getPercepts();
+		static const std::vector<Percept*> &getPercepts();
 
 		// Returns all networks currently loaded
-		static const std::vector<Network*> getNetworks();
+		static const std::vector<Network*> &getNetworks();
 	};
 }

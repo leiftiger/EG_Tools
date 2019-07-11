@@ -288,6 +288,11 @@
            <height>121</height>
           </rect>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -310,6 +315,11 @@
            <width>231</width>
            <height>121</height>
           </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
@@ -432,6 +442,11 @@
            <height>121</height>
           </rect>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -454,6 +469,11 @@
            <width>231</width>
            <height>121</height>
           </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>

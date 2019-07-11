@@ -63,10 +63,22 @@ private:
 
 	std::vector<UI_NetworkState*> m_states;
 
+	QPoint m_initialFrameNetworkPos;
+	QPoint m_initialFrameTransitionPos;
+
 	// Total size of network container
 	QSize m_networkContentsMinimumSize;
 
 	NetworkContainerProxy m_proxy;
+
+	UI_NetworkState *m_currentEditState = nullptr;
+	UI_NetworkTransition *m_currentEditTransition = nullptr;
+
+	std::vector<UI_InputArgument*> m_currentTransitionEffectArguments;
+	std::vector<UI_InputResource*> m_currentTransitionEffectResources;
+
+	std::vector<UI_InputArgument*> m_currentTransitionPerceptArguments;
+	std::vector<UI_InputResource*> m_currentTransitionPerceptResources;
 
 	// Minimum distance between two states
 	const int STATE_MARGIN = 100;
@@ -171,6 +183,9 @@ private:
 
 	void initializeStates();
 
+	// Populates the resource and parameter arguments for the effects & percepts
+	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls);
+
 public:
 	UI_NetworkContainer(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkContainer();
@@ -221,6 +236,10 @@ public slots:
 	void createNewTransition();
 
 	void updateTransition();
+
+	void editTransition();
+
+	void maintainEditFramePositions();
 
 	signals:
 		void openNetworkRequest(int id);

@@ -90,6 +90,7 @@ const bool UI_Connector::connecting() const
 void UI_Connector::setConnecting(bool connecting)
 {
 	m_connecting = connecting;
+	m_highlighted = false;
 
 	this->setAttribute(Qt::WA_TransparentForMouseEvents, !connecting);
 }
@@ -146,7 +147,13 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	else
 		targetPoint = mapFromGlobal(m_end->mapToGlobal(m_end->center()));
 
-	bool bLineClear = m_network->isLineClear(QLine(lastPoint, targetPoint));
+	bool bLineClear = false;
+
+	// Never allow direct connections from above connectors (threads)
+	if (flagsStart & ConnectFlags::Above)
+		bLineClear = false;
+	else
+		bLineClear = m_network->isLineClear(QLine(lastPoint, targetPoint));
 
 	// If we can't go straight to the target, then we will bend the line towards it
 	if (!bLineClear)

@@ -16,6 +16,8 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 	ui.label->setText(QString::fromStdString(resource->m_desc + std::string(":")));
 	ui.label->setToolTip(ui.label->text());
 
+	ui.comboBox->setToolTip(QString::fromStdString(resource->m_type._to_string()));
+
 	ui.comboBox->clear();
 
 	for (size_t i = 0; i < net->resources().size(); i++)

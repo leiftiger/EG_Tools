@@ -37,6 +37,8 @@ void UI_NetworkState::populateArguments()
 		m_resources.push_back(ut);
 	}
 
+	ui.listTransitionResources->setMinimumHeight(y);
+
 	x = 0, y = 0;
 
 	for (size_t i = 0; i < m_state->parameterMarshalls().size(); i++)

@@ -432,6 +432,8 @@ void UI_NetworkContainer::createNewTransition()
 
 	UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
 
+	uiTransition->m_state = uiStateFrom;
+
 	uiTransition->initialize(t, m_network);
 
 	UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
@@ -445,6 +447,7 @@ void UI_NetworkContainer::createNewTransition()
 
 	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
+	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
 
 	uiTransition->show();
 	uiConnector->show();
@@ -464,11 +467,89 @@ void UI_NetworkContainer::createNewTransition()
 
 void UI_NetworkContainer::updateTransition()
 {
-	UI_NetworkTransition *transition = (UI_NetworkTransition*)sender()->parent();
+	UI_NetworkTransition *ut = (UI_NetworkTransition*)sender()->parent();
 
-	UI_NetworkState *state = (UI_NetworkState*)transition->m_connector->connector()->end()->parent();
+	UI_NetworkState *state = (UI_NetworkState*)ut->m_connector->connector()->end()->parent();
 
-	transition->setState(state->m_state);
+	ut->transition()->setState(state->m_state);
+}
+
+void UI_NetworkContainer::editTransition()
+{
+	UI_NetworkTransition *uiTransition = (UI_NetworkTransition*)sender();
+
+	ATN::Transition *transition = uiTransition->transition();
+
+	if (m_currentEditTransition != nullptr)
+	{
+		m_currentEditTransition->setHighlighted(false);
+	}
+
+	uiTransition->setHighlighted(true);
+
+	// Prevent that we try to update the transition as we load in current values
+	m_currentEditState = nullptr;
+	m_currentEditTransition = nullptr;
+
+	ui.textTransitionName->setText(QString::fromStdString(transition->name()));
+	ui.textTransitionID->setText(QString::fromStdString(std::to_string(transition->id())));
+
+	ui.labelTransitionInterpretation->setText(QString::fromStdString(uiTransition->interpret()));
+
+	const std::vector<ATN::Percept*> &percepts = ATN::Manager::getPercepts();
+
+	for (size_t i = 0; i < percepts.size(); i++)
+	{
+		ATN::Percept *percept = percepts[i];
+
+		if (transition->percept() == percept)
+		{
+			ui.comboTransitionPercept->setCurrentIndex(i);
+			break;
+		}
+	}
+
+	if (transition->effect() == nullptr)
+	{
+		ui.comboTransitionEffect->setCurrentIndex(0);
+	}
+	else
+	{
+		const std::vector<ATN::Effect*> &effects = ATN::Manager::getEffects();
+
+		for (size_t i = 0; i < effects.size(); i++)
+		{
+			ATN::Effect *effect = effects[i];
+
+			if (transition->effect() == effect)
+			{
+				ui.comboTransitionEffect->setCurrentIndex(i + 1);
+				break;
+			}
+		}
+	}
+
+	m_currentEditState = (UI_NetworkState*)uiTransition->m_state;
+	m_currentEditTransition = uiTransition;
+
+	populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
+	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
+
+	ui.frameTransition->setEnabled(true);
+}
+
+void UI_NetworkContainer::maintainEditFramePositions()
+{
+	int curDistance = ui.scrollArea->horizontalScrollBar()->value();
+
+	ui.frameNetwork->move(m_initialFrameNetworkPos + QPoint(curDistance, 0));
+	ui.frameTransition->move(m_initialFrameTransitionPos + QPoint(curDistance, 0));
+
+	// The thread connectors must be redrawn as the origin has moved
+	for (UI_NetworkThread *ut : m_threads)
+	{
+		ut->ui.connector->updateConnector();
+	}
 }
 
 
@@ -632,6 +713,8 @@ void UI_NetworkContainer::initializeStates()
 		{
 			UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
 
+			uiTransition->m_state = uiStateFrom;
+
 			uiTransition->initialize(t, m_network);
 
 			UI_NetworkState *uiStateTo = uiStates[t->state()];
@@ -647,6 +730,7 @@ void UI_NetworkContainer::initializeStates()
 
 			connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 			connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
+			connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
 
 			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
 
@@ -660,6 +744,57 @@ void UI_NetworkContainer::initializeStates()
 	layoutStates();
 }
 
+void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls)
+{
+	for (UI_InputArgument *ut : argumentList)
+		ut->deleteLater();
+	for (UI_InputResource *ut : resourceList)
+		ut->deleteLater();
+
+	argumentList.clear();
+	resourceList.clear();
+
+	int x = 0, y = 0;
+
+	for (size_t i = 0; i < resourceMarshalls.size(); i++)
+	{
+		UI_InputResource *ut = new UI_InputResource(resourceWidget);
+
+		ut->initialize(resourceMarshalls[i], resourceHolder->resources()[i], m_network);
+
+		ut->move(0, y);
+		ut->show();
+
+		y += ut->size().height();
+
+		ut->show();
+
+		resourceList.push_back(ut);
+	}
+
+	resourceWidget->setMinimumHeight(y);
+
+	x = 0, y = 0;
+
+	for (size_t i = 0; i < paramMarshalls.size(); i++)
+	{
+		UI_InputArgument *ut = new UI_InputArgument(argumentWidget);
+
+		ut->initialize(paramMarshalls[i], resourceHolder->parameters()[i], m_network);
+
+		ut->move(0, y);
+		ut->show();
+
+		y += ut->size().height();
+
+		ut->show();
+
+		argumentList.push_back(ut);
+	}
+
+	argumentWidget->setMinimumHeight(y);
+}
+
 UI_NetworkContainer::UI_NetworkContainer(QWidget *parent)
 	: QWidget(parent)
 {
@@ -671,6 +806,11 @@ UI_NetworkContainer::UI_NetworkContainer(QWidget *parent)
 	ui.frameTransition->setEnabled(false);
 
 	initializeArgumentLists();
+
+	m_initialFrameNetworkPos = ui.frameNetwork->pos();
+	m_initialFrameTransitionPos = ui.frameTransition->pos();
+
+	connect(ui.scrollArea->horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(maintainEditFramePositions()));
 }
 
 UI_NetworkContainer::~UI_NetworkContainer()

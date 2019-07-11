@@ -257,15 +257,15 @@ namespace ATN
 
 		return results;
 	}
-	const std::vector<Effect*> Manager::getEffects()
+	const std::vector<Effect*> &Manager::getEffects()
 	{
 		return instance().m_effects;
 	}
-	const std::vector<Percept*> Manager::getPercepts()
+	const std::vector<Percept*> &Manager::getPercepts()
 	{
 		return instance().m_percepts;
 	}
-	const std::vector<Network*> Manager::getNetworks()
+	const std::vector<Network*> &Manager::getNetworks()
 	{
 		return instance().m_networks;
 	}

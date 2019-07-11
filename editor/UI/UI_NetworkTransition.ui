@@ -25,6 +25,9 @@
    <property name="text">
     <string>TextLabel</string>
    </property>
+   <property name="margin">
+    <number>4</number>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
