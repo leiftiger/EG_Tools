@@ -76,6 +76,27 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 	painter.end();
 }
 
+void UI_ConnectorStart::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::MouseButton::RightButton)
+	{
+		m_connector->setHighlighted(!m_connector->highlighted());
+	}
+	else if (event->button() == Qt::MouseButton::LeftButton)
+	{
+		if (m_connector != nullptr)
+		{
+			m_connector->setEnd(nullptr);
+		}
+		else
+		{
+			emit createNewConnector();
+		}
+
+		m_connector->setConnecting(true);
+	}
+}
+
 QPoint UI_ConnectorStart::center() const
 {
 	return QPoint(width() / 2, height() / 2);
@@ -89,4 +110,9 @@ int UI_ConnectorStart::connectorOffset() const
 void UI_ConnectorStart::setConnectorOffset(int offset)
 {
 	m_connectorOffset = offset;
+}
+
+void UI_ConnectorStart::establishTransition()
+{
+	// TODO
 }

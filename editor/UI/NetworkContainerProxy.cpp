@@ -36,7 +36,7 @@ bool NetworkContainerProxy::isLineClear(const QLine &arbitraryLine) const
 
 	for (const QRect &rect : m_stateSpaces)
 	{
-		if ((line.x1() <= rect.x() && (rect.x() + rect.width()) <= line.x2()) || (rect.x() <= line.x1() && line.x1() <= (rect.x() + rect.width())))
+		if ((line.x1() <= rect.x() && (rect.x() + CONNECTOR_OFFSET + CONNECTOR_END_SIZE) <= line.x2()) || (rect.x() <= line.x1() && line.x1() <= (rect.x() + rect.width())))
 			return false;
 	}
 

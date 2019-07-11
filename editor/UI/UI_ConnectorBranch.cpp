@@ -143,7 +143,7 @@ void UI_ConnectorBranch::layout()
 
 	if (totalBranches > 1)
 	{
-		int dist = farthestConnectorDistance - mapToParent(m_newTransitionConnector->pos()).x();
+		int dist = farthestConnectorDistance - m_newTransitionConnector->width()/2;
 
 		m_newTransitionConnector->setConnectorOffset(dist + CONNECTOR_OFFSET);
 	}
@@ -151,4 +151,9 @@ void UI_ConnectorBranch::layout()
 	{
 		m_newTransitionConnector->setConnectorOffset(CONNECTOR_OFFSET);
 	}
+}
+
+UI_ConnectorStart *UI_ConnectorBranch::transitionConnector()
+{
+	return m_newTransitionConnector;
 }

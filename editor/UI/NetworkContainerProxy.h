@@ -39,6 +39,9 @@ public:
 	// When connectors share path, they should be at least this far away from each other
 	static const int CONNECTOR_MARGIN = 2;
 
+	// All connectors should be this size, so we just define the constant so it doesn't appear as a magic variable
+	static const int CONNECTOR_END_SIZE = 21;
+
 	void setUpperHeight(int height);
 
 	void setLowerHeight(int height);

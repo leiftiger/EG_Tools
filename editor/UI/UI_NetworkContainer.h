@@ -216,6 +216,8 @@ public slots:
 
 	void receiveStateLayoutRequest();
 
+	void createNewConnector();
+
 	signals:
 		void openNetworkRequest(int id);
 		void findTransitionsRequest(int id);

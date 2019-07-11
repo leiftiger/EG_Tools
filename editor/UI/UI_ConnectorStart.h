@@ -28,12 +28,17 @@ public:
 
 	virtual void paintEvent(QPaintEvent *e) override;
 
+	virtual void mousePressEvent(QMouseEvent *event) override;
+
 	// Gets the center of this connector
 	QPoint center() const;
 
 	int connectorOffset() const;
 
 	void setConnectorOffset(int offset);
+
+	// Establish a transition from the connector's current connection
+	void establishTransition();
 
 private:
 	Ui::UI_ConnectorStart ui;
@@ -46,6 +51,10 @@ private:
 	UI_Connector *m_connector = nullptr;
 
 	ConnectFlags m_connectFlags = ConnectFlags::OffsetRight;
+
+public:
+signals:
+	void createNewConnector();
 	
 };
 

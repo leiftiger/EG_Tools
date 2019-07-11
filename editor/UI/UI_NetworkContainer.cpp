@@ -44,6 +44,8 @@ void UI_NetworkContainer::initializeThreads()
 		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
 		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
 
+		connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+
 		m_threads.push_back(ut);
 	}
 
@@ -77,6 +79,8 @@ void UI_NetworkContainer::threadCreate()
 	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
 	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
 	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
+
+	connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
 	m_threads.push_back(ut);
 
@@ -149,6 +153,8 @@ void UI_NetworkContainer::stateCreate()
 
 	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 	connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
+
+	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
 	ut->initialize(s, m_network);
 	ut->show();
@@ -388,6 +394,20 @@ void UI_NetworkContainer::receiveStateLayoutRequest()
 	layoutStates();
 }
 
+void UI_NetworkContainer::createNewConnector()
+{
+	UI_ConnectorStart* start = (UI_ConnectorStart*)sender();
+
+	UI_Connector *connector = new UI_Connector(ui.networkContents);
+
+	connector->setNetwork(&m_proxy);
+
+	start->setConnector(connector);
+	connector->setStart(start);
+
+	connector->show();
+}
+
 
 void UI_NetworkContainer::initializeResources()
 {
@@ -516,6 +536,8 @@ void UI_NetworkContainer::initializeStates()
 		connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 		connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
 
+		connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+
 		m_states.push_back(ut);
 
 		uiStates[s] = ut;
@@ -558,6 +580,8 @@ void UI_NetworkContainer::initializeStates()
 			uiConnector->setEnd(uiStateTo->ui.connectorIn);
 
 			uiTransition->m_connector->setConnector(uiConnector);
+
+			connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
 			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
 

@@ -25,6 +25,8 @@ public:
 
 	void layout();
 
+	UI_ConnectorStart *transitionConnector();
+
 private:
 	Ui::UI_ConnectorBranch ui;
 
