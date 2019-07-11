@@ -51,7 +51,10 @@ public slots:
 
 	void viewExternalNetwork();
 
+	void establishTransition();
+
 signals:
 	void openNetworkRequest(int id);
 	void requestLayout();
+	void requestNewTransition();
 };

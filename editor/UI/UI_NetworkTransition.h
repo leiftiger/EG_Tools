@@ -37,6 +37,8 @@ public:
 
 	void initialize(ATN::Transition *transition, ATN::Network *network);
 
+	void setState(ATN::State *state);
+
 	Ui::UI_NetworkTransition ui;
 
 	UI_ConnectorStart *m_connector;

@@ -9,7 +9,7 @@
 #include "UI_ConnectorStart.h"
 
 // Forward declared
-class UI_ConnectorStart;
+class UI_ConnectorStart; class UI_NetworkTransition;
 
 class UI_ConnectorBranch : public QWidget
 {

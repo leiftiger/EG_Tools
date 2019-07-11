@@ -19,6 +19,11 @@ void UI_NetworkTransition::initialize(ATN::Transition *transition, ATN::Network 
 	m_network = network;
 }
 
+void UI_NetworkTransition::setState(ATN::State *state)
+{
+	m_transition->setState(state);
+}
+
 std::string UI_NetworkTransition::translateParameter(const ATN::ParameterMarshall *paramMarshall, const ATN::Parameter *parameter) const
 {
 	if (paramMarshall->m_type == ATN::ParameterMarshallType::ParameterIndex)

@@ -6,10 +6,19 @@ UI_NetworkThread::UI_NetworkThread(QWidget *parent)
 	ui.setupUi(this);
 
 	ui.connector->setConnectFlags((ConnectFlags)(ConnectFlags::Above | ConnectFlags::OffsetLeft));
+
+	connect(ui.connector, SIGNAL(establishTransition()), this, SLOT(establishTransition()));
 }
 
 UI_NetworkThread::~UI_NetworkThread()
 {
+}
+
+void UI_NetworkThread::establishTransition()
+{
+	UI_NetworkState *state = (UI_NetworkState*)ui.connector->connector()->end()->parent();
+
+	m_thread->setState(*state->m_state);
 }
 
 

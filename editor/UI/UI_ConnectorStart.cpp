@@ -23,6 +23,12 @@ void UI_ConnectorStart::setConnector(UI_Connector *connector)
 	m_connector = connector;
 }
 
+void UI_ConnectorStart::deleteConnector()
+{
+	m_connector->deleteLater();
+	m_connector = nullptr;
+}
+
 ConnectFlags UI_ConnectorStart::connectFlags()
 {
 	return m_connectFlags;
@@ -110,9 +116,4 @@ int UI_ConnectorStart::connectorOffset() const
 void UI_ConnectorStart::setConnectorOffset(int offset)
 {
 	m_connectorOffset = offset;
-}
-
-void UI_ConnectorStart::establishTransition()
-{
-	// TODO
 }

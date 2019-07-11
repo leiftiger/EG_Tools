@@ -60,6 +60,8 @@ UI_NetworkState::UI_NetworkState(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	connect(ui.connectorOut->transitionConnector(), SIGNAL(establishTransition()), this, SLOT(establishTransition()));
 }
 
 UI_NetworkState::~UI_NetworkState()
@@ -180,6 +182,11 @@ void UI_NetworkState::setStateName(const QString &name)
 void UI_NetworkState::viewExternalNetwork()
 {
 	emit openNetworkRequest(m_state->networkTransition()->id());
+}
+
+void UI_NetworkState::establishTransition()
+{
+	emit requestNewTransition();
 }
 
 void UI_NetworkState::enableExternalNetwork(bool enable)

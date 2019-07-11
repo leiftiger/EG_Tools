@@ -5,6 +5,8 @@
 
 #include "ATN/ATN_Thread.h"
 
+#include "UI_NetworkState.h"
+
 class UI_NetworkThread : public QWidget
 {
 	Q_OBJECT
@@ -20,4 +22,6 @@ public:
 
 public slots:
 	void setName(const QString &name);
+
+	void establishTransition();
 };

@@ -21,6 +21,8 @@ public:
 	const UI_Connector *connector() const;
 	void setConnector(UI_Connector *connector);
 
+	void deleteConnector();
+
 	// Flags that connections from this state should fulfill
 	ConnectFlags connectFlags();
 	// Set flags that connections from this state should fulfill
@@ -37,9 +39,6 @@ public:
 
 	void setConnectorOffset(int offset);
 
-	// Establish a transition from the connector's current connection
-	void establishTransition();
-
 private:
 	Ui::UI_ConnectorStart ui;
 
@@ -55,6 +54,9 @@ private:
 public:
 signals:
 	void createNewConnector();
+
+	// Establish a transition from the connector's current connection
+	void establishTransition();
 	
 };
 

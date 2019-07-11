@@ -153,6 +153,7 @@ void UI_NetworkContainer::stateCreate()
 
 	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 	connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
+	connect(ut, SIGNAL(requestNewTransition()), this, SLOT(createNewTransition()));
 
 	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
@@ -408,6 +409,68 @@ void UI_NetworkContainer::createNewConnector()
 	connector->show();
 }
 
+void UI_NetworkContainer::createNewTransition()
+{
+	UI_NetworkState* uiStateFrom = (UI_NetworkState*)sender();
+	UI_NetworkState* uiStateTo = (UI_NetworkState*)uiStateFrom->ui.connectorOut->transitionConnector()->connector()->end()->parent();
+
+	ATN::Transition *t = new ATN::Transition();
+
+	t->setID(ATN::Manager::maxID() + 1);
+	t->setName(std::string("Transition ") + std::to_string(uiStateFrom->m_state->transitions().size() + 1));
+	t->setState(uiStateTo->m_state);
+
+	// Add this object to the same ATN list the network belongs to
+	ATN::List<ATN::Entry> *outList;
+
+	ATN::Manager::findByID(m_network->id(), outList);
+
+	outList->add(*(ATN::Entry*)t);
+	ATN::Manager::addEntry(*(ATN::Entry*)t);
+
+	uiStateFrom->m_state->add(*t);
+
+	UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
+
+	uiTransition->initialize(t, m_network);
+
+	UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+
+	uiConnector->setNetwork(&m_proxy);
+
+	uiConnector->setStart(uiTransition->m_connector);
+	uiConnector->setEnd(uiStateTo->ui.connectorIn);
+
+	uiTransition->m_connector->setConnector(uiConnector);
+
+	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
+
+	uiTransition->show();
+	uiConnector->show();
+
+	uiStateFrom->ui.connectorOut->addTransition(uiTransition);
+
+	int height = uiStateFrom->height();
+
+	uiStateFrom->adjustSize();
+	uiStateFrom->setFixedHeight(height);
+
+	// The transition connector only made a temporary connection, now we delete it since we have recreated it as the transition
+	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnector();
+
+	layoutStates();
+}
+
+void UI_NetworkContainer::updateTransition()
+{
+	UI_NetworkTransition *transition = (UI_NetworkTransition*)sender()->parent();
+
+	UI_NetworkState *state = (UI_NetworkState*)transition->m_connector->connector()->end()->parent();
+
+	transition->setState(state->m_state);
+}
+
 
 void UI_NetworkContainer::initializeResources()
 {
@@ -535,6 +598,7 @@ void UI_NetworkContainer::initializeStates()
 
 		connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 		connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
+		connect(ut, SIGNAL(requestNewTransition()), this, SLOT(createNewTransition()));
 
 		connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
@@ -582,6 +646,7 @@ void UI_NetworkContainer::initializeStates()
 			uiTransition->m_connector->setConnector(uiConnector);
 
 			connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+			connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
 
 			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
 

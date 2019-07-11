@@ -218,6 +218,10 @@ public slots:
 
 	void createNewConnector();
 
+	void createNewTransition();
+
+	void updateTransition();
+
 	signals:
 		void openNetworkRequest(int id);
 		void findTransitionsRequest(int id);

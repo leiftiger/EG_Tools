@@ -247,7 +247,7 @@ void UI_Connector::mousePressEvent(QMouseEvent *e)
 
 			update();
 
-			m_start->establishTransition();
+			emit m_start->establishTransition();
 		}
 	}
 }
