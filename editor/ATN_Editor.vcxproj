@@ -69,7 +69,7 @@
     <ClCompile Include="UI\UI_HashWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\File Structures\File Structures.vcxproj">
+    <ProjectReference Include="..\interpreter\ATN_Interpreter.vcxproj">
       <Project>{f08ed980-a123-49c0-881f-06c1fe97486c}</Project>
     </ProjectReference>
   </ItemGroup>

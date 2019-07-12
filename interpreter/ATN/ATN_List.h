@@ -107,6 +107,15 @@ namespace ATN
 			m_nameMap[element.name()] = (IATN_Data*)&element;
 		}
 
+		void updateName(T &element, const std::string &newName)
+		{
+			m_nameMap.erase(element.name());
+
+			element.setName(newName);
+
+			registerName(element);
+		}
+
 		// Note where this entry appeared in the header list
 		void recordOrderHeader(const T &element)
 		{

@@ -31,7 +31,9 @@ namespace ATN
 		virtual std::int32_t id() const override;
 		virtual const std::string &name() const override;
 
+		// If this entry is already in a list, you must call List<Entry>.updateName() instead!
 		virtual void setName(const std::string &name);
+		// Do not call before putting this entry in a list!
 		virtual void setID(std::int32_t id);
 
 		// Whether or not this entry can be edited by the user (editing it may cause adverse game crashing effects!)

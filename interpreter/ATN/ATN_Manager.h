@@ -107,6 +107,8 @@ namespace ATN
 		// Retrieves a list of entries that contain the specified name as well as the ATN list they belong to
 		static std::vector<std::pair<Entry*, List<Entry>*>> searchName(const std::string &namePart);
 
+		static void updateName(Entry &entry, const std::string &newName);
+
 		// Returns all effects currently loaded
 		static const std::vector<Effect*> &getEffects();
 

@@ -154,6 +154,27 @@ namespace ATN
 		instance().m_lists[0]->remove(el);
 
 		instance().m_removingGlobalElement = false;
+
+		// If a network was removed, then we have to remove it from the network list to prevent faulty pointers
+		if (typeid(el) == typeid(Network))
+		{
+			for (size_t i = 0; i < instance().m_networks.size(); i++)
+			{
+				Network *net = instance().m_networks[i];
+
+				if (net == &el)
+				{
+					// The last element in the list will be moved to where the removed network is
+					instance().m_networks[i] = instance().m_networks[instance().m_networks.size() - 1];
+					break;
+				}
+			}
+
+			instance().m_networks.pop_back();
+
+			// Then sort the list again
+			std::sort(instance().m_networks.begin(), instance().m_networks.end(), compareLessThanPointersIATN);
+		}
 	}
 
 	uint32_t Manager::maxID()
@@ -257,14 +278,31 @@ namespace ATN
 
 		return results;
 	}
+
+	void Manager::updateName(Entry &entry, const std::string &newName)
+	{
+		for (size_t i = 0; i < instance().m_lists.size(); i++)
+		{
+			try
+			{
+				Entry &el = instance().m_lists[i]->find(entry.id());
+
+				instance().m_lists[i]->updateName(el, newName);
+			}
+			catch (Exception e) {}
+		}
+	}
+
 	const std::vector<Effect*> &Manager::getEffects()
 	{
 		return instance().m_effects;
 	}
+
 	const std::vector<Percept*> &Manager::getPercepts()
 	{
 		return instance().m_percepts;
 	}
+
 	const std::vector<Network*> &Manager::getNetworks()
 	{
 		return instance().m_networks;
