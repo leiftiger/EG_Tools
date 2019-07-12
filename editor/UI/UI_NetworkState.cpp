@@ -177,11 +177,7 @@ void UI_NetworkState::setStateName(const QString &name)
 {
 	if (m_state != nullptr)
 	{
-		ATN::List<ATN::Entry> *netList;
-
-		ATN::Manager::findByID(m_state->id(), netList);
-
-		netList->updateName(*m_state, name.toStdString());
+		ATN::Manager::updateName(*m_state, name.toStdString());
 	}
 }
 

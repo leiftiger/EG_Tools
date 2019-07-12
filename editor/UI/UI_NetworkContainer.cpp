@@ -347,11 +347,11 @@ void UI_NetworkContainer::variableRemove()
 
 void UI_NetworkContainer::setNetworkName(const QString &name)
 {
+	ui.textNetworkName->setInputError(false);
+
 	// Because of initial loading, this may be called unnecessarily
 	if (m_network->name() == name.toStdString())
 		return;
-
-	ui.textNetworkName->setInputError(false);
 
 	try
 	{
@@ -367,11 +367,7 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 	}
 	catch (ATN::Exception e) {}
 
-	ATN::List<ATN::Entry> *netList;
-
-	ATN::Manager::findByID(m_network->id(), netList);
-
-	netList->updateName(*m_network, name.toStdString());
+	ATN::Manager::updateName(*m_network, name.toStdString());
 }
 
 void UI_NetworkContainer::setTransitionName(const QString &name)
