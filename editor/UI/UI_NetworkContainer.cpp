@@ -391,11 +391,6 @@ void UI_NetworkContainer::deleteNetwork()
 	// TODO: Check if any states not owned by this network transitions to it and force user to remove those references first
 }
 
-void UI_NetworkContainer::deleteTransition()
-{
-
-}
-
 void UI_NetworkContainer::findTransitions()
 {
 	emit findTransitionsRequest(m_network->id());
@@ -574,6 +569,56 @@ void UI_NetworkContainer::editTransition()
 	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 
 	ui.frameTransition->setEnabled(true);
+}
+
+void UI_NetworkContainer::moveTransitionUp()
+{
+	m_currentEditState->m_state->moveUp(*m_currentEditTransition->transition());
+
+	m_currentEditState->ui.connectorOut->moveTransitionUp(m_currentEditTransition);
+
+	for (size_t i = 0; i < m_currentEditState->m_state->transitions().size(); i++)
+	{
+		if (m_currentEditState->m_state->transitions()[i] == m_currentEditTransition->transition())
+		{
+			ui.buttonTransitionSortUp->setEnabled(i != 0);
+			ui.buttonTransitionSortDown->setEnabled(i != m_currentEditState->m_state->transitions().size() - 1);
+			break;
+		}
+	}
+}
+
+void UI_NetworkContainer::moveTransitionDown()
+{
+	m_currentEditState->m_state->moveDown(*m_currentEditTransition->transition());
+
+	m_currentEditState->ui.connectorOut->moveTransitionDown(m_currentEditTransition);
+
+	for (size_t i = 0; i < m_currentEditState->m_state->transitions().size(); i++)
+	{
+		if (m_currentEditState->m_state->transitions()[i] == m_currentEditTransition->transition())
+		{
+			ui.buttonTransitionSortUp->setEnabled(i != 0);
+			ui.buttonTransitionSortDown->setEnabled(i != m_currentEditState->m_state->transitions().size() - 1);
+			break;
+		}
+	}
+}
+
+void UI_NetworkContainer::deleteTransition()
+{
+	m_currentEditState->m_state->remove(*m_currentEditTransition->transition());
+
+	m_currentEditState->ui.connectorOut->removeTransition(m_currentEditTransition);
+
+	deleteATN(m_currentEditTransition->transition());
+
+	m_currentEditTransition->deleteLater();
+
+	ui.frameTransition->setEnabled(false);
+
+	m_currentEditState = nullptr;
+	m_currentEditTransition = nullptr;
 }
 
 void UI_NetworkContainer::maintainEditFramePositions()

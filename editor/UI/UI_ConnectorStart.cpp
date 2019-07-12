@@ -11,6 +11,11 @@ UI_ConnectorStart::UI_ConnectorStart(QWidget *parent)
 
 UI_ConnectorStart::~UI_ConnectorStart()
 {
+	// When the connector is deleted, we have to delete the connection as well
+	if (m_connector != nullptr)
+	{
+		delete m_connector;
+	}
 }
 
 const UI_Connector *UI_ConnectorStart::connector() const

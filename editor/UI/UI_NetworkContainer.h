@@ -224,7 +224,6 @@ public slots:
 	void setTransitionEffect(int index);
 
 	void deleteNetwork();
-	void deleteTransition();
 
 	void findTransitions();
 
@@ -239,6 +238,12 @@ public slots:
 	void updateTransition();
 
 	void editTransition();
+
+	void moveTransitionUp();
+
+	void moveTransitionDown();
+
+	void deleteTransition();
 
 	void maintainEditFramePositions();
 

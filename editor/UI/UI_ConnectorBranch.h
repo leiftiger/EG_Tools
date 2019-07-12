@@ -22,6 +22,9 @@ public:
 	virtual void paintEvent(QPaintEvent *e) override;
 
 	void addTransition(UI_NetworkTransition *ut);
+	void moveTransitionUp(UI_NetworkTransition *ut);
+	void moveTransitionDown(UI_NetworkTransition *ut);
+	std::vector<UI_NetworkTransition*>::iterator removeTransition(UI_NetworkTransition *ut);
 
 	void layout();
 

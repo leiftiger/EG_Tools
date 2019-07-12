@@ -1117,6 +1117,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonTransitionSortUp</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>moveTransitionUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1612</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1613</x>
+     <y>-9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonTransitionSortDown</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>moveTransitionDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1653</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1653</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>threadCreate()</slot>
@@ -1130,5 +1162,7 @@
   <slot>setTransitionPercept(int)</slot>
   <slot>setTransitionEffect(int)</slot>
   <slot>findTransitions()</slot>
+  <slot>moveTransitionUp()</slot>
+  <slot>moveTransitionDown()</slot>
  </slots>
 </ui>

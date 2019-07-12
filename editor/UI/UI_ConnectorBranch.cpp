@@ -72,6 +72,39 @@ void UI_ConnectorBranch::addTransition(UI_NetworkTransition *ut)
 	update();
 }
 
+void UI_ConnectorBranch::moveTransitionUp(UI_NetworkTransition *ut)
+{
+	m_transitions.insert(--removeTransition(ut), ut);
+
+	layout();
+}
+
+void UI_ConnectorBranch::moveTransitionDown(UI_NetworkTransition *ut)
+{
+	m_transitions.insert(++removeTransition(ut), ut);
+
+	layout();
+}
+
+std::vector<UI_NetworkTransition*>::iterator UI_ConnectorBranch::removeTransition(UI_NetworkTransition *ut)
+{
+	for (std::vector<UI_NetworkTransition*>::iterator it = m_transitions.begin(); it != m_transitions.end(); it++)
+	{
+		if (*it == ut)
+		{
+			std::vector<UI_NetworkTransition*>::iterator itNext = m_transitions.erase(it);
+
+			layout();
+
+			return itNext;
+		}
+	}
+
+	layout();
+
+	return m_transitions.end();
+}
+
 void UI_ConnectorBranch::layout()
 {
 	int totalBranches = m_transitions.size() + 1;
