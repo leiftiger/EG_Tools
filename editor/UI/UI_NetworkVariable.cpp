@@ -12,10 +12,13 @@ UI_NetworkVariable::~UI_NetworkVariable()
 
 void UI_NetworkVariable::loadTranslations()
 {
+	m_populating = true;
+
 	// Always clear from previous type so the user is required to input a new one
 	ui.variableValue->clear();
+	ui.variableValue->setCurrentText(QString::fromStdString(m_variable->translateValue(0)));
 
-	std::string variableType = ui.variableType->currentText().toStdString();
+	std::string variableType = m_variable->m_type;
 
 	if (ATN::Manager::hasDefinitions(variableType))
 	{
@@ -40,4 +43,45 @@ void UI_NetworkVariable::loadTranslations()
 			ui.variableValue->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
 	}
+
+	m_populating = false;
+}
+
+void UI_NetworkVariable::setVariableType(const QString &type)
+{
+	if (m_variable == nullptr)
+		return;
+
+	emit changeType(type);
+}
+
+void UI_NetworkVariable::setVariableValue(const QString &value)
+{
+	if (m_variable == nullptr || m_populating)
+		return;
+
+	ui.variableValue->setInputError(false);
+
+	if (value.size() == 0)
+	{
+		ui.variableValue->setInputError(true);
+		return;
+	}
+
+	try
+	{
+		m_variable->m_defaultValue = m_variable->translateName(value.toStdString());
+	}
+	catch (std::exception e)
+	{
+		ui.variableValue->setInputError(true);
+		QToolTip::showText(ui.variableValue->mapToGlobal(ui.variableValue->pos()), tr("Invalid input"));
+	}
+}
+
+void UI_NetworkVariable::setVariableName(const QString &name)
+{
+	m_variable->m_desc = name.toStdString();
+
+	emit repopulateArguments();
 }

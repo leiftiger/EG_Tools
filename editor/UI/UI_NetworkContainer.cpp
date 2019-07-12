@@ -280,6 +280,8 @@ void UI_NetworkContainer::variableCreate()
 
 	ut->m_variable = p;
 
+	ut->blockSignals(true);
+
 	// Remove placeholder option
 	ut->ui.variableType->clear();
 
@@ -288,16 +290,17 @@ void UI_NetworkContainer::variableCreate()
 
 	ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
 
-	// Remove placeholder option
-	ut->ui.variableValue->clear();
-
 	ut->loadTranslations();
 
 	ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
 
+	ut->blockSignals(false);
+
 	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
 	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
 	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
+	connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
+	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
 
 	m_variables.push_back(ut);
 
@@ -345,6 +348,77 @@ void UI_NetworkContainer::variableRemove()
 	ut->deleteLater();
 }
 
+void UI_NetworkContainer::variableTypeChange(const QString &qType)
+{
+	UI_NetworkVariable *uiVariable = (UI_NetworkVariable*)sender();
+
+	std::string newType = qType.toStdString();
+
+	std::string oldType = uiVariable->m_variable->m_type;
+
+	// No need to make any changes
+	if (oldType == newType)
+		return;
+
+	// TODO: Show dialog to user that this will reset all arguments referring to this index
+	// (including in external networks) and allow them to abort if they didn't want to this
+
+	std::int64_t index = -1;
+
+	for (size_t i = 0; i < m_variables.size(); i++)
+	{
+		if (m_variables[i] == uiVariable)
+		{
+			index = (std::int64_t)i;
+			break;
+		}
+	}
+
+	uiVariable->m_variable->m_type = newType;
+
+	for (UI_NetworkState *uiState : m_states)
+	{
+		for (ATN::ParameterMarshall *paramMarshall : uiState->m_state->parameterMarshalls())
+		{
+			// Any arguments that pointed to this index are reset to constant 0
+			// so that if the variable is now incompatible with that argument, it won't create a broken state
+			// (user has to find all uses themselves)
+			paramMarshall->resetConstant(index);
+		}
+
+		for (ATN::Transition *transition : uiState->m_state->transitions())
+		{
+			for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+			{
+				paramMarshall->resetConstant(index);
+			}
+			for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+			{
+				paramMarshall->resetConstant(index);
+			}
+		}
+	}
+
+	for (ATN::Network *net : ATN::Manager::getNetworks())
+	{
+		for (ATN::State *state : net->states())
+		{
+			if (state->networkTransition() != nullptr && state->networkTransition() == m_network)
+			{
+				// Here we reset the argument that will be passed to our index
+				int numMarshalls = state->parameterMarshalls().size();
+
+				if (index < numMarshalls)
+					state->parameterMarshalls()[index]->resetConstant();
+			}
+		}
+	}
+
+	uiVariable->loadTranslations();
+
+	repopulateArguments();
+}
+
 void UI_NetworkContainer::setNetworkName(const QString &name)
 {
 	ui.textNetworkName->setInputError(false);
@@ -361,7 +435,7 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 		{
 			ui.textNetworkName->setInputError(true);
 
-			QToolTip::showText(ui.textNetworkName->cursor().pos(), tr("This name already exists, network name must be unique!"));
+			QToolTip::showText(ui.textNetworkName->mapToGlobal(ui.textNetworkName->pos()), tr("This name already exists, network name must be unique!"));
 			return;
 		}
 	}
@@ -621,6 +695,24 @@ void UI_NetworkContainer::deleteTransition()
 	m_currentEditTransition = nullptr;
 }
 
+void UI_NetworkContainer::repopulateArguments()
+{
+	for (UI_NetworkState *uiState : m_states)
+	{
+		uiState->populateArguments();
+	}
+
+	if (m_currentEditState != nullptr)
+	{
+		ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + m_currentEditTransition->interpret()));
+
+		ATN::Transition *transition = m_currentEditTransition->transition();
+
+		populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
+		populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
+	}
+}
+
 void UI_NetworkContainer::maintainEditFramePositions()
 {
 	int curDistance = ui.scrollArea->horizontalScrollBar()->value();
@@ -672,6 +764,8 @@ void UI_NetworkContainer::initializeVariables()
 
 		ut->m_variable = p;
 
+		ut->blockSignals(true);
+
 		// Remove placeholder option
 		ut->ui.variableType->clear();
 
@@ -680,14 +774,9 @@ void UI_NetworkContainer::initializeVariables()
 
 		ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
 
-		// Remove placeholder option
-		ut->ui.variableValue->clear();
-
 		ut->loadTranslations();
 
 		QString strValue = QString::fromStdString(p->translateValue(p->m_defaultValue));
-
-		ut->ui.variableValue->setCurrentText(strValue);
 
 		int index = ut->ui.variableValue->findText(strValue);
 
@@ -696,9 +785,13 @@ void UI_NetworkContainer::initializeVariables()
 		else
 			ut->ui.variableValue->setCurrentText(strValue);
 
+		ut->blockSignals(false);
+
 		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
 		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
 		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
+		connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
+		connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
 
 		m_variables.push_back(ut);
 	}

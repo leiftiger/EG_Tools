@@ -158,5 +158,59 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>variableType</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>UI_NetworkVariable</receiver>
+   <slot>setVariableType(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>10</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>62</x>
+     <y>-16</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>variableDesc</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_NetworkVariable</receiver>
+   <slot>setVariableName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>9</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>148</x>
+     <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>variableValue</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>UI_NetworkVariable</receiver>
+   <slot>setVariableValue(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>32</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>114</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setVariableType(QString)</slot>
+  <slot>setVariableValue(QString)</slot>
+  <slot>setVariableName(QString)</slot>
+ </slots>
 </ui>

@@ -25,9 +25,6 @@ private:
 	// Geometries for restoring size
 	std::vector<QRect> m_geometries;
 
-	// Populates the network transition arguments from the marshalls
-	void populateArguments();
-
 public:
 	UI_NetworkState(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkState();
@@ -39,6 +36,9 @@ public:
 
 	// Initializes state from object
 	void initialize(ATN::State *s, const ATN::Network *net);
+
+	// Populates the network transition arguments from the marshalls
+	void populateArguments();
 
 	// Decreases size of state to a more minimized footprint
 	void setMinimized(bool minimize);

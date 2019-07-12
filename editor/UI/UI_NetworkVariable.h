@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QToolTip>
 #include "GeneratedFiles/ui_UI_NetworkVariable.h"
 
 #include "ATN/ATN_Manager.h"
@@ -9,6 +10,9 @@
 class UI_NetworkVariable : public QWidget
 {
 	Q_OBJECT
+
+private:
+	bool m_populating = false;
 
 public:
 	UI_NetworkVariable(QWidget *parent = Q_NULLPTR);
@@ -20,4 +24,14 @@ public:
 
 	// Populates the default value list with known translations
 	void loadTranslations();
+
+public slots:
+
+	void setVariableType(const QString &type);
+	void setVariableValue(const QString &value);
+	void setVariableName(const QString &name);
+
+signals:
+	void repopulateArguments();
+	void changeType(const QString &type);
 };

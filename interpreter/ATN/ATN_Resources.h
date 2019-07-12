@@ -57,6 +57,9 @@ namespace ATN
 	// Triple for storing parameters
 	class Parameter
 	{
+	private:
+		static bool isNumber(const std::string &str);
+
 	public:
 
 		std::string m_type;
@@ -100,6 +103,11 @@ namespace ATN
 		std::int64_t m_value;
 
 		ParameterMarshall(ParameterMarshallType type, std::int64_t value);
+
+		// Reset this marshall to pass a constant value of 0, possibly due to a transition signature change
+		void resetConstant();
+		// Resets this marshall to pass a constant value of 0 if it's referring to this index
+		void resetConstant(std::int64_t index);
 
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);

@@ -28,7 +28,7 @@ void UI_ComboBox::setInputError(bool error)
 		{
 			m_oldStyleSheet = styleSheet();
 
-			setStyleSheet(m_oldStyleSheet + "\nQLineEdit{ border: 1px solid rgba(255, 0, 0, 255); }");
+			setStyleSheet(m_oldStyleSheet + "\nUI_ComboBox{ border: 1px solid rgba(255, 0, 0, 255); }");
 		}
 		else
 		{

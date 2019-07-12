@@ -7,6 +7,24 @@
 
 namespace ATN
 {
+	bool Parameter::isNumber(const std::string &str)
+	{
+		if (str.size() == 0)
+			return false;
+
+		// Must be either a minus sign or a digit in the beginning
+		if (isdigit(str[0]) == 0 && str[0] != '-')
+			return false;
+
+		for (size_t i = 1; i < str.size(); i++)
+		{
+			if (isdigit(str[i]) == 0)
+				return false;
+		}
+
+		return true;
+	}
+
 	Parameter::Parameter(std::string type, std::int64_t defaultValue, std::string desc) : m_type(type), m_defaultValue(defaultValue), m_desc(desc)
 	{
 
@@ -75,11 +93,14 @@ namespace ATN
 				return ATN_UNDEF_VALUE;
 
 			if (name.size() >= strlen("MISSING: ") && name.substr(0, strlen("MISSING: ")) == "MISSING: ")
-				return std::stoll(name);
+				return std::stoll(name.substr(strlen("MISSING: "), name.length() - strlen("MISSING: ")));
 
 
 			return (std::int64_t)Manager::getDefinitions(m_type).find(name).id();
 		}
+
+		if (!isNumber(name))
+			throw ATN::Exception("Missing definition for \"%s\", but didn't receive number!", m_type);
 
 		return std::stoll(name);
 	}
@@ -92,6 +113,20 @@ namespace ATN
 	ParameterMarshall::ParameterMarshall(ParameterMarshallType type, std::int64_t value) : m_type(type), m_value(value)
 	{
 
+	}
+
+	void ParameterMarshall::resetConstant()
+	{
+		m_type = ParameterMarshallType::Constant;
+		m_value = 0;
+	}
+
+	void ParameterMarshall::resetConstant(std::int64_t index)
+	{
+		if (m_type == ParameterMarshallType::ParameterIndex && m_value == index)
+		{
+			resetConstant();
+		}
 	}
 
 	ResourceMarshall::ResourceMarshall(ResourceMarshallType type, std::int64_t value) : m_type(type), m_value(value)

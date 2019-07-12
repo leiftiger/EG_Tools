@@ -217,6 +217,8 @@ public slots:
 	void variableMoveDown();
 	void variableRemove();
 
+	void variableTypeChange(const QString &type);
+
 	void setNetworkName(const QString &name);
 	void setTransitionName(const QString &name);
 
@@ -244,6 +246,10 @@ public slots:
 	void moveTransitionDown();
 
 	void deleteTransition();
+
+	// Repopulates the list of arguments in all states and the currently open transition
+	// due to a change in variable name or type
+	void repopulateArguments();
 
 	void maintainEditFramePositions();
 
