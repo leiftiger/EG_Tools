@@ -322,6 +322,8 @@ void UI_NetworkContainer::variableMoveUp()
 	layoutSortables(m_variables, ui.listNetworkVariables);
 
 	m_network->moveUp(*ut->m_variable);
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::variableMoveDown()
@@ -332,20 +334,37 @@ void UI_NetworkContainer::variableMoveDown()
 	layoutSortables(m_variables, ui.listNetworkVariables);
 
 	m_network->moveDown(*ut->m_variable);
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::variableRemove()
 {
 	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
 
+	std::int64_t index = -1;
+
+	for (size_t i = 0; i < m_variables.size(); i++)
+	{
+		if (m_variables[i] == ut)
+		{
+			index = (std::int64_t)i;
+			break;
+		}
+	}
+
 	itemRemove(m_variables, ut);
 	layoutSortables(m_variables, ui.listNetworkVariables);
+
+	clearVariableReferences(index);
 
 	m_network->remove(*ut->m_variable);
 
 	delete ut->m_variable;
 
 	ut->deleteLater();
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::variableTypeChange(const QString &qType)
@@ -376,43 +395,7 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 
 	uiVariable->m_variable->m_type = newType;
 
-	for (UI_NetworkState *uiState : m_states)
-	{
-		for (ATN::ParameterMarshall *paramMarshall : uiState->m_state->parameterMarshalls())
-		{
-			// Any arguments that pointed to this index are reset to constant 0
-			// so that if the variable is now incompatible with that argument, it won't create a broken state
-			// (user has to find all uses themselves)
-			paramMarshall->resetConstant(index);
-		}
-
-		for (ATN::Transition *transition : uiState->m_state->transitions())
-		{
-			for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
-			{
-				paramMarshall->resetConstant(index);
-			}
-			for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
-			{
-				paramMarshall->resetConstant(index);
-			}
-		}
-	}
-
-	for (ATN::Network *net : ATN::Manager::getNetworks())
-	{
-		for (ATN::State *state : net->states())
-		{
-			if (state->networkTransition() != nullptr && state->networkTransition() == m_network)
-			{
-				// Here we reset the argument that will be passed to our index
-				int numMarshalls = state->parameterMarshalls().size();
-
-				if (index < numMarshalls)
-					state->parameterMarshalls()[index]->resetConstant();
-			}
-		}
-	}
+	clearVariableReferences(index);
 
 	uiVariable->loadTranslations();
 
@@ -971,6 +954,44 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 	}
 
 	argumentWidget->setMinimumHeight(y);
+}
+
+void UI_NetworkContainer::clearVariableReferences(std::int64_t index)
+{
+	for (UI_NetworkState *uiState : m_states)
+	{
+		for (ATN::ParameterMarshall *paramMarshall : uiState->m_state->parameterMarshalls())
+		{
+			// Any arguments that pointed to this index are reset to constant 0
+			// so that if the variable is now incompatible with that argument, it won't create a broken state
+			// (user has to find all uses themselves)
+			paramMarshall->resetConstant(index);
+		}
+
+		for (ATN::Transition *transition : uiState->m_state->transitions())
+		{
+			for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+			{
+				paramMarshall->resetConstant(index);
+			}
+			for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+			{
+				paramMarshall->resetConstant(index);
+			}
+		}
+	}
+
+	for (ATN::Network *net : ATN::Manager::getNetworks())
+	{
+		for (ATN::State *state : net->states())
+		{
+			if (state->networkTransition() != nullptr && state->networkTransition() == m_network)
+			{
+				// Here we reset the argument that will be passed to our index
+				state->parameterMarshalls()[index]->resetConstant();
+			}
+		}
+	}
 }
 
 UI_NetworkContainer::UI_NetworkContainer(QWidget *parent)

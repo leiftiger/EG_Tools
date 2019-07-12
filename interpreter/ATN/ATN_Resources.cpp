@@ -129,6 +129,17 @@ namespace ATN
 		}
 	}
 
+	void ParameterMarshall::swapIndices(std::int64_t index1, std::int64_t index2)
+	{
+		if (m_type == ParameterMarshallType::ParameterIndex)
+		{
+			if (m_value == index1)
+				m_value = index2;
+			else if (m_value == index2)
+				m_value = index1;
+		}
+	}
+
 	ResourceMarshall::ResourceMarshall(ResourceMarshallType type, std::int64_t value) : m_type(type), m_value(value)
 	{
 

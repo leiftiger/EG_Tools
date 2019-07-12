@@ -131,12 +131,16 @@ namespace ATN
 
 	void Network::moveUp(Parameter &param)
 	{
-		m_parameters.insert(--remove(param), &param);
+		std::vector<Parameter*>::iterator it = m_parameters.insert(--remove(param), &param);
+
+		swapParameterMarshallIndices(it - m_parameters.begin(), (it + 1) - m_parameters.begin());
 	}
 
 	void Network::moveDown(Parameter &param)
 	{
-		m_parameters.insert(++remove(param), &param);
+		std::vector<Parameter*>::iterator it = m_parameters.insert(++remove(param), &param);
+
+		swapParameterMarshallIndices(it - m_parameters.begin(), (it - 1) - m_parameters.begin());
 	}
 
 	std::vector<Parameter*>::iterator Network::remove(Parameter &param)
@@ -190,5 +194,38 @@ namespace ATN
 			throw Exception("Expected \"ContainerID=ATNData\", got \"%s\"", line);
 
 		m_threads = util::parseEntryIDs<Thread>(stream, "Threads=");
+	}
+
+	void Network::swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2)
+	{
+		for (State *state : m_states)
+		{
+			for (ParameterMarshall *paramMarshall : state->parameterMarshalls())
+				paramMarshall->swapIndices(index1, index2);
+
+			for (Transition *transition : state->transitions())
+			{
+				for (ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+					paramMarshall->swapIndices(index1, index2);
+
+				for (ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+					paramMarshall->swapIndices(index1, index2);
+			}
+		}
+
+		for (Network *net : ATN::Manager::getNetworks())
+		{
+			for (State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					// Here we swap the arguments that are passed to our network
+					ParameterMarshall *temp = state->m_parameterMarshalls[index2];
+					
+					state->m_parameterMarshalls[index2] = state->m_parameterMarshalls[index1];
+					state->m_parameterMarshalls[index1] = temp;
+				}
+			}
+		}
 	}
 }

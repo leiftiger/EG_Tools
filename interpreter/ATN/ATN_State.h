@@ -12,6 +12,9 @@ namespace ATN
 
 	class State : public Entry
 	{
+		// The network needs to modify some of the marshalls if its parameters or resources are swapped
+		friend class Network;
+
 	protected:
 
 		std::vector<Transition*> m_stateTransitions;

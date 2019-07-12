@@ -109,6 +109,9 @@ namespace ATN
 		// Resets this marshall to pass a constant value of 0 if it's referring to this index
 		void resetConstant(std::int64_t index);
 
+		// Swaps the given indices if this marshall points to any of them
+		void swapIndices(std::int64_t index1, std::int64_t index2);
+
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
 		// Serialize to ATN string

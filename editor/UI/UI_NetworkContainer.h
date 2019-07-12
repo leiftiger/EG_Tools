@@ -187,6 +187,9 @@ private:
 	// Populates the resource and parameter arguments for the effects & percepts
 	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls);
 
+	// Clears all references to the variable at specified index
+	void clearVariableReferences(std::int64_t index);
+
 public:
 	UI_NetworkContainer(QWidget *parent = Q_NULLPTR);
 	~UI_NetworkContainer();

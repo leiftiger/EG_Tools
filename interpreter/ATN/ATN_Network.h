@@ -26,6 +26,8 @@ namespace ATN
 		virtual void serialize(std::ostream & stream) const override;
 		virtual void deserialize(std::istream & stream) override;
 
+		void swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2);
+
 	public:
 
 		~Network();
