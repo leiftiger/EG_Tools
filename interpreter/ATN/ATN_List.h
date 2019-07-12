@@ -94,7 +94,7 @@ namespace ATN
 
 		void add(T &element)
 		{
-			m_idMap.insert(std::make_pair<std::uint32_t, IATN_Data*>(element.id(), (IATN_Data*)&element));
+			m_idMap.insert_or_assign(element.id(), &element);
 
 			if (m_maxUniqueID < (std::uint32_t)element.id())
 				m_maxUniqueID = (std::uint32_t)element.id();
