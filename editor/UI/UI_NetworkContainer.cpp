@@ -482,6 +482,12 @@ void UI_NetworkContainer::createNewTransition()
 	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnector();
 
 	layoutStates();
+
+	// If the new state was added here, then the current edited state can now be moved downwards
+	if (m_currentEditState != nullptr && m_currentEditState == uiStateFrom)
+	{
+		ui.buttonTransitionSortDown->setEnabled(true);
+	}
 }
 
 void UI_NetworkContainer::updateTransition()
