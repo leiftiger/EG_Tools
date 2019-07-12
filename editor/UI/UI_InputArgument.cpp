@@ -55,13 +55,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 		ui.comboBox->addItems(translations);
 	}
 
-	// For ints it makes no sense to keep it as a dropdown
-	if (parameter->m_type == "Integer")
-	{
-		ui.comboBox->setStyleSheet(tr("QComboBox::drop-down {border-width: 0px;} QComboBox::down-arrow {image: url(noimg); border-width: 0px;}"));
-	}
 	// Since networks are special by being pointers, we handle them manually
-	else if (parameter->m_type == "Network ID")
+	if (parameter->m_type == "Network ID")
 	{
 		for (ATN::Network *net : ATN::Manager::getNetworks())
 		{

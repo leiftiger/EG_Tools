@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>802</width>
+    <width>1111</width>
     <height>41</height>
    </rect>
   </property>
@@ -100,7 +100,7 @@
   <widget class="QPushButton" name="buttonOpenNetwork">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1020</x>
      <y>10</y>
      <width>81</width>
      <height>23</height>
@@ -108,6 +108,48 @@
    </property>
    <property name="text">
     <string>Open network</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>10</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>ATN file:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="textATNList">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>10</y>
+     <width>221</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
+   <property name="plainText" stdset="0">
+    <string/>
    </property>
   </widget>
  </widget>

@@ -35,6 +35,16 @@ void UI_MainWindow::setNetworkResults(std::vector<ATN::Network*> results)
 		res->ui.textName->setText(QString::fromStdString(net->name()));
 		res->ui.textUniqueID->setText(QString::fromStdString(std::to_string(net->id())));
 
+		// Find list the network belongs to
+		ATN::List<ATN::Entry> *netList;
+		ATN::Manager::findByID(net->id(), netList);
+
+		std::string name = netList->name();
+
+		int nameStart = name.find_last_of('/') + 1;
+
+		res->ui.textATNList->setText(QString::fromStdString(name.substr(nameStart, name.length()-nameStart)));
+
 		connect(res->ui.buttonOpenNetwork, SIGNAL(clicked()), this, SLOT(openNetworkButton()));
 
 		QListWidgetItem *item = new QListWidgetItem();

@@ -28,5 +28,9 @@ void UI_NetworkThread::setName(const QString &name)
 	if (m_thread == nullptr)
 		return;
 
-	m_thread->setName(name.toStdString());
+	ATN::List<ATN::Entry> *netList;
+
+	ATN::Manager::findByID(m_thread->id(), netList);
+
+	netList->updateName(*m_thread, name.toStdString());
 }

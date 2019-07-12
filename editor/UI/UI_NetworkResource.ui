@@ -31,7 +31,7 @@
     </property>
    </item>
   </widget>
-  <widget class="QLineEdit" name="resourceDesc">
+  <widget class="UI_LineEdit" name="resourceDesc">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -141,6 +141,13 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>UI_LineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

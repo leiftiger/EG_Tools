@@ -74,7 +74,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLineEdit" name="textTransitionName">
+       <widget class="UI_LineEdit" name="textTransitionName">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -569,7 +569,7 @@
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="QLineEdit" name="textNetworkName">
+       <widget class="UI_LineEdit" name="textNetworkName">
         <property name="geometry">
          <rect>
           <x>130</x>
@@ -932,6 +932,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>UI_LineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

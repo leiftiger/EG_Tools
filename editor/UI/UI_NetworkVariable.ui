@@ -107,7 +107,7 @@
     <enum>Qt::NoArrow</enum>
    </property>
   </widget>
-  <widget class="QComboBox" name="variableValue">
+  <widget class="UI_ComboBox" name="variableValue">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -150,6 +150,13 @@
   <zorder>line</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>UI_ComboBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

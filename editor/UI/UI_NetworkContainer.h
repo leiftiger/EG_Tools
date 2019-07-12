@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QScrollBar>
+#include <QToolTip>
 
 #include "GeneratedFiles/ui_UI_NetworkContainer.h"
 

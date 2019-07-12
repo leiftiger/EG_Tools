@@ -6,7 +6,7 @@ void UI_NetworkContainer::initializeArgumentLists()
 	m_perceptList.clear();
 	m_resourceTypes.clear();
 
-	m_effectList.append("-1: Do nothing (preferred)");
+	m_effectList.append("0: No Effect (Preferred)");
 
 	for (const ATN::Effect *e : ATN::Manager::getEffects())
 	{
@@ -351,7 +351,27 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 	if (m_network->name() == name.toStdString())
 		return;
 
-	m_network->setName(name.toStdString());
+	ui.textNetworkName->setInputError(false);
+
+	try
+	{
+		ATN::Network *net = (ATN::Network*)&ATN::Manager::findByName(name.toStdString());
+
+		if (net != m_network)
+		{
+			ui.textNetworkName->setInputError(true);
+
+			QToolTip::showText(ui.textNetworkName->cursor().pos(), tr("This name already exists, network name must be unique!"));
+			return;
+		}
+	}
+	catch (ATN::Exception e) {}
+
+	ATN::List<ATN::Entry> *netList;
+
+	ATN::Manager::findByID(m_network->id(), netList);
+
+	netList->updateName(*m_network, name.toStdString());
 }
 
 void UI_NetworkContainer::setTransitionName(const QString &name)
@@ -420,6 +440,9 @@ void UI_NetworkContainer::createNewTransition()
 	t->setName(std::string("Transition ") + std::to_string(uiStateFrom->m_state->transitions().size() + 1));
 	t->setState(uiStateTo->m_state);
 
+	// Percept must always be set
+	t->setPercept(ATN::Manager::getPercepts()[0]);
+
 	// Add this object to the same ATN list the network belongs to
 	ATN::List<ATN::Entry> *outList;
 
@@ -476,14 +499,15 @@ void UI_NetworkContainer::updateTransition()
 
 void UI_NetworkContainer::editTransition()
 {
-	UI_NetworkTransition *uiTransition = (UI_NetworkTransition*)sender();
-
-	ATN::Transition *transition = uiTransition->transition();
-
 	if (m_currentEditTransition != nullptr)
 	{
 		m_currentEditTransition->setHighlighted(false);
 	}
+
+	UI_NetworkTransition *uiTransition = (UI_NetworkTransition*)sender();
+
+	ATN::Transition *transition = uiTransition->transition();
+
 
 	uiTransition->setHighlighted(true);
 
@@ -494,7 +518,7 @@ void UI_NetworkContainer::editTransition()
 	ui.textTransitionName->setText(QString::fromStdString(transition->name()));
 	ui.textTransitionID->setText(QString::fromStdString(std::to_string(transition->id())));
 
-	ui.labelTransitionInterpretation->setText(QString::fromStdString(uiTransition->interpret()));
+	ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + uiTransition->interpret()));
 
 	const std::vector<ATN::Percept*> &percepts = ATN::Manager::getPercepts();
 
@@ -531,6 +555,16 @@ void UI_NetworkContainer::editTransition()
 
 	m_currentEditState = (UI_NetworkState*)uiTransition->m_state;
 	m_currentEditTransition = uiTransition;
+
+	for (size_t i = 0; i < m_currentEditState->m_state->transitions().size(); i++)
+	{
+		if (m_currentEditState->m_state->transitions()[i] == transition)
+		{
+			ui.buttonTransitionSortUp->setEnabled(i != 0);
+			ui.buttonTransitionSortDown->setEnabled(i != m_currentEditState->m_state->transitions().size()-1);
+			break;
+		}
+	}
 
 	populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
 	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
@@ -661,6 +695,8 @@ void UI_NetworkContainer::layoutStates()
 	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height());
 
 	m_proxy.setStateSpaces(stateSpaces);
+
+	ui.networkContents->update();
 }
 
 void UI_NetworkContainer::initializeStates()
