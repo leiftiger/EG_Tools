@@ -38,7 +38,7 @@ TATNEffectSetTouristPopulation
 set number of tourists from region ::param1:: to ::param0::
 
 TATNEffectSetObjectiveStatus
-set "::param0::" visible: ::param1::, complete: ::param2::, parent: ::param3::
+set "::param0::" visible: ::param1::, complete: ::param2::, parent: "::param3::"
 
 TATNEffectRunGameRuleATN
 run game rule "::param0::"
@@ -105,3 +105,6 @@ set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
 
 TATNEffectSetTouristPopulation
 set tourists coming from ::param1:: to ::param0::
+
+TATNEffectGUIEnableFeature
+game feature "::param0::" enabled = ::param1::

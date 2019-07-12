@@ -92,7 +92,7 @@ TATNPerceptResourceExists::46
 ::resource0:: exists
 
 TATNPerceptResourceExists::8830
-::resource0:: exists (?)
+::resource0:: does not exist
 
 TATNPerceptWaitForEventWithEntityTypes::5498
 "::param0::" has occurred with desc ids ::param1:: and ::param2::

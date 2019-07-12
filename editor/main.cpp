@@ -87,6 +87,24 @@ int main(int argc, char *argv[])
 				{"true",	3},
 			}));
 
+		// TODO: Get more descriptive names of these
+		ATN::Manager::setDefinitions("Game Feature", util::createDefinition(
+			{
+				{"USER_INPUT",			1},
+				{"FORCES_OF_JUSTICE",	2},
+				{"MYSTERIOUS",			4},
+				{"TAG_DELETION",		8},
+				{"KEYBOARD",			16},
+				{"WORLD_MAP",			32},
+				{"ISLAND_TRANSITION",	64},
+				{"HENCHMEN",			128},
+				{"PATROLLING",			256},
+				{"INSTANT_ARRIVAL",		512},
+				{"ROOM_BUILDING",		1024},
+				{"OBJECTIVE_SCREEN",	2048},
+				{"SAVE_OR_LOAD_GAME",	4096},
+			}));
+
 		// TODO: Are there more values?
 		ATN::Manager::setDefinitions("Mouse Button", util::createDefinition(
 			{
