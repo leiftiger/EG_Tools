@@ -522,7 +522,9 @@ void UI_NetworkContainer::editTransition()
 	{
 		ATN::Percept *percept = percepts[i];
 
-		if (transition->percept() == percept)
+		// Comparing using ID since some effects/percepts are defined in multiple files
+		// which doesn't matter since the game only cares about IDs and we don't allow effects/percepts to be modified
+		if (transition->percept()->id() == percept->id())
 		{
 			ui.comboTransitionPercept->setCurrentIndex(i);
 			break;
@@ -541,7 +543,7 @@ void UI_NetworkContainer::editTransition()
 		{
 			ATN::Effect *effect = effects[i];
 
-			if (transition->effect() == effect)
+			if (transition->effect()->id() == effect->id())
 			{
 				ui.comboTransitionEffect->setCurrentIndex(i + 1);
 				break;
