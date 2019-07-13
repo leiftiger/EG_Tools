@@ -206,6 +206,26 @@ namespace ATN
 			reset();
 	}
 
+	void ResourceMarshall::reset(const std::vector<Resource*> &resources)
+	{
+		for (size_t i = 0; i < resources.size(); i++)
+		{
+			if (acceptsResourceType(resources[i]->m_type))
+			{
+				m_value = i;
+				return;
+			}
+		}
+
+		reset();
+	}
+
+	void ResourceMarshall::reset(const std::vector<Resource*> &resources, std::int64_t index)
+	{
+		if (m_value == index)
+			reset(resources);
+	}
+
 	void ResourceMarshall::swapIndices(std::int64_t index1, std::int64_t index2)
 	{
 		if (m_value == index1)

@@ -128,13 +128,206 @@ namespace ATN
 			if (*it == &resource)
 			{
 				if (!m_moving && !resource.m_internalResource)
-					removeResourceMarshall(it - m_resources.begin(), resource);
+					removeResourceMarshalls(it - m_resources.begin(), resource);
 
 				return m_resources.erase(it);
 			}
 		}
 
 		return m_resources.end();
+	}
+
+	void Network::updateResourceMarshalls(const Resource &resource)
+	{
+		for (ATN::Network *net : ATN::Manager::getNetworks())
+		{
+			for (ATN::State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					std::int64_t transitionIndex = -1;
+
+					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+					for (ATN::Resource *r : this->resources())
+					{
+						if (!r->m_internalResource)
+							transitionIndex++;
+
+						if (r == &resource)
+							break;
+					}
+
+					if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
+					{
+						state->resourceMarshalls()[transitionIndex]->m_type = ResourceMarshall::toResourceMarshallType(resource.m_type);
+					}
+				}
+			}
+		}
+	}
+
+	void Network::resetResourceMarshalls(std::int64_t index, const Resource &resource)
+	{
+		for (ATN::State *state : this->states())
+		{
+			for (ATN::ResourceMarshall *resourceMarshall : state->resourceMarshalls())
+			{
+				// We reset the marshall if the new type is incompatible to the current expected marshall
+				if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+					resourceMarshall->reset(this->resources());
+			}
+
+			for (ATN::Transition *transition : state->transitions())
+			{
+				for (ATN::ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
+				{
+					if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+						resourceMarshall->reset(this->resources());
+				}
+				for (ATN::ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
+				{
+					if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+						resourceMarshall->reset(this->resources());
+				}
+			}
+		}
+
+		for (ATN::Network *net : ATN::Manager::getNetworks())
+		{
+			for (ATN::State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					std::int64_t transitionIndex = -1;
+
+					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+					for (ATN::Resource *r : this->resources())
+					{
+						if (!r->m_internalResource)
+							transitionIndex++;
+
+						if (r == &resource)
+							break;
+					}
+
+					if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
+					{
+						state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+					}
+				}
+			}
+		}
+	}
+
+	void Network::resetInvalidResourceMarshalls()
+	{
+		for (ATN::State *state : this->states())
+		{
+			for (ATN::ResourceMarshall *resourceMarshall : state->resourceMarshalls())
+			{
+				if (resourceMarshall->m_value == ResourceMarshall::INVALID_POINTER)
+					resourceMarshall->reset(this->resources());
+			}
+
+			for (ATN::Transition *transition : state->transitions())
+			{
+				for (ATN::ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
+				{
+					if (resourceMarshall->m_value == ResourceMarshall::INVALID_POINTER)
+						resourceMarshall->reset(this->resources());
+				}
+				for (ATN::ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
+				{
+					if (resourceMarshall->m_value == ResourceMarshall::INVALID_POINTER)
+						resourceMarshall->reset(this->resources());
+				}
+			}
+		}
+
+		for (ATN::Network *net : ATN::Manager::getNetworks())
+		{
+			for (ATN::State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					std::int64_t transitionIndex = -1;
+
+					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+					for (ATN::Resource *r : this->resources())
+					{
+						if (!r->m_internalResource)
+							transitionIndex++;
+
+						if (state->resourceMarshalls()[transitionIndex]->m_value == ResourceMarshall::INVALID_POINTER)
+							state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+					}
+				}
+			}
+		}
+	}
+
+	void Network::setResourceInternal(Resource &resource, bool internal)
+	{
+		std::int64_t transitionIndex = -1;
+
+		for (ATN::Resource *r : this->resources())
+		{
+			if (!r->m_internalResource)
+				transitionIndex++;
+
+			if (r == &resource)
+			{
+				if (!resource.m_internalResource)
+					transitionIndex++;
+
+				break;
+			}
+		}
+
+		resource.m_internalResource = internal;
+
+		if (internal)
+		{
+			for (ATN::Network *net : ATN::Manager::getNetworks())
+			{
+				for (ATN::State *state : net->states())
+				{
+					if (state->networkTransition() != nullptr && state->networkTransition() == this)
+					{
+						for (size_t i = transitionIndex; i < state->resourceMarshalls().size() - 1; i++)
+						{
+							state->m_resourceMarshalls[i] = state->m_resourceMarshalls[i + 1];
+						}
+
+						state->m_resourceMarshalls.pop_back();
+					}
+				}
+			}
+		}
+		else
+		{
+			for (ATN::Network *net : ATN::Manager::getNetworks())
+			{
+				for (ATN::State *state : net->states())
+				{
+					if (state->networkTransition() != nullptr && state->networkTransition() == this)
+					{
+						ResourceMarshall *resourceMarshall = new ResourceMarshall(resource);
+
+						resourceMarshall->reset(net->resources());
+
+						state->m_resourceMarshalls.push_back(resourceMarshall);
+
+						for (size_t i = state->m_resourceMarshalls.size()-1; i >= transitionIndex; i--)
+						{
+							state->m_resourceMarshalls[i + 1] = state->m_resourceMarshalls[i];
+						}
+
+						state->m_resourceMarshalls[transitionIndex] = resourceMarshall;
+					}
+				}
+			}
+		}
 	}
 
 	const std::vector<Parameter*>& Network::parameters() const
@@ -174,13 +367,51 @@ namespace ATN
 			if (*it == &param)
 			{
 				if (!m_moving)
-					removeParameterMarshall(it - m_parameters.begin());
+					removeParameterMarshalls(it - m_parameters.begin());
 
 				return m_parameters.erase(it);
 			}
 		}
 
 		return m_parameters.end();
+	}
+
+	void Network::resetParameterMarshalls(std::int64_t index)
+	{
+		for (ATN::State *state : this->states())
+		{
+			for (ATN::ParameterMarshall *paramMarshall : state->parameterMarshalls())
+			{
+				// Any arguments that pointed to this index are reset to constant 0
+				// so that if the variable is now incompatible with that argument, it won't create a broken state
+				// (user has to find all uses themselves)
+				paramMarshall->resetConstant(index);
+			}
+
+			for (ATN::Transition *transition : state->transitions())
+			{
+				for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+				{
+					paramMarshall->resetConstant(index);
+				}
+				for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+				{
+					paramMarshall->resetConstant(index);
+				}
+			}
+		}
+
+		for (ATN::Network *net : ATN::Manager::getNetworks())
+		{
+			for (ATN::State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					// Here we reset the argument that will be passed to our index
+					state->parameterMarshalls()[index]->resetConstant();
+				}
+			}
+		}
 	}
 
 	void Network::serialize(std::ostream &stream) const
@@ -270,7 +501,7 @@ namespace ATN
 		}
 	}
 
-	void Network::removeParameterMarshall(std::int64_t index)
+	void Network::removeParameterMarshalls(std::int64_t index)
 	{
 		for (State *state : m_states)
 		{
@@ -350,20 +581,22 @@ namespace ATN
 		}
 	}
 
-	void Network::removeResourceMarshall(std::int64_t index, const Resource &resource)
+	void Network::removeResourceMarshalls(std::int64_t index, const Resource &resource)
 	{
 		for (State *state : m_states)
 		{
 			for (ResourceMarshall *resourceMarshall : state->resourceMarshalls())
-				resourceMarshall->reset(index);
+			{
+				resourceMarshall->reset(resources(), index);
+			}
 
 			for (Transition *transition : state->transitions())
 			{
 				for (ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
-					resourceMarshall->reset(index);
+					resourceMarshall->reset(resources(), index);
 
 				for (ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
-					resourceMarshall->reset(index);
+					resourceMarshall->reset(resources(), index);
 			}
 		}
 

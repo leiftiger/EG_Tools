@@ -141,6 +141,13 @@ namespace ATN
 		// Points this marshall to nothing if it's referring to this index
 		void reset(std::int64_t index);
 
+		// Points this marshall to the first available matching resource,
+		// or nothing if nothing matches
+		void reset(const std::vector<Resource*> &resources);
+		// If the marshall refers to this index, then point this marshall 
+		// to the first available matching resource, or nothing if nothing matches
+		void reset(const std::vector<Resource*> &resources, std::int64_t index);
+
 		// Swaps the given indices if this marshall points to any of them
 		void swapIndices(std::int64_t index1, std::int64_t index2);
 

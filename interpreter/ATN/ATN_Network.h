@@ -33,13 +33,13 @@ namespace ATN
 		// Add a new parameter marshall in all states to represent a new parameter being added
 		void addParameterMarshall();
 		// Remove a specified parameter marshall index from all states and transitions
-		void removeParameterMarshall(std::int64_t index);
+		void removeParameterMarshalls(std::int64_t index);
 
 		void swapResourceMarshallIndices(std::int64_t index1, std::int64_t index2);
 		// Add a new resource marshall in all states to represent a new resource being added
 		void addResourceMarshall();
 		// Remove a specified resource marshall index from all states and transitions
-		void removeResourceMarshall(std::int64_t index, const Resource &resource);
+		void removeResourceMarshalls(std::int64_t index, const Resource &resource);
 
 	public:
 
@@ -83,6 +83,19 @@ namespace ATN
 		// Remove this resource from the network
 		std::vector<Resource*>::iterator remove(Resource &resource);
 
+		// Updates all network transition resource marshalls references to the specified resource
+		void updateResourceMarshalls(const Resource &resource);
+
+		// Clears all references to the resource at specified index unless it is still capable of being cast to the specified resource
+		void resetResourceMarshalls(std::int64_t index, const Resource &resource);
+
+		// Attempts to point any invalid resource marshall pointer to the first best resource
+		// that's in the network or an external transition to it
+		void resetInvalidResourceMarshalls();
+
+		// Mark the specified resource as internal and update affected resource marshalls
+		void setResourceInternal(Resource &resource, bool internal);
+
 		// Gets all parameters belonging to this network
 		virtual const std::vector<Parameter*> &parameters() const override;
 
@@ -94,5 +107,8 @@ namespace ATN
 		void moveDown(Parameter &param);
 		// Remove this parameter from the network
 		std::vector<Parameter*>::iterator remove(Parameter &param);
+
+		// Clears all references to the parameter at the specified index to a constant value
+		void resetParameterMarshalls(std::int64_t index);
 	};
 }
