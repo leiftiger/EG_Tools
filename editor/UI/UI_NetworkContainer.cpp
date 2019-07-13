@@ -37,6 +37,10 @@ UI_NetworkResource *UI_NetworkContainer::createResourceUI(ATN::Resource *resourc
 	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
 	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
 
+	connect(ut, SIGNAL(changeType(QString)), this, SLOT(resourceTypeChange(QString)));
+	connect(ut, SIGNAL(changeInternal(bool)), this, SLOT(resourceInternalChange(bool)));
+	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
+
 	return ut;
 }
 
@@ -352,6 +356,44 @@ void UI_NetworkContainer::resourceRemove()
 	ut->deleteLater();
 
 	repopulateArguments();
+}
+
+void UI_NetworkContainer::resourceTypeChange(const QString &qType)
+{
+	UI_NetworkResource *uiResource = (UI_NetworkResource*)sender();
+
+	ATN::ResourceType newType = ATN::ResourceType::_from_string(qType.toStdString().c_str());
+
+	ATN::ResourceType oldType = uiResource->m_resource->m_type;
+
+	// No need to make any changes
+	if (oldType == newType)
+		return;
+
+	// TODO: Show dialog to user that this will reset all arguments referring to this index
+	// (including in external networks) and allow them to abort if they didn't want to this
+
+	std::int64_t index = -1;
+
+	for (size_t i = 0; i < m_resources.size(); i++)
+	{
+		if (m_resources[i] == uiResource)
+		{
+			index = (std::int64_t)i;
+			break;
+		}
+	}
+
+	uiResource->m_resource->m_type = newType;
+
+	clearResourceReferences(index, *uiResource->m_resource);
+
+	repopulateArguments();
+}
+
+void UI_NetworkContainer::resourceInternalChange(bool bInternal)
+{
+
 }
 
 void UI_NetworkContainer::variableCreate()
@@ -921,11 +963,64 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 	argumentWidget->setMinimumHeight(y);
 }
 
+void UI_NetworkContainer::clearResourceReferences(std::int64_t index, const ATN::Resource &resource)
+{
+	for (ATN::State *state : m_network->states())
+	{
+		for (ATN::ResourceMarshall *resourceMarshall : state->resourceMarshalls())
+		{
+			// We reset the marshall if the new type is incompatible to the current expected marshall
+			if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+				resourceMarshall->reset();
+		}
+
+		for (ATN::Transition *transition : state->transitions())
+		{
+			for (ATN::ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
+			{
+				if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+					resourceMarshall->reset();
+			}
+			for (ATN::ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
+			{
+				if (resourceMarshall->m_value == index && !resourceMarshall->acceptsResourceType(resource.m_type))
+					resourceMarshall->reset();
+			}
+		}
+	}
+
+	for (ATN::Network *net : ATN::Manager::getNetworks())
+	{
+		for (ATN::State *state : net->states())
+		{
+			if (state->networkTransition() != nullptr && state->networkTransition() == m_network)
+			{
+				std::int64_t transitionIndex = -1;
+
+				// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+				for (ATN::Resource *r : m_network->resources())
+				{
+					if (!r->m_internalResource)
+						transitionIndex++;
+
+					if (r == &resource)
+						break;
+				}
+
+				if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
+				{
+					state->resourceMarshalls()[transitionIndex]->reset();
+				}
+			}
+		}
+	}
+}
+
 void UI_NetworkContainer::clearVariableReferences(std::int64_t index)
 {
-	for (UI_NetworkState *uiState : m_states)
+	for (ATN::State *state : m_network->states())
 	{
-		for (ATN::ParameterMarshall *paramMarshall : uiState->m_state->parameterMarshalls())
+		for (ATN::ParameterMarshall *paramMarshall : state->parameterMarshalls())
 		{
 			// Any arguments that pointed to this index are reset to constant 0
 			// so that if the variable is now incompatible with that argument, it won't create a broken state
@@ -933,7 +1028,7 @@ void UI_NetworkContainer::clearVariableReferences(std::int64_t index)
 			paramMarshall->resetConstant(index);
 		}
 
-		for (ATN::Transition *transition : uiState->m_state->transitions())
+		for (ATN::Transition *transition : state->transitions())
 		{
 			for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
 			{

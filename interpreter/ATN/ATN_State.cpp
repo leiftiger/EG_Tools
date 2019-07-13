@@ -70,7 +70,7 @@ namespace ATN
 			for (Resource *r : net->resources())
 			{
 				if (!r->m_internalResource)
-					m_resourceMarshalls.push_back(new ResourceMarshall(*r, -1));
+					m_resourceMarshalls.push_back(new ResourceMarshall(*r));
 			}
 
 			for (Parameter *p : net->parameters())

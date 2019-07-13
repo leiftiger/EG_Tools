@@ -194,6 +194,10 @@ private:
 	// Populates the resource and parameter arguments for the effects & percepts
 	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls);
 
+	// Clears all references to the variable at specified index unless it is still capable of being cast to the specified resource
+	// Similar to ATN::Network::removeResourceMarshall(), but deals with changed type rather than removing anything
+	void clearResourceReferences(std::int64_t index, const ATN::Resource &resource);
+
 	// Clears all references to the variable at specified index
 	// Similar to ATN::Network::removeParameterMarshall(), but deals with changed type rather than removing anything
 	void clearVariableReferences(std::int64_t index);
@@ -222,6 +226,9 @@ public slots:
 	void resourceMoveUp();
 	void resourceMoveDown();
 	void resourceRemove();
+
+	void resourceTypeChange(const QString &type);
+	void resourceInternalChange(bool bInternal);
 
 	void variableCreate();
 	void variableMoveUp();

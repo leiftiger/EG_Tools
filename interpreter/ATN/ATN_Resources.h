@@ -126,13 +126,23 @@ namespace ATN
 	{
 	public:
 
+		static constexpr std::int64_t INVALID_POINTER = -1;
+
 		ResourceMarshallType m_type;
 		std::int64_t m_value;
 
 		ResourceMarshall(ResourceMarshallType type, std::int64_t value);
-		ResourceMarshall(const Resource &resource, std::int64_t value);
+		ResourceMarshall(const Resource &resource, std::int64_t value = INVALID_POINTER);
 
 		static ResourceMarshallType toResourceMarshallType(const ResourceType &t);
+
+		// Points this marshall to nothing (this value cannot be saved)
+		void reset();
+		// Points this marshall to nothing if it's referring to this index
+		void reset(std::int64_t index);
+
+		// Swaps the given indices if this marshall points to any of them
+		void swapIndices(std::int64_t index1, std::int64_t index2);
 
 		bool acceptsResourceType(const ResourceType &t) const;
 

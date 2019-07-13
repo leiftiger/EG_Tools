@@ -149,5 +149,59 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>resourceType</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>UI_NetworkResource</receiver>
+   <slot>setResourceType(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>86</x>
+     <y>11</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>88</x>
+     <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resourceIsParameter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>UI_NetworkResource</receiver>
+   <slot>setResourceInput(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>174</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>206</x>
+     <y>7</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resourceDesc</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_NetworkResource</receiver>
+   <slot>setResourceName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>118</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>-2</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setResourceType(QString)</slot>
+  <slot>setResourceInput(bool)</slot>
+  <slot>setResourceName(QString)</slot>
+ </slots>
 </ui>

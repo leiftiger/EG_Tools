@@ -159,7 +159,7 @@ namespace ATN
 
 	}
 
-	ResourceMarshall::ResourceMarshall(const Resource &resource, std::int64_t value) : m_value(value)
+	ResourceMarshall::ResourceMarshall(const Resource &resource, std::int64_t value = INVALID_POINTER) : m_value(value)
 	{
 		m_type = toResourceMarshallType(resource.m_type);
 	}
@@ -193,6 +193,25 @@ namespace ATN
 		throw Exception("Unknown resource type!");
 
 		return ResourceMarshallType::ResourceIndex;
+	}
+
+	void ResourceMarshall::reset()
+	{
+		m_value = INVALID_POINTER;
+	}
+
+	void ResourceMarshall::reset(std::int64_t index)
+	{
+		if (m_value == index)
+			reset();
+	}
+
+	void ResourceMarshall::swapIndices(std::int64_t index1, std::int64_t index2)
+	{
+		if (m_value == index1)
+			m_value = index2;
+		else if (m_value == index2)
+			m_value = index1;
 	}
 
 	bool ResourceMarshall::acceptsResourceType(const ResourceType &t) const

@@ -16,4 +16,15 @@ public:
 	Ui::UI_NetworkResource ui;
 
 	ATN::Resource *m_resource;
+
+public slots:
+
+	void setResourceType(const QString &type);
+	void setResourceInput(bool input);
+	void setResourceName(const QString &name);
+
+signals:
+	void repopulateArguments();
+	void changeInternal(bool);
+	void changeType(const QString &type);
 };

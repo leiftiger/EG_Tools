@@ -35,6 +35,12 @@ namespace ATN
 		// Remove a specified parameter marshall index from all states and transitions
 		void removeParameterMarshall(std::int64_t index);
 
+		void swapResourceMarshallIndices(std::int64_t index1, std::int64_t index2);
+		// Add a new resource marshall in all states to represent a new resource being added
+		void addResourceMarshall();
+		// Remove a specified resource marshall index from all states and transitions
+		void removeResourceMarshall(std::int64_t index, const Resource &resource);
+
 	public:
 
 		~Network();
