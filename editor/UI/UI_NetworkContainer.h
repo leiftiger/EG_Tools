@@ -84,11 +84,6 @@ private:
 	// Minimum distance between two states
 	const int STATE_MARGIN = 100;
 
-	// Initializes the two comboboxes used to select effect/percepts in the editor
-	void initializeArgumentLists();
-
-	void initializeThreads();
-
 	// Orders a list of objects inside a listObject according to the list
 	// (essentially a QListWidget, but containing dynamic objects)
 	template <class T>
@@ -177,6 +172,18 @@ private:
 		delete obj;
 	}
 
+	UI_NetworkThread *createThreadUI(ATN::Thread *thread);
+	UI_NetworkResource *createResourceUI(ATN::Resource *resource);
+	UI_NetworkVariable *createVariableUI(ATN::Parameter *parameter);
+	UI_NetworkState *createStateUI(ATN::State *state);
+	UI_NetworkTransition *createTransitionUI(ATN::Transition *transition, UI_NetworkState *uiStateFrom, UI_NetworkState *uiStateTo);
+
+
+	// Initializes the two comboboxes used to select effect/percepts in the editor
+	void initializeArgumentLists();
+
+	void initializeThreads();
+
 	void initializeResources();
 	void initializeVariables();
 
@@ -188,6 +195,7 @@ private:
 	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls);
 
 	// Clears all references to the variable at specified index
+	// Similar to ATN::Network::removeParameterMarshall(), but deals with changed type rather than removing anything
 	void clearVariableReferences(std::int64_t index);
 
 public:
@@ -253,12 +261,15 @@ public slots:
 	// Repopulates the list of arguments in all states and the currently open transition
 	// due to a change in variable name or type
 	void repopulateArguments();
+	void repopulateArguments(bool bNeighborsToo);
 
 	void maintainEditFramePositions();
 
 	signals:
 		void openNetworkRequest(int id);
 		void findTransitionsRequest(int id);
+
+		void repopulateNeighbors(int id);
 
 private:
 	Ui::UI_NetworkContainer ui;

@@ -1,5 +1,129 @@
 #include "UI_NetworkContainer.h"
 
+UI_NetworkThread *UI_NetworkContainer::createThreadUI(ATN::Thread *thread)
+{
+	UI_NetworkThread *ut = new UI_NetworkThread(ui.listNetworkThreads);
+
+	ut->ui.textThreadName->setText(QString::fromStdString(thread->name()));
+
+	ut->m_thread = thread;
+
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
+
+	connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+
+	return ut;
+}
+
+UI_NetworkResource *UI_NetworkContainer::createResourceUI(ATN::Resource *resource)
+{
+	UI_NetworkResource *ut = new UI_NetworkResource(ui.listNetworkResources);
+
+	ut->m_resource = resource;
+
+	// Remove placeholder option
+	ut->ui.resourceType->clear();
+
+	ut->ui.resourceType->addItems(m_resourceTypes);
+	ut->ui.resourceType->setCurrentIndex(resource->m_type._to_index());
+
+	ut->ui.resourceDesc->setText(QString::fromStdString(resource->m_desc));
+
+	ut->ui.resourceIsParameter->setChecked(!resource->m_internalResource);
+
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(resourceMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
+
+	return ut;
+}
+
+UI_NetworkVariable *UI_NetworkContainer::createVariableUI(ATN::Parameter *parameter)
+{
+	UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
+
+	ut->m_variable = parameter;
+
+	ut->blockSignals(true);
+
+	// Remove placeholder option
+	ut->ui.variableType->clear();
+
+	ut->ui.variableType->addItems(m_variableTypes);
+	ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(parameter->m_type)));
+
+	ut->ui.variableDesc->setText(QString::fromStdString(parameter->m_desc));
+
+	ut->loadTranslations();
+
+	ut->ui.variableValue->setCurrentText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
+
+	ut->blockSignals(false);
+
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
+	connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
+	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
+
+	return ut;
+}
+
+UI_NetworkState *UI_NetworkContainer::createStateUI(ATN::State *state)
+{
+	UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
+
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(stateMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(stateMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
+
+	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
+	connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
+	connect(ut, SIGNAL(requestNewTransition()), this, SLOT(createNewTransition()));
+
+	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+
+	ut->initialize(state, m_network);
+
+	return ut;
+}
+
+UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *transition, UI_NetworkState *uiStateFrom, UI_NetworkState *uiStateTo)
+{
+	UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
+
+	uiTransition->m_state = uiStateFrom;
+
+	uiTransition->initialize(transition, m_network);
+
+	UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+
+	uiConnector->setNetwork(&m_proxy);
+
+	uiConnector->setStart(uiTransition->m_connector);
+	uiConnector->setEnd(uiStateTo->ui.connectorIn);
+
+	uiTransition->m_connector->setConnector(uiConnector);
+
+	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
+	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
+
+	uiConnector->show();
+	uiTransition->show();
+
+	uiStateFrom->ui.connectorOut->addTransition(uiTransition);
+
+	int height = uiStateFrom->height();
+
+	uiStateFrom->adjustSize();
+	uiStateFrom->setFixedHeight(height);
+
+	return uiTransition;
+}
+
 void UI_NetworkContainer::initializeArgumentLists()
 {
 	m_effectList.clear();
@@ -34,19 +158,7 @@ void UI_NetworkContainer::initializeThreads()
 {
 	for (ATN::Thread *t : m_network->threads())
 	{
-		UI_NetworkThread *ut = new UI_NetworkThread(ui.listNetworkThreads);
-
-		ut->ui.textThreadName->setText(QString::fromStdString(t->name()));
-
-		ut->m_thread = t;
-
-		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
-
-		connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
-
-		m_threads.push_back(ut);
+		m_threads.push_back(createThreadUI(t));
 	}
 
 	layoutSortables(m_threads, ui.listNetworkThreads);
@@ -70,17 +182,7 @@ void UI_NetworkContainer::threadCreate()
 
 	m_network->add(*t);
 
-	UI_NetworkThread *ut = new UI_NetworkThread(ui.listNetworkThreads);
-
-	ut->ui.textThreadName->setText(QString::fromStdString(t->name()));
-
-	ut->m_thread = t;
-
-	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(threadMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(threadMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
-
-	connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+	UI_NetworkThread *ut = createThreadUI(t);
 
 	m_threads.push_back(ut);
 
@@ -88,7 +190,7 @@ void UI_NetworkContainer::threadCreate()
 
 	layoutSortables(m_threads, ui.listNetworkThreads);
 
-	// Scroll to bottom in case we have many threads
+	// Scroll to bottom in case we have many items
 	QScrollArea *scroller = (QScrollArea*)ui.listNetworkThreads->parent()->parent();
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
@@ -145,19 +247,7 @@ void UI_NetworkContainer::stateCreate()
 
 	m_network->add(*s);
 
-	UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
-
-	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(stateMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(stateMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
-
-	connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
-	connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
-	connect(ut, SIGNAL(requestNewTransition()), this, SLOT(createNewTransition()));
-
-	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
-
-	ut->initialize(s, m_network);
+	UI_NetworkState *ut = createStateUI(s);
 	ut->show();
 
 	m_states.push_back(ut);
@@ -204,27 +294,11 @@ void UI_NetworkContainer::stateRemove()
 
 void UI_NetworkContainer::resourceCreate()
 {
-	UI_NetworkResource *ut = new UI_NetworkResource(ui.listNetworkResources);
-
 	ATN::Resource *r = new ATN::Resource(ATN::ResourceType::Number, std::string("Resource ") + std::to_string(m_resources.size() + 1), true);
-
-	ut->m_resource = r;
 
 	m_network->add(*r);
 
-	// Remove placeholder option
-	ut->ui.resourceType->clear();
-
-	ut->ui.resourceType->addItems(m_resourceTypes);
-	ut->ui.resourceType->setCurrentIndex(r->m_type._to_index());
-
-	ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
-
-	ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
-
-	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(resourceMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
+	UI_NetworkResource *ut = createResourceUI(r);
 
 	m_resources.push_back(ut);
 
@@ -232,10 +306,12 @@ void UI_NetworkContainer::resourceCreate()
 
 	layoutSortables(m_resources, ui.listNetworkResources);
 
-	// Scroll to bottom in case we have many threads
+	// Scroll to bottom in case we have many items
 	QScrollArea *scroller = (QScrollArea*)ui.listNetworkResources->parent()->parent();
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::resourceMoveUp()
@@ -246,6 +322,8 @@ void UI_NetworkContainer::resourceMoveUp()
 	layoutSortables(m_resources, ui.listNetworkResources);
 
 	m_network->moveUp(*ut->m_resource);
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::resourceMoveDown()
@@ -256,6 +334,8 @@ void UI_NetworkContainer::resourceMoveDown()
 	layoutSortables(m_resources, ui.listNetworkResources);
 
 	m_network->moveDown(*ut->m_resource);
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::resourceRemove()
@@ -270,37 +350,17 @@ void UI_NetworkContainer::resourceRemove()
 	delete ut->m_resource;
 
 	ut->deleteLater();
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::variableCreate()
 {
-	UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
-
 	ATN::Parameter *p = new ATN::Parameter("Integer", 0, std::string("Variable ") + std::to_string(m_variables.size() + 1));
 
-	ut->m_variable = p;
+	m_network->add(*p);
 
-	ut->blockSignals(true);
-
-	// Remove placeholder option
-	ut->ui.variableType->clear();
-
-	ut->ui.variableType->addItems(m_variableTypes);
-	ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(p->m_type)));
-
-	ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
-
-	ut->loadTranslations();
-
-	ut->ui.variableValue->setCurrentText(QString::fromStdString(p->translateValue(p->m_defaultValue)));
-
-	ut->blockSignals(false);
-
-	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
-	connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
-	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
+	UI_NetworkVariable *ut = createVariableUI(p);
 
 	m_variables.push_back(ut);
 
@@ -308,10 +368,12 @@ void UI_NetworkContainer::variableCreate()
 
 	layoutSortables(m_variables, ui.listNetworkVariables);
 
-	// Scroll to bottom in case we have many threads
+	// Scroll to bottom in case we have many items
 	QScrollArea *scroller = (QScrollArea*)ui.listNetworkVariables->parent()->parent();
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
+
+	repopulateArguments();
 }
 
 void UI_NetworkContainer::variableMoveUp()
@@ -501,34 +563,7 @@ void UI_NetworkContainer::createNewTransition()
 
 	uiStateFrom->m_state->add(*t);
 
-	UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
-
-	uiTransition->m_state = uiStateFrom;
-
-	uiTransition->initialize(t, m_network);
-
-	UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
-
-	uiConnector->setNetwork(&m_proxy);
-
-	uiConnector->setStart(uiTransition->m_connector);
-	uiConnector->setEnd(uiStateTo->ui.connectorIn);
-
-	uiTransition->m_connector->setConnector(uiConnector);
-
-	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
-	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
-	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
-
-	uiTransition->show();
-	uiConnector->show();
-
-	uiStateFrom->ui.connectorOut->addTransition(uiTransition);
-
-	int height = uiStateFrom->height();
-
-	uiStateFrom->adjustSize();
-	uiStateFrom->setFixedHeight(height);
+	UI_NetworkTransition *uiTransition = createTransitionUI(t, uiStateFrom, uiStateTo);
 
 	// The transition connector only made a temporary connection, now we delete it since we have recreated it as the transition
 	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnector();
@@ -670,15 +705,28 @@ void UI_NetworkContainer::deleteTransition()
 
 	deleteATN(m_currentEditTransition->transition());
 
-	m_currentEditTransition->deleteLater();
+	delete m_currentEditTransition;
 
 	ui.frameTransition->setEnabled(false);
 
+	// Adjust width back now that the state may be thinner
+	int height = m_currentEditState->height();
+
+	m_currentEditState->adjustSize();
+	m_currentEditState->setFixedHeight(height);
+
 	m_currentEditState = nullptr;
 	m_currentEditTransition = nullptr;
+
+	layoutStates();
 }
 
 void UI_NetworkContainer::repopulateArguments()
+{
+	repopulateArguments(true);
+}
+
+void UI_NetworkContainer::repopulateArguments(bool bNeighborsToo)
 {
 	for (UI_NetworkState *uiState : m_states)
 	{
@@ -694,6 +742,10 @@ void UI_NetworkContainer::repopulateArguments()
 		populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
 		populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 	}
+
+	// Update any open windows that transition to us
+	if (bNeighborsToo)
+		emit repopulateNeighbors(m_network->id());
 }
 
 void UI_NetworkContainer::maintainEditFramePositions()
@@ -715,25 +767,7 @@ void UI_NetworkContainer::initializeResources()
 {
 	for (ATN::Resource *r : m_network->resources())
 	{
-		UI_NetworkResource *ut = new UI_NetworkResource(ui.listNetworkResources);
-
-		ut->m_resource = r;
-
-		// Remove placeholder option
-		ut->ui.resourceType->clear();
-
-		ut->ui.resourceType->addItems(m_resourceTypes);
-		ut->ui.resourceType->setCurrentIndex(r->m_type._to_index());
-
-		ut->ui.resourceDesc->setText(QString::fromStdString(r->m_desc));
-
-		ut->ui.resourceIsParameter->setChecked(!r->m_internalResource);
-
-		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(resourceMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(resourceMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(resourceRemove()));
-
-		m_resources.push_back(ut);
+		m_resources.push_back(createResourceUI(r));
 	}
 
 	layoutSortables(m_resources, ui.listNetworkResources);
@@ -743,40 +777,7 @@ void UI_NetworkContainer::initializeVariables()
 {
 	for (ATN::Parameter *p : m_network->parameters())
 	{
-		UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
-
-		ut->m_variable = p;
-
-		ut->blockSignals(true);
-
-		// Remove placeholder option
-		ut->ui.variableType->clear();
-
-		ut->ui.variableType->addItems(m_variableTypes);
-		ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(p->m_type)));
-
-		ut->ui.variableDesc->setText(QString::fromStdString(p->m_desc));
-
-		ut->loadTranslations();
-
-		QString strValue = QString::fromStdString(p->translateValue(p->m_defaultValue));
-
-		int index = ut->ui.variableValue->findText(strValue);
-
-		if (index != -1)
-			ut->ui.variableValue->setCurrentIndex(index);
-		else
-			ut->ui.variableValue->setCurrentText(strValue);
-
-		ut->blockSignals(false);
-
-		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
-		connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
-		connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
-
-		m_variables.push_back(ut);
+		m_variables.push_back(createVariableUI(p));
 	}
 
 	layoutSortables(m_variables, ui.listNetworkVariables);
@@ -830,19 +831,7 @@ void UI_NetworkContainer::initializeStates()
 
 	for (ATN::State *s : m_network->states())
 	{
-		UI_NetworkState *ut = new UI_NetworkState(ui.frameStates);
-
-		ut->initialize(s, m_network);
-
-		connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(stateMoveUp()));
-		connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(stateMoveDown()));
-		connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(stateRemove()));
-
-		connect(ut, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
-		connect(ut, SIGNAL(requestLayout()), this, SLOT(receiveStateLayoutRequest()));
-		connect(ut, SIGNAL(requestNewTransition()), this, SLOT(createNewTransition()));
-
-		connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+		UI_NetworkState *ut = createStateUI(s);
 
 		m_states.push_back(ut);
 
@@ -872,33 +861,9 @@ void UI_NetworkContainer::initializeStates()
 	{
 		for (ATN::Transition *t : uiStateFrom->m_state->transitions())
 		{
-			UI_NetworkTransition *uiTransition = new UI_NetworkTransition(uiStateFrom);
-
-			uiTransition->m_state = uiStateFrom;
-
-			uiTransition->initialize(t, m_network);
-
 			UI_NetworkState *uiStateTo = uiStates[t->state()];
 
-			UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
-
-			uiConnector->setNetwork(&m_proxy);
-
-			uiConnector->setStart(uiTransition->m_connector);
-			uiConnector->setEnd(uiStateTo->ui.connectorIn);
-
-			uiTransition->m_connector->setConnector(uiConnector);
-
-			connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
-			connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
-			connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
-
-			uiStateFrom->ui.connectorOut->addTransition(uiTransition);
-
-			int height = uiStateFrom->height();
-
-			uiStateFrom->adjustSize();
-			uiStateFrom->setFixedHeight(height);
+			createTransitionUI(t, uiStateFrom, uiStateTo);
 		}
 	}
 

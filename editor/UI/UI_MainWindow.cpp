@@ -63,6 +63,7 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 
 	connect(tab, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
 	connect(tab, SIGNAL(findTransitionsRequest(int)), this, SLOT(receiveTransitionsRequest(int)));
+	connect(tab, SIGNAL(repopulateNeighbors(int)), this, SLOT(receiveRepopulationRequest(int)));
 
 	ui.tabWidget->addTab(tab, tr("Network ") + QString::fromStdString(std::to_string(el.id())));
 
@@ -248,4 +249,21 @@ void UI_MainWindow::receiveTransitionsRequest(int id)
 	}
 
 	setNetworkResults(netResults);
+}
+
+void UI_MainWindow::receiveRepopulationRequest(int id)
+{
+	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	{
+		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
+
+		for (ATN::State *state : tabItem->network().states())
+		{
+			if (state->networkTransition() != nullptr && state->networkTransition()->id() == id)
+			{
+				tabItem->repopulateArguments(false);
+				break;
+			}
+		}
+	}
 }

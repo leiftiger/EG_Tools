@@ -23,10 +23,17 @@ namespace ATN
 		std::vector<Resource*> m_resources;
 		std::vector<Parameter*> m_parameters;
 
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		// Track whether or not the last remove() call was due to a move
+		bool m_moving = false;
+
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
 
 		void swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2);
+		// Add a new parameter marshall in all states to represent a new parameter being added
+		void addParameterMarshall();
+		// Remove a specified parameter marshall index from all states and transitions
+		void removeParameterMarshall(std::int64_t index);
 
 	public:
 

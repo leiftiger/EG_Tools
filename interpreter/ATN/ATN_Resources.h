@@ -103,6 +103,9 @@ namespace ATN
 		std::int64_t m_value;
 
 		ParameterMarshall(ParameterMarshallType type, std::int64_t value);
+		ParameterMarshall(const Parameter &parameter);
+
+		static ParameterMarshallType toParameterMarshallType(const Parameter &parameter);
 
 		// Reset this marshall to pass a constant value of 0, possibly due to a transition signature change
 		void resetConstant();
@@ -127,7 +130,7 @@ namespace ATN
 		std::int64_t m_value;
 
 		ResourceMarshall(ResourceMarshallType type, std::int64_t value);
-		ResourceMarshall(const Resource *resource, std::int64_t value);
+		ResourceMarshall(const Resource &resource, std::int64_t value);
 
 		static ResourceMarshallType toResourceMarshallType(const ResourceType &t);
 

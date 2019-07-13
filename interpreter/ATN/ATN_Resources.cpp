@@ -115,6 +115,20 @@ namespace ATN
 
 	}
 
+	ParameterMarshall::ParameterMarshall(const Parameter &parameter)
+	{
+		m_type = toParameterMarshallType(parameter);
+		m_value = parameter.m_defaultValue;
+	}
+
+	ParameterMarshallType ParameterMarshall::toParameterMarshallType(const Parameter &parameter)
+	{
+		if (parameter.m_type == "Boolean Value" || parameter.m_type == "Character Tag" || parameter.m_type == "Interaction Reason" || parameter.m_type == "Terminate Interaction Priority")
+			return ParameterMarshallType::SmallInt;
+
+		return ParameterMarshallType::Constant;
+	}
+
 	void ParameterMarshall::resetConstant()
 	{
 		m_type = ParameterMarshallType::Constant;
@@ -145,9 +159,9 @@ namespace ATN
 
 	}
 
-	ResourceMarshall::ResourceMarshall(const Resource *resource, std::int64_t value) : m_value(value)
+	ResourceMarshall::ResourceMarshall(const Resource &resource, std::int64_t value) : m_value(value)
 	{
-		m_type = toResourceMarshallType(resource->m_type);
+		m_type = toResourceMarshallType(resource.m_type);
 	}
 
 	ResourceMarshallType ResourceMarshall::toResourceMarshallType(const ResourceType &t)

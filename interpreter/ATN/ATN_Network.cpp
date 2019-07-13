@@ -98,12 +98,20 @@ namespace ATN
 
 	void Network::moveUp(Resource &resource)
 	{
+		m_moving = true;
+
 		m_resources.insert(--remove(resource), &resource);
+
+		m_moving = false;
 	}
 
 	void Network::moveDown(Resource &resource)
 	{
+		m_moving = true;
+
 		m_resources.insert(++remove(resource), &resource);
+
+		m_moving = false;
 	}
 
 	std::vector<Resource*>::iterator Network::remove(Resource &resource)
@@ -127,13 +135,19 @@ namespace ATN
 	void Network::add(Parameter &param)
 	{
 		m_parameters.push_back(&param);
+
+		addParameterMarshall();
 	}
 
 	void Network::moveUp(Parameter &param)
 	{
+		m_moving = true;
+
 		std::vector<Parameter*>::iterator it = m_parameters.insert(--remove(param), &param);
 
 		swapParameterMarshallIndices(it - m_parameters.begin(), (it + 1) - m_parameters.begin());
+
+		m_moving = false;
 	}
 
 	void Network::moveDown(Parameter &param)
@@ -149,6 +163,9 @@ namespace ATN
 		{
 			if (*it == &param)
 			{
+				if (!m_moving)
+					removeParameterMarshall(it - m_parameters.begin());
+
 				return m_parameters.erase(it);
 			}
 		}
@@ -224,6 +241,54 @@ namespace ATN
 					
 					state->m_parameterMarshalls[index2] = state->m_parameterMarshalls[index1];
 					state->m_parameterMarshalls[index1] = temp;
+				}
+			}
+		}
+	}
+
+	void Network::addParameterMarshall()
+	{
+		for (Network *net : ATN::Manager::getNetworks())
+		{
+			for (State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					state->m_parameterMarshalls.push_back(new ParameterMarshall(*m_parameters[m_parameters.size()-1]));
+				}
+			}
+		}
+	}
+
+	void Network::removeParameterMarshall(std::int64_t index)
+	{
+		for (State *state : m_states)
+		{
+			for (ParameterMarshall *paramMarshall : state->parameterMarshalls())
+				paramMarshall->resetConstant(index);
+
+			for (Transition *transition : state->transitions())
+			{
+				for (ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+					paramMarshall->resetConstant(index);
+
+				for (ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+					paramMarshall->resetConstant(index);
+			}
+		}
+
+		for (Network *net : ATN::Manager::getNetworks())
+		{
+			for (State *state : net->states())
+			{
+				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				{
+					for (size_t i = index; i < state->parameterMarshalls().size() - 1; i++)
+					{
+						state->m_parameterMarshalls[i] = state->m_parameterMarshalls[i + 1];
+					}
+
+					state->m_parameterMarshalls.pop_back();
 				}
 			}
 		}

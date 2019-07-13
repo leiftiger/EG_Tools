@@ -42,6 +42,8 @@ public slots:
 	void receiveOpenNetworkRequest(int id);
 	void receiveTransitionsRequest(int id);
 
+	void receiveRepopulationRequest(int id);
+
 private:
 	Ui::UI_MainWindowClass ui;
 };
