@@ -20,6 +20,8 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 
 	ui.comboBox->clear();
 
+	m_resources.clear();
+
 	for (size_t i = 0; i < net->resources().size(); i++)
 	{
 		ATN::Resource *param = net->resources()[i];
@@ -36,12 +38,22 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 			{
 				ui.comboBox->setCurrentIndex(ui.comboBox->count()-1);
 			}
+
+			m_resources.push_back(i);
 		}
 	}
 
-	m_resource = argument;
+	m_argument = argument;
 
 	// Select the first acceptable resource if we currently don't point to anything
 	if (argument->m_value == ATN::ResourceMarshall::INVALID_POINTER && ui.comboBox->count() > 0)
 		ui.comboBox->setCurrentIndex(0);
+}
+
+void UI_InputResource::selectResource(int index)
+{
+	if (m_argument == nullptr)
+		return;
+
+	m_argument->m_value = m_resources[index];
 }

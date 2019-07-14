@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Character:</string>
+    <string>Reduce Stat 3:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -65,5 +65,25 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>UI_InputArgument</receiver>
+   <slot>setArgument(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>8</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>214</x>
+     <y>12</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setArgument(QString)</slot>
+ </slots>
 </ui>

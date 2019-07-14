@@ -27,7 +27,7 @@
    </property>
    <item>
     <property name="text">
-     <string>0: ProgressTimer</string>
+     <string>[0: ProgressTimer]</string>
     </property>
    </item>
   </widget>
@@ -46,7 +46,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Reduce Stat 3:</string>
+    <string>Character:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -55,5 +55,25 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>UI_InputResource</receiver>
+   <slot>selectResource(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>144</x>
+     <y>8</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>11</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>selectResource(int)</slot>
+ </slots>
 </ui>

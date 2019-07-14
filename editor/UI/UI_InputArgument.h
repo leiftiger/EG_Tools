@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QToolTip>
 #include "GeneratedFiles/ui_UI_InputArgument.h"
 
 #include "ATN/ATN_Network.h"
@@ -12,7 +13,11 @@ class UI_InputArgument : public QWidget
 
 private:
 
-	ATN::ParameterMarshall *m_parameter = nullptr;
+	const ATN::Parameter *m_parameter = nullptr;
+
+	ATN::ParameterMarshall *m_argument = nullptr;
+
+	std::vector<int> m_variables;
 
 	static const int STR_FORMAT_BUFF = 1024;
 
@@ -24,4 +29,7 @@ public:
 
 	// Initializes this input with available argument options and select the current argument
 	void initialize(ATN::ParameterMarshall *argument, const ATN::Parameter *parameter, const ATN::Network *net);
+
+public slots:
+	void setArgument(const QString &str);
 };

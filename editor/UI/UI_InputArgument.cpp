@@ -20,6 +20,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 
 	ui.comboBox->clear();
 
+	m_variables.clear();
+
 	for (size_t i = 0; i < net->parameters().size(); i++)
 	{
 		ATN::Parameter *netParam = net->parameters()[i];
@@ -36,6 +38,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 			{
 				ui.comboBox->setCurrentIndex(ui.comboBox->count() - 1);
 			}
+
+			m_variables.push_back(i);
 		}
 	}
 
@@ -76,5 +80,35 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 			ui.comboBox->setCurrentText(strValue);
 	}
 
-	m_parameter = argument;
+	m_argument = argument;
+	m_parameter = parameter;
+}
+
+void UI_InputArgument::setArgument(const QString &str)
+{
+	if (m_argument == nullptr)
+		return;
+
+	ui.comboBox->setInputError(false);
+
+	int index = ui.comboBox->findText(str);
+
+	if (index != -1 && index < m_variables.size())
+	{
+		m_argument->m_type = ATN::ParameterMarshallType::ParameterIndex;
+		m_argument->m_value = m_variables[index];
+	}
+	else
+	{
+		try
+		{
+			m_argument->m_value = m_parameter->translateName(str.toStdString());
+			m_argument->m_type = m_argument->toParameterMarshallType(*m_parameter);
+		}
+		catch (std::exception e)
+		{
+			ui.comboBox->setInputError(true);
+			QToolTip::showText(ui.comboBox->mapToGlobal(ui.comboBox->pos()), tr("Invalid input"));
+		}
+	}
 }

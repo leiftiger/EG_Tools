@@ -12,7 +12,9 @@ class UI_InputResource : public QWidget
 
 private:
 
-	ATN::ResourceMarshall *m_resource = nullptr;
+	ATN::ResourceMarshall *m_argument = nullptr;
+
+	std::vector<int> m_resources;
 
 	static const int STR_FORMAT_BUFF = 1024;
 
@@ -24,4 +26,7 @@ public:
 
 	// Initializes this input with available resource options and select the current resource marshall
 	void initialize(ATN::ResourceMarshall *r, const ATN::Resource *resource, const ATN::Network *net);
+
+public slots:
+	void selectResource(int index);
 };
