@@ -640,16 +640,60 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 
 void UI_NetworkContainer::setTransitionName(const QString &name)
 {
+	if (m_currentEditTransition == nullptr)
+		return;
 
+	m_currentEditTransition->transition()->setName(name.toStdString());
+
+	m_currentEditTransition->layout();
+
+	m_currentEditState->ui.connectorOut->layout();
+	m_currentEditState->ui.connectorOut->update();
+
+	int height = m_currentEditState->height();
+
+	m_currentEditState->adjustSize();
+	m_currentEditState->setFixedHeight(height);
+
+	layoutStates();
 }
 
 void UI_NetworkContainer::setTransitionPercept(int index)
 {
+	if (m_currentEditTransition == nullptr)
+		return;
 
+	ATN::Transition *transition = m_currentEditTransition->transition();
+
+	ATN::Percept *percept = ATN::Manager::getPercepts()[index];
+
+	transition->setPercept(percept);
+
+	// Because the transition has no view of the network, it doesn't know which indices are viable
+	m_network->resetInvalidResourceMarshalls();
+
+	populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
 }
 
 void UI_NetworkContainer::setTransitionEffect(int index)
 {
+	if (m_currentEditTransition == nullptr)
+		return;
+
+	ATN::Transition *transition = m_currentEditTransition->transition();
+
+	ATN::Effect *effect = nullptr;
+
+	if (index > 0)
+	{
+		effect = ATN::Manager::getEffects()[index - 1];
+	}
+
+	transition->setEffect(effect);
+
+	m_network->resetInvalidResourceMarshalls();
+
+	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 
 }
 

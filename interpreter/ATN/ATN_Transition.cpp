@@ -28,6 +28,28 @@ namespace ATN
 	void Transition::setEffect(Effect *effect)
 	{
 		m_effect = effect;
+
+		for (ResourceMarshall *r : m_effectResources)
+			delete r;
+		for (ParameterMarshall *p : m_effectParameters)
+			delete p;
+
+		m_effectResources.clear();
+		m_effectParameters.clear();
+
+		if (m_effect != nullptr)
+		{
+			for (Resource *r : m_effect->resources())
+			{
+				if (!r->m_internalResource)
+					m_effectResources.push_back(new ResourceMarshall(*r));
+			}
+
+			for (Parameter *p : m_effect->parameters())
+			{
+				m_effectParameters.push_back(new ParameterMarshall(*p));
+			}
+		}
 	}
 
 	const std::vector<ResourceMarshall*> &Transition::effectResourceMarshalls() const
@@ -48,6 +70,29 @@ namespace ATN
 	void Transition::setPercept(Percept *percept)
 	{
 		m_percept = percept;
+
+		for (ResourceMarshall *r : m_perceptResources)
+			delete r;
+		for (ParameterMarshall *p : m_perceptParameters)
+			delete p;
+
+		m_perceptResources.clear();
+		m_perceptParameters.clear();
+
+		// Should never be null, but just in case
+		if (m_percept != nullptr)
+		{
+			for (Resource *r : m_percept->resources())
+			{
+				if (!r->m_internalResource)
+					m_perceptResources.push_back(new ResourceMarshall(*r));
+			}
+
+			for (Parameter *p : m_percept->parameters())
+			{
+				m_perceptParameters.push_back(new ParameterMarshall(*p));
+			}
+		}
 	}
 
 	const std::vector<ResourceMarshall*> &Transition::perceptResourceMarshalls() const

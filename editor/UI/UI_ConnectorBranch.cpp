@@ -161,6 +161,7 @@ void UI_ConnectorBranch::layout()
 		int dist = farthestConnectorDistance - ut->m_connector->mapToParent(ut->m_connector->center()).x();
 
 		ut->m_connector->setConnectorOffset(dist + CONNECTOR_OFFSET);
+		ut->m_connector->update();
 	}
 
 	int connectorX = width();
