@@ -43,6 +43,9 @@ public:
 	// Decreases size of state to a more minimized footprint
 	void setMinimized(bool minimize);
 
+	// Disables the state from being edited
+	void setReadOnly(bool readonly);
+
 public slots:
 	void enableExternalNetwork(bool enable);
 	void selectExternalNetwork(int index);

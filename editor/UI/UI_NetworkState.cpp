@@ -157,6 +157,14 @@ void UI_NetworkState::setMinimized(bool minimize)
 	emit requestLayout();
 }
 
+void UI_NetworkState::setReadOnly(bool readonly)
+{
+	for (UI_InputArgument *ut : m_arguments)
+		ut->ui.comboBox->setReadOnly(readonly);
+	for (UI_InputResource *ut : m_resources)
+		ut->ui.comboBox->setDisabled(readonly);
+}
+
 void UI_NetworkState::selectExternalNetwork(int index)
 {
 	if (m_state != nullptr && index != -1)

@@ -93,7 +93,7 @@ void UI_ConnectorStart::mousePressEvent(QMouseEvent *event)
 	{
 		m_connector->setHighlighted(!m_connector->highlighted());
 	}
-	else if (event->button() == Qt::MouseButton::LeftButton)
+	else if (event->button() == Qt::MouseButton::LeftButton && !m_readOnly)
 	{
 		if (m_connector != nullptr)
 		{
@@ -127,4 +127,9 @@ void UI_ConnectorStart::updateConnector()
 {
 	if (m_connector != nullptr)
 		m_connector->update();
+}
+
+void UI_ConnectorStart::setReadOnly(bool readonly)
+{
+	m_readOnly = readonly;
 }

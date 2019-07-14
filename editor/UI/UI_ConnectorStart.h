@@ -42,6 +42,9 @@ public:
 	// Repaints the connector attached to this connector point if it exists
 	void updateConnector();
 
+	// Allows the connector to be hovered & highlighted, but not connectable
+	void setReadOnly(bool readonly);
+
 private:
 	Ui::UI_ConnectorStart ui;
 
@@ -53,6 +56,8 @@ private:
 	UI_Connector *m_connector = nullptr;
 
 	ConnectFlags m_connectFlags = ConnectFlags::OffsetRight;
+
+	bool m_readOnly = false;
 
 public:
 signals:

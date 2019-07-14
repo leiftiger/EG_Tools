@@ -279,6 +279,28 @@ namespace ATN
 		return results;
 	}
 
+	bool Manager::isMultiDefined(const ATN::Entry &el)
+	{
+		int numDefinitions = 0;
+
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
+		{
+			List<Entry> *list = instance().m_lists[i];
+			try
+			{
+				list->find(el.id());
+
+				numDefinitions++;
+			}
+			catch (Exception e) { }
+		}
+
+		if (numDefinitions > 1)
+			return true;
+
+		return false;
+	}
+
 	void Manager::updateName(Entry &entry, const std::string &newName)
 	{
 		for (size_t i = 0; i < instance().m_lists.size(); i++)

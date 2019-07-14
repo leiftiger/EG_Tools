@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QMessageBox>
 #include <QScrollBar>
 #include <QToolTip>
 
@@ -81,6 +82,8 @@ private:
 	std::vector<UI_InputArgument*> m_currentTransitionPerceptArguments;
 	std::vector<UI_InputResource*> m_currentTransitionPerceptResources;
 
+	bool m_editingDisabled = false;
+
 	// Minimum distance between two states
 	const int STATE_MARGIN = 100;
 
@@ -95,9 +98,12 @@ private:
 		{
 			T *ut = list[i];
 
-			// Disable first and last sort buttons
-			ut->ui.buttonSortUp->setEnabled(i != 0);
-			ut->ui.buttonSortDown->setEnabled(i != list.size() - 1);
+			if (!m_editingDisabled)
+			{
+				// Disable first and last sort buttons
+				ut->ui.buttonSortUp->setEnabled(i != 0);
+				ut->ui.buttonSortDown->setEnabled(i != list.size() - 1);
+			}
 
 			ut->move(0, y);
 
@@ -202,6 +208,9 @@ public:
 
 	// Gets the network this container represents
 	const ATN::Network &network();
+
+	// Sets the container to be read-only
+	void setReadOnly(bool readonly);
 
 public slots:
 	void threadCreate();

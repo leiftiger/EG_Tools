@@ -24,20 +24,19 @@ UI_MainWindow::UI_MainWindow(QWidget *parent)
 	ui.tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->resize(0, 0);
 }
 
-void UI_MainWindow::setNetworkResults(std::vector<ATN::Network*> results)
+void UI_MainWindow::setNetworkResults(std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>> results)
 {
 	ui.listSearchResults->clear();
 
-	for (ATN::Network *net : results)
+	for (std::pair<ATN::Network*, ATN::List<ATN::Entry>*> &pair : results)
 	{
+		ATN::Network *net = pair.first;
+		ATN::List<ATN::Entry> *netList = pair.second;
+
 		UI_MainWindowSearchResult *res = new UI_MainWindowSearchResult();
 
 		res->ui.textName->setText(QString::fromStdString(net->name()));
 		res->ui.textUniqueID->setText(QString::fromStdString(std::to_string(net->id())));
-
-		// Find list the network belongs to
-		ATN::List<ATN::Entry> *netList;
-		ATN::Manager::findByID(net->id(), netList);
 
 		std::string name = netList->name();
 
@@ -58,6 +57,9 @@ void UI_MainWindow::setNetworkResults(std::vector<ATN::Network*> results)
 void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 {
 	UI_NetworkContainer *tab = new UI_NetworkContainer;
+
+	if (ATN::Manager::isMultiDefined(el))
+		tab->setReadOnly(true);
 
 	tab->initializeFromID(el.id());
 
@@ -115,7 +117,7 @@ void UI_MainWindow::openHashTool()
 
 void UI_MainWindow::searchName(const QString &str)
 {
-	std::vector<ATN::Network*> netResults;
+	std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>> netResults;
 
 	// Focus on search results
 	ui.tabWidget->setCurrentIndex(0);
@@ -133,7 +135,7 @@ void UI_MainWindow::searchName(const QString &str)
 	{
 		if (typeid(*pair.first) == typeid(ATN::Network))
 		{
-			netResults.push_back((ATN::Network*)pair.first);
+			netResults.push_back(std::make_pair((ATN::Network*)pair.first, pair.second));
 		}
 	}
 
@@ -143,7 +145,7 @@ void UI_MainWindow::searchName(const QString &str)
 void UI_MainWindow::searchID(const QString &str)
 {
 	// Clear current results
-	setNetworkResults(std::vector<ATN::Network*>());
+	setNetworkResults(std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>>());
 
 	// Focus on search results
 	ui.tabWidget->setCurrentIndex(0);
@@ -152,13 +154,15 @@ void UI_MainWindow::searchID(const QString &str)
 	{
 		int id = std::atoi(str.toStdString().c_str());
 
-		ATN::Entry &el = ATN::Manager::findByID(id);
+		ATN::List<ATN::Entry> *netList;
+
+		ATN::Entry &el = ATN::Manager::findByID(id, netList);
 
 		if (typeid(el) == typeid(ATN::Network))
 		{
-			std::vector<ATN::Network*> results;
+			std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>> results;
 
-			results.push_back((ATN::Network*)&el);
+			results.push_back(std::make_pair((ATN::Network*)&el, netList));
 
 			setNetworkResults(results);
 		}
@@ -185,6 +189,27 @@ void UI_MainWindow::openNetworkButton()
 	}
 
 	createNetworkResourceTab(*net);
+
+	if (ATN::Manager::isMultiDefined(*net))
+	{
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Information);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Network is read-only</b></span>"));
+
+		msg.setInformativeText(tr("This network is defined in multiple files, thus it is set to read-only due to program limitations.") +
+			tr("\n\nIf you want to edit it, you must load only \"") + res->ui.textATNList->text() +
+			tr("\" and \"ATNResources.ros\".\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
+
+		msg.setStandardButtons(QMessageBox::Ok);
+		msg.setDefaultButton(QMessageBox::Ok);
+
+		QApplication::beep();
+		int ret = msg.exec();
+	}
 }
 
 void UI_MainWindow::closeTab(int tab)
@@ -215,6 +240,27 @@ void UI_MainWindow::receiveOpenNetworkRequest(int id)
 	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(id);
 
 	createNetworkResourceTab(*net);
+
+	if (ATN::Manager::isMultiDefined(*net))
+	{
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Information);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Network is read-only</b></span>"));
+
+		msg.setInformativeText(tr("This network is defined in multiple files, thus it is set to read-only due to program limitations.") +
+			tr("\n\nIf you want to edit it, you must load only one of the files it is defined in ") +
+			tr("and \"ATNResources.ros\".\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
+
+		msg.setStandardButtons(QMessageBox::Ok);
+		msg.setDefaultButton(QMessageBox::Ok);
+
+		QApplication::beep();
+		int ret = msg.exec();
+	}
 }
 
 void UI_MainWindow::receiveTransitionsRequest(int id)
@@ -229,12 +275,12 @@ void UI_MainWindow::receiveTransitionsRequest(int id)
 	ATN::Network *transitionNetwork = (ATN::Network*)&ATN::Manager::findByID(id);
 
 	// Clear current results
-	setNetworkResults(std::vector<ATN::Network*>());
+	setNetworkResults(std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>>());
 
 	// Focus on search results
 	ui.tabWidget->setCurrentIndex(0);
 
-	std::vector<ATN::Network*> netResults;
+	std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>> netResults;
 
 	for (ATN::Network *net : ATN::Manager::getNetworks())
 	{
@@ -242,7 +288,11 @@ void UI_MainWindow::receiveTransitionsRequest(int id)
 		{
 			if (state->networkTransition() == transitionNetwork)
 			{
-				netResults.push_back(net);
+				ATN::List<ATN::Entry> *netList;
+
+				ATN::Manager::findByID(net->id(), netList);
+
+				netResults.push_back(std::make_pair(net, netList));
 				break;
 			}
 		}

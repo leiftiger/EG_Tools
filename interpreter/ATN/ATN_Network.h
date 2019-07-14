@@ -36,6 +36,11 @@ namespace ATN
 		void removeParameterMarshalls(std::int64_t index);
 
 		void swapResourceMarshallIndices(std::int64_t index1, std::int64_t index2);
+
+		// Swap input resource marshalls if the input order has changed
+		// Swap the transition index for the given resource and the one after it
+		void swapResourceMarshallInputs(const Resource &resource);
+
 		// Add a new resource marshall in all states to represent a new resource being added
 		void addResourceMarshall();
 		// Remove a specified resource marshall index from all states and transitions

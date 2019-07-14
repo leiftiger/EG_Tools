@@ -5,6 +5,8 @@
 
 #include "UI_HashWindow.h"
 
+#include <QMessageBox>
+
 #include "ATN/ATN_Network.h"
 
 class UI_MainWindow : public QMainWindow
@@ -21,7 +23,7 @@ protected:
 public:
 	UI_MainWindow(QWidget *parent = Q_NULLPTR);
 
-	void setNetworkResults(std::vector<ATN::Network*> results);
+	void setNetworkResults(std::vector<std::pair<ATN::Network*, ATN::List<ATN::Entry>*>> results);
 	void createNetworkResourceTab(ATN::Network &el);
 
 	virtual void closeEvent(QCloseEvent *event) override;

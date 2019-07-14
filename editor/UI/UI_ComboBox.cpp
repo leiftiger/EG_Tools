@@ -36,3 +36,18 @@ void UI_ComboBox::setInputError(bool error)
 		}
 	}
 }
+
+void UI_ComboBox::setReadOnly(bool readonly)
+{
+	m_readOnly = readonly;
+
+	lineEdit()->setReadOnly(readonly);
+}
+
+void UI_ComboBox::showPopup()
+{
+	if (!m_readOnly)
+		QComboBox::showPopup();
+	else
+		QComboBox::hidePopup();
+}

@@ -159,7 +159,7 @@ namespace ATN
 
 	}
 
-	ResourceMarshall::ResourceMarshall(const Resource &resource, std::int64_t value = INVALID_POINTER) : m_value(value)
+	ResourceMarshall::ResourceMarshall(const Resource &resource, std::int64_t value) : m_value(value)
 	{
 		m_type = toResourceMarshallType(resource.m_type);
 	}

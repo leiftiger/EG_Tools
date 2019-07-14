@@ -14,6 +14,16 @@ UI_NetworkThread *UI_NetworkContainer::createThreadUI(ATN::Thread *thread)
 
 	connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
+	if (m_editingDisabled)
+	{
+		ut->ui.connector->setReadOnly(true);
+
+		ut->ui.textThreadName->setReadOnly(true);
+		ut->ui.buttonSortUp->setDisabled(true);
+		ut->ui.buttonSortDown->setDisabled(true);
+		ut->ui.buttonDelete->setDisabled(true);
+	}
+
 	return ut;
 }
 
@@ -40,6 +50,16 @@ UI_NetworkResource *UI_NetworkContainer::createResourceUI(ATN::Resource *resourc
 	connect(ut, SIGNAL(changeType(QString)), this, SLOT(resourceTypeChange(QString)));
 	connect(ut, SIGNAL(changeInternal(bool)), this, SLOT(resourceInternalChange(bool)));
 	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
+
+	if (m_editingDisabled)
+	{
+		ut->ui.resourceType->setDisabled(true);
+		ut->ui.resourceDesc->setReadOnly(true);
+		ut->ui.resourceIsParameter->setDisabled(true);
+		ut->ui.buttonSortUp->setDisabled(true);
+		ut->ui.buttonSortDown->setDisabled(true);
+		ut->ui.buttonDelete->setDisabled(true);
+	}
 
 	return ut;
 }
@@ -72,6 +92,16 @@ UI_NetworkVariable *UI_NetworkContainer::createVariableUI(ATN::Parameter *parame
 	connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
 	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
 
+	if (m_editingDisabled)
+	{
+		ut->ui.variableType->setDisabled(true);
+		ut->ui.variableDesc->setReadOnly(true);
+		ut->ui.variableValue->setReadOnly(true);
+		ut->ui.buttonSortUp->setDisabled(true);
+		ut->ui.buttonSortDown->setDisabled(true);
+		ut->ui.buttonDelete->setDisabled(true);
+	}
+
 	return ut;
 }
 
@@ -90,6 +120,19 @@ UI_NetworkState *UI_NetworkContainer::createStateUI(ATN::State *state)
 	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
 	ut->initialize(state, m_network);
+
+	if (m_editingDisabled)
+	{
+		ut->ui.textStateName->setReadOnly(true);
+		ut->ui.buttonSortUp->setDisabled(true);
+		ut->ui.buttonSortDown->setDisabled(true);
+		ut->ui.buttonDelete->setDisabled(true);
+		ut->ui.checkBoxExternalNetworkConnector->setDisabled(true);
+		ut->ui.comboBoxExternalNetwork->setDisabled(true);
+		ut->ui.connectorOut->transitionConnector()->setDisabled(true);
+
+		ut->setReadOnly(true);
+	}
 
 	return ut;
 }
@@ -124,6 +167,11 @@ UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *
 
 	uiStateFrom->adjustSize();
 	uiStateFrom->setFixedHeight(height);
+
+	if (m_editingDisabled)
+	{
+		uiTransition->m_connector->setReadOnly(true);
+	}
 
 	return uiTransition;
 }
@@ -372,8 +420,33 @@ void UI_NetworkContainer::resourceTypeChange(const QString &qType)
 	if (oldType == newType)
 		return;
 
-	// TODO: Show dialog to user that this will reset all arguments referring to this index
-	// (including in external networks) and allow them to abort if they didn't want to this
+	QMessageBox msg;
+
+	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+	msg.setIcon(QMessageBox::Icon::Warning);
+
+	msg.setWindowTitle(tr(" "));
+	msg.setText(tr("<span style=\"font-size:12pt;\"><b>References may become invalid</b></span>"));
+
+	msg.setInformativeText(tr("Changing the resource type may make dependent transitions (including external network ones) unable to cast to the new type and will thus be changed to an arbitrary resource or left as an invalid pointer.") +
+		tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msg.setDefaultButton(QMessageBox::Cancel);
+
+	QApplication::beep();
+	int msgRet = msg.exec();
+
+	switch (msgRet)
+	{
+	case QMessageBox::Ok:
+		break;
+	case QMessageBox::Cancel:
+	{
+		uiResource->ui.resourceType->setCurrentIndex(oldType._to_index());
+		return;
+	}
+	}
 
 	std::int64_t index = -1;
 
@@ -492,8 +565,33 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 	if (oldType == newType)
 		return;
 
-	// TODO: Show dialog to user that this will reset all arguments referring to this index
-	// (including in external networks) and allow them to abort if they didn't want to this
+	QMessageBox msg;
+
+	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+	msg.setIcon(QMessageBox::Icon::Warning);
+
+	msg.setWindowTitle(tr(" "));
+	msg.setText(tr("<span style=\"font-size:12pt;\"><b>References will be undefined</b></span>"));
+
+	msg.setInformativeText(tr("Changing the variable type will set dependent transitions (including external network ones) to UNDEFINED.") +
+		tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msg.setDefaultButton(QMessageBox::Cancel);
+
+	QApplication::beep();
+	int msgRet = msg.exec();
+
+	switch (msgRet)
+	{
+	case QMessageBox::Ok:
+		break;
+	case QMessageBox::Cancel:
+	{
+		uiVariable->ui.variableType->setCurrentIndex(uiVariable->ui.variableType->findText(QString::fromStdString(oldType)));
+		return;
+	}
+	}
 
 	std::int64_t index = -1;
 
@@ -708,6 +806,12 @@ void UI_NetworkContainer::editTransition()
 		}
 	}
 
+	if (m_editingDisabled)
+	{
+		ui.buttonTransitionSortUp->setDisabled(true);
+		ui.buttonTransitionSortDown->setDisabled(true);
+	}
+
 	populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
 	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 
@@ -844,9 +948,12 @@ void UI_NetworkContainer::layoutStates()
 	{
 		UI_NetworkState *ut = m_states[i];
 
-		// Disable first and last sort buttons
-		ut->ui.buttonSortUp->setEnabled(i != 0);
-		ut->ui.buttonSortDown->setEnabled(i != m_states.size() - 1);
+		if (!m_editingDisabled)
+		{
+			// Disable first and last sort buttons
+			ut->ui.buttonSortUp->setEnabled(i != 0);
+			ut->ui.buttonSortDown->setEnabled(i != m_states.size() - 1);
+		}
 
 		ut->move(x, 0);
 
@@ -969,6 +1076,14 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 		argumentList.push_back(ut);
 	}
 
+	if (m_editingDisabled)
+	{
+		for (UI_InputArgument *ut : argumentList)
+			ut->ui.comboBox->setReadOnly(true);
+		for (UI_InputResource *ut : resourceList)
+			ut->ui.comboBox->setDisabled(true);
+	}
+
 	argumentWidget->setMinimumHeight(y);
 }
 
@@ -1011,4 +1126,42 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 const ATN::Network &UI_NetworkContainer::network()
 {
 	return *m_network;
+}
+
+void UI_NetworkContainer::setReadOnly(bool readonly)
+{
+	m_editingDisabled = readonly;
+
+	if (readonly)
+	{
+		ui.textNetworkName->setReadOnly(true);
+
+		ui.buttonNewState->setDisabled(true);
+		ui.buttonNewThread->setDisabled(true);
+		ui.buttonNewResource->setDisabled(true);
+		ui.buttonNewVariable->setDisabled(true);
+		ui.buttonDeleteNetwork->setDisabled(true);
+
+		ui.textTransitionName->setReadOnly(true);
+		ui.buttonDeleteTransition->setDisabled(true);
+
+		ui.comboTransitionPercept->setDisabled(true);
+		ui.comboTransitionEffect->setDisabled(true);
+	}
+	else
+	{
+		ui.textNetworkName->setReadOnly(false);
+
+		ui.buttonNewState->setEnabled(true);
+		ui.buttonNewThread->setEnabled(true);
+		ui.buttonNewResource->setEnabled(true);
+		ui.buttonNewVariable->setEnabled(true);
+		ui.buttonDeleteNetwork->setEnabled(true);
+
+		ui.textTransitionName->setReadOnly(false);
+		ui.buttonDeleteTransition->setEnabled(true);
+
+		ui.comboTransitionPercept->setEnabled(true);
+		ui.comboTransitionEffect->setEnabled(true);
+	}
 }

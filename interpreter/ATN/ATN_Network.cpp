@@ -107,6 +107,10 @@ namespace ATN
 
 		swapResourceMarshallIndices(it - m_resources.begin(), (it + 1) - m_resources.begin());
 
+		// We only need to swap input indices if both swapped resources were inputs
+		if (!(*it)->m_internalResource && !(*(it + 1))->m_internalResource)
+			swapResourceMarshallInputs(**it);
+
 		m_moving = false;
 	}
 
@@ -117,6 +121,10 @@ namespace ATN
 		std::vector<Resource*>::iterator it = m_resources.insert(++remove(resource), &resource);
 
 		swapResourceMarshallIndices(it - m_resources.begin(), (it - 1) - m_resources.begin());
+
+		// We only need to swap input indices if both swapped resources were inputs
+		if (!(*it)->m_internalResource && !(*(it - 1))->m_internalResource)
+			swapResourceMarshallInputs(**(it - 1));
 
 		m_moving = false;
 	}
@@ -143,7 +151,7 @@ namespace ATN
 		{
 			for (ATN::State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					std::int64_t transitionIndex = -1;
 
@@ -196,7 +204,7 @@ namespace ATN
 		{
 			for (ATN::State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					std::int64_t transitionIndex = -1;
 
@@ -256,10 +264,12 @@ namespace ATN
 					for (ATN::Resource *r : this->resources())
 					{
 						if (!r->m_internalResource)
+						{
 							transitionIndex++;
 
-						if (state->resourceMarshalls()[transitionIndex]->m_value == ResourceMarshall::INVALID_POINTER)
-							state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+							if (state->resourceMarshalls()[transitionIndex]->m_value == ResourceMarshall::INVALID_POINTER)
+								state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+						}
 					}
 				}
 			}
@@ -277,7 +287,7 @@ namespace ATN
 
 			if (r == &resource)
 			{
-				if (!resource.m_internalResource)
+				if (resource.m_internalResource)
 					transitionIndex++;
 
 				break;
@@ -292,7 +302,7 @@ namespace ATN
 			{
 				for (ATN::State *state : net->states())
 				{
-					if (state->networkTransition() != nullptr && state->networkTransition() == this)
+					if (state->networkTransition() == this)
 					{
 						for (size_t i = transitionIndex; i < state->resourceMarshalls().size() - 1; i++)
 						{
@@ -310,7 +320,7 @@ namespace ATN
 			{
 				for (ATN::State *state : net->states())
 				{
-					if (state->networkTransition() != nullptr && state->networkTransition() == this)
+					if (state->networkTransition() == this)
 					{
 						ResourceMarshall *resourceMarshall = new ResourceMarshall(resource);
 
@@ -318,7 +328,7 @@ namespace ATN
 
 						state->m_resourceMarshalls.push_back(resourceMarshall);
 
-						for (size_t i = state->m_resourceMarshalls.size()-1; i >= transitionIndex; i--)
+						for (int i = state->m_resourceMarshalls.size() - 2; i >= transitionIndex; i--)
 						{
 							state->m_resourceMarshalls[i + 1] = state->m_resourceMarshalls[i];
 						}
@@ -405,7 +415,7 @@ namespace ATN
 		{
 			for (ATN::State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					// Here we reset the argument that will be passed to our index
 					state->parameterMarshalls()[index]->resetConstant();
@@ -475,7 +485,7 @@ namespace ATN
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					// Here we swap the arguments that are passed to our network
 					ParameterMarshall *temp = state->m_parameterMarshalls[index2];
@@ -493,7 +503,7 @@ namespace ATN
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					state->m_parameterMarshalls.push_back(new ParameterMarshall(*m_parameters[m_parameters.size()-1]));
 				}
@@ -522,7 +532,7 @@ namespace ATN
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					for (size_t i = index; i < state->parameterMarshalls().size() - 1; i++)
 					{
@@ -550,18 +560,32 @@ namespace ATN
 					resourceMarshall->swapIndices(index1, index2);
 			}
 		}
+	}
 
+	void Network::swapResourceMarshallInputs(const Resource &resource)
+	{
 		for (Network *net : ATN::Manager::getNetworks())
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
-					// Here we swap the arguments that are passed to our network
-					ResourceMarshall *temp = state->m_resourceMarshalls[index2];
+					std::int64_t transitionIndex = -1;
 
-					state->m_resourceMarshalls[index2] = state->m_resourceMarshalls[index1];
-					state->m_resourceMarshalls[index1] = temp;
+					for (Resource *r : m_resources)
+					{
+						if (!r->m_internalResource)
+							transitionIndex++;
+
+						if (r == &resource)
+							break;
+					}
+
+					// Because this is only called with two input resources in a row, we should always expect to have an extra index here
+					ResourceMarshall *temp = state->m_resourceMarshalls[transitionIndex];
+
+					state->m_resourceMarshalls[transitionIndex] = state->m_resourceMarshalls[transitionIndex + 1];
+					state->m_resourceMarshalls[transitionIndex + 1] = temp;
 				}
 			}
 		}
@@ -573,7 +597,7 @@ namespace ATN
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					state->m_resourceMarshalls.push_back(new ResourceMarshall(*m_resources[m_resources.size() - 1]));
 				}
@@ -604,7 +628,7 @@ namespace ATN
 		{
 			for (State *state : net->states())
 			{
-				if (state->networkTransition() != nullptr && state->networkTransition() == this)
+				if (state->networkTransition() == this)
 				{
 					std::int64_t transitionIndex = -1;
 
