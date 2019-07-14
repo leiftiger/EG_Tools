@@ -22,7 +22,6 @@ namespace ATN
 
 	enum class ParameterMarshallType : int
 	{
-		Mysterious = 1,
 		Constant = 2,			// This number is what will be sent in the marshall
 		ParameterIndex = 3,		// Access the network parameter value at specified index
 		SmallInt = 4			// Seen used for small numbers, especially booleans
