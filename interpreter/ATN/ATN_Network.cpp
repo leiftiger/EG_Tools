@@ -328,7 +328,7 @@ namespace ATN
 
 						state->m_resourceMarshalls.push_back(resourceMarshall);
 
-						for (int i = state->m_resourceMarshalls.size() - 2; i >= transitionIndex; i--)
+						for (int i = (int)state->m_resourceMarshalls.size() - 2; i >= transitionIndex; i--)
 						{
 							state->m_resourceMarshalls[i + 1] = state->m_resourceMarshalls[i];
 						}
@@ -365,9 +365,13 @@ namespace ATN
 
 	void Network::moveDown(Parameter &param)
 	{
+		m_moving = true;
+
 		std::vector<Parameter*>::iterator it = m_parameters.insert(++remove(param), &param);
 
 		swapParameterMarshallIndices(it - m_parameters.begin(), (it - 1) - m_parameters.begin());
+
+		m_moving = false;
 	}
 
 	std::vector<Parameter*>::iterator Network::remove(Parameter &param)
