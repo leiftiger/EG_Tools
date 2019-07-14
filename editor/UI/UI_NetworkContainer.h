@@ -275,6 +275,7 @@ public slots:
 
 	signals:
 		void openNetworkRequest(int id);
+		void closeNetworkRequest(int id);
 		void findTransitionsRequest(int id);
 
 		void repopulateNeighbors(int id);

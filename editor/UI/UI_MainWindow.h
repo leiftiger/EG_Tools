@@ -42,6 +42,7 @@ public slots:
 	void closeTab(int tab);
 
 	void receiveOpenNetworkRequest(int id);
+	void receiveCloseNetworkRequest(int id);
 	void receiveTransitionsRequest(int id);
 
 	void receiveRepopulationRequest(int id);

@@ -64,6 +64,7 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 	tab->initializeFromID(el.id());
 
 	connect(tab, SIGNAL(openNetworkRequest(int)), this, SLOT(receiveOpenNetworkRequest(int)));
+	connect(tab, SIGNAL(closeNetworkRequest(int)), this, SLOT(receiveCloseNetworkRequest(int)));
 	connect(tab, SIGNAL(findTransitionsRequest(int)), this, SLOT(receiveTransitionsRequest(int)));
 	connect(tab, SIGNAL(repopulateNeighbors(int)), this, SLOT(receiveRepopulationRequest(int)));
 
@@ -260,6 +261,35 @@ void UI_MainWindow::receiveOpenNetworkRequest(int id)
 
 		QApplication::beep();
 		int ret = msg.exec();
+	}
+}
+
+void UI_MainWindow::receiveCloseNetworkRequest(int id)
+{
+	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	{
+		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
+
+
+		if (tabItem->network().id() == id)
+		{
+			ui.tabWidget->removeTab(i);
+			break;
+		}
+	}
+
+	// Remove the network from any open search results
+	for (size_t i = 0; i < ui.listSearchResults->count(); i++)
+	{
+		QListWidgetItem *item = ui.listSearchResults->item(i);
+
+		UI_MainWindowSearchResult* res = (UI_MainWindowSearchResult*)ui.listSearchResults->itemWidget(item);
+
+		if (std::stoi(res->ui.textUniqueID->text().toStdString()) == id)
+		{
+			ui.listSearchResults->takeItem(i);
+			i--;
+		}
 	}
 }
 

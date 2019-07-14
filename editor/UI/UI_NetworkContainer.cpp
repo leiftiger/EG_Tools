@@ -701,6 +701,86 @@ void UI_NetworkContainer::deleteNetwork()
 {
 	// TODO: Prompt user to confirm this very dangerous action
 	// TODO: Check if any states not owned by this network transitions to it and force user to remove those references first
+
+	bool hasReferences = false;
+
+	for (ATN::Network *net : ATN::Manager::getNetworks())
+	{
+		for (ATN::State *state : net->states())
+		{
+			if (state->networkTransition() == m_network)
+			{
+				hasReferences = true;
+				break;
+			}
+		}
+	}
+
+	if (hasReferences)
+	{
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Critical);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Network dependencies exist</b></span>"));
+
+		msg.setInformativeText(tr("To delete this network, you must first remove all network transitions to it."));
+
+		msg.setStandardButtons(QMessageBox::Ok);
+		msg.setDefaultButton(QMessageBox::Ok);
+
+		QApplication::beep();
+		int msgRet = msg.exec();
+
+		return;
+	}
+
+	QMessageBox msg;
+
+	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+	msg.setIcon(QMessageBox::Icon::Warning);
+
+	msg.setWindowTitle(tr(" "));
+	msg.setText(tr("<span style=\"font-size:12pt;\"><b>Are you sure?</b></span>"));
+
+	msg.setInformativeText(tr("Deleting this network means deleting all states, transitions and resources that belongs to it."));
+
+	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+	msg.setDefaultButton(QMessageBox::Cancel);
+
+	QApplication::beep();
+	int msgRet = msg.exec();
+
+	switch (msgRet)
+	{
+	case QMessageBox::Ok:
+		break;
+	case QMessageBox::Cancel:
+	{
+		return;
+	}
+	}
+
+	int id = m_network->id();
+
+	for (ATN::Thread *t : m_network->threads())
+		deleteATN(t);
+
+	for (ATN::State *state : m_network->states())
+	{
+		for (ATN::Transition *transition : state->transitions())
+		{
+			deleteATN(transition);
+		}
+
+		deleteATN(state);
+	}
+
+	emit closeNetworkRequest(id);
+
+	deleteATN(m_network);
 }
 
 void UI_NetworkContainer::findTransitions()
