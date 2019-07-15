@@ -181,6 +181,14 @@ int main(int argc, char *argv[])
 			}));
 
 		// TODO: Confirm
+		ATN::Manager::setDefinitions("Region Activity", util::createDefinition(
+			{
+				{"Plotting",	0},
+				{"Stealing",	1},
+				{"Hiding",		2},
+			}));
+
+		// TODO: Confirm
 		ATN::Manager::setDefinitions("Research card status", util::createDefinition(
 			{
 				{"Ordered",			0},
@@ -189,14 +197,6 @@ int main(int argc, char *argv[])
 				{"Aborted",			4},
 				{"Analyzing",		5},
 				{"Complete",		6},
-			}));
-
-		// TODO: Confirm
-		ATN::Manager::setDefinitions("Research card status", util::createDefinition(
-			{
-				{"Plotting",	0},
-				{"Stealing",	1},
-				{"Hiding",		2},
 			}));
 
 		ATN::Manager::setDefinitions("ScaleType", util::createDefinition(
