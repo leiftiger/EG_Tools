@@ -96,6 +96,11 @@ std::string UI_NetworkTransition::translateResource(const ATN::ResourceMarshall 
 
 	int index = resourceMarshall->m_value;
 
+	if (index == ATN::ResourceMarshall::INVALID_POINTER)
+	{
+		return "[MISSING RESOURCE]";
+	}
+
 	sprintf_s(str, "[%d: %s]", index, m_network->resources()[index]->m_desc.c_str());
 
 	return str;

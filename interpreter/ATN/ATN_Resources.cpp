@@ -42,9 +42,15 @@ namespace ATN
 			if (value == ATN_UNDEF_VALUE)
 				return "UNDEFINED";
 
-			Network *net = (Network*)&ATN::Manager::findByID((std::uint32_t)value);
+			try
+			{
+				Network *net = (Network*)&ATN::Manager::findByID((std::uint32_t)value);
 
-			return std::to_string(net->id()) + std::string(": ") + net->name();
+				return std::to_string(net->id()) + std::string(": ") + net->name();
+			}
+			catch (ATN::Exception e) { }
+
+			return "UNDEFINED";
 		}
 
 		if (value == ATN_NULL_VALUE)

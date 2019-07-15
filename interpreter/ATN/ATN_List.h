@@ -154,7 +154,7 @@ namespace ATN
 				}
 			}
 
-			int unorderedIndex = size() - unordered.size();
+			size_t unorderedIndex = size() - unordered.size();
 
 			// Add the unordered elements in a random order
 			for (T *el : unordered)
@@ -191,7 +191,7 @@ namespace ATN
 				}
 			}
 
-			int unorderedIndex = size() - unordered.size();
+			size_t unorderedIndex = size() - unordered.size();
 
 			// Add the unordered elements in a random order
 			for (T *el : unordered)
