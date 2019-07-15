@@ -56,4 +56,6 @@ void UI_InputResource::selectResource(int index)
 		return;
 
 	m_argument->m_value = m_resources[index];
+
+	emit updated();
 }

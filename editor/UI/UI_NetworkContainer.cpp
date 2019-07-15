@@ -335,9 +335,47 @@ void UI_NetworkContainer::stateRemove()
 
 	itemRemove(m_states, ut);
 
+	// Remove transition connectors to this state
+	for (UI_NetworkState *uiState : m_states)
+	{
+		for (UI_NetworkTransition *uiTransition : uiState->ui.connectorOut->transitions())
+		{
+			if (uiTransition->m_connector->connector() != nullptr && uiTransition->m_connector->connector()->end() == ut->ui.connectorIn)
+			{
+				uiTransition->transition()->setState(nullptr);
+				uiTransition->m_connector->deleteConnector();
+			}
+		}
+	}
+
+	// Likewise for threads
+	for (UI_NetworkThread *uiThread : m_threads)
+	{
+		if (uiThread->ui.connector->connector() != nullptr && uiThread->ui.connector->connector()->end() == ut->ui.connectorIn)
+		{
+			uiThread->m_thread->setState(nullptr);
+			uiThread->ui.connector->deleteConnector();
+		}
+	}
+
 	layoutStates();
 
 	m_network->remove(*ut->m_state);
+
+	// Delete all transitions from this state
+	for (ATN::Transition *transition : ut->m_state->transitions())
+	{
+		deleteATN(transition);
+	}
+
+	// If a transition from this state was open, then lock it from editing
+	if (m_currentEditState == ut)
+	{
+		m_currentEditState = nullptr;
+		m_currentEditTransition = nullptr;
+
+		ui.frameTransition->setEnabled(false);
+	}
 
 	deleteATN(ut->m_state);
 
@@ -623,9 +661,11 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 
 	try
 	{
-		ATN::Network *net = (ATN::Network*)&ATN::Manager::findByName(name.toStdString());
+		ATN::Entry *el = &ATN::Manager::findByName(name.toStdString());
 
-		if (net != m_network)
+		// While this may trigger on non-networks, the above function doesn't check duplicates
+		// so we'd rather be safe than sorry
+		if (el != m_network)
 		{
 			ui.textNetworkName->setInputError(true);
 
@@ -673,6 +713,8 @@ void UI_NetworkContainer::setTransitionPercept(int index)
 	m_network->resetInvalidResourceMarshalls();
 
 	populateTransitionArguments(m_currentTransitionPerceptArguments, m_currentTransitionPerceptResources, ui.listTransitionPerceptArguments, ui.listTransitionPerceptResources, (ATN::IResourceHolder*)transition->percept(), transition->perceptParameterMarshalls(), transition->perceptResourceMarshalls());
+	
+	updateTransitionInterpretation();
 }
 
 void UI_NetworkContainer::setTransitionEffect(int index)
@@ -695,6 +737,7 @@ void UI_NetworkContainer::setTransitionEffect(int index)
 
 	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 
+	updateTransitionInterpretation();
 }
 
 void UI_NetworkContainer::deleteNetwork()
@@ -880,8 +923,6 @@ void UI_NetworkContainer::editTransition()
 	ui.textTransitionName->setText(QString::fromStdString(transition->name()));
 	ui.textTransitionID->setText(QString::fromStdString(std::to_string(transition->id())));
 
-	ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + uiTransition->interpret()));
-
 	const std::vector<ATN::Percept*> &percepts = ATN::Manager::getPercepts();
 
 	for (size_t i = 0; i < percepts.size(); i++)
@@ -920,6 +961,8 @@ void UI_NetworkContainer::editTransition()
 	m_currentEditState = (UI_NetworkState*)uiTransition->m_state;
 	m_currentEditTransition = uiTransition;
 
+	updateTransitionInterpretation();
+
 	for (size_t i = 0; i < m_currentEditState->m_state->transitions().size(); i++)
 	{
 		if (m_currentEditState->m_state->transitions()[i] == transition)
@@ -940,6 +983,14 @@ void UI_NetworkContainer::editTransition()
 	populateTransitionArguments(m_currentTransitionEffectArguments, m_currentTransitionEffectResources, ui.listTransitionEffectArguments, ui.listTransitionEffectResources, (ATN::IResourceHolder*)transition->effect(), transition->effectParameterMarshalls(), transition->effectResourceMarshalls());
 
 	ui.frameTransition->setEnabled(true);
+}
+
+void UI_NetworkContainer::updateTransitionInterpretation()
+{
+	if (m_currentEditTransition == nullptr)
+		return;
+
+	ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + m_currentEditTransition->interpret()));
 }
 
 void UI_NetworkContainer::moveTransitionUp()
@@ -1014,7 +1065,7 @@ void UI_NetworkContainer::repopulateArguments(bool bNeighborsToo)
 
 	if (m_currentEditState != nullptr)
 	{
-		ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + m_currentEditTransition->interpret()));
+		updateTransitionInterpretation();
 
 		ATN::Transition *transition = m_currentEditTransition->transition();
 
@@ -1122,7 +1173,7 @@ void UI_NetworkContainer::initializeStates()
 
 	for (UI_NetworkThread *uiThread : m_threads)
 	{
-		const ATN::State *state = &uiThread->m_thread->state();
+		const ATN::State *state = uiThread->m_thread->state();
 
 		if (state != nullptr)
 		{
@@ -1170,6 +1221,8 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 
 		ut->initialize(resourceMarshalls[i], resourceHolder->resources()[i], m_network);
 
+		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
+
 		ut->move(0, y);
 		ut->show();
 
@@ -1189,6 +1242,8 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 		UI_InputArgument *ut = new UI_InputArgument(argumentWidget);
 
 		ut->initialize(paramMarshalls[i], resourceHolder->parameters()[i], m_network);
+
+		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
 
 		ut->move(0, y);
 		ut->show();

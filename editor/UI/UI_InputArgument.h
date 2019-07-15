@@ -32,4 +32,7 @@ public:
 
 public slots:
 	void setArgument(const QString &str);
+
+signals:
+	void updated();
 };

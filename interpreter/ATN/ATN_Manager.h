@@ -67,6 +67,8 @@ namespace ATN
 
 		static void loadFromFiles(const std::vector<std::string> &filenames);
 
+		static void saveToFiles();
+
 		static void addList(List<Entry> *list);
 
 		// Add new entry to the global list as it has been added elsewhere

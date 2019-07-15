@@ -18,7 +18,7 @@ void UI_NetworkThread::establishTransition()
 {
 	UI_NetworkState *state = (UI_NetworkState*)ui.connector->connector()->end()->parent();
 
-	m_thread->setState(*state->m_state);
+	m_thread->setState(state->m_state);
 }
 
 

@@ -33,9 +33,9 @@ namespace ATN
 		void setNetwork(Network &network);
 
 		// Gets the state this thread goes to
-		const State &state() const;
+		const State *state() const;
 
 		// Sets the state this thread goes to
-		void setState(State &state);
+		void setState(State *state);
 	};
 }

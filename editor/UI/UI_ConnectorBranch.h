@@ -26,6 +26,8 @@ public:
 	void moveTransitionDown(UI_NetworkTransition *ut);
 	std::vector<UI_NetworkTransition*>::iterator removeTransition(UI_NetworkTransition *ut);
 
+	const std::vector<UI_NetworkTransition*> transitions() const;
+
 	void layout();
 
 	UI_ConnectorStart *transitionConnector();

@@ -17,14 +17,14 @@ namespace ATN
 		m_network = &network;
 	}
 
-	const State &Thread::state() const
+	const State *Thread::state() const
 	{
-		return *m_state;
+		return m_state;
 	}
 
-	void Thread::setState(State &state)
+	void Thread::setState(State *state)
 	{
-		m_state = &state;
+		m_state = state;
 	}
 
 	void Thread::serialize(std::ostream &stream) const

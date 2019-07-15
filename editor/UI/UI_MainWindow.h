@@ -30,7 +30,11 @@ public:
 
 public slots:
 
+	void newFile();
 	void openFiles();
+	void saveFiles();
+
+	void newNetwork();
 
 	void openHashTool();
 

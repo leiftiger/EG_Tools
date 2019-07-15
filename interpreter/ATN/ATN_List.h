@@ -137,9 +137,14 @@ namespace ATN
 
 			for (const std::pair<std::uint32_t, IATN_Data*> &pair : this->m_idMap)
 			{
-				int id = m_numOrderHeader.at(pair.second);
+				std::unordered_map<IATN_Data*, int>::const_iterator it = m_numOrderHeader.find(pair.second);
 
-				if (id <= m_numOrderHeaderMax)
+				int id = -1;
+
+				if (it != m_numOrderHeader.end())
+					id = (*it).second;
+
+				if (id != -1 && id <= m_numOrderHeaderMax)
 				{
 					order[id] = (T*)pair.second;
 				}
@@ -149,10 +154,12 @@ namespace ATN
 				}
 			}
 
+			int unorderedIndex = size() - unordered.size();
+
 			// Add the unordered elements in a random order
 			for (T *el : unordered)
 			{
-				order.push_back(el);
+				order[unorderedIndex++] = el;
 			}
 
 			return order;
@@ -167,9 +174,14 @@ namespace ATN
 
 			for (const std::pair<std::uint32_t, IATN_Data*> &pair : this->m_idMap)
 			{
-				int id = m_numOrderData.at(pair.second);
+				std::unordered_map<IATN_Data*, int>::const_iterator it = m_numOrderData.find(pair.second);
 
-				if (id <= m_numOrderDataMax)
+				int id = -1;
+
+				if (it != m_numOrderData.end())
+					id = (*it).second;
+
+				if (id != -1 && id <= m_numOrderDataMax)
 				{
 					order[id] = (T*)pair.second;
 				}
@@ -179,10 +191,12 @@ namespace ATN
 				}
 			}
 
+			int unorderedIndex = size() - unordered.size();
+
 			// Add the unordered elements in a random order
 			for (T *el : unordered)
 			{
-				order.push_back(el);
+				order[unorderedIndex++] = el;
 			}
 
 			return order;

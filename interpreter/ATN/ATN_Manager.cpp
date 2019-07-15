@@ -61,10 +61,19 @@ namespace ATN
 		}
 
 		// Since names are added in the second pass, but the global ATN list required all IDs for that to run, we add the names afterwards here (for quick look-up)
-		for (size_t i = 1; i < lists().size(); i++)
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
 		{
-			for (const std::pair<std::uint32_t, IATN_Data*> &pair : *lists()[i])
-				lists()[0]->registerName(*(Entry*)pair.second);
+			for (const std::pair<std::uint32_t, IATN_Data*> &pair : *instance().m_lists[i])
+				instance().m_lists[0]->registerName(*(Entry*)pair.second);
+		}
+	}
+
+	void Manager::saveToFiles()
+	{
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
+		{
+			ATN::List<ATN::Entry> *list = instance().m_lists[i];
+			util::writeATN(list->name(), *list);
 		}
 	}
 
@@ -184,7 +193,7 @@ namespace ATN
 
 	const std::vector<List<Entry>*> Manager::lists()
 	{
-		return instance().m_lists;
+		return std::vector<List<Entry>*>(instance().m_lists.begin() + 1, instance().m_lists.end());
 	}
 
 	void Manager::setDefinitions(const std::string &strType, List<Property> &list)

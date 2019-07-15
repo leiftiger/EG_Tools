@@ -105,6 +105,11 @@ std::vector<UI_NetworkTransition*>::iterator UI_ConnectorBranch::removeTransitio
 	return m_transitions.end();
 }
 
+const std::vector<UI_NetworkTransition*> UI_ConnectorBranch::transitions() const
+{
+	return m_transitions;
+}
+
 void UI_ConnectorBranch::layout()
 {
 	int totalBranches = m_transitions.size() + 1;

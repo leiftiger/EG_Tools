@@ -260,6 +260,8 @@ public slots:
 
 	void editTransition();
 
+	void updateTransitionInterpretation();
+
 	void moveTransitionUp();
 
 	void moveTransitionDown();

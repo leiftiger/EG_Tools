@@ -29,4 +29,7 @@ public:
 
 public slots:
 	void selectResource(int index);
+
+signals:
+	void updated();
 };

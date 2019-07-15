@@ -93,6 +93,23 @@ void UI_MainWindow::reloadFileList()
 	}
 }
 
+void UI_MainWindow::newFile()
+{
+	QString file = QFileDialog::getSaveFileName(this, tr("Save name"), "", tr("ATN files (*.ros)"));
+
+	// Aborted
+	if (file.size() == 0)
+		return;
+
+	ATN::List<ATN::Entry> *list = new ATN::List<ATN::Entry>(file.toStdString());
+
+	m_atnFiles.push_back(file.toStdString());
+
+	ATN::Manager::addList(list);
+
+	reloadFileList();
+}
+
 void UI_MainWindow::openFiles()
 {
 	QStringList qFiles = QFileDialog::getOpenFileNames(this, tr("Load ATNs"), "", tr("ATN files (*.ros)"));
@@ -109,6 +126,27 @@ void UI_MainWindow::openFiles()
 	ATN::Manager::loadFromFiles(strFiles);
 
 	reloadFileList();
+}
+
+void UI_MainWindow::saveFiles()
+{
+	ATN::Manager::saveToFiles();
+}
+
+void UI_MainWindow::newNetwork()
+{
+	int index = ui.comboATNList->currentIndex();
+
+	ATN::List<ATN::Entry> *netList = ATN::Manager::lists()[index];
+
+	ATN::Network *net = new ATN::Network();
+	net->setName("New network");
+	net->setID(ATN::Manager::maxID() + 1);
+
+	netList->add(*net);
+	ATN::Manager::addEntry(*net);
+
+	createNetworkResourceTab(*net);
 }
 
 void UI_MainWindow::openHashTool()
@@ -288,6 +326,9 @@ void UI_MainWindow::receiveCloseNetworkRequest(int id)
 		if (std::stoi(res->ui.textUniqueID->text().toStdString()) == id)
 		{
 			ui.listSearchResults->takeItem(i);
+
+			res->deleteLater();
+
 			i--;
 		}
 	}

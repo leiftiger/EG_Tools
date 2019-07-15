@@ -449,6 +449,11 @@
     <string>About ATN Editor</string>
    </property>
   </action>
+  <action name="actionClose_open_ATN_files">
+   <property name="text">
+    <string>Close open ATN files...</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
@@ -533,6 +538,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSave_open_ATN_files</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>saveFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>932</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionNew_ATN</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>932</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewNetwork</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>newNetwork()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1826</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1866</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>searchName(QString)</slot>
@@ -540,5 +593,8 @@
   <slot>searchID(QString)</slot>
   <slot>closeTab(int)</slot>
   <slot>openHashTool()</slot>
+  <slot>saveFiles()</slot>
+  <slot>newFile()</slot>
+  <slot>newNetwork()</slot>
  </slots>
 </ui>

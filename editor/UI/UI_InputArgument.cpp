@@ -97,6 +97,8 @@ void UI_InputArgument::setArgument(const QString &str)
 	{
 		m_argument->m_type = ATN::ParameterMarshallType::ParameterIndex;
 		m_argument->m_value = m_variables[index];
+
+		emit updated();
 	}
 	else
 	{
@@ -104,6 +106,8 @@ void UI_InputArgument::setArgument(const QString &str)
 		{
 			m_argument->m_value = m_parameter->translateName(str.toStdString());
 			m_argument->m_type = m_argument->toParameterMarshallType(*m_parameter);
+
+			emit updated();
 		}
 		catch (std::exception e)
 		{

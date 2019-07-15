@@ -89,7 +89,7 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 
 void UI_ConnectorStart::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::MouseButton::RightButton)
+	if (event->button() == Qt::MouseButton::RightButton && m_connector != nullptr)
 	{
 		m_connector->setHighlighted(!m_connector->highlighted());
 	}
