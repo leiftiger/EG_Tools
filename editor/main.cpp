@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		Character Tag					small int
 		Dialog Type						int
 		Effect return value				int
-		Entity Class			hash
+		Entity Class					int
 		Entity Type						int desc id
 		Event					hash
 		Floating Graphic		hash
@@ -87,6 +87,55 @@ int main(int argc, char *argv[])
 				{"true",	3},
 			}));
 
+		// TODO: Class to number (not desc id)
+		ATN::Manager::setDefinitions("Entity Class", util::createDefinition(
+			{
+				{"Animal",	-1},
+				{"Plaything",	-1},
+				{"SuperAgent",	-1},
+				{"Room",	-1},
+				{"BuildOrder",	-1},
+				{"BaseEntity",	-1},
+				{"TagManager",	-1},
+				{"BuildingBlock",	-1},
+				{"AgentGroup", -1},
+				{"Object", -1},
+				{"Item", -1},
+				{"Briefcase", -1},
+				{"Spawn", -1},
+				{"Scenery", -1},
+				{"Depot", -1},
+				{"DepotWithWindsock", -1},
+				{"TouristAttraction", -1},
+				{"FireSafetyLocker", -1},
+				{"SecurityTannoy", -1},
+				{"Weapon", -1},
+				{"Vehicle", -1},
+				{"LargeScenery", -1},
+				{"CutAway", -1},
+				{"SetPiece", -1},
+				{"Forest", -1},
+				{"Beach", -1},
+				{"WorldRegion", -1},
+				{"WorldAttrition", -1},
+				{"ActOfInfamy", -1},
+				{"WorldDominationManager", -1},
+				{"WorldHelicopter", -1},
+				{"RollingFigure", -1},
+				{"Insect", -1},
+				{"Door",	5},
+				{"Agent",	10},
+				{"Minion",	11},
+				{"EquipmentStorage",	22},
+				{"Sensor",	23},
+				{"Trap",	24},
+				{"Genius",	25},
+				{"Henchman",	26},
+				{"SecurityCamera", 30},
+				{"HoldingCell", 31},
+				{"SecurityDesk", 37},
+			}));
+
 		// TODO: Get more descriptive names of these
 		ATN::Manager::setDefinitions("Game Feature", util::createDefinition(
 			{
@@ -103,6 +152,25 @@ int main(int argc, char *argv[])
 				{"ROOM_BUILDING",		1024},
 				{"OBJECTIVE_SCREEN",	2048},
 				{"SAVE_OR_LOAD_GAME",	4096},
+			}));
+
+		// TODO: Find out values
+		ATN::Manager::setDefinitions("Interaction Reason", util::createDefinition({
+				{"Bored",				-1},
+				{"BeingEvil",			-1},
+				{"HavingFun",			-1},
+				{"Researching",			-1},
+				{"ScaleRecharging",		-1},
+				{"Trainer",				-1},
+				{"Training",			-1},
+				{"Torturing",			-1},
+				{"UsingObject",			-1},
+				{"AccessibilityDummy",	6},
+			}));
+
+		// TODO: Find out values
+		ATN::Manager::setDefinitions("Move Flag", util::createDefinition({
+				{"PANIC",	64},
 			}));
 
 		// TODO: Are there more values?
@@ -123,6 +191,14 @@ int main(int argc, char *argv[])
 				{"Complete",		6},
 			}));
 
+		// TODO: Confirm
+		ATN::Manager::setDefinitions("Research card status", util::createDefinition(
+			{
+				{"Plotting",	0},
+				{"Stealing",	1},
+				{"Hiding",		2},
+			}));
+
 		ATN::Manager::setDefinitions("ScaleType", util::createDefinition(
 			{
 				{"Health",		0},
@@ -130,6 +206,15 @@ int main(int argc, char *argv[])
 				{"Smarts",		2},
 				{"Attention",	3},
 				{"Endurance",	4},
+			}));
+
+		// TODO: Verify and find more values
+		ATN::Manager::setDefinitions("Spawn Type", util::createDefinition(
+			{
+				{"Unknown",			0},
+				{"Random",			2},
+				{"Depot",			3},
+				{"DepotInstant",	4},
 			}));
 
 		// TODO: Are there more values?

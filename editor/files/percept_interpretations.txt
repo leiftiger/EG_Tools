@@ -23,7 +23,7 @@ TATNPerceptParameterDifference
 ::param0:: == ::param1::
 
 TATNPerceptPlayerNotoriety
-player's notoriety >= ::param0:: in region ::region_param1::
+player's notoriety >= ::param0:: in region ::param1::
 
 TATNPerceptPlayerCash
 player's cash >= ::param0::

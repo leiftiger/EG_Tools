@@ -53,7 +53,7 @@ TATNEffectGetCharacterOfType
 ::resource0:: = get character instance of desc id ::param0::
 
 TATNEffectGetObjectOfType
-::param1::		::resource0:: = get object instance of desc id ::param0:: (including destroyed objects)		::resource0:: = get object instance of desc id ::param0::		::resource0:: = get object instance of desc id ::param0:: (can be destroyed: ::param1::)
+::param1::		::resource0:: = get object instance of desc id ::param0:: (including invalid objects)		::resource0:: = get object instance of desc id ::param0::		::resource0:: = get object instance of desc id ::param0:: (can be invalid: ::param1::)
 
 TATNEffectGameOver
 trigger game over
