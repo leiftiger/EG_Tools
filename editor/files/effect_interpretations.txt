@@ -38,7 +38,7 @@ TATNEffectSetTouristPopulation
 set number of tourists from region ::param1:: to ::param0::
 
 TATNEffectSetObjectiveStatus
-set "::param0::" visible: ::param1::, complete: ::param2::, parent: "::param3::"
+::param2::		mark "::param0::" as complete (visible: ::param1::, parent: "::param3::")		mark "::param0::" as incomplete (visible: ::param1::, parent: "::param3::")		mark "::param0::" (visible: ::param1::, complete: ::param2::, parent: "::param3::")
 
 TATNEffectRunGameRuleATN
 run game rule "::param0::"
@@ -53,7 +53,7 @@ TATNEffectGetCharacterOfType
 ::resource0:: = get character instance of desc id ::param0::
 
 TATNEffectGetObjectOfType
-::resource0:: = get object instance of desc id ::param0:: (invalid: ::param1::)
+::param1::		::resource0:: = get object instance of desc id ::param0:: (including destroyed objects)		::resource0:: = get object instance of desc id ::param0::		::resource0:: = get object instance of desc id ::param0:: (can be destroyed: ::param1::)
 
 TATNEffectGameOver
 trigger game over
@@ -70,8 +70,17 @@ set lock of AoI ::param0:: to ::param1::
 TATNEffectGetWorldDominationTotalCashIncome
 ::resource0:: = player's current cash income
 
+TATNEffectAdjustPlayerCash
+increase player cash by ::param0::
+
+TATNEffectAdjustPlayerNotoriety
+::param2::		increase player notoriety by ::param0:: in region ::param1::		set player notoriety to ::param0:: in region ::param1::		set player notoriety to ::param0:: in region ::param1:: (relative: ::param2::)
+
+TATNEffectAdjustPlayerHeat
+::param2::		increase player heat by ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1:: (relative: ::param2::)
+
 TATNEffectSetCharacterTag
-set tag of :resource0:: to ::param0::
+set tag of ::resource0:: to ::param0::
 
 TATNEffectSubstituteObject
 replace ::resource0:: with instance of desc id ::param0::
@@ -107,4 +116,7 @@ TATNEffectSetTouristPopulation
 set tourists coming from ::param1:: to ::param0::
 
 TATNEffectGUIEnableFeature
-game feature "::param0::" enabled = ::param1::
+::param1::		enable game feature "::param0::"		disable game feature "::param0::"		game feature "::param0::" enabled = ::param1::
+
+TATNEffectEnableEntityBehaviour
+::param0::		enable AI behaviour of ::resource0::		disable AI behaviour of ::resource0::		set AI behaviour of ::resource0:: to enabled = ::param0::

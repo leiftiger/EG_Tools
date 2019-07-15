@@ -125,6 +125,27 @@ std::string UI_NetworkTransition::parseParams(const std::string &format, const s
 		strOut += translateParameter(list[index], paramDefiner->parameters()[index]);
 
 		strIn = matches.suffix();
+
+		// This is a boolean-defined format string where we have definitions for true/false/unknown
+		if (matches.prefix().length() == 0 && strIn.length() >= 2 && strIn.substr(0, 2) == "\t\t")
+		{
+			std::regex regStrBool("\t\t[^\t]+\t\t[^\t]+\t\t(.+)");
+
+			if (strOut == "true")
+			{
+				regStrBool = std::regex("\t\t([^\t]+)\t\t");
+			}
+			else if (strOut == "false")
+			{
+				regStrBool = std::regex("\t\t[^\t]+\t\t([^\t]+)\t\t");
+			}
+
+			if (std::regex_search(strIn, matches, regStrBool))
+			{
+				strOut = "";
+				strIn = matches[1];
+			}
+		}
 	}
 
 	strOut += strIn;
