@@ -208,8 +208,26 @@ namespace ATN
 
 			m_nameMap.erase(element.name());
 
-			m_numOrderHeaderMax = m_numOrderHeader[(IATN_Data*)&element] >= m_numOrderHeaderMax ? m_numOrderHeaderMax : m_numOrderHeader[(IATN_Data*)&element]-1;
-			m_numOrderDataMax = m_numOrderData[(IATN_Data*)&element] >= m_numOrderDataMax ? m_numOrderDataMax : m_numOrderData[(IATN_Data*)&element] - 1;
+			if (m_numOrderHeader.find((IATN_Data*)&element) != m_numOrderHeader.end())
+			{
+				int orderHeader = m_numOrderHeader[(IATN_Data*)&element];
+				int orderData = m_numOrderData[(IATN_Data*)&element];
+
+				// Since this index is now unoccupied, move all orders down
+				for (const std::pair<std::uint32_t, IATN_Data*> &pair : this->m_idMap)
+				{
+					std::unordered_map<IATN_Data*, int>::const_iterator itHeader = m_numOrderHeader.find(pair.second);
+					std::unordered_map<IATN_Data*, int>::const_iterator itData = m_numOrderData.find(pair.second);
+
+					if (itHeader != m_numOrderHeader.end())
+					{
+						if (orderHeader < (*itHeader).second)
+							m_numOrderHeader[pair.second] -= 1;
+						if (orderData < (*itData).second)
+							m_numOrderData[pair.second] -= 1;
+					}
+				}
+			}
 
 			Manager::removeEntry(element);
 		}
