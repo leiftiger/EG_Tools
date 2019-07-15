@@ -82,7 +82,12 @@ UI_NetworkVariable *UI_NetworkContainer::createVariableUI(ATN::Parameter *parame
 
 	ut->loadTranslations();
 
-	ut->ui.variableValue->setCurrentText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
+	int index = ut->ui.variableValue->findText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
+
+	if (index != -1)
+		ut->ui.variableValue->setCurrentIndex(index);
+	else
+		ut->ui.variableValue->setCurrentText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
 
 	ut->blockSignals(false);
 
