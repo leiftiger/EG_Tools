@@ -66,6 +66,8 @@ namespace ATN
 			{
 				if (value == ATN_UNDEF_VALUE)
 					return "UNDEFINED";
+				if (value == ATN_UNDEF_VALUE2)
+					return "UNDEFINED2";
 
 				// Sometimes undefined values are set to something random
 				// but it's also possible that we're somehow missing a defined string
@@ -97,6 +99,8 @@ namespace ATN
 		{
 			if (name == "UNDEFINED")
 				return ATN_UNDEF_VALUE;
+			if (name == "UNDEFINED2")
+				return ATN_UNDEF_VALUE2;
 
 			if (name.size() >= strlen("MISSING: ") && name.substr(0, strlen("MISSING: ")) == "MISSING: ")
 				return std::stoll(name.substr(strlen("MISSING: "), name.length() - strlen("MISSING: ")));

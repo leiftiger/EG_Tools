@@ -26,8 +26,18 @@ private:
 	std::unordered_map<const UI_Connector*, int> m_heightOffsetsAbove;
 	std::unordered_map<const UI_Connector*, int> m_heightOffsetsBelow;
 
+	std::unordered_map<const UI_Connector*, QLine> m_connectorPositionsAbove;
+	std::unordered_map<const UI_Connector*, QLine> m_connectorPositionsBelow;
+
 	// Spaces occupied by states
 	std::vector<QRect> m_stateSpaces;
+
+	bool m_destroyed = false;
+
+	int calculateOffset(const UI_Connector* connector, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions);
+
+	// Separate connectors that intersect and are at the same offset
+	void moveCollisions(std::unordered_map<const UI_Connector*, int> &offsetList, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions);
 
 public:
 	NetworkContainerProxy();
@@ -53,6 +63,9 @@ public:
 
 	// Gets the height that is above or below the states according to the used flags
 	int stateHeight(ConnectFlags flags, const UI_Connector* connector);
+
+	// Remove connector space held by this connector as it's being destroyed
+	void clearMyMemory(ConnectFlags flags, const UI_Connector *connector);
 
 };
 

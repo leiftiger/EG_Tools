@@ -16,6 +16,8 @@
 constexpr unsigned long ATN_NULL_VALUE = 4294967295;
 // When a parameter is unintialized, it is often 0, so we need to make this a valid translation
 constexpr unsigned long ATN_UNDEF_VALUE = 0;
+// However, it is also sometimes -1 (since some types use 0)
+constexpr int ATN_UNDEF_VALUE2 = -1;
 
 namespace ATN
 {

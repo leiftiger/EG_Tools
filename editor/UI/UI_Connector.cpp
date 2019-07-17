@@ -18,6 +18,8 @@ UI_Connector::UI_Connector(QWidget *parent)
 
 UI_Connector::~UI_Connector()
 {
+	if (m_network != nullptr)
+		m_network->clearMyMemory(m_start->connectFlags(), this);
 }
 
 bool UI_Connector::hovered() const

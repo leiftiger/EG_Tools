@@ -884,10 +884,10 @@ void UI_NetworkContainer::createNewTransition()
 
 	uiStateFrom->m_state->add(*t);
 
-	UI_NetworkTransition *uiTransition = createTransitionUI(t, uiStateFrom, uiStateTo);
-
 	// The transition connector only made a temporary connection, now we delete it since we have recreated it as the transition
 	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnector();
+
+	UI_NetworkTransition *uiTransition = createTransitionUI(t, uiStateFrom, uiStateTo);
 
 	layoutStates();
 
