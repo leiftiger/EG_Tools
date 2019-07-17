@@ -23,16 +23,19 @@ TATNEffectMultiplyNumbers
 ::resource2:: = ::resource0:: * ::resource1::
 
 TATNEffectTimerStart
-start ::resource0:: at ::param1:: ms (realtime: ::param0::)
+::param0::		start ::resource0:: at ::param1:: ms using realtime		start ::resource0:: at ::param1:: ms		start ::resource0:: at ::param1:: ms (realtime: ::param0::)
+
+TATNEffectTimerSetPaused
+::param0::		pause ::resource0::		resume ::resource0::		set ::resource0:: as paused = ::param0::
 
 TATNEffectGuiLogMessageToPlayer
-show "::param0::" (and video: ::param1::)
+::param1::		show "::param0::" and play video		show "::param0::"		show "::param0::" (play video: ::param1::)
 
 TATNEffectCreateEntity
 ::resource0:: = new instance of desc id ::param0::
 
 TATNEffectDestroyEntity
-destroy 
+destroy ::resource0::
 
 TATNEffectSetTouristPopulation
 set number of tourists from region ::param1:: to ::param0::
@@ -50,7 +53,7 @@ TATNEffectGetEntityOfType
 ::resource0:: = get entity instance of desc id ::param0::
 
 TATNEffectGetCharacterOfType
-::resource0:: = get character instance of desc id ::param0::
+::param1::		::resource0:: = get character instance of desc id ::param0:: (even if not in-game)		::resource0:: = get character instance of desc id ::param0::		::resource0:: = get character instance of desc id ::param0:: (include not in-game: ::param1::)
 
 TATNEffectGetObjectOfType
 ::param1::		::resource0:: = get object instance of desc id ::param0:: (including invalid objects)		::resource0:: = get object instance of desc id ::param0::		::resource0:: = get object instance of desc id ::param0:: (can be invalid: ::param1::)
@@ -59,13 +62,16 @@ TATNEffectGameOver
 trigger game over
 
 TATNEffectPlayVoiceOver
-play sound effect "::param1:": (category "::param0::")
+play voice over sound "::param1::" (category "::param0::")
+
+TATNEffectStopVoiceOver
+stop current voice over sound
 
 TATNEffectMakeCharacterInteractWithObject
-tell ::resource1:: to interact with ::resource0::
+make ::resource1:: interact with ::resource0::
 
 TATNEffectLockActOfInfamy
-set lock of AoI ::param0:: to ::param1::
+::param1::		lock AoI ::param0::		unlock AoI ::param0::		set lock of AoI ::param0:: to ::param1::
 
 TATNEffectGetWorldDominationTotalCashIncome
 ::resource0:: = player's current cash income
@@ -80,13 +86,13 @@ TATNEffectAdjustPlayerHeat
 ::param2::		increase player heat by ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1:: (relative: ::param2::)
 
 TATNEffectSetCharacterTag
-set tag of ::resource0:: to ::param0::
+tag ::resource0:: as ::param0::
 
 TATNEffectSubstituteObject
 replace ::resource0:: with instance of desc id ::param0::
 
 TATNEffectCreateItemInHand
-give ::resource0:: an item with desc id ::param0:: (stored in ::resource1::)
+give ::resource0:: item ::resource1:: = instance of desc id ::param0::
 
 TATNEffectLockEntity
 lock interaction slot "::param0::" of ::resource0::
@@ -98,10 +104,10 @@ TATNEffectDropItem
 drop ::resource1:: held by ::resource0::
 
 TATNEffectPickUpItem
-::resource0:: should pick up ::resource1:: (must move: ::param0::)
+::param0::		::resource0:: should move and pick up ::resource1::		make ::resource0:: pick up ::resource1:: instantly		::resource0:: should pick up ::resource1:: (must move: ::param0::)
 
 TATNEffectMoveToEntityHotspot
-tell ::resource0:: to move to hotspot "::param0::" of ::resource1::
+::param2::		make ::resource0:: move using pathfinding to hotspot "::param0::" of ::resource1:: (with same orientation: ::param1::, same height: ::param4::)		make ::resource0:: move to hotspot "::param0::" of ::resource1:: (with same orientation: ::param1::, same height: ::param4::)		make ::resource0:: move to hotspot "::param0::" of ::resource1:: (with same orientation: ::param1::, same height: ::param4::, using pathfinding: ::param2::)
 
 TATNEffectSetLastEffectReturnValue
 terminate thread and return ::param0::
@@ -110,7 +116,7 @@ TATNEffectGetGenius
 ::resource0:: = get genius instance
 
 TATNEffectSetEntityAvailable
-set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
+::param1::		make desc id ::param0:: available (popup: ::param2::)		make desc id ::param0:: unavailable (popup: ::param2::)		set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
 
 TATNEffectSetTouristPopulation
 set tourists coming from ::param1:: to ::param0::
@@ -120,3 +126,177 @@ TATNEffectGUIEnableFeature
 
 TATNEffectEnableEntityBehaviour
 ::param0::		enable AI behaviour of ::resource0::		disable AI behaviour of ::resource0::		set AI behaviour of ::resource0:: to enabled = ::param0::
+
+TATNEffectIncreaseScale
+increase ::param0:: of ::resource0:: by ::param1::
+
+TATNEffectDecreaseScale
+decrease ::param0:: of ::resource0:: by ::param1::
+
+TATNEffectDecreaseScaleAlt
+decrease stat type ::resource1:: of ::resource0:: by ::param0::
+
+TATNEffectTurnToFaceEntity
+make ::resource0:: turn to face ::resource1::
+
+TATNEffectTeleportToPosition
+teleport ::resource0:: to hotspot "::param0::" of ::resource1::
+
+TATNEffectCancelEntityActions
+cancel actions of ::resource0::
+
+TATNEffectGetRandomActiveSlave
+::param0::		::resource1:: = random manned slave belonging to ::resource0::		::resource1:: = random slave belonging to ::resource0::		::resource1:: = random slave belonging to ::resource0:: (manned: ::param0::)
+
+TATNEffectIncreaseTraining
+increase training of ::resource0:: by ::param0::
+
+TATNEffectStopAnimation
+::resource0:: should stop playing "::param0::"
+
+TATNEffectWearHatForRoom
+::param0::		make ::resource0:: equip room hat		give room hat immediately to ::resource0::		make ::resource0:: equip room hat (animate: ::param0::)
+
+TATNEffectWearHatDefault
+::param0::		make ::resource0:: equip normal hat		give normal hat immediately to ::resource0::		make ::resource0:: equip normal hat (animate: ::param0::)
+
+TATNEffectMoveToRandomPointInRoom
+make ::resource0:: move to a random spot in the room
+
+TATNEffectGetCharacterInteractingWithObject
+::resource1:: = character interacting with ::resource0::
+
+TATNEffectResearchSetStatus
+set research status of ::resource0:: to ::param0:: using ::resource1:: with scientist ::resource2::
+
+TATNEffectStartSpecialEffect
+start effect "::param0::" on ::resource0::
+
+TATNEffectStopSpecialEffect
+stop effect "::param0::" on ::resource0::
+
+TATNEffectForceMissionOnMap
+::param2::		make AoI ::param0:: appear on map (forced: ::param1::)		make AoI ::param0:: not appear on map (forced: ::param1::)		make AoI ::param0:: appear on map (appear: ::param2::, forced: ::param1::)
+
+TATNEffectGetAttachedEntity
+::resource1:: = entity of desc id ::param0:: attached to ::resource0::
+
+TATNEffectCreateAgentGroup
+add ::param1:: agents of desc id ::param2:: from ::param0:: to ::resource0::
+
+TATNEffectEventGetEntity
+::resource0:: = entity ::param0:: of last event
+
+TATNEffectGUIGetControl
+::resource0:: = control "::param1::" with dialog "::param0::"
+
+TATNEffectGUIHighlightControl
+::param0::		highlight ::resource0:: as clickable		highlight ::resource0::		highlight ::resource0:: (indicate click: ::param0::)
+
+TATNEffectGUIMoveCursorToControl
+move mouse to ::resource0::
+
+TATNEffectGUIClickControl
+click ::resource0::
+
+TATNEffectGUIDismissDialog
+dismiss GUI dialog
+
+TATNEffectFocusCameraOnEntity
+::param0::		focus camera on ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		unfocus camera from ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		focus camera on ::resource0:: (focus: ::param0::, zoomed: ::param1::, show stats: ::param2::)
+
+TATNEffectGUIMoveCursorToPosition
+move mouse to (::param0::, ::param1::)
+
+TATNEffectGUISetMouseButton
+::param1::		set ::param0:: as pressed		set ::param0:: as unpressed		set ::param0:: as pressed: ::param1::
+
+TATNEffectAddEntityToGroup
+add ::resource1:: to ::resource0::
+
+TATNEffectCreateGroup
+::resource0:: = new group of class ::param0::
+
+TATNEffectDestroyGroup
+destroy ::resource0::
+
+TATNEffectSetUserTerminationRequired
+set interaction termination priority of ::resource0:: to ::param0::
+
+TATNEffectSendGroupsHome
+make ::resource0:: go back where they came from
+
+TATNEffectHighlightAllEntitiesOfType
+highlight all entities with desc id ::param0::
+
+TATNEffectPauseGame
+pause game
+
+TATNEffectFlushDeadFromGroup
+remove dead agents from ::resource0::
+
+TATNEffectSetDebugFlag
+::param1::		enable game flag "::param0::"		disable game flag "::param0::"		set game flag "::param0::" enabled = ::param1::
+
+TATNEffectGetEntityByUniqueID
+::resource0:: = get entity with unique ID ::param0:: (save game specific)
+
+TATNEffectMoveToPosition
+::param2::		make ::resource0:: move to (::param0:: cm, ::param1:: cm) using pathfinding		make ::resource0:: move to (::param0:: cm, ::param1:: cm)		make ::resource0:: move to (::param0:: cm, ::param1:: cm) using pathfinding = ::param2::
+
+TATNEffectGUIEnableControl
+::param0::		enable ::resource0::		disable ::resource0::		enable ::resource0:: = ::param0::
+
+TATNEffectGUIDisableControl
+::param0::		disable ::resource0::		enable ::resource0::		disable ::resource0:: = ::param0::
+
+TATNEffectGUIEnableAllControls
+enable all GUI controls
+
+TATNEffectSetMoveFlag
+::param1::		enable move flag ::param0:: of ::resource0::		disable move flag ::param0:: of ::resource0::		set move flag ::param0:: of ::resource0:: as enabled = ::param1::
+
+TATNEffectPlayVideo
+::param1::		play video "::param0::" in fullscreen		play video "::param0::" in window		play video "::param0::" (fullscreen: ::param1::)
+
+TATNEffectSetSuperAgentLock
+::param1::		lock superagent from ::param0::		unlock superagent from ::param0::		set superagent from ::param0:: as locked = ::param1::
+
+TATNEffectSetSuperAgentDefeated
+::param1::		set superagent from ::param0:: as defeated		set superagent from ::param0:: as undefeated		set superagent from ::param0:: as defeated = ::param1::
+
+TATNEffectSetSuperAgentDefeatable
+::param1::		set superagent from ::param0:: as defeatable		set superagent from ::param0:: as undefeatable		set superagent from ::param0:: as defeatable = ::param1::
+
+TATNEffectClearMinionPopulationLimit
+reset minion population limit to normal
+
+TATNEffectSetMinionPopulationLimit
+force max number of minions to ::param0::
+
+TATNEffectGetTortureScale
+::resource0:: = tortured stat type of ::resource1::
+
+TATNEffectSetGlobalMayhem
+::param0::		enable global mayhem		disable global mayhem		set global mayhem as enabled = ::param0::
+
+TATNEffectResearchSuggestEntity
+::param1::		suggest desc id ::param0:: to be researched		unsuggest desc id ::param0:: to be researched		suggest desc id ::param0:: to be researched = ::param1::
+
+TATNEffectGetCaveSlaveCount
+::resource0:: = number of cave workers desired
+
+TATNEffectSetCaveSlaveCount
+number of cave workers desired = ::param0::
+
+TATNEffectClearResearchBlacklist
+clear research blacklist
+
+TATNEffectChangeAgentPreferences
+set ::resource0:: to prefer room desc id ::param0::, object id ::param1:: with interaction reason ::param2::
+
+TATNEffectChangeMetaStatus
+set meta properties of ::resource0:: (use in world: ::param0::, in world: ::param1::, use in game: ::param2::, in game: ::param3::)
+
+TATNEffectSetRegionActivity
+set minion activity in region ::param0:: to ::param1::

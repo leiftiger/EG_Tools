@@ -1,6 +1,9 @@
 TATNPerceptTrue
 true
 
+TATNPerceptActionsFinished
+::resource0:: finished actions
+
 TATNPerceptWaitForEvent
 "::param0::" has occurred
 
@@ -16,8 +19,11 @@ TATNPerceptNumberGreaterThan
 TATNPerceptEntityIsOfType
 ::resource0:: is instance of desc id ::param0::
 
-TATNPerceptEntityIsInRoomType
+TATNPerceptEntityIsInRoomType::434
 ::resource0:: is in room desc id ::param0::
+
+TATNPerceptEntityIsInRoomType::25106
+::resource0:: is not in room desc id ::param0::
 
 TATNPerceptParameterDifference
 ::param0:: == ::param1::
@@ -56,10 +62,10 @@ TATNPerceptInteractionTerminationConditions
 ::resource0:: should stop interacting
 
 TATNPerceptNumberInteractionSlotsInUseGreaterEqual
-vacant ::resource0:: interaction slots >= ::param0::
+number of vacant interaction slots of ::resource0:: >= ::param0::
 
 TATNPerceptNumberInteractionSlotsInUseLessEqual
-vacant ::resource0:: interaction slots <= ::param0::
+number of vacant interaction slots of ::resource0:: <= ::param0::
 
 TATNPerceptIsCharacterMale
 ::resource0:: is male
@@ -94,8 +100,86 @@ TATNPerceptResourceExists::46
 TATNPerceptResourceExists::8830
 ::resource0:: does not exist
 
+TATNPerceptWaitForEventWithEntities
+"::param0::" has occurred with ::resource0:: and ::resource1::
+
 TATNPerceptWaitForEventWithEntityTypes::5498
 "::param0::" has occurred with desc ids ::param1:: and ::param2::
 
 TATNPerceptWaitForEventWithEntityTypes::15382
 "::param0::" has occurred with AoI ::param1:: and desc id ::param2::
+
+TATNPerceptWaitForEventWithEntityClasses
+"::param0::" has occurred with entity classes ::param1:: and desc id ::param2::
+
+TATNPerceptEntityCount_Class::5507
+number of class ::param0:: >= ::param1::
+
+TATNPerceptEntityCount_DescID::5508
+number of desc id ::param0:: >= ::param1::
+
+TATNPerceptEntityCount_Group::9270
+number of entities in ::resource0:: >= ::param0::
+
+TATNPerceptEntityCount_Group::15834
+number of entities in ::resource0:: < ::param0::
+
+TATNPerceptEntityCount_Class::19126
+number of class ::param0:: < ::param1::
+
+TATNPerceptEntitiesWithinRange
+::resource0:: and ::resource1:: are within ::param0:: cms of each other
+
+TATNPerceptExitHotspotClear
+exit of hotspot "::param0::" of ::resource0:: is clear
+
+TATNPerceptEntityIsOfClass
+::resource0:: is of class ::param0::
+
+TATNPerceptAllAnimationsFinished
+::resource0:: finished playing all their animations
+
+TATNPerceptUrgentInteractionTerminationConditions
+::resource0:: must stop interacting
+
+TATNPerceptGuiIsInState::8238
+GUI is in state "::param0::"
+
+TATNPerceptGuiIsInState::8266
+GUI is not in state "::param0::"
+
+TATNPerceptIsVoiceOverPlaying::11161
+voice over sound is not playing
+
+TATNPerceptIsVoiceOverPlaying::27786
+voice over sound is playing
+
+TATNPerceptMinionsRequested::11799
+player's desired minion count of desc id ::param0:: >= ::param1::
+
+TATNPerceptMinionsRequested::26459
+player's desired minion count of desc id ::param0:: < ::param1::
+
+TATNPerceptGetEntityAvailable
+desc id ::param0:: is available
+
+TATNPerceptIsBipedType
+::resource0:: is of biped type ::param0::
+
+TATNPerceptIsSuperAgentLocked
+::param0::'s super agent is locked
+
+TATNPerceptIsVideoPlaying
+no video is playing
+
+TATNPerceptEnoughMinionsInRegion
+number of ::param1:: minions in region ::param0:: >= ::param2:: (with ::param3:: on the way)
+
+TATNPerceptGuiIsIdle
+GUI is idle
+
+TATNPerceptIsEntityDescriptionPresent
+desc id ::param0:: is present
+
+TATNPerceptIsRegionSetToActivity
+minion activity in region ::param0:: is ::param1::
