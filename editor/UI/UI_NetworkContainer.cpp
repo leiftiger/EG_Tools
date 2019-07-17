@@ -310,6 +310,9 @@ void UI_NetworkContainer::stateCreate()
 	m_states.push_back(ut);
 
 	layoutStates();
+
+	// Scroll to the new state
+	ui.scrollArea->horizontalScrollBar()->setSliderPosition(ui.scrollArea->horizontalScrollBar()->maximum());
 }
 
 void UI_NetworkContainer::stateMoveUp()
