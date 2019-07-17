@@ -363,6 +363,9 @@ void UI_NetworkContainer::stateRemove()
 		}
 	}
 
+	// Otherwise it'll still be considered in frame state size
+	ut->setParent(nullptr);
+
 	layoutStates();
 
 	m_network->remove(*ut->m_state);
