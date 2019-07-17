@@ -211,10 +211,14 @@ int main(int argc, char *argv[])
 		// TODO: Verify and find more values
 		ATN::Manager::setDefinitions("Spawn Type", util::createDefinition(
 			{
-				{"Unknown",			0},
-				{"Random",			2},
+				{"Beach",			1},
+				{"Random",			2}, // (parachute)
 				{"Depot",			3},
 				{"DepotInstant",	4},
+				{"Jetpack",			5},
+				{"Kite",			6},
+				{"HangGlider",		7},
+				{"Chariot",			8},
 			}));
 
 		// TODO: Are there more values?
