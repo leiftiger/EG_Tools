@@ -1170,6 +1170,9 @@ void UI_NetworkContainer::initializeStates()
 {
 	std::unordered_map<const ATN::State*, UI_NetworkState*> uiStates;
 
+	// Disable paint events so that new connectors aren't drawn yet
+	setUpdatesEnabled(false);
+
 	for (ATN::State *s : m_network->states())
 	{
 		UI_NetworkState *ut = createStateUI(s);
@@ -1209,6 +1212,28 @@ void UI_NetworkContainer::initializeStates()
 	}
 
 	layoutStates();
+
+	// Precompute all connector offsets such that when they paint for the first time they're already correct
+	for (UI_NetworkThread *uiThread : m_threads)
+	{
+		if (uiThread->ui.connector->connector() != nullptr)
+		{
+			m_proxy.stateHeight(uiThread->ui.connector->connectFlags(), uiThread->ui.connector->connector());
+		}
+	}
+
+	for (UI_NetworkState *uiState : m_states)
+	{
+		for (UI_NetworkTransition *uiTransition : uiState->ui.connectorOut->transitions())
+		{
+			if (uiTransition->m_connector->connector() != nullptr)
+			{
+				m_proxy.stateHeight(uiTransition->m_connector->connectFlags(), uiTransition->m_connector->connector());
+			}
+		}
+	}
+
+	setUpdatesEnabled(true);
 }
 
 void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls)
