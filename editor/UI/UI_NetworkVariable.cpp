@@ -57,7 +57,7 @@ void UI_NetworkVariable::setVariableType(const QString &type)
 
 void UI_NetworkVariable::setVariableValue(const QString &value)
 {
-	if (m_variable == nullptr || m_populating)
+	if (m_variable == nullptr || m_populating || signalsBlocked())
 		return;
 
 	ui.variableValue->setInputError(false);
