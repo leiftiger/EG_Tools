@@ -28,8 +28,11 @@ TATNEffectTimerStart
 TATNEffectTimerSetPaused
 ::param0::		pause ::resource0::		resume ::resource0::		set ::resource0:: as paused = ::param0::
 
-TATNEffectGuiLogMessageToPlayer
+TATNEffectGuiLogMessageToPlayer::308
 ::param1::		show "::param0::" and play video		show "::param0::"		show "::param0::" (play video: ::param1::)
+
+TATNEffectGuiLogMessageToPlayer::11868
+::param1::		trigger "::param0::" and play video		trigger "::param0::"		trigger "::param0::" (play video: ::param1::)
 
 TATNEffectCreateEntity
 ::resource0:: = new instance of ::param0::
