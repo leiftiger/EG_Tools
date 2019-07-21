@@ -28,10 +28,14 @@ namespace util
 	// Proxy to std::getline that also keeps track of the line number of the currently open file
 	std::istream &getline(std::istream &stream, std::string &line);
 
+	// Gets the config paths set by the config file
+	std::vector<std::string> configPaths(const std::string &filename);
+
 	// Reads all events
 	ATN::List<ATN::Property> parseHashes(const std::string &filename);
 
-	ATN::List<ATN::Property> createDefinition(std::initializer_list<std::pair<std::string, std::int32_t>> list);
+	ATN::List<ATN::Property> createDefinition(const std::initializer_list<std::pair<std::string, std::int32_t>> &list);
+	ATN::List<ATN::Property> createDefinition(const std::vector<std::pair<std::string, std::int64_t>> &list);
 
 	std::vector<std::pair<std::string, std::string>> parseInterpretations(const std::string &filename);
 

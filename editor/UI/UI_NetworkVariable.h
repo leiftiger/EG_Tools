@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include <QToolTip>
+#include <QCollator>
 #include "GeneratedFiles/ui_UI_NetworkVariable.h"
 
 #include "ATN/ATN_Manager.h"

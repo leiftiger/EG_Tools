@@ -54,7 +54,11 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 			translations.append(QString::fromStdString(pair.second->name()));
 		}
 
-		translations.sort(Qt::CaseSensitivity::CaseSensitive);
+		QCollator collator;
+		collator.setNumericMode(true);
+		collator.setCaseSensitivity(Qt::CaseSensitivity::CaseSensitive);
+
+		qSort(translations.begin(), translations.end(), collator);
 
 		ui.comboBox->addItems(translations);
 	}

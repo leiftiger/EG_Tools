@@ -58,6 +58,27 @@ namespace util
 		return std::getline(stream, line);
 	}
 
+	std::vector<std::string> configPaths(const std::string &filename)
+	{
+		std::ifstream file(filename);
+
+		std::vector<std::string> res;
+
+		if (file.fail())
+		{
+			return res;
+		}
+
+		std::string line;
+
+		while (getline(file, line))
+		{
+			res.push_back(line);
+		}
+
+		return res;
+	}
+
 	ATN::List<ATN::Property> parseHashes(const std::string &filename)
 	{
 		DEBUG_LINE = -1;
@@ -87,17 +108,31 @@ namespace util
 		return list;
 	}
 
-	ATN::List<ATN::Property> createDefinition(std::initializer_list<std::pair<std::string, std::int32_t>> list)
+	ATN::List<ATN::Property> createDefinition(const std::initializer_list<std::pair<std::string, std::int32_t>> &list)
 	{
 		ATN::List<ATN::Property> defList;
 
-		for (std::pair<std::string, std::int32_t> pair : list)
+		for (const std::pair<std::string, std::int32_t> &pair : list)
 		{
 			ATN::Property *el = new ATN::Property(pair.first, pair.second);
 
 			defList.add(*el);
 		}
 		
+		return defList;
+	}
+
+	ATN::List<ATN::Property> createDefinition(const std::vector<std::pair<std::string, std::int64_t>> &list)
+	{
+		ATN::List<ATN::Property> defList;
+
+		for (const std::pair<std::string, std::int32_t> &pair : list)
+		{
+			ATN::Property *el = new ATN::Property(pair.first, pair.second);
+
+			defList.add(*el);
+		}
+
 		return defList;
 	}
 

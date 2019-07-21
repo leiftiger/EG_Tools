@@ -1,10 +1,14 @@
 #include <iostream>
-#include "utils.h"
+#include "rl_utils.h"
 
 #include <QApplication>
 
 #include "UI/UI_MainWindow.h"
 #include "UI/UI_ErrorWindow.h"
+
+#include "RL_FileLoader.h"
+#include "RL_Animation.h"
+#include "RL_EntityDesc.h"
 
 int main(int argc, char *argv[])
 {
@@ -62,7 +66,6 @@ int main(int argc, char *argv[])
 		*/
 
 		// TODO: more string hashes in above list
-		ATN::Manager::setDefinitions("Animation", util::parseHashes("files/anims.txt"));
 		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
 
 
@@ -229,30 +232,6 @@ int main(int argc, char *argv[])
 				{"Terminate", 1},
 			}));
 
-		ATN::Manager::setDefinitions("World Map Region", util::createDefinition(
-			{
-				{"Antartica",		50000},
-				{"Australasia",		50001},
-				{"CentralAsia",		50002},
-				{"CentralRussia",	50003},
-				{"Cuba",			50004},
-				{"EastCoast",		50005},
-				{"EasternBloc",		50006},
-				{"Europe",			50007},
-				{"MiddleEast",		50008},
-				{"MidWest",			50009},
-				{"NorthAfrica",		50010},
-				{"NorthChina",		50011},
-				{"PacificAllies",	50012},
-				{"Polynesia",		50013},
-				{"Siberia",			50014},
-				{"SouthAfrica",		50015},
-				{"SouthAmerica",	50016},
-				{"SoutheastAsia",	50017},
-				{"Subcontinent",	50018},
-				{"WestCoast",		50019},
-			}));
-
 		ATN::Manager::setDefinitions("World Region", util::createDefinition(
 			{
 				{"PATRIOT",	0},
@@ -270,6 +249,25 @@ int main(int argc, char *argv[])
 		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("files/percept_interpretations.txt"))
 		{
 			ATN::Manager::addInterpretation(pair.first, pair.second);
+		}
+
+		std::vector<std::string> strConfig = util::configPaths("config.txt");
+
+		if (strConfig.size() > 0)
+		{
+			RL::FileLoader resourceLoader(strConfig[0]);
+
+			std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
+
+			RL::IResourceLoader *loaders[] = { new RL::AnimationLoader(), new RL::EntityDescLoader() };
+			
+			for (RL::IResourceLoader *loader : loaders)
+			{
+				res = resourceLoader.loadResources(loader);
+
+				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &pair : res)
+					ATN::Manager::setDefinitions(pair.first, util::createDefinition(pair.second));
+			}
 		}
 
 		QApplication a(argc, argv);

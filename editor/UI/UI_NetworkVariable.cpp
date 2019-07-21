@@ -31,7 +31,11 @@ void UI_NetworkVariable::loadTranslations()
 			translations.append(QString::fromStdString(pair.second->name()));
 		}
 
-		translations.sort(Qt::CaseSensitivity::CaseSensitive);
+		QCollator collator;
+		collator.setNumericMode(true);
+		collator.setCaseSensitivity(Qt::CaseSensitivity::CaseSensitive);
+
+		qSort(translations.begin(), translations.end(), collator);
 
 		ui.variableValue->addItems(translations);
 	}

@@ -75,3 +75,6 @@ $RECYCLE.BIN/
 # Qt auto-generated files
 
 GeneratedFiles/
+
+# Configuration file
+config.txt
