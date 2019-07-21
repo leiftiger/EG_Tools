@@ -68,7 +68,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 	{
 		for (ATN::Network *net : ATN::Manager::getNetworks())
 		{
-			ui.comboBox->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
+			if (net->parameters().size() == 0 && !net->hasResourceInputs())
+				ui.comboBox->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
 	}
 

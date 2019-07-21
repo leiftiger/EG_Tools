@@ -44,7 +44,8 @@ void UI_NetworkVariable::loadTranslations()
 	{
 		for (ATN::Network *net : ATN::Manager::getNetworks())
 		{
-			ui.variableValue->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
+			if (net->parameters().size() == 0 && !net->hasResourceInputs())
+				ui.variableValue->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
 	}
 

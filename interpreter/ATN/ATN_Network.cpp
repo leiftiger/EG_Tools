@@ -428,6 +428,15 @@ namespace ATN
 		}
 	}
 
+	bool Network::hasResourceInputs() const
+	{
+		for (Resource *r : m_resources)
+			if (!r->m_internalResource)
+				return true;
+
+		return false;
+	}
+
 	void Network::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

@@ -47,7 +47,7 @@ TATNEffectSetObjectiveStatus
 ::param2::		mark "::param0::" as complete (visible: ::param1::, parent: "::param3::")		mark "::param0::" as incomplete (visible: ::param1::, parent: "::param3::")		mark "::param0::" (visible: ::param1::, complete: ::param2::, parent: "::param3::")
 
 TATNEffectRunGameRuleATN
-run game rule "::param0::"
+start network "::param0::"
 
 TATNEffectSleepThread
 sleep current thread for ::param0:: frames

@@ -115,5 +115,8 @@ namespace ATN
 
 		// Clears all references to the parameter at the specified index to a constant value
 		void resetParameterMarshalls(std::int64_t index);
+
+		// Returns true if this network has some resources as inputs
+		bool hasResourceInputs() const;
 	};
 }

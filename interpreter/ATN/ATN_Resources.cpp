@@ -89,7 +89,23 @@ namespace ATN
 			if (name == "UNDEFINED")
 				return ATN_UNDEF_VALUE;
 
-			return std::stoll(name.substr(0, name.find(":")));
+			std::uint32_t id = (std::uint32_t)std::stoll(name.substr(0, name.find(":")));
+
+			Entry *el = &ATN::Manager::findByID(id);
+
+			if (typeid(*el) != typeid(Network))
+			{
+				throw ATN::Exception("Unique ID %d is not a network!", id);
+			}
+
+			Network *net = (Network*)el;
+
+			if (net->parameters().size() != 0 || net->hasResourceInputs())
+			{
+				throw ATN::Exception("Network ID %d has inputs and cannot be an argument!", id);
+			}
+
+			return id;
 		}
 
 		if (name == "NULL")
