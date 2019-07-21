@@ -98,6 +98,7 @@ int main(int argc, char *argv[])
 				{"TagManager",	-1},
 				{"BuildingBlock",	-1},
 				{"Object", -1},
+				{"LawAgency", -1},
 				{"Item", -1},
 				{"Briefcase", -1},
 				{"Spawn", -1},
@@ -214,7 +215,7 @@ int main(int argc, char *argv[])
 				{"Beach",			1},
 				{"Random",			2}, // (parachute)
 				{"Depot",			3},
-				{"DepotInstant",	4},
+				{"DepotBoat",		4},
 				{"Jetpack",			5},
 				{"Kite",			6},
 				{"HangGlider",		7},
