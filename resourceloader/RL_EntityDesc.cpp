@@ -104,7 +104,7 @@ namespace RL
 			if (line.length() >= strlen("HotspotName=") && line.substr(0, strlen("HotspotName=")) == "HotspotName=")
 			{
 				line = line.substr(strlen("HotspotName="));
-				res.push_back(new BaseResource("Hotspot", line, utils::hashElixir(line)));
+				res.push_back(new BaseResource("Hotspot", line, util::hashFNV132(line)));
 			}
 		}
 

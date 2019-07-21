@@ -23,7 +23,7 @@ namespace util
 	extern int DEBUG_LINE;
 
 	// Hash used for animations and event names
-	std::int32_t hashElixir(const std::string &str);
+	std::int32_t hashFNV132(const std::string &str);
 
 	// Proxy to std::getline that also keeps track of the line number of the currently open file
 	std::istream &getline(std::istream &stream, std::string &line);

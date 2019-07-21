@@ -7,7 +7,7 @@
 
 #include "RL_IResourceLoader.h"
 
-namespace utils
+namespace util
 {
-	std::int32_t hashElixir(const std::string &str);
+	std::int32_t hashFNV132(const std::string &str);
 }

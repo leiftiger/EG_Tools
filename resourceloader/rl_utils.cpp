@@ -1,11 +1,11 @@
 #include "rl_utils.h"
 
-namespace utils
+namespace util
 {
 	static const std::uint32_t prime = 16777619;
 
-	// Taken from the lead programmer's response as well as Dameon's notes on the Evil Planet forums: http://web.archive.org/web/20111122124528/http://n1nj4.com/viewtopic.php?p=120931#120931
-	std::int32_t hashElixir(const std::string &str)
+	// Fowler-Noll-Vo 1 32 bit hash function
+	std::int32_t hashFNV132(const std::string &str)
 	{
 		// Hash is always of the lowercased string
 		std::string lCase = str;

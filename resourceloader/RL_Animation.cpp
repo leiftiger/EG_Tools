@@ -21,7 +21,7 @@ namespace RL
 			if (line.length() >= strlen("*ID_STRING") && line.substr(0, strlen("*ID_STRING")) == "*ID_STRING")
 			{
 				line = line.substr(strlen("*ID_STRING")+1);
-				res.push_back(new BaseResource("Animation", line, utils::hashElixir(line)));
+				res.push_back(new BaseResource("Animation", line, util::hashFNV132(line)));
 			}
 		}
 
