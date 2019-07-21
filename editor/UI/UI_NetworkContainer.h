@@ -252,6 +252,8 @@ public slots:
 
 	void receiveStateLayoutRequest();
 
+	void receiveJumpRequest(QWidget *widget);
+
 	void createNewConnector();
 
 	void createNewTransition();

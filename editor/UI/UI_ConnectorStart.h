@@ -1,7 +1,9 @@
 #pragma once
 
+#include <QTimer>
 #include <QStyleOption>
 #include <QPainter>
+#include <QMenu>
 #include <QEvent>
 #include <QWidget>
 #include "GeneratedFiles/ui_UI_ConnectorStart.h"
@@ -59,12 +61,19 @@ private:
 
 	bool m_readOnly = false;
 
+protected slots:
+	void openContextMenu(const QPoint &pos);
+	void highlightConnector();
+	void jumpToEndConnector();
+
 public:
 signals:
 	void createNewConnector();
 
 	// Establish a transition from the connector's current connection
 	void establishTransition();
+
+	void requestJumpToWidget(QWidget *widget);
 	
 };
 

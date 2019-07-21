@@ -7,6 +7,10 @@ UI_ConnectorStart::UI_ConnectorStart(QWidget *parent)
 
 	// Ensure widget is redrawn on hover
 	this->setAttribute(Qt::WA_Hover);
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(openContextMenu(const QPoint&)));
 }
 
 UI_ConnectorStart::~UI_ConnectorStart()
@@ -89,11 +93,7 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 
 void UI_ConnectorStart::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::MouseButton::RightButton && m_connector != nullptr)
-	{
-		m_connector->setHighlighted(!m_connector->highlighted());
-	}
-	else if (event->button() == Qt::MouseButton::LeftButton && !m_readOnly)
+	if (event->button() == Qt::MouseButton::LeftButton && !m_readOnly)
 	{
 		if (m_connector != nullptr)
 		{
@@ -132,4 +132,48 @@ void UI_ConnectorStart::updateConnector()
 void UI_ConnectorStart::setReadOnly(bool readonly)
 {
 	m_readOnly = readonly;
+}
+
+void UI_ConnectorStart::highlightConnector()
+{
+	m_connector->setHovered(false);
+	m_connector->setHighlighted(!m_connector->highlighted());
+}
+
+void UI_ConnectorStart::jumpToEndConnector()
+{
+	m_connector->setHovered(false);
+
+	// Highlight temporarily so it's easier to see
+	if (!m_connector->highlighted())
+	{
+		m_connector->setHighlighted(true);
+		QTimer::singleShot(2000, this, SLOT(highlightConnector()));
+	}
+
+	emit requestJumpToWidget(m_connector->end()->parentWidget());
+}
+
+void UI_ConnectorStart::openContextMenu(const QPoint &pos)
+{
+	if (m_connector == nullptr)
+		return;
+
+	QMenu contextMenu(tr("Context menu"), this);
+
+	QAction actionHighlight("Highlight", this);
+
+	connect(&actionHighlight, SIGNAL(triggered()), this, SLOT(highlightConnector()));
+
+	QAction actionJump("Jump to state", this);
+
+	if (m_connector->end() == nullptr)
+		actionJump.setEnabled(false);
+
+	connect(&actionJump, SIGNAL(triggered()), this, SLOT(jumpToEndConnector()));
+
+	contextMenu.addAction(&actionHighlight);
+	contextMenu.addAction(&actionJump);
+
+	contextMenu.exec(mapToGlobal(pos));
 }

@@ -13,6 +13,7 @@ UI_NetworkThread *UI_NetworkContainer::createThreadUI(ATN::Thread *thread)
 	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(threadRemove()));
 
 	connect(ut->ui.connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
+	connect(ut->ui.connector, SIGNAL(requestJumpToWidget(QWidget*)), this, SLOT(receiveJumpRequest(QWidget*)));
 
 	if (m_editingDisabled)
 	{
@@ -161,6 +162,8 @@ UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *
 
 	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
+	connect(uiTransition->m_connector, SIGNAL(requestJumpToWidget(QWidget*)), this, SLOT(receiveJumpRequest(QWidget*)));
+
 	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
 
 	uiConnector->show();
@@ -850,6 +853,11 @@ void UI_NetworkContainer::receiveOpenNetworkRequest(int id)
 void UI_NetworkContainer::receiveStateLayoutRequest()
 {
 	layoutStates();
+}
+
+void UI_NetworkContainer::receiveJumpRequest(QWidget *widget)
+{
+	ui.scrollArea->ensureWidgetVisible(widget);
 }
 
 void UI_NetworkContainer::createNewConnector()
