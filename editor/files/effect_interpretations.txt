@@ -32,7 +32,7 @@ TATNEffectGuiLogMessageToPlayer
 ::param1::		show "::param0::" and play video		show "::param0::"		show "::param0::" (play video: ::param1::)
 
 TATNEffectCreateEntity
-::resource0:: = new instance of desc id ::param0::
+::resource0:: = new instance of ::param0::
 
 TATNEffectDestroyEntity
 destroy ::resource0::
@@ -50,13 +50,13 @@ TATNEffectSleepThread
 sleep current thread for ::param0:: frames
 
 TATNEffectGetEntityOfType
-::resource0:: = get entity instance of desc id ::param0::
+::resource0:: = get instance of ::param0::
 
 TATNEffectGetCharacterOfType
-::param1::		::resource0:: = get character instance of desc id ::param0:: (even if not in-game)		::resource0:: = get character instance of desc id ::param0::		::resource0:: = get character instance of desc id ::param0:: (include not in-game: ::param1::)
+::param1::		::resource0:: = get instance of ::param0:: (even if not in-game)		::resource0:: = get instance of ::param0::		::resource0:: = get instance of ::param0:: (include not in-game: ::param1::)
 
 TATNEffectGetObjectOfType
-::param1::		::resource0:: = get object instance of desc id ::param0:: (including invalid objects)		::resource0:: = get object instance of desc id ::param0::		::resource0:: = get object instance of desc id ::param0:: (can be invalid: ::param1::)
+::param1::		::resource0:: = get instance of ::param0:: (including invalid objects)		::resource0:: = get instance of ::param0::		::resource0:: = get instance of ::param0:: (can be invalid: ::param1::)
 
 TATNEffectGameOver
 trigger game over
@@ -89,10 +89,10 @@ TATNEffectSetCharacterTag
 tag ::resource0:: as ::param0::
 
 TATNEffectSubstituteObject
-replace ::resource0:: with instance of desc id ::param0::
+replace ::resource0:: with instance of ::param0::
 
 TATNEffectCreateItemInHand
-give ::resource0:: item ::resource1:: = instance of desc id ::param0::
+give ::resource0:: item ::resource1:: = new instance of ::param0::
 
 TATNEffectLockEntity
 lock interaction slot "::param0::" of ::resource0::
@@ -116,7 +116,7 @@ TATNEffectGetGenius
 ::resource0:: = get genius instance
 
 TATNEffectSetEntityAvailable
-::param1::		make desc id ::param0:: available (popup: ::param2::)		make desc id ::param0:: unavailable (popup: ::param2::)		set availability of desc id ::param0:: to ::param1:: (popup: ::param2::)
+::param1::		make ::param0:: available (popup: ::param2::)		make ::param0:: unavailable (popup: ::param2::)		set availability of ::param0:: to ::param1:: (popup: ::param2::)
 
 TATNEffectSetTouristPopulation
 set tourists coming from ::param1:: to ::param0::
@@ -179,10 +179,10 @@ TATNEffectForceMissionOnMap
 ::param2::		make AoI ::param0:: appear on map (forced: ::param1::)		make AoI ::param0:: not appear on map (forced: ::param1::)		make AoI ::param0:: appear on map (appear: ::param2::, forced: ::param1::)
 
 TATNEffectGetAttachedEntity
-::resource1:: = entity of desc id ::param0:: attached to ::resource0::
+::resource1:: = ::param0:: attached to ::resource0::
 
 TATNEffectCreateAgentGroup
-add ::param1:: agents of desc id ::param2:: from ::param0:: to ::resource0::
+add ::param1:: agents instances of ::param2:: from ::param0:: to ::resource0::
 
 TATNEffectEventGetEntity
 ::resource0:: = entity ::param0:: of last event
@@ -224,10 +224,10 @@ TATNEffectSetUserTerminationRequired
 set interaction termination priority of ::resource0:: to ::param0::
 
 TATNEffectSendGroupsHome
-make ::resource0:: go back where they came from
+make ::resource0:: leave island
 
 TATNEffectHighlightAllEntitiesOfType
-highlight all entities with desc id ::param0::
+highlight all instances of ::param0::
 
 TATNEffectPauseGame
 pause game
@@ -281,7 +281,7 @@ TATNEffectSetGlobalMayhem
 ::param0::		enable global mayhem		disable global mayhem		set global mayhem as enabled = ::param0::
 
 TATNEffectResearchSuggestEntity
-::param1::		suggest desc id ::param0:: to be researched		unsuggest desc id ::param0:: to be researched		suggest desc id ::param0:: to be researched = ::param1::
+::param1::		suggest ::param0:: to be researched		unsuggest ::param0:: to be researched		suggest ::param0:: to be researched = ::param1::
 
 TATNEffectGetCaveSlaveCount
 ::resource0:: = number of cave workers desired
@@ -293,10 +293,13 @@ TATNEffectClearResearchBlacklist
 clear research blacklist
 
 TATNEffectChangeAgentPreferences
-set ::resource0:: to prefer room desc id ::param0::, object id ::param1:: with interaction reason ::param2::
+set ::resource0:: to prefer room ::param0::, object ::param1:: with interaction reason ::param2::
 
 TATNEffectChangeMetaStatus
 set meta properties of ::resource0:: (use in world: ::param0::, in world: ::param1::, use in game: ::param2::, in game: ::param3::)
 
 TATNEffectSetRegionActivity
 set minion activity in region ::param0:: to ::param1::
+
+TATNEffectTakeAll
+set all entities as unavailable

@@ -17,13 +17,13 @@ TATNPerceptNumberGreaterThan
 ::resource0:: > ::param0::
 
 TATNPerceptEntityIsOfType
-::resource0:: is instance of desc id ::param0::
+::resource0:: is instance of ::param0::
 
 TATNPerceptEntityIsInRoomType::434
-::resource0:: is in room desc id ::param0::
+::resource0:: is in room ::param0::
 
 TATNPerceptEntityIsInRoomType::25106
-::resource0:: is not in room desc id ::param0::
+::resource0:: is not in room ::param0::
 
 TATNPerceptParameterDifference
 ::param0:: == ::param1::
@@ -104,19 +104,19 @@ TATNPerceptWaitForEventWithEntities
 "::param0::" has occurred with ::resource0:: and ::resource1::
 
 TATNPerceptWaitForEventWithEntityTypes::5498
-"::param0::" has occurred with desc ids ::param1:: and ::param2::
+"::param0::" has occurred with ::param1:: and ::param2::
 
 TATNPerceptWaitForEventWithEntityTypes::15382
-"::param0::" has occurred with AoI ::param1:: and desc id ::param2::
+"::param0::" has occurred with AoI ::param1:: and ::param2::
 
 TATNPerceptWaitForEventWithEntityClasses
-"::param0::" has occurred with entity classes ::param1:: and desc id ::param2::
+"::param0::" has occurred with entity classes ::param1:: and ::param2::
 
 TATNPerceptEntityCount_Class::5507
 number of class ::param0:: >= ::param1::
 
 TATNPerceptEntityCount_DescID::5508
-number of desc id ::param0:: >= ::param1::
+number of ::param0:: >= ::param1::
 
 TATNPerceptEntityCount_Group::9270
 number of entities in ::resource0:: >= ::param0::
@@ -155,13 +155,13 @@ TATNPerceptIsVoiceOverPlaying::27786
 voice over sound is playing
 
 TATNPerceptMinionsRequested::11799
-player's desired minion count of desc id ::param0:: >= ::param1::
+player's desired minion count of ::param0:: >= ::param1::
 
 TATNPerceptMinionsRequested::26459
-player's desired minion count of desc id ::param0:: < ::param1::
+player's desired minion count of ::param0:: < ::param1::
 
 TATNPerceptGetEntityAvailable
-desc id ::param0:: is available
+::param0:: is available
 
 TATNPerceptIsBipedType
 ::resource0:: is of biped type ::param0::
@@ -179,7 +179,7 @@ TATNPerceptGuiIsIdle
 GUI is idle
 
 TATNPerceptIsEntityDescriptionPresent
-desc id ::param0:: is present
+::param0:: is present
 
 TATNPerceptIsRegionSetToActivity
 minion activity in region ::param0:: is ::param1::
