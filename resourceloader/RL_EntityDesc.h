@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "RL_IResourceLoader.h"
+#include "rl_utils.h"
 
 namespace RL
 {

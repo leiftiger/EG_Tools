@@ -64,8 +64,6 @@ namespace RL
 
 		std::getline(file, line);
 
-		file.close();
-
 		std::vector<BaseResource*> res;
 
 		std::string type = line.substr(strlen("ObjType="));
@@ -98,6 +96,16 @@ namespace RL
 			}
 
 			res.push_back(new BaseResource(paramType, name, value));
+		}
+
+		// Parse any hotspots defined in the file
+		while (std::getline(file, line))
+		{
+			if (line.length() >= strlen("HotspotName=") && line.substr(0, strlen("HotspotName=")) == "HotspotName=")
+			{
+				line = line.substr(strlen("HotspotName="));
+				res.push_back(new BaseResource("Hotspot", line, utils::hashElixir(line)));
+			}
 		}
 
 		return res;
