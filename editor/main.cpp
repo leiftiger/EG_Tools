@@ -10,6 +10,7 @@
 #include "RL_Animation.h"
 #include "RL_EntityDesc.h"
 #include "RL_Video.h"
+#include "RL_StringLoader.h"
 
 int main(int argc, char *argv[])
 {
@@ -272,8 +273,40 @@ int main(int argc, char *argv[])
 
 			std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
 
-			RL::IResourceLoader *loaders[] = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader() };
+			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader() };
 			
+			for (RL::IResourceLoader *loader : loaders)
+			{
+				res = resourceLoader.loadResources(loader);
+
+				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
+				{
+					// Append if we already have some definitions
+					if (ATN::Manager::hasDefinitions(defList.first))
+					{
+						ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
+
+						for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
+						{
+							if (!list.contains(defPair.first))
+							{
+								ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
+
+								list.add(*prop);
+							}
+						}
+					}
+					else
+					{
+						ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
+					}
+				}
+			}
+
+			loaders = { new RL::StringLoader() };
+
+			resourceLoader = RL::FileLoader(strConfig[1]);
+
 			for (RL::IResourceLoader *loader : loaders)
 			{
 				res = resourceLoader.loadResources(loader);

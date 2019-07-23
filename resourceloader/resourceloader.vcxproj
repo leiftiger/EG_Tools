@@ -153,6 +153,7 @@
     <ClInclude Include="RL_EntityDesc.h" />
     <ClInclude Include="RL_FileLoader.h" />
     <ClInclude Include="RL_IResourceLoader.h" />
+    <ClInclude Include="RL_StringLoader.h" />
     <ClInclude Include="RL_Video.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="rl_utils.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="RL_EntityDesc.cpp" />
     <ClCompile Include="RL_FileLoader.cpp" />
     <ClCompile Include="RL_IResourceLoader.cpp" />
+    <ClCompile Include="RL_StringLoader.cpp" />
     <ClCompile Include="rl_utils.cpp" />
     <ClCompile Include="RL_Video.cpp" />
   </ItemGroup>
