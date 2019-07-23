@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 
 		// TODO: more string hashes in above list
 		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
+		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/hotspots.txt"));
 
 
 		ATN::Manager::setDefinitions("Boolean Value", util::createDefinition(
@@ -265,8 +266,28 @@ int main(int argc, char *argv[])
 			{
 				res = resourceLoader.loadResources(loader);
 
-				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &pair : res)
-					ATN::Manager::setDefinitions(pair.first, util::createDefinition(pair.second));
+				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
+				{
+					// Append if we already have some definitions
+					if (ATN::Manager::hasDefinitions(defList.first))
+					{
+						ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
+
+						for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
+						{
+							if (!list.contains(defPair.first))
+							{
+								ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
+
+								list.add(*prop);
+							}
+						}
+					}
+					else
+					{
+						ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
+					}
+				}
 			}
 		}
 
