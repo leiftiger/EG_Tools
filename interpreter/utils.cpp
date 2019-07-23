@@ -126,9 +126,9 @@ namespace util
 	{
 		ATN::List<ATN::Property> defList;
 
-		for (const std::pair<std::string, std::int32_t> &pair : list)
+		for (const std::pair<std::string, std::int64_t> &pair : list)
 		{
-			ATN::Property *el = new ATN::Property(pair.first, pair.second);
+			ATN::Property *el = new ATN::Property(pair.first, (std::int32_t)pair.second);
 
 			defList.add(*el);
 		}
