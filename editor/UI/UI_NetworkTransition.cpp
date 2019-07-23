@@ -214,7 +214,7 @@ std::string UI_NetworkTransition::interpret()
 	else
 	{
 		std::string effectFunc = m_transition->effect()->gameFunction();
-		std::string effectFuncID = perceptFunc + std::string("::") + std::to_string(m_transition->percept()->id());
+		std::string effectFuncID = effectFunc + std::string("::") + std::to_string(m_transition->effect()->id());
 
 		if (ATN::Manager::hasInterpretation(effectFunc))
 		{
