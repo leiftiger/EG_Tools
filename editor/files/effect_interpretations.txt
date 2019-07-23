@@ -55,7 +55,10 @@ sleep current thread for ::param0:: frames
 TATNEffectGetEntityOfType
 ::resource0:: = get instance of ::param0::
 
-TATNEffectGetCharacterOfType
+TATNEffectGetCharacterOfType::8226
+::resource0:: = get instance of ::param0::
+
+TATNEffectGetCharacterOfType::24801
 ::param1::		::resource0:: = get instance of ::param0:: (even if not in-game)		::resource0:: = get instance of ::param0::		::resource0:: = get instance of ::param0:: (include not in-game: ::param1::)
 
 TATNEffectGetObjectOfType
@@ -182,7 +185,7 @@ TATNEffectForceMissionOnMap
 ::param2::		make AoI ::param0:: appear on map (forced: ::param1::)		make AoI ::param0:: not appear on map (forced: ::param1::)		make AoI ::param0:: appear on map (appear: ::param2::, forced: ::param1::)
 
 TATNEffectGetAttachedEntity
-::resource1:: = ::param0:: attached to ::resource0::
+::resource1:: = desc id ::param0:: attached to ::resource0::
 
 TATNEffectCreateAgentGroup
 add ::param1:: agents instances of ::param2:: from ::param0:: to ::resource0::
@@ -206,7 +209,7 @@ TATNEffectGUIDismissDialog
 dismiss GUI dialog
 
 TATNEffectFocusCameraOnEntity
-::param0::		focus camera on ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		unfocus camera from ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		focus camera on ::resource0:: (focus: ::param0::, zoomed: ::param1::, show stats: ::param2::)
+::param0::		focus player view on ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		unfocus player view from ::resource0:: (zoomed: ::param1::, show stats: ::param2::)		focus player view on ::resource0:: (focus: ::param0::, zoomed: ::param1::, show stats: ::param2::)
 
 TATNEffectGUIMoveCursorToPosition
 move mouse to (::param0::, ::param1::)
@@ -306,3 +309,6 @@ set minion activity in region ::param0:: to ::param1::
 
 TATNEffectTakeAll
 set all entities as unavailable
+
+TATNEffectSetCameraToEntityHotspot
+::param1::		focus player view immediately on hotspot ::param0:: of ::resource0::		focus player view on hotspot ::param0:: of ::resource0::		focus player view on hotspot ::param0:: of ::resource0:: (immediately: ::param1::)

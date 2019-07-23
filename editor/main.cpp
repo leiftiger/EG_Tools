@@ -9,6 +9,7 @@
 #include "RL_FileLoader.h"
 #include "RL_Animation.h"
 #include "RL_EntityDesc.h"
+#include "RL_Video.h"
 
 int main(int argc, char *argv[])
 {
@@ -69,6 +70,17 @@ int main(int argc, char *argv[])
 		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
 		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/hotspots.txt"));
 
+
+		// TODO: Confirm
+		ATN::Manager::setDefinitions("Animation Flags", util::createDefinition(
+			{
+				{"2",			2},
+				{"INDEFINITE",	4},
+				{"UNKNOWN_8",	8},
+				{"UNKNOWN_16",	16},
+				{"32",			32},
+				{"64",			64},
+			}));
 
 		ATN::Manager::setDefinitions("Boolean Value", util::createDefinition(
 			{
@@ -260,7 +272,7 @@ int main(int argc, char *argv[])
 
 			std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
 
-			RL::IResourceLoader *loaders[] = { new RL::AnimationLoader(), new RL::EntityDescLoader() };
+			RL::IResourceLoader *loaders[] = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader() };
 			
 			for (RL::IResourceLoader *loader : loaders)
 			{

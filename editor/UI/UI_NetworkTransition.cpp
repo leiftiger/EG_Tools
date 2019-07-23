@@ -205,15 +205,22 @@ std::string UI_NetworkTransition::interpret()
 		str += m_transition->percept()->name();
 	}
 
+	std::string effectFunc = m_transition->effect()->gameFunction();
+	std::string effectFuncID = perceptFunc + std::string("::") + std::to_string(m_transition->percept()->id());
+
 	str += " then ";
 
 	if (m_transition->effect() == nullptr)
 	{
 		// We omit "do nothing" since it adds no real information
 	}
-	else if (ATN::Manager::hasInterpretation(m_transition->effect()->gameFunction()))
+	else if (ATN::Manager::hasInterpretation(effectFunc))
 	{
-		str += parseInterpretation(ATN::Manager::getInterpreration(m_transition->effect()->gameFunction()), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
+		str += parseInterpretation(ATN::Manager::getInterpreration(effectFunc), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
+	}
+	else if (ATN::Manager::hasInterpretation(effectFuncID))
+	{
+		str += parseInterpretation(ATN::Manager::getInterpreration(effectFuncID), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
 	}
 	else
 	{

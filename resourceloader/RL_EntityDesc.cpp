@@ -8,6 +8,8 @@ namespace RL
 			return "Act Of Infamy ID";
 		else if (type == "AgentGroup")
 			return "Agent Group Type";
+		else if (type == "Item")
+			return "Animation Attachment";
 		else if (type == "Room")
 			return "Room Type";
 		else if (type == "WorldRegion")
@@ -22,6 +24,8 @@ namespace RL
 			return true;
 		else if (type == "AgentGroup")
 			return false;
+		else if (type == "Item")
+			return true;
 		else if (type == "Room")
 			return false;
 		else if (type == "WorldRegion")

@@ -112,11 +112,51 @@ namespace util
 	{
 		ATN::List<ATN::Property> defList;
 
+		bool isFlag = false;
+
+		if (list.size() >= 3)
+		{
+			if (list.begin()[0].second * 2 == list.begin()[1].second && list.begin()[1].second * 2 == list.begin()[2].second)
+			{
+				isFlag = true;
+			}
+		}
+
 		for (const std::pair<std::string, std::int32_t> &pair : list)
 		{
 			ATN::Property *el = new ATN::Property(pair.first, pair.second);
 
 			defList.add(*el);
+		}
+
+		if (isFlag)
+		{
+			// We add up to 3 combinations, as more may be illegible
+			for (const std::pair<std::string, std::int32_t> &pair1 : list)
+			{
+				for (const std::pair<std::string, std::int32_t> &pair2 : list)
+				{
+					if (pair1 == pair2)
+						continue;
+
+					for (const std::pair<std::string, std::int32_t> &pair3 : list)
+					{
+						if (pair1 == pair3 || pair2 == pair3)
+							continue;
+
+						std::int32_t value = pair1.second | pair2.second | pair3.second;
+
+						if (!defList.contains(value))
+							defList.add(*new ATN::Property(pair1.first + "|" + pair2.first + "|" + pair3.first, value));
+					}
+
+					if (!defList.contains(pair1.second | pair2.second))
+						defList.add(*new ATN::Property(pair1.first + "|" + pair2.first, pair1.second | pair2.second));
+				}
+			}
+
+			if (!defList.contains(0))
+				defList.add(*new ATN::Property("NONE", 0));
 		}
 		
 		return defList;
