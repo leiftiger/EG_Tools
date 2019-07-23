@@ -107,7 +107,7 @@ TATNPerceptWaitForEventWithEntityTypes::5498
 "::param0::" has occurred with ::param1:: and ::param2::
 
 TATNPerceptWaitForEventWithEntityTypes::15382
-"::param0::" has occurred with AoI ::param1:: and ::param2::
+"::param0::" has occurred with ::param1:: and ::param2::
 
 TATNPerceptWaitForEventWithEntityClasses
 "::param0::" has occurred with entity classes ::param1:: and ::param2::

@@ -77,7 +77,7 @@ TATNEffectMakeCharacterInteractWithObject
 make ::resource1:: interact with ::resource0::
 
 TATNEffectLockActOfInfamy
-::param1::		lock AoI ::param0::		unlock AoI ::param0::		set lock of AoI ::param0:: to ::param1::
+::param1::		lock ::param0::		unlock ::param0::		set lock of ::param0:: to ::param1::
 
 TATNEffectGetWorldDominationTotalCashIncome
 ::resource0:: = player's current cash income
@@ -182,7 +182,7 @@ TATNEffectStopSpecialEffect
 stop effect "::param0::" on ::resource0::
 
 TATNEffectForceMissionOnMap
-::param2::		make AoI ::param0:: appear on map (forced: ::param1::)		make AoI ::param0:: not appear on map (forced: ::param1::)		make AoI ::param0:: appear on map (appear: ::param2::, forced: ::param1::)
+::param2::		make ::param0:: appear on map (forced: ::param1::)		make ::param0:: not appear on map (forced: ::param1::)		make ::param0:: appear on map (appear: ::param2::, forced: ::param1::)
 
 TATNEffectGetAttachedEntity
 ::resource1:: = desc id ::param0:: attached to ::resource0::
