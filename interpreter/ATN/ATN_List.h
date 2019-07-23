@@ -232,6 +232,18 @@ namespace ATN
 			Manager::removeEntry(element);
 		}
 
+		// Returns true if this list contains an element with the given ID
+		bool contains(std::uint32_t id) const
+		{
+			return (m_idMap.find(id) != m_idMap.end());
+		}
+
+		// Returns true if this list contains an element with the given name
+		bool contains(const std::string &name) const
+		{
+			return (m_nameMap.find(name) != m_nameMap.end());
+		}
+
 		// Finds element by id, throws exception if it's not found
 		T &find(std::uint32_t id) const
 		{
