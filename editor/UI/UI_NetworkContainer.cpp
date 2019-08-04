@@ -65,44 +65,44 @@ UI_NetworkResource *UI_NetworkContainer::createResourceUI(ATN::Resource *resourc
 	return ut;
 }
 
-UI_NetworkVariable *UI_NetworkContainer::createVariableUI(ATN::Parameter *parameter)
+UI_NetworkParameter *UI_NetworkContainer::createParameterUI(ATN::Parameter *parameter)
 {
-	UI_NetworkVariable *ut = new UI_NetworkVariable(ui.listNetworkVariables);
+	UI_NetworkParameter *ut = new UI_NetworkParameter(ui.listNetworkParameters);
 
-	ut->m_variable = parameter;
+	ut->m_parameter = parameter;
 
 	ut->blockSignals(true);
 
 	// Remove placeholder option
-	ut->ui.variableType->clear();
+	ut->ui.paramType->clear();
 
-	ut->ui.variableType->addItems(m_variableTypes);
-	ut->ui.variableType->setCurrentIndex(ut->ui.variableType->findText(QString::fromStdString(parameter->m_type)));
+	ut->ui.paramType->addItems(m_parameterTypes);
+	ut->ui.paramType->setCurrentIndex(ut->ui.paramType->findText(QString::fromStdString(parameter->m_type)));
 
-	ut->ui.variableDesc->setText(QString::fromStdString(parameter->m_desc));
+	ut->ui.paramDesc->setText(QString::fromStdString(parameter->m_desc));
 
 	ut->loadTranslations();
 
-	int index = ut->ui.variableValue->findText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
+	int index = ut->ui.paramValue->findText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
 
 	if (index != -1)
-		ut->ui.variableValue->setCurrentIndex(index);
+		ut->ui.paramValue->setCurrentIndex(index);
 	else
-		ut->ui.variableValue->setCurrentText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
+		ut->ui.paramValue->setCurrentText(QString::fromStdString(parameter->translateValue(parameter->m_defaultValue)));
 
 	ut->blockSignals(false);
 
-	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(variableMoveUp()));
-	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(variableMoveDown()));
-	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(variableRemove()));
-	connect(ut, SIGNAL(changeType(QString)), this, SLOT(variableTypeChange(QString)));
+	connect(ut->ui.buttonSortUp, SIGNAL(clicked()), this, SLOT(parameterMoveUp()));
+	connect(ut->ui.buttonSortDown, SIGNAL(clicked()), this, SLOT(parameterMoveDown()));
+	connect(ut->ui.buttonDelete, SIGNAL(clicked()), this, SLOT(parameterRemove()));
+	connect(ut, SIGNAL(changeType(QString)), this, SLOT(parameterTypeChange(QString)));
 	connect(ut, SIGNAL(repopulateArguments()), this, SLOT(repopulateArguments()));
 
 	if (m_editingDisabled)
 	{
-		ut->ui.variableType->setDisabled(true);
-		ut->ui.variableDesc->setReadOnly(true);
-		ut->ui.variableValue->setReadOnly(true);
+		ut->ui.paramType->setDisabled(true);
+		ut->ui.paramDesc->setReadOnly(true);
+		ut->ui.paramValue->setReadOnly(true);
 		ut->ui.buttonSortUp->setDisabled(true);
 		ut->ui.buttonSortDown->setDisabled(true);
 		ut->ui.buttonDelete->setDisabled(true);
@@ -583,57 +583,57 @@ void UI_NetworkContainer::resourceInternalChange(bool bInternal)
 	emit repopulateNeighbors(m_network->id());
 }
 
-void UI_NetworkContainer::variableCreate()
+void UI_NetworkContainer::parameterCreate()
 {
-	ATN::Parameter *p = new ATN::Parameter("Integer", 0, std::string("Variable ") + std::to_string(m_variables.size() + 1));
+	ATN::Parameter *p = new ATN::Parameter("Integer", 0, std::string("Parameter ") + std::to_string(m_parameters.size() + 1));
 
 	m_network->add(*p);
 
-	UI_NetworkVariable *ut = createVariableUI(p);
+	UI_NetworkParameter *ut = createParameterUI(p);
 
-	m_variables.push_back(ut);
+	m_parameters.push_back(ut);
 
 	ut->show();
 
-	layoutSortables(m_variables, ui.listNetworkVariables);
+	layoutSortables(m_parameters, ui.listNetworkParameters);
 
 	// Scroll to bottom in case we have many items
-	QScrollArea *scroller = (QScrollArea*)ui.listNetworkVariables->parent()->parent();
+	QScrollArea *scroller = (QScrollArea*)ui.listNetworkParameters->parent()->parent();
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 
 	repopulateArguments();
 }
 
-void UI_NetworkContainer::variableMoveUp()
+void UI_NetworkContainer::parameterMoveUp()
 {
-	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
+	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
 
-	itemMove(m_variables, ut, true);
-	layoutSortables(m_variables, ui.listNetworkVariables);
+	itemMove(m_parameters, ut, true);
+	layoutSortables(m_parameters, ui.listNetworkParameters);
 
-	m_network->moveUp(*ut->m_variable);
+	m_network->moveUp(*ut->m_parameter);
 
 	repopulateArguments();
 }
 
-void UI_NetworkContainer::variableMoveDown()
+void UI_NetworkContainer::parameterMoveDown()
 {
-	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
+	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
 
-	itemMove(m_variables, ut, false);
-	layoutSortables(m_variables, ui.listNetworkVariables);
+	itemMove(m_parameters, ut, false);
+	layoutSortables(m_parameters, ui.listNetworkParameters);
 
-	m_network->moveDown(*ut->m_variable);
+	m_network->moveDown(*ut->m_parameter);
 
 	repopulateArguments();
 }
 
-void UI_NetworkContainer::variableRemove()
+void UI_NetworkContainer::parameterRemove()
 {
-	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
+	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
 
-	int numDependencies = m_network->countDependencies(*ut->m_variable);
+	int numDependencies = m_network->countDependencies(*ut->m_parameter);
 
 	if (numDependencies > 0)
 	{
@@ -652,7 +652,7 @@ void UI_NetworkContainer::variableRemove()
 		msg.setWindowTitle(tr(" "));
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
 
-		msg.setInformativeText(tr("Removing this variable type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
+		msg.setInformativeText(tr("Removing this parameter type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
 			tr("\n\nYou will need to inspect all dependencies after this operation."));
 
 		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -672,31 +672,31 @@ void UI_NetworkContainer::variableRemove()
 		}
 	}
 
-	itemRemove(m_variables, ut);
-	layoutSortables(m_variables, ui.listNetworkVariables);
+	itemRemove(m_parameters, ut);
+	layoutSortables(m_parameters, ui.listNetworkParameters);
 
-	m_network->remove(*ut->m_variable);
+	m_network->remove(*ut->m_parameter);
 
-	delete ut->m_variable;
+	delete ut->m_parameter;
 
 	ut->deleteLater();
 
 	repopulateArguments();
 }
 
-void UI_NetworkContainer::variableTypeChange(const QString &qType)
+void UI_NetworkContainer::parameterTypeChange(const QString &qType)
 {
-	UI_NetworkVariable *uiVariable = (UI_NetworkVariable*)sender();
+	UI_NetworkParameter *uiParameter = (UI_NetworkParameter*)sender();
 
 	std::string newType = qType.toStdString();
 
-	std::string oldType = uiVariable->m_variable->m_type;
+	std::string oldType = uiParameter->m_parameter->m_type;
 
 	// No need to make any changes
 	if (oldType == newType)
 		return;
 
-	int numDependencies = m_network->countDependencies(*uiVariable->m_variable);
+	int numDependencies = m_network->countDependencies(*uiParameter->m_parameter);
 
 	if (numDependencies > 0)
 	{
@@ -715,7 +715,7 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 		msg.setWindowTitle(tr(" "));
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
 
-		msg.setInformativeText(tr("Changing the variable type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
+		msg.setInformativeText(tr("Changing the parameter type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
 			tr("\n\nYou will need to inspect all dependencies after this operation."));
 
 		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -730,7 +730,7 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 			break;
 		case QMessageBox::Cancel:
 		{
-			uiVariable->ui.variableType->setCurrentIndex(uiVariable->ui.variableType->findText(QString::fromStdString(oldType)));
+			uiParameter->ui.paramType->setCurrentIndex(uiParameter->ui.paramType->findText(QString::fromStdString(oldType)));
 			return;
 		}
 		}
@@ -738,20 +738,20 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 
 	std::int64_t index = -1;
 
-	for (size_t i = 0; i < m_variables.size(); i++)
+	for (size_t i = 0; i < m_parameters.size(); i++)
 	{
-		if (m_variables[i] == uiVariable)
+		if (m_parameters[i] == uiParameter)
 		{
 			index = (std::int64_t)i;
 			break;
 		}
 	}
 
-	uiVariable->m_variable->m_type = newType;
+	uiParameter->m_parameter->m_type = newType;
 
 	m_network->resetParameterMarshalls(index);
 
-	uiVariable->loadTranslations();
+	uiParameter->loadTranslations();
 
 	repopulateArguments();
 }
@@ -1213,14 +1213,14 @@ void UI_NetworkContainer::initializeResources()
 	layoutSortables(m_resources, ui.listNetworkResources);
 }
 
-void UI_NetworkContainer::initializeVariables()
+void UI_NetworkContainer::initializeParameters()
 {
 	for (ATN::Parameter *p : m_network->parameters())
 	{
-		m_variables.push_back(createVariableUI(p));
+		m_parameters.push_back(createParameterUI(p));
 	}
 
-	layoutSortables(m_variables, ui.listNetworkVariables);
+	layoutSortables(m_parameters, ui.listNetworkParameters);
 }
 
 void UI_NetworkContainer::layoutStates()
@@ -1433,7 +1433,7 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 
 	initializeThreads();
 	initializeResources();
-	initializeVariables();
+	initializeParameters();
 	initializeStates();
 }
 
@@ -1453,7 +1453,7 @@ void UI_NetworkContainer::setReadOnly(bool readonly)
 		ui.buttonNewState->setDisabled(true);
 		ui.buttonNewThread->setDisabled(true);
 		ui.buttonNewResource->setDisabled(true);
-		ui.buttonNewVariable->setDisabled(true);
+		ui.buttonNewParameter->setDisabled(true);
 		ui.buttonDeleteNetwork->setDisabled(true);
 
 		ui.textTransitionName->setReadOnly(true);
@@ -1469,7 +1469,7 @@ void UI_NetworkContainer::setReadOnly(bool readonly)
 		ui.buttonNewState->setEnabled(true);
 		ui.buttonNewThread->setEnabled(true);
 		ui.buttonNewResource->setEnabled(true);
-		ui.buttonNewVariable->setEnabled(true);
+		ui.buttonNewParameter->setEnabled(true);
 		ui.buttonDeleteNetwork->setEnabled(true);
 
 		ui.textTransitionName->setReadOnly(false);

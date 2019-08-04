@@ -13,7 +13,7 @@
   <ItemGroup>
     <QtMoc Include="UI\UI_InputArgument.h" />
     <QtMoc Include="UI\UI_InputResource.h" />
-    <QtMoc Include="UI\UI_NetworkVariable.h" />
+    <QtMoc Include="UI\UI_NetworkParameter.h" />
     <QtMoc Include="UI\UI_NetworkResource.h" />
     <QtMoc Include="UI\UI_NetworkThread.h" />
     <QtMoc Include="UI\UI_MainWindowSearchResult.h" />
@@ -36,7 +36,7 @@
     <QtUic Include="UI\UI_MainWindowSearchResult.ui" />
     <QtUic Include="UI\UI_NetworkThread.ui" />
     <QtUic Include="UI\UI_NetworkResource.ui" />
-    <QtUic Include="UI\UI_NetworkVariable.ui" />
+    <QtUic Include="UI\UI_NetworkParameter.ui" />
     <QtUic Include="UI\UI_InputArgument.ui" />
     <QtUic Include="UI\UI_InputResource.ui" />
     <QtUic Include="UI\UI_ErrorWindow.ui" />
@@ -63,7 +63,7 @@
     <ClCompile Include="UI\UI_NetworkState.cpp" />
     <ClCompile Include="UI\UI_NetworkThread.cpp" />
     <ClCompile Include="UI\UI_NetworkTransition.cpp" />
-    <ClCompile Include="UI\UI_NetworkVariable.cpp" />
+    <ClCompile Include="UI\UI_NetworkParameter.cpp" />
     <ClCompile Include="UI\UI_ErrorWindow.cpp" />
     <ClCompile Include="UI\UI_ConnectorBranch.cpp" />
     <ClCompile Include="UI\UI_HashWindow.cpp" />

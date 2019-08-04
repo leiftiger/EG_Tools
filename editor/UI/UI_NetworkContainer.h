@@ -23,7 +23,7 @@
 #include "UI_NetworkState.h"
 #include "UI_NetworkThread.h"
 #include "UI_NetworkTransition.h"
-#include "UI_NetworkVariable.h"
+#include "UI_NetworkParameter.h"
 
 #include "UI_ConnectFlags.h"
 
@@ -48,7 +48,7 @@ private:
 	QStringList m_perceptList;
 
 	// Hardcoded since there are no other types
-	QStringList m_variableTypes = QStringList({
+	QStringList m_parameterTypes = QStringList({
 			tr("3D Gui Element"), tr("Act Of Infamy ID"), tr("Agent Group Type"), tr("Agent Operation Type"), tr("Animation Attachment"), tr("Animation Biped Type"),
 			tr("Animation Flags"), tr("Animation"), tr("Boolean Value"), tr("Camera View ID"), tr("Character Tag"), tr("Dialog Type"), tr("Effect return value"),
 			tr("Entity Class"), tr("Entity Type"), tr("Event"), tr("Floating Graphic"), tr("Game Feature"), tr("Game Flag"), tr("GUI Control"), tr("Hotspot"),
@@ -61,7 +61,7 @@ private:
 
 	std::vector<UI_NetworkThread*> m_threads;
 	std::vector<UI_NetworkResource*> m_resources;
-	std::vector<UI_NetworkVariable*> m_variables;
+	std::vector<UI_NetworkParameter*> m_parameters;
 
 	std::vector<UI_NetworkState*> m_states;
 
@@ -180,7 +180,7 @@ private:
 
 	UI_NetworkThread *createThreadUI(ATN::Thread *thread);
 	UI_NetworkResource *createResourceUI(ATN::Resource *resource);
-	UI_NetworkVariable *createVariableUI(ATN::Parameter *parameter);
+	UI_NetworkParameter *createParameterUI(ATN::Parameter *parameter);
 	UI_NetworkState *createStateUI(ATN::State *state);
 	UI_NetworkTransition *createTransitionUI(ATN::Transition *transition, UI_NetworkState *uiStateFrom, UI_NetworkState *uiStateTo);
 
@@ -191,7 +191,7 @@ private:
 	void initializeThreads();
 
 	void initializeResources();
-	void initializeVariables();
+	void initializeParameters();
 
 	void layoutStates();
 
@@ -231,12 +231,12 @@ public slots:
 	void resourceTypeChange(const QString &type);
 	void resourceInternalChange(bool bInternal);
 
-	void variableCreate();
-	void variableMoveUp();
-	void variableMoveDown();
-	void variableRemove();
+	void parameterCreate();
+	void parameterMoveUp();
+	void parameterMoveDown();
+	void parameterRemove();
 
-	void variableTypeChange(const QString &type);
+	void parameterTypeChange(const QString &type);
 
 	void setNetworkName(const QString &name);
 	void setTransitionName(const QString &name);
@@ -271,7 +271,7 @@ public slots:
 	void deleteTransition();
 
 	// Repopulates the list of arguments in all states and the currently open transition
-	// due to a change in variable name or type
+	// due to a change in parameter name or type
 	void repopulateArguments();
 	void repopulateArguments(bool bNeighborsToo);
 

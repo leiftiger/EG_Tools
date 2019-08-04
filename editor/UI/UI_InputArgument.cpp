@@ -20,7 +20,7 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 
 	ui.comboBox->clear();
 
-	m_variables.clear();
+	m_parameters.clear();
 
 	for (size_t i = 0; i < net->parameters().size(); i++)
 	{
@@ -39,7 +39,7 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 				ui.comboBox->setCurrentIndex(ui.comboBox->count() - 1);
 			}
 
-			m_variables.push_back(i);
+			m_parameters.push_back(i);
 		}
 	}
 
@@ -98,10 +98,10 @@ void UI_InputArgument::setArgument(const QString &str)
 
 	int index = ui.comboBox->findText(str);
 
-	if (index != -1 && index < m_variables.size())
+	if (index != -1 && index < m_parameters.size())
 	{
 		m_argument->m_type = ATN::ParameterMarshallType::ParameterIndex;
-		m_argument->m_value = m_variables[index];
+		m_argument->m_value = m_parameters[index];
 
 		emit updated();
 	}

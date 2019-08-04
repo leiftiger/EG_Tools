@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>UI_NetworkVariable</class>
- <widget class="QWidget" name="UI_NetworkVariable">
+ <class>UI_NetworkParameter</class>
+ <widget class="QWidget" name="UI_NetworkParameter">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>UI_NetworkVariable</string>
+   <string>UI_NetworkParameter</string>
   </property>
-  <widget class="QComboBox" name="variableType">
+  <widget class="QComboBox" name="paramType">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Variable type</string>
+    <string>Parameter type</string>
    </property>
    <item>
     <property name="text">
@@ -31,7 +31,7 @@
     </property>
    </item>
   </widget>
-  <widget class="QLineEdit" name="variableDesc">
+  <widget class="QLineEdit" name="paramDesc">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -41,7 +41,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Variable description</string>
+    <string>Parameter description</string>
    </property>
    <property name="placeholderText">
     <string>Name</string>
@@ -95,7 +95,7 @@
     </font>
    </property>
    <property name="toolTip">
-    <string>Delete variable</string>
+    <string>Delete parameter</string>
    </property>
    <property name="text">
     <string>X</string>
@@ -107,7 +107,7 @@
     <enum>Qt::NoArrow</enum>
    </property>
   </widget>
-  <widget class="UI_ComboBox" name="variableValue">
+  <widget class="UI_ComboBox" name="paramValue">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -141,10 +141,10 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <zorder>variableType</zorder>
-  <zorder>variableDesc</zorder>
+  <zorder>paramType</zorder>
+  <zorder>paramDesc</zorder>
   <zorder>buttonSortUp</zorder>
-  <zorder>variableValue</zorder>
+  <zorder>paramValue</zorder>
   <zorder>buttonSortDown</zorder>
   <zorder>buttonDelete</zorder>
   <zorder>line</zorder>
@@ -160,10 +160,10 @@
  <resources/>
  <connections>
   <connection>
-   <sender>variableType</sender>
+   <sender>paramType</sender>
    <signal>currentIndexChanged(QString)</signal>
-   <receiver>UI_NetworkVariable</receiver>
-   <slot>setVariableType(QString)</slot>
+   <receiver>UI_NetworkParameter</receiver>
+   <slot>setparameterType(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>62</x>
@@ -176,10 +176,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>variableDesc</sender>
+   <sender>paramDesc</sender>
    <signal>textChanged(QString)</signal>
-   <receiver>UI_NetworkVariable</receiver>
-   <slot>setVariableName(QString)</slot>
+   <receiver>UI_NetworkParameter</receiver>
+   <slot>setparameterName(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>147</x>
@@ -192,10 +192,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>variableValue</sender>
+   <sender>paramValue</sender>
    <signal>currentTextChanged(QString)</signal>
-   <receiver>UI_NetworkVariable</receiver>
-   <slot>setVariableValue(QString)</slot>
+   <receiver>UI_NetworkParameter</receiver>
+   <slot>setparameterValue(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>114</x>
@@ -209,8 +209,8 @@
   </connection>
  </connections>
  <slots>
-  <slot>setVariableType(QString)</slot>
-  <slot>setVariableValue(QString)</slot>
-  <slot>setVariableName(QString)</slot>
+  <slot>setparameterType(QString)</slot>
+  <slot>setparameterValue(QString)</slot>
+  <slot>setparameterName(QString)</slot>
  </slots>
 </ui>

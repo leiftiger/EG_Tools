@@ -659,10 +659,10 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Network variables that can be accessed by states and transitions in the network</string>
+         <string>Network parameters sent in network transitions, which can be accessed by states and transitions in the network</string>
         </property>
         <property name="text">
-         <string>Variables</string>
+         <string>Parameters</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -753,7 +753,7 @@
          <string>Add resource</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="buttonNewVariable">
+       <widget class="QPushButton" name="buttonNewParameter">
         <property name="geometry">
          <rect>
           <x>320</x>
@@ -763,10 +763,10 @@
          </rect>
         </property>
         <property name="toolTip">
-         <string>Add a new network variable</string>
+         <string>Add a new network parameter</string>
         </property>
         <property name="text">
-         <string>Add variable</string>
+         <string>Add parameter</string>
         </property>
        </widget>
        <widget class="QPushButton" name="buttonDeleteNetwork">
@@ -882,7 +882,7 @@
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="listNetworkVariables">
+        <widget class="QWidget" name="listNetworkParameters">
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -920,7 +920,7 @@
        <zorder>label_5</zorder>
        <zorder>buttonNewState</zorder>
        <zorder>buttonNewResource</zorder>
-       <zorder>buttonNewVariable</zorder>
+       <zorder>buttonNewParameter</zorder>
        <zorder>buttonDeleteNetwork</zorder>
        <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
@@ -974,10 +974,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonNewVariable</sender>
+   <sender>buttonNewParameter</sender>
    <signal>clicked()</signal>
    <receiver>UI_NetworkContainer</receiver>
-   <slot>variableCreate()</slot>
+   <slot>parameterCreate()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>375</x>
@@ -1154,7 +1154,7 @@
   <slot>threadCreate()</slot>
   <slot>stateCreate()</slot>
   <slot>resourceCreate()</slot>
-  <slot>variableCreate()</slot>
+  <slot>parameterCreate()</slot>
   <slot>deleteNetwork()</slot>
   <slot>deleteTransition()</slot>
   <slot>setNetworkName(QString)</slot>

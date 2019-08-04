@@ -18,7 +18,7 @@ private:
 
 	ATN::ParameterMarshall *m_argument = nullptr;
 
-	std::vector<int> m_variables;
+	std::vector<int> m_parameters;
 
 	static const int STR_FORMAT_BUFF = 1024;
 
