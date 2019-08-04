@@ -40,7 +40,7 @@ namespace ATN
 		virtual const char * const typeName() const override;
 
 		// Get effect to perform if transition is taken
-		const Effect *effect() const;
+		Effect *effect() const;
 
 		// Set effect to perform if transition is taken
 		void setEffect(Effect *effect);
@@ -52,7 +52,7 @@ namespace ATN
 		const std::vector<ParameterMarshall*> &effectParameterMarshalls() const;
 
 		// Get percept to check if this transition should be taken
-		const Percept *percept() const;
+		Percept *percept() const;
 
 		// Set percept to check if this transition should be taken
 		void setPercept(Percept *percept);

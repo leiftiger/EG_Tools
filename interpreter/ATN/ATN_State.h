@@ -45,7 +45,7 @@ namespace ATN
 		std::vector<Transition*>::iterator remove(Transition &t);
 
 		// Gets the network transition call from this state if set
-		const Network *networkTransition() const;
+		Network *networkTransition() const;
 		// Sets the network transition call from this state, recreating resource and parameter marshalls to suit new call
 		void setNetworkTransition(Network *net);
 

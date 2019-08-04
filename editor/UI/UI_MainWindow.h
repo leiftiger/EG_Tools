@@ -41,6 +41,7 @@ public slots:
 	void searchName(const QString &str);
 	void searchID(const QString &str);
 
+	void copyNetworkButton();
 	void openNetworkButton();
 
 	void closeTab(int tab);

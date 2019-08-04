@@ -20,7 +20,7 @@ namespace ATN
 		return "TATNStateTransition";
 	}
 
-	const Effect *Transition::effect() const
+	Effect *Transition::effect() const
 	{
 		return m_effect;
 	}
@@ -62,7 +62,7 @@ namespace ATN
 		return m_effectParameters;
 	}
 
-	const Percept *Transition::percept() const
+	Percept *Transition::percept() const
 	{
 		return m_percept;
 	}

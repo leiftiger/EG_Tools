@@ -44,6 +44,7 @@ void UI_MainWindow::setNetworkResults(std::vector<std::pair<ATN::Network*, ATN::
 
 		res->ui.textATNList->setText(QString::fromStdString(name.substr(nameStart, name.length()-nameStart)));
 
+		connect(res->ui.buttonCopyNetwork, SIGNAL(clicked()), this, SLOT(copyNetworkButton()));
 		connect(res->ui.buttonOpenNetwork, SIGNAL(clicked()), this, SLOT(openNetworkButton()));
 
 		QListWidgetItem *item = new QListWidgetItem();
@@ -207,6 +208,160 @@ void UI_MainWindow::searchID(const QString &str)
 		}
 	}
 	catch (ATN::Exception e) {}
+}
+
+void UI_MainWindow::copyNetworkButton()
+{
+	UI_MainWindowSearchResult *res = (UI_MainWindowSearchResult*)sender()->parent();
+
+	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(std::stoi(res->ui.textUniqueID->text().toStdString()));
+
+	std::string listName = res->ui.textATNList->text().toStdString();
+
+	ATN::List<ATN::Entry> *netList = nullptr;
+
+	for (ATN::List<ATN::Entry> *list : ATN::Manager::lists())
+	{
+		if (list->name().find(listName) > 0)
+		{
+			netList = list;
+			break;
+		}
+	}
+
+	if (netList == nullptr)
+	{
+		throw ATN::Exception("Couldn't find a loaded ATN list matching \"%s\"", listName);
+	}
+
+	std::uint32_t id = ATN::Manager::maxID()+1;
+
+	ATN::Network *netCopy = new ATN::Network();
+	netCopy->setID(id++);
+	netCopy->setName(std::string("Copy of ") + net->name());
+
+	netList->add(*netCopy);
+	ATN::Manager::addEntry(*netCopy);
+
+	std::vector<ATN::State*> copyStates;
+
+	std::unordered_map<const ATN::State*, int> oldStatesToIndex;
+
+
+	for (ATN::Resource *resource : net->resources())
+	{
+		ATN::Resource *resourceCopy = new ATN::Resource(*resource);
+
+		netCopy->add(*resourceCopy);
+	}
+
+	for (ATN::Parameter *parameter : net->parameters())
+	{
+		ATN::Parameter *parameterCopy = new ATN::Parameter(*parameter);
+
+		netCopy->add(*parameterCopy);
+	}
+
+	for (int stateIndex = 0; stateIndex < net->states().size(); stateIndex++)
+	{
+		ATN::State *state = net->states()[stateIndex];
+
+		ATN::State *stateCopy = new ATN::State();
+		stateCopy->setID(id++);
+		stateCopy->setName(state->name());
+
+		if (state->networkTransition() != nullptr)
+		{
+			stateCopy->setNetworkTransition(state->networkTransition());
+
+			for (size_t i = 0; i < state->parameterMarshalls().size(); i++)
+			{
+				stateCopy->parameterMarshalls()[i]->m_type = state->parameterMarshalls()[i]->m_type;
+				stateCopy->parameterMarshalls()[i]->m_value = state->parameterMarshalls()[i]->m_value;
+			}
+
+			for (size_t i = 0; i < state->resourceMarshalls().size(); i++)
+			{
+				stateCopy->resourceMarshalls()[i]->m_type = state->resourceMarshalls()[i]->m_type;
+				stateCopy->resourceMarshalls()[i]->m_value = state->resourceMarshalls()[i]->m_value;
+			}
+		}
+
+		netCopy->add(*stateCopy);
+
+		netList->add(*stateCopy);
+		ATN::Manager::addEntry(*stateCopy);
+
+		copyStates.push_back(stateCopy);
+		oldStatesToIndex[state] = stateIndex;
+	}
+
+	// Keep invalid pointers as invalid as they were in the original
+	copyStates.push_back(nullptr);
+	oldStatesToIndex[nullptr] = copyStates.size() - 1;
+
+	for (ATN::Thread *thread : net->threads())
+	{
+		ATN::Thread *threadCopy = new ATN::Thread();
+		threadCopy->setID(id++);
+		threadCopy->setName(thread->name());
+		threadCopy->setNetwork(*netCopy);
+
+		threadCopy->setState(copyStates[oldStatesToIndex[thread->state()]]);
+
+		netCopy->add(*threadCopy);
+
+		netList->add(*threadCopy);
+		ATN::Manager::addEntry(*threadCopy);
+	}
+
+	for (ATN::State *state : net->states())
+	{
+		ATN::State *stateCopy = copyStates[oldStatesToIndex[state]];
+
+		for (ATN::Transition *transition : state->transitions())
+		{
+			ATN::Transition *transitionCopy = new ATN::Transition();
+			transitionCopy->setID(id++);
+			transitionCopy->setName(transition->name());
+
+			transitionCopy->setEffect(transition->effect());
+			transitionCopy->setPercept(transition->percept());
+
+			for (size_t i = 0; i < transition->effectParameterMarshalls().size(); i++)
+			{
+				transitionCopy->effectParameterMarshalls()[i]->m_type = transition->effectParameterMarshalls()[i]->m_type;
+				transitionCopy->effectParameterMarshalls()[i]->m_value = transition->effectParameterMarshalls()[i]->m_value;
+			}
+
+			for (size_t i = 0; i < transition->effectResourceMarshalls().size(); i++)
+			{
+				transitionCopy->effectResourceMarshalls()[i]->m_type = transition->effectResourceMarshalls()[i]->m_type;
+				transitionCopy->effectResourceMarshalls()[i]->m_value = transition->effectResourceMarshalls()[i]->m_value;
+			}
+
+			for (size_t i = 0; i < transition->perceptParameterMarshalls().size(); i++)
+			{
+				transitionCopy->perceptParameterMarshalls()[i]->m_type = transition->perceptParameterMarshalls()[i]->m_type;
+				transitionCopy->perceptParameterMarshalls()[i]->m_value = transition->perceptParameterMarshalls()[i]->m_value;
+			}
+
+			for (size_t i = 0; i < transition->perceptResourceMarshalls().size(); i++)
+			{
+				transitionCopy->perceptResourceMarshalls()[i]->m_type = transition->perceptResourceMarshalls()[i]->m_type;
+				transitionCopy->perceptResourceMarshalls()[i]->m_value = transition->perceptResourceMarshalls()[i]->m_value;
+			}
+
+			transitionCopy->setState(copyStates[oldStatesToIndex[transition->state()]]);
+
+			stateCopy->add(*transitionCopy);
+
+			netList->add(*transitionCopy);
+			ATN::Manager::addEntry(*transitionCopy);
+		}
+	}
+
+	createNetworkResourceTab(*netCopy);
 }
 
 void UI_MainWindow::openNetworkButton()

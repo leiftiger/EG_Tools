@@ -48,7 +48,7 @@ namespace ATN
 		return m_stateTransitions.end();
 	}
 
-	const Network *State::networkTransition() const
+	Network *State::networkTransition() const
 	{
 		return m_networkTransition;
 	}
