@@ -4,16 +4,16 @@ namespace RL
 {
 	bool StringLoader::shouldParseFile(const std::string &filename)
 	{
-		long indices[] =
+		int indices[] =
 		{
-			filename.find("Strings_DefeatSA"),
-			filename.find("Strings_Henchman_Recruit"),
-			filename.find("Strings_Objective"),
-			filename.find("Strings_Objective"),
-			filename.find("Strings_Research"),
+			(int)filename.find("Strings_DefeatSA"),
+			(int)filename.find("Strings_Henchman_Recruit"),
+			(int)filename.find("Strings_Objective"),
+			(int)filename.find("Strings_Objective"),
+			(int)filename.find("Strings_Research"),
 		};
 
-		for (size_t index : indices)
+		for (int index : indices)
 		{
 			if (index >= 0)
 				return true;
@@ -39,14 +39,24 @@ namespace RL
 		std::string lineCur;
 		std::string linePrev;
 
+		bool isObjective = false;
+
 
 		while (std::getline(file, lineCur))
 		{
+			if ((int)lineCur.find("##") >= 0)
+			{
+				isObjective = false;
+
+				if (lineCur == "## Objective Screen Entries")
+					isObjective = true;
+			}
+
 			if (lineCur == "<BEGIN>")
 			{
-				long index;
+				int index;
 
-				index = linePrev.find("EVENT_");
+				index = (int)linePrev.find("EVENT_");
 
 				if (index >= 0)
 				{
@@ -54,7 +64,7 @@ namespace RL
 					res.push_back(new BaseResource("String ID", linePrev, util::hashFNV132(linePrev)));
 				}
 
-				index = linePrev.find("OBJECTIVE_");
+				index = (int)linePrev.find("OBJECTIVE_");
 
 				if (index >= 0)
 				{
@@ -64,7 +74,10 @@ namespace RL
 					if (linePrev.length() > strlen(strSave) && linePrev.substr(linePrev.length() - strlen(strSave)) == strSave)
 						continue;
 
-					res.push_back(new BaseResource("Objective ID", linePrev, util::hashFNV132(linePrev)));
+					if (isObjective)
+						res.push_back(new BaseResource("Objective ID", linePrev, util::hashFNV132(linePrev)));
+					else
+						res.push_back(new BaseResource("String ID", linePrev, util::hashFNV132(linePrev)));
 				}
 			}
 

@@ -303,9 +303,45 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			// Load from language resources
+
 			loaders = { new RL::StringLoader() };
 
 			resourceLoader = RL::FileLoader(strConfig[1]);
+
+			for (RL::IResourceLoader *loader : loaders)
+			{
+				res = resourceLoader.loadResources(loader);
+
+				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
+				{
+					// Append if we already have some definitions
+					if (ATN::Manager::hasDefinitions(defList.first))
+					{
+						ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
+
+						for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
+						{
+							if (!list.contains(defPair.first))
+							{
+								ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
+
+								list.add(*prop);
+							}
+						}
+					}
+					else
+					{
+						ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
+					}
+				}
+			}
+
+			// Load mods
+
+			loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::StringLoader() };
+
+			resourceLoader = RL::FileLoader(strConfig[2]);
 
 			for (RL::IResourceLoader *loader : loaders)
 			{

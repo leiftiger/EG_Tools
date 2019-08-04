@@ -62,8 +62,13 @@ namespace RL
 	{
 		std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
 
+		// No files with specified extensions exist
 		if (m_files.find(loader->extension()) == m_files.end())
-			throw std::exception("No files with specified extension exist!");
+		{
+			delete loader;
+
+			return res;
+		}
 
 		for (const std::string &file : m_files.at(loader->extension()))
 		{
