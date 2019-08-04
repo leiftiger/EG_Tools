@@ -151,27 +151,30 @@ namespace ATN
 
 	void Network::updateResourceMarshalls(const Resource &resource)
 	{
-		for (ATN::Network *net : ATN::Manager::getNetworks())
+		if (!resource.m_internalResource)
 		{
-			for (ATN::State *state : net->states())
+			for (ATN::Network *net : ATN::Manager::getNetworks())
 			{
-				if (state->networkTransition() == this)
+				for (ATN::State *state : net->states())
 				{
-					std::int64_t transitionIndex = -1;
-
-					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
-					for (ATN::Resource *r : this->resources())
+					if (state->networkTransition() == this)
 					{
-						if (!r->m_internalResource)
-							transitionIndex++;
+						std::int64_t transitionIndex = -1;
 
-						if (r == &resource)
-							break;
-					}
+						// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+						for (ATN::Resource *r : this->resources())
+						{
+							if (!r->m_internalResource)
+								transitionIndex++;
 
-					if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
-					{
-						state->resourceMarshalls()[transitionIndex]->m_type = ResourceMarshall::toResourceMarshallType(resource.m_type);
+							if (r == &resource)
+								break;
+						}
+
+						if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
+						{
+							state->resourceMarshalls()[transitionIndex]->m_type = ResourceMarshall::toResourceMarshallType(resource.m_type);
+						}
 					}
 				}
 			}
@@ -204,27 +207,30 @@ namespace ATN
 			}
 		}
 
-		for (ATN::Network *net : ATN::Manager::getNetworks())
+		if (!resource.m_internalResource)
 		{
-			for (ATN::State *state : net->states())
+			for (ATN::Network *net : ATN::Manager::getNetworks())
 			{
-				if (state->networkTransition() == this)
+				for (ATN::State *state : net->states())
 				{
-					std::int64_t transitionIndex = -1;
-
-					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
-					for (ATN::Resource *r : this->resources())
+					if (state->networkTransition() == this)
 					{
-						if (!r->m_internalResource)
-							transitionIndex++;
+						std::int64_t transitionIndex = -1;
 
-						if (r == &resource)
-							break;
-					}
+						// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+						for (ATN::Resource *r : this->resources())
+						{
+							if (!r->m_internalResource)
+								transitionIndex++;
 
-					if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
-					{
-						state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+							if (r == &resource)
+								break;
+						}
+
+						if (!state->resourceMarshalls()[transitionIndex]->acceptsResourceType(resource.m_type))
+						{
+							state->resourceMarshalls()[transitionIndex]->reset(net->resources());
+						}
 					}
 				}
 			}
