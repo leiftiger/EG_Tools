@@ -118,5 +118,13 @@ namespace ATN
 
 		// Returns true if this network has some resources as inputs
 		bool hasResourceInputs() const;
+
+		// Counts the number of dependencies of the specified resource
+		// in this network and external network transitions
+		int countDependencies(Resource &resource) const;
+
+		// Counts the number of dependencies of the specified parameter
+		// in this network and external network transitions
+		int countDependencies(Parameter &param) const;
 	};
 }

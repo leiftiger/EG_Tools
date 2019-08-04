@@ -448,6 +448,45 @@ void UI_NetworkContainer::resourceRemove()
 {
 	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
 
+	int numDependencies = m_network->countDependencies(*ut->m_resource);
+
+	if (numDependencies > 0)
+	{
+		QString strNumDependencies = QString::fromStdString(std::to_string(numDependencies));
+
+		QString strDependencySuffix = tr("s");
+
+		if (numDependencies == 1)
+			strDependencySuffix = tr("");
+
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Warning);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" may become invalid</b></span>"));
+
+		msg.setInformativeText(tr("Removing this resource will make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) set to an arbitrary resource or left as an invalid pointer.") +
+			tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+		msg.setDefaultButton(QMessageBox::Cancel);
+
+		QApplication::beep();
+		int msgRet = msg.exec();
+
+		switch (msgRet)
+		{
+		case QMessageBox::Ok:
+			break;
+		case QMessageBox::Cancel:
+		{
+			return;
+		}
+		}
+	}
+
 	itemRemove(m_resources, ut);
 	layoutSortables(m_resources, ui.listNetworkResources);
 
@@ -472,32 +511,44 @@ void UI_NetworkContainer::resourceTypeChange(const QString &qType)
 	if (oldType == newType)
 		return;
 
-	QMessageBox msg;
+	int numDependencies = m_network->countDependencies(*uiResource->m_resource);
 
-	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
-	msg.setIcon(QMessageBox::Icon::Warning);
-
-	msg.setWindowTitle(tr(" "));
-	msg.setText(tr("<span style=\"font-size:12pt;\"><b>References may become invalid</b></span>"));
-
-	msg.setInformativeText(tr("Changing the resource type may make dependent transitions (including external network ones) unable to cast to the new type and will thus be changed to an arbitrary resource or left as an invalid pointer.") +
-		tr("\n\nYou will need to inspect all dependencies after this operation."));
-
-	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-	msg.setDefaultButton(QMessageBox::Cancel);
-
-	QApplication::beep();
-	int msgRet = msg.exec();
-
-	switch (msgRet)
+	if (numDependencies > 0)
 	{
-	case QMessageBox::Ok:
-		break;
-	case QMessageBox::Cancel:
-	{
-		uiResource->ui.resourceType->setCurrentIndex(oldType._to_index());
-		return;
-	}
+		QString strNumDependencies = QString::fromStdString(std::to_string(numDependencies));
+
+		QString strDependencySuffix = tr("s");
+
+		if (numDependencies == 1)
+			strDependencySuffix = tr("");
+
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Warning);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" may become invalid</b></span>"));
+
+		msg.setInformativeText(tr("Changing the resource type may make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) unable to cast to the new type and will thus be changed to an arbitrary resource or left as an invalid pointer.") +
+			tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+		msg.setDefaultButton(QMessageBox::Cancel);
+
+		QApplication::beep();
+		int msgRet = msg.exec();
+
+		switch (msgRet)
+		{
+		case QMessageBox::Ok:
+			break;
+		case QMessageBox::Cancel:
+		{
+			uiResource->ui.resourceType->setCurrentIndex(oldType._to_index());
+			return;
+		}
+		}
 	}
 
 	std::int64_t index = -1;
@@ -582,14 +633,42 @@ void UI_NetworkContainer::variableRemove()
 {
 	UI_NetworkVariable *ut = (UI_NetworkVariable*)sender()->parent();
 
-	std::int64_t index = -1;
+	int numDependencies = m_network->countDependencies(*ut->m_variable);
 
-	for (size_t i = 0; i < m_variables.size(); i++)
+	if (numDependencies > 0)
 	{
-		if (m_variables[i] == ut)
+		QString strNumDependencies = QString::fromStdString(std::to_string(numDependencies));
+
+		QString strDependencySuffix = tr("s");
+
+		if (numDependencies == 1)
+			strDependencySuffix = tr("");
+
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Warning);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
+
+		msg.setInformativeText(tr("Removing this variable type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
+			tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+		msg.setDefaultButton(QMessageBox::Cancel);
+
+		QApplication::beep();
+		int msgRet = msg.exec();
+
+		switch (msgRet)
 		{
-			index = (std::int64_t)i;
+		case QMessageBox::Ok:
 			break;
+		case QMessageBox::Cancel:
+		{
+			return;
+		}
 		}
 	}
 
@@ -617,32 +696,44 @@ void UI_NetworkContainer::variableTypeChange(const QString &qType)
 	if (oldType == newType)
 		return;
 
-	QMessageBox msg;
+	int numDependencies = m_network->countDependencies(*uiVariable->m_variable);
 
-	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
-	msg.setIcon(QMessageBox::Icon::Warning);
-
-	msg.setWindowTitle(tr(" "));
-	msg.setText(tr("<span style=\"font-size:12pt;\"><b>References will be undefined</b></span>"));
-
-	msg.setInformativeText(tr("Changing the variable type will set dependent transitions (including external network ones) to UNDEFINED.") +
-		tr("\n\nYou will need to inspect all dependencies after this operation."));
-
-	msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-	msg.setDefaultButton(QMessageBox::Cancel);
-
-	QApplication::beep();
-	int msgRet = msg.exec();
-
-	switch (msgRet)
+	if (numDependencies > 0)
 	{
-	case QMessageBox::Ok:
-		break;
-	case QMessageBox::Cancel:
-	{
-		uiVariable->ui.variableType->setCurrentIndex(uiVariable->ui.variableType->findText(QString::fromStdString(oldType)));
-		return;
-	}
+		QString strNumDependencies = QString::fromStdString(std::to_string(numDependencies));
+
+		QString strDependencySuffix = tr("s");
+
+		if (numDependencies == 1)
+			strDependencySuffix = tr("");
+
+		QMessageBox msg;
+
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
+		msg.setIcon(QMessageBox::Icon::Warning);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
+
+		msg.setInformativeText(tr("Changing the variable type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
+			tr("\n\nYou will need to inspect all dependencies after this operation."));
+
+		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+		msg.setDefaultButton(QMessageBox::Cancel);
+
+		QApplication::beep();
+		int msgRet = msg.exec();
+
+		switch (msgRet)
+		{
+		case QMessageBox::Ok:
+			break;
+		case QMessageBox::Cancel:
+		{
+			uiVariable->ui.variableType->setCurrentIndex(uiVariable->ui.variableType->findText(QString::fromStdString(oldType)));
+			return;
+		}
+		}
 	}
 
 	std::int64_t index = -1;
