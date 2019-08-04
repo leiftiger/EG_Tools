@@ -135,10 +135,14 @@ namespace ATN
 		{
 			if (*it == &resource)
 			{
-				if (!m_moving && !resource.m_internalResource)
-					removeResourceMarshalls(it - m_resources.begin(), resource);
+				std::int64_t itIndex = it - m_resources.begin();
 
-				return m_resources.erase(it);
+				std::vector<Resource*>::iterator itRem = m_resources.erase(it);
+
+				if (!m_moving)
+					removeResourceMarshalls(itIndex, resource);
+
+				return itRem;
 			}
 		}
 
@@ -637,30 +641,34 @@ namespace ATN
 			}
 		}
 
-		for (Network *net : ATN::Manager::getNetworks())
+		// If resource was just internal then no networks could've used it
+		if (!resource.m_internalResource)
 		{
-			for (State *state : net->states())
+			for (Network *net : ATN::Manager::getNetworks())
 			{
-				if (state->networkTransition() == this)
+				for (State *state : net->states())
 				{
-					std::int64_t transitionIndex = -1;
-
-					// Because the transitions only refer to the input indices, we have to take care to remove that index instead
-					for (Resource *r : m_resources)
+					if (state->networkTransition() == this)
 					{
-						if (!r->m_internalResource)
-							transitionIndex++;
+						std::int64_t transitionIndex = -1;
 
-						if (r == &resource)
-							break;
+						// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+						for (Resource *r : m_resources)
+						{
+							if (!r->m_internalResource)
+								transitionIndex++;
+
+							if (r == &resource)
+								break;
+						}
+
+						for (size_t i = transitionIndex; i < state->resourceMarshalls().size() - 1; i++)
+						{
+							state->m_resourceMarshalls[i] = state->m_resourceMarshalls[i + 1];
+						}
+
+						state->m_resourceMarshalls.pop_back();
 					}
-
-					for (size_t i = transitionIndex; i < state->resourceMarshalls().size() - 1; i++)
-					{
-						state->m_resourceMarshalls[i] = state->m_resourceMarshalls[i + 1];
-					}
-
-					state->m_resourceMarshalls.pop_back();
 				}
 			}
 		}
