@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 		// TODO: more string hashes in above list
 		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
 		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/hotspots.txt"));
+		ATN::Manager::setDefinitions("SpecialEffect", util::parseHashes("files/effects.txt"));
 
 
 		// TODO: Confirm
