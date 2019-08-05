@@ -163,7 +163,7 @@
    <sender>paramType</sender>
    <signal>currentIndexChanged(QString)</signal>
    <receiver>UI_NetworkParameter</receiver>
-   <slot>setparameterType(QString)</slot>
+   <slot>setParameterType(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>62</x>
@@ -179,7 +179,7 @@
    <sender>paramDesc</sender>
    <signal>textChanged(QString)</signal>
    <receiver>UI_NetworkParameter</receiver>
-   <slot>setparameterName(QString)</slot>
+   <slot>setParameterName(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>147</x>
@@ -195,7 +195,7 @@
    <sender>paramValue</sender>
    <signal>currentTextChanged(QString)</signal>
    <receiver>UI_NetworkParameter</receiver>
-   <slot>setparameterValue(QString)</slot>
+   <slot>setParameterValue(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>114</x>
@@ -209,8 +209,8 @@
   </connection>
  </connections>
  <slots>
-  <slot>setparameterType(QString)</slot>
-  <slot>setparameterValue(QString)</slot>
-  <slot>setparameterName(QString)</slot>
+  <slot>setParameterType(QString)</slot>
+  <slot>setParameterValue(QString)</slot>
+  <slot>setParameterName(QString)</slot>
  </slots>
 </ui>
