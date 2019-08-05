@@ -68,5 +68,8 @@ namespace ATN
 
 		// Set state to transition to if transition is taken
 		void setState(State *state);
+
+		// Copy all properties except ID and state from another transition
+		void copyFrom(const Transition *other);
 	};
 }

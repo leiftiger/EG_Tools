@@ -64,6 +64,10 @@ UI_NetworkState::UI_NetworkState(QWidget *parent)
 	ui.setupUi(this);
 
 	connect(ui.connectorOut->transitionConnector(), SIGNAL(establishTransition()), this, SLOT(establishTransition()));
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(openContextMenu(const QPoint&)));
 }
 
 UI_NetworkState::~UI_NetworkState()
@@ -163,6 +167,57 @@ void UI_NetworkState::setReadOnly(bool readonly)
 		ut->ui.comboBox->setReadOnly(readonly);
 	for (UI_InputResource *ut : m_resources)
 		ut->ui.comboBox->setDisabled(readonly);
+}
+
+void UI_NetworkState::handleCopy()
+{
+	ATN::Manager::setStoredEntry(m_state);
+}
+
+void UI_NetworkState::handlePaste()
+{
+	emit requestPaste();
+}
+
+void UI_NetworkState::handlePasteLimited()
+{
+	emit requestPasteLimited();
+}
+
+void UI_NetworkState::openContextMenu(const QPoint &pos)
+{
+	// Only react within frame
+	if (pos.x() < ui.frame->x() || pos.x() > (ui.frame->x() + ui.frame->width()) || pos.y() < ui.frame->y() || pos.y() > (ui.frame->y() + ui.frame->height()))
+		return;
+
+	QMenu contextMenu(tr("Context menu"), this);
+
+	QAction actionCopy("Copy values and transitions", this);
+
+	QAction actionPaste("Paste values and transitions", this);
+
+	QAction actionPasteLimited("Paste values only", this);
+
+	const ATN::Entry *curPaste = ATN::Manager::getStoredEntry();
+
+	// Don't allow paste if there is none, or if it's the wrong type, or if we're disabled
+	if (curPaste == nullptr || typeid(*curPaste) != typeid(ATN::State) || ui.textStateName->isReadOnly())
+	{
+		actionPaste.setEnabled(false);
+		actionPasteLimited.setEnabled(false);
+	}
+
+	connect(&actionCopy, SIGNAL(triggered()), this, SLOT(handleCopy()));
+	connect(&actionPaste, SIGNAL(triggered()), this, SLOT(handlePaste()));
+	connect(&actionPasteLimited, SIGNAL(triggered()), this, SLOT(handlePasteLimited()));
+
+	connect(&contextMenu, SIGNAL(destroyed()), this, SLOT(update()));
+
+	contextMenu.addAction(&actionCopy);
+	contextMenu.addAction(&actionPaste);
+	contextMenu.addAction(&actionPasteLimited);
+
+	contextMenu.exec(mapToGlobal(pos));
 }
 
 void UI_NetworkState::selectExternalNetwork(int index)

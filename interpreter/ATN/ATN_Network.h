@@ -126,5 +126,12 @@ namespace ATN
 		// Counts the number of dependencies of the specified parameter
 		// in this network and external network transitions
 		int countDependencies(Parameter &param) const;
+
+		// Checks whether all references in the transition are valid
+		// and resets them to invalid pointers or constants otherwise
+		void validateMarshalls(Transition &transition) const;
+		// Checks whether all references in the state are valid
+		// and resets them to invalid pointers or constants otherwise
+		void validateMarshalls(State &state) const;
 	};
 }

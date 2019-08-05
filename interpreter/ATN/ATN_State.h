@@ -54,5 +54,8 @@ namespace ATN
 
 		// Parameter arguments sent in network transition, set automatically based on network transition
 		const std::vector<ParameterMarshall*> &parameterMarshalls() const;
+
+		// Copy all network transition properties from another state
+		void copyNetworkTransition(const State *other);
 	};
 }

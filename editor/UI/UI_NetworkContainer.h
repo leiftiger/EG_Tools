@@ -252,6 +252,9 @@ public slots:
 
 	void receiveStateLayoutRequest();
 
+	void receiveStatePaste();
+	void receiveStatePasteLimited();
+
 	void receiveJumpRequest(QWidget *widget);
 
 	void createNewConnector();
@@ -269,6 +272,8 @@ public slots:
 	void moveTransitionDown();
 
 	void deleteTransition();
+
+	void receiveTransitionPaste();
 
 	// Repopulates the list of arguments in all states and the currently open transition
 	// due to a change in parameter name or type

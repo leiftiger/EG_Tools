@@ -34,6 +34,9 @@ namespace ATN
 		stream << "ContainerID=ATNData" << std::endl;
 		stream << "Network=" << m_network->id() << std::endl;
 
+		if (m_state == nullptr)
+			throw ATN::Exception("Thread \"%s\" in network \"%s\" is not connected to any state", name(), m_network->name());
+
 		stream << "ContainerID=ATNData" << std::endl;
 		stream << "State=" << m_state->id() << std::endl;
 	}

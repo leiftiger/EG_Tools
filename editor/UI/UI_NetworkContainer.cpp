@@ -125,6 +125,9 @@ UI_NetworkState *UI_NetworkContainer::createStateUI(ATN::State *state)
 
 	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
+	connect(ut, SIGNAL(requestPaste()), this, SLOT(receiveStatePaste()));
+	connect(ut, SIGNAL(requestPasteLimited()), this, SLOT(receiveStatePasteLimited()));
+
 	ut->initialize(state, m_network);
 
 	if (m_editingDisabled)
@@ -165,6 +168,7 @@ UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *
 	connect(uiTransition->m_connector, SIGNAL(requestJumpToWidget(QWidget*)), this, SLOT(receiveJumpRequest(QWidget*)));
 
 	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
+	connect(uiTransition, SIGNAL(requestPaste()), this, SLOT(receiveTransitionPaste()));
 
 	uiConnector->show();
 	uiTransition->show();
@@ -237,8 +241,8 @@ void UI_NetworkContainer::threadCreate()
 
 	ATN::Manager::findByID(m_network->id(), outList);
 
-	outList->add(*(ATN::Entry*)t);
-	ATN::Manager::addEntry(*(ATN::Entry*)t);
+	outList->add(*t);
+	ATN::Manager::addEntry(*t);
 
 	m_network->add(*t);
 
@@ -302,8 +306,8 @@ void UI_NetworkContainer::stateCreate()
 
 	ATN::Manager::findByID(m_network->id(), outList);
 
-	outList->add(*(ATN::Entry*)s);
-	ATN::Manager::addEntry(*(ATN::Entry*)s);
+	outList->add(*s);
+	ATN::Manager::addEntry(*s);
 
 	m_network->add(*s);
 
@@ -353,8 +357,17 @@ void UI_NetworkContainer::stateRemove()
 		{
 			if (uiTransition->m_connector->connector() != nullptr && uiTransition->m_connector->connector()->end() == ut->ui.connectorIn)
 			{
-				uiTransition->transition()->setState(nullptr);
 				uiTransition->m_connector->deleteConnector();
+			}
+		}
+
+		// Due to aborted connections, it is possible that the transition was still invisibly connecting to this state
+		// So we handle the ATN connections separately
+		for (ATN::Transition *transition : uiState->m_state->transitions())
+		{
+			if (transition->state() == ut->m_state)
+			{
+				transition->setState(nullptr);
 			}
 		}
 	}
@@ -364,8 +377,15 @@ void UI_NetworkContainer::stateRemove()
 	{
 		if (uiThread->ui.connector->connector() != nullptr && uiThread->ui.connector->connector()->end() == ut->ui.connectorIn)
 		{
-			uiThread->m_thread->setState(nullptr);
 			uiThread->ui.connector->deleteConnector();
+		}
+	}
+
+	for (ATN::Thread *thread : m_network->threads())
+	{
+		if (thread->state() == ut->m_state)
+		{
+			thread->setState(nullptr);
 		}
 	}
 
@@ -946,6 +966,104 @@ void UI_NetworkContainer::receiveStateLayoutRequest()
 	layoutStates();
 }
 
+void UI_NetworkContainer::receiveStatePaste()
+{
+	UI_NetworkState *utState = (UI_NetworkState*)sender();
+
+	// Remove old transitions backwards to reduce need to sort lists afterwards
+	for (int i = utState->m_state->transitions().size() - 1; i >= 0; i--)
+	{
+		UI_NetworkTransition *utTransition = utState->ui.connectorOut->transitions()[i];
+
+		utState->m_state->remove(*utTransition->transition());
+
+		utState->ui.connectorOut->removeTransition(utTransition);
+
+		deleteATN(utTransition->transition());
+
+		delete utTransition;
+	}
+
+	if (m_currentEditState == utState)
+	{
+		ui.frameTransition->setEnabled(false);
+		m_currentEditState = nullptr;
+		m_currentEditTransition = nullptr;
+	}
+
+	const ATN::State *stateToPaste = (ATN::State*)ATN::Manager::getStoredEntry();
+
+	// Add new transitions to the same ATN list as the current network
+	ATN::List<ATN::Entry> *outList;
+
+	ATN::Manager::findByID(m_network->id(), outList);
+
+	for (const ATN::Transition *transition : stateToPaste->transitions())
+	{
+		ATN::Transition *transitionCopy = new ATN::Transition();
+		transitionCopy->setID(ATN::Manager::maxID() + 1);
+
+		transitionCopy->copyFrom(transition);
+		m_network->validateMarshalls(*transitionCopy);
+
+		utState->m_state->add(*transitionCopy);
+
+		outList->add(*transitionCopy);
+		ATN::Manager::addEntry(*transitionCopy);
+
+		// Connect to ourselves, then delete that connector
+		UI_NetworkTransition *utTransition = createTransitionUI(transitionCopy, utState, utState);
+
+		utTransition->m_connector->deleteConnector();
+	}
+
+	// Handle network updates
+	receiveStatePasteLimited();
+}
+
+void UI_NetworkContainer::receiveStatePasteLimited()
+{
+	UI_NetworkState *utState = (UI_NetworkState*)sender();
+
+	const ATN::State *stateToPaste = (ATN::State*)ATN::Manager::getStoredEntry();
+
+	ATN::State *state = utState->m_state;
+
+	bool bWasExternalEnabled = (state->networkTransition() != nullptr);
+
+	state->setName(stateToPaste->name());
+	state->copyNetworkTransition(stateToPaste);
+
+	m_network->validateMarshalls(*state);
+	m_network->resetInvalidResourceMarshalls();
+
+	// Clear value so that it won't trigger any text edit changes
+	utState->m_state = nullptr;
+
+	utState->initialize(state, m_network);
+
+	// Due to minimize intricacies, we disable the button manually here in case it was enabled
+	if (state->networkTransition() == nullptr && bWasExternalEnabled)
+	{
+		// Here we work with this calling enableExternalNetwork(false) via signals
+		utState->ui.checkBoxExternalNetworkConnector->setChecked(false);
+	}
+
+	// Technically won't need to layout everything again
+	// if just the name was updated, but in order to
+	// call it from above, we do
+	utState->ui.connectorOut->layout();
+	utState->ui.connectorOut->update();
+
+	int height = utState->height();
+
+	// Adjust width back now that the state may be thinner
+	utState->adjustSize();
+	utState->setFixedHeight(height);
+
+	layoutStates();
+}
+
 void UI_NetworkContainer::receiveJumpRequest(QWidget *widget)
 {
 	ui.scrollArea->ensureWidgetVisible(widget);
@@ -984,8 +1102,8 @@ void UI_NetworkContainer::createNewTransition()
 
 	ATN::Manager::findByID(m_network->id(), outList);
 
-	outList->add(*(ATN::Entry*)t);
-	ATN::Manager::addEntry(*(ATN::Entry*)t);
+	outList->add(*t);
+	ATN::Manager::addEntry(*t);
 
 	uiStateFrom->m_state->add(*t);
 
@@ -1157,6 +1275,39 @@ void UI_NetworkContainer::deleteTransition()
 
 	m_currentEditState = nullptr;
 	m_currentEditTransition = nullptr;
+
+	layoutStates();
+}
+
+void UI_NetworkContainer::receiveTransitionPaste()
+{
+	UI_NetworkTransition *ut = (UI_NetworkTransition*)sender();
+
+	ATN::Transition *transitionTo = ut->transition();
+	ATN::Transition *transitionFrom = (ATN::Transition*)ATN::Manager::getStoredEntry();
+
+	transitionTo->copyFrom(transitionFrom);
+	m_network->validateMarshalls(*transitionTo);
+	m_network->resetInvalidResourceMarshalls();
+
+	if (m_currentEditTransition == ut)
+	{
+		// This works solely due to the fact that we get the same sender
+		// in both paste and edit, may break if any of that is changed!
+		editTransition();
+	}
+
+	ut->layout();
+
+	UI_NetworkState *utState = (UI_NetworkState*)ut->m_state;
+
+	utState->ui.connectorOut->layout();
+	utState->ui.connectorOut->update();
+
+	int height = utState->height();
+
+	utState->adjustSize();
+	utState->setFixedHeight(height);
 
 	layoutStates();
 }

@@ -54,6 +54,8 @@ namespace ATN
 		// Protect against infinite recursions when removeEntry is called
 		bool m_removingGlobalElement = false;
 
+		const ATN::Entry *m_storedEntry;
+
 	public:
 
 		// Adds a format interpretation for the specified type name
@@ -123,5 +125,12 @@ namespace ATN
 
 		// Returns all networks currently loaded
 		static const std::vector<Network*> &getNetworks();
+
+		// TODO: Move these to undo/redo-manager in the future
+
+		// Get global pointer to a specific ATN Entry (used for copy/paste)
+		static const ATN::Entry *getStoredEntry();
+		// Set global pointer to a specific ATN Entry (used for copy/paste)
+		static void setStoredEntry(const ATN::Entry *entry);
 	};
 }

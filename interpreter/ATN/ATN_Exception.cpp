@@ -70,6 +70,18 @@ namespace ATN
 			m_exceptionMessage += "\n(line " + std::to_string(util::DEBUG_LINE) + ")";
 	}
 
+	Exception::Exception(const char *msg, const std::string &param1, int param2)
+	{
+		char err[ERR_SIZE];
+
+		sprintf_s(err, msg, param1.c_str(), param2);
+
+		m_exceptionMessage = err;
+
+		if (util::DEBUG_LINE != -1)
+			m_exceptionMessage += "\n(line " + std::to_string(util::DEBUG_LINE) + ")";
+	}
+
 	Exception::Exception(const char *msg, const char *param1, const char *param2)
 	{
 		char err[ERR_SIZE];

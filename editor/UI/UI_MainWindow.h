@@ -4,6 +4,7 @@
 #include "GeneratedFiles/ui_UI_MainWindow.h"
 
 #include "UI_HashWindow.h"
+#include "UI_ErrorWindow.h"
 
 #include <QMessageBox>
 
@@ -17,6 +18,8 @@ protected:
 	std::vector<std::string> m_atnFiles;
 
 	UI_HashWindow m_hashWindow;
+
+	UI_ErrorWindow m_errorWindow;
 
 	void reloadFileList();
 

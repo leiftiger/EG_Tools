@@ -407,7 +407,7 @@ namespace ATN
 			for (ATN::ParameterMarshall *paramMarshall : state->parameterMarshalls())
 			{
 				// Any arguments that pointed to this index are reset to constant 0
-				// so that if the variable is now incompatible with that argument, it won't create a broken state
+				// so that if the parameter is now incompatible with that argument, it won't create a broken state
 				// (user has to find all uses themselves)
 				paramMarshall->resetConstant(index);
 			}
@@ -568,6 +568,108 @@ namespace ATN
 		}
 
 		return numDependencies;
+	}
+
+	void Network::validateMarshalls(Transition &transition) const
+	{
+		for (size_t i = 0; i < transition.effectParameterMarshalls().size(); i++)
+		{
+			ATN::ParameterMarshall *paramMarshall = transition.effectParameterMarshalls()[i];
+
+			// Constants can be kept as they are
+			if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex)
+			{
+				// Points to non-existent parameter
+				if (paramMarshall->m_value >= (std::int64_t)m_parameters.size())
+					paramMarshall->resetConstant();
+				else
+				{
+					// Parameter at this index can't be used for the transition
+					if (m_parameters[paramMarshall->m_value]->m_type != transition.effect()->parameters()[i]->m_type)
+						paramMarshall->resetConstant();
+				}
+			}
+		}
+
+		for (size_t i = 0; i < transition.perceptParameterMarshalls().size(); i++)
+		{
+			ATN::ParameterMarshall *paramMarshall = transition.perceptParameterMarshalls()[i];
+
+			// Constants can be kept as they are
+			if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex)
+			{
+				// Points to non-existent parameter
+				if (paramMarshall->m_value >= (std::int64_t)m_parameters.size())
+					paramMarshall->resetConstant();
+				else
+				{
+					// Parameter at this index can't be used for the transition
+					if (m_parameters[paramMarshall->m_value]->m_type != transition.effect()->parameters()[i]->m_type)
+						paramMarshall->resetConstant();
+				}
+			}
+		}
+
+		for (ATN::ResourceMarshall *resourceMarshall : transition.effectResourceMarshalls())
+		{
+			// Points to non-existent resource
+			if (resourceMarshall->m_value >= (std::int64_t)m_resources.size())
+				resourceMarshall->reset();
+			else
+			{
+				// Resource at this index can't be used for the transition
+				if (!resourceMarshall->acceptsResourceType(m_resources[resourceMarshall->m_value]->m_type))
+					resourceMarshall->reset();
+			}
+		}
+
+		for (ATN::ResourceMarshall *resourceMarshall : transition.perceptResourceMarshalls())
+		{
+			// Points to non-existent resource
+			if (resourceMarshall->m_value >= (std::int64_t)m_resources.size())
+				resourceMarshall->reset();
+			else
+			{
+				// Resource at this index can't be used for the transition
+				if (!resourceMarshall->acceptsResourceType(m_resources[resourceMarshall->m_value]->m_type))
+					resourceMarshall->reset();
+			}
+		}
+	}
+
+	void Network::validateMarshalls(State &state) const
+	{
+		for (size_t i = 0; i < state.parameterMarshalls().size(); i++)
+		{
+			ATN::ParameterMarshall *paramMarshall = state.parameterMarshalls()[i];
+
+			// Constants can be kept as they are
+			if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex)
+			{
+				// Points to non-existent parameter
+				if (paramMarshall->m_value >= (std::int64_t)m_parameters.size())
+					paramMarshall->resetConstant();
+				else
+				{
+					// Parameter at this index can't be used for the transition
+					if (m_parameters[paramMarshall->m_value]->m_type != state.networkTransition()->parameters()[i]->m_type)
+						paramMarshall->resetConstant();
+				}
+			}
+		}
+
+		for (ATN::ResourceMarshall *resourceMarshall : state.resourceMarshalls())
+		{
+			// Points to non-existent resource
+			if (resourceMarshall->m_value >= (std::int64_t)m_resources.size())
+				resourceMarshall->reset();
+			else
+			{
+				// Resource at this index can't be used for the transition
+				if (!resourceMarshall->acceptsResourceType(m_resources[resourceMarshall->m_value]->m_type))
+					resourceMarshall->reset();
+			}
+		}
 	}
 
 	void Network::serialize(std::ostream &stream) const

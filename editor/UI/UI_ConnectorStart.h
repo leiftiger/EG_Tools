@@ -47,6 +47,9 @@ public:
 	// Allows the connector to be hovered & highlighted, but not connectable
 	void setReadOnly(bool readonly);
 
+	// Check if the connector can only be hovered & highlighted, but not connectable
+	bool isReadOnly() const;
+
 private:
 	Ui::UI_ConnectorStart ui;
 

@@ -115,6 +115,38 @@ namespace ATN
 		m_state = state;
 	}
 
+	void Transition::copyFrom(const Transition *other)
+	{
+		this->setName(other->name());
+
+		this->setEffect(other->effect());
+		this->setPercept(other->percept());
+
+		for (size_t i = 0; i < other->effectParameterMarshalls().size(); i++)
+		{
+			this->effectParameterMarshalls()[i]->m_type = other->effectParameterMarshalls()[i]->m_type;
+			this->effectParameterMarshalls()[i]->m_value = other->effectParameterMarshalls()[i]->m_value;
+		}
+
+		for (size_t i = 0; i < other->effectResourceMarshalls().size(); i++)
+		{
+			this->effectResourceMarshalls()[i]->m_type = other->effectResourceMarshalls()[i]->m_type;
+			this->effectResourceMarshalls()[i]->m_value = other->effectResourceMarshalls()[i]->m_value;
+		}
+
+		for (size_t i = 0; i < other->perceptParameterMarshalls().size(); i++)
+		{
+			this->perceptParameterMarshalls()[i]->m_type = other->perceptParameterMarshalls()[i]->m_type;
+			this->perceptParameterMarshalls()[i]->m_value = other->perceptParameterMarshalls()[i]->m_value;
+		}
+
+		for (size_t i = 0; i < other->perceptResourceMarshalls().size(); i++)
+		{
+			this->perceptResourceMarshalls()[i]->m_type = other->perceptResourceMarshalls()[i]->m_type;
+			this->perceptResourceMarshalls()[i]->m_value = other->perceptResourceMarshalls()[i]->m_value;
+		}
+	}
+
 	void Transition::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);
@@ -128,6 +160,9 @@ namespace ATN
 		stream << "Percept=" << m_percept->id() << std::endl;
 
 		stream << m_perceptResources << m_perceptParameters;
+
+		if (m_state == nullptr)
+			throw ATN::Exception("Transition \"%s\" (Unique ID: %d) is not connected to any state", name(), id());
 
 		stream << "ContainerID=ATNData" << std::endl;
 		stream << "State=" << m_state->id() << std::endl;

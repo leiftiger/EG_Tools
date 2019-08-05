@@ -12,6 +12,10 @@ UI_NetworkTransition::UI_NetworkTransition(QWidget *parent)
 	this->setAttribute(Qt::WA_Hover);
 
 	setMouseTracking(true);
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(openContextMenu(const QPoint&)));
 }
 
 UI_NetworkTransition::~UI_NetworkTransition()
@@ -72,6 +76,42 @@ void UI_NetworkTransition::setHighlighted(bool highlighted)
 	m_highlighted = highlighted;
 
 	update();
+}
+
+void UI_NetworkTransition::handleCopy()
+{
+	ATN::Manager::setStoredEntry(m_transition);
+}
+
+void UI_NetworkTransition::handlePaste()
+{
+	emit requestPaste();
+}
+
+void UI_NetworkTransition::openContextMenu(const QPoint &pos)
+{
+	QMenu contextMenu(tr("Context menu"), this);
+
+	QAction actionCopy("Copy values", this);
+
+	QAction actionPaste("Paste values", this);
+
+	const ATN::Entry *curPaste = ATN::Manager::getStoredEntry();
+
+	// Don't allow paste if it's the wrong type or if editing is disabled
+	if (curPaste == nullptr || typeid(*curPaste) != typeid(ATN::Transition) || m_connector->isReadOnly())
+		actionPaste.setEnabled(false);
+
+	connect(&actionCopy, SIGNAL(triggered()), this, SLOT(handleCopy()));
+	connect(&actionPaste, SIGNAL(triggered()), this, SLOT(handlePaste()));
+
+	// Repaint since the mouse is probably no longer on top of the transition
+	connect(&contextMenu, SIGNAL(destroyed()), this, SLOT(update()));
+
+	contextMenu.addAction(&actionCopy);
+	contextMenu.addAction(&actionPaste);
+
+	contextMenu.exec(mapToGlobal(pos));
 }
 
 std::string UI_NetworkTransition::translateParameter(const ATN::ParameterMarshall *paramMarshall, const ATN::Parameter *parameter) const

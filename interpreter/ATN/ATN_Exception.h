@@ -26,6 +26,7 @@ namespace ATN
 
 		Exception(const char *msg, int param1, const char *param2);
 		Exception(const char *msg, int param1, const std::string &param2);
+		Exception(const char *msg, const std::string &param1, int param2);
 
 		Exception(const char *msg, const char *param1, const char *param2);
 		Exception(const char *msg, const std::string &param1, const char *param2);

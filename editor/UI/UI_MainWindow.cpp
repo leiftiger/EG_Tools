@@ -77,6 +77,7 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 void UI_MainWindow::closeEvent(QCloseEvent *event)
 {
 	m_hashWindow.close();
+	m_errorWindow.close();
 }
 
 void UI_MainWindow::reloadFileList()
@@ -131,7 +132,16 @@ void UI_MainWindow::openFiles()
 
 void UI_MainWindow::saveFiles()
 {
-	ATN::Manager::saveToFiles();
+	try
+	{
+		ATN::Manager::saveToFiles();
+	}
+	catch(ATN::Exception &e)
+	{
+		m_errorWindow.setErrorMessage(e.what());
+		m_errorWindow.setWindowModality(Qt::WindowModality::ApplicationModal);
+		m_errorWindow.show();
+	}
 }
 
 void UI_MainWindow::newNetwork()
@@ -270,22 +280,7 @@ void UI_MainWindow::copyNetworkButton()
 		stateCopy->setID(id++);
 		stateCopy->setName(state->name());
 
-		if (state->networkTransition() != nullptr)
-		{
-			stateCopy->setNetworkTransition(state->networkTransition());
-
-			for (size_t i = 0; i < state->parameterMarshalls().size(); i++)
-			{
-				stateCopy->parameterMarshalls()[i]->m_type = state->parameterMarshalls()[i]->m_type;
-				stateCopy->parameterMarshalls()[i]->m_value = state->parameterMarshalls()[i]->m_value;
-			}
-
-			for (size_t i = 0; i < state->resourceMarshalls().size(); i++)
-			{
-				stateCopy->resourceMarshalls()[i]->m_type = state->resourceMarshalls()[i]->m_type;
-				stateCopy->resourceMarshalls()[i]->m_value = state->resourceMarshalls()[i]->m_value;
-			}
-		}
+		stateCopy->copyNetworkTransition(state);
 
 		netCopy->add(*stateCopy);
 
@@ -323,34 +318,8 @@ void UI_MainWindow::copyNetworkButton()
 		{
 			ATN::Transition *transitionCopy = new ATN::Transition();
 			transitionCopy->setID(id++);
-			transitionCopy->setName(transition->name());
 
-			transitionCopy->setEffect(transition->effect());
-			transitionCopy->setPercept(transition->percept());
-
-			for (size_t i = 0; i < transition->effectParameterMarshalls().size(); i++)
-			{
-				transitionCopy->effectParameterMarshalls()[i]->m_type = transition->effectParameterMarshalls()[i]->m_type;
-				transitionCopy->effectParameterMarshalls()[i]->m_value = transition->effectParameterMarshalls()[i]->m_value;
-			}
-
-			for (size_t i = 0; i < transition->effectResourceMarshalls().size(); i++)
-			{
-				transitionCopy->effectResourceMarshalls()[i]->m_type = transition->effectResourceMarshalls()[i]->m_type;
-				transitionCopy->effectResourceMarshalls()[i]->m_value = transition->effectResourceMarshalls()[i]->m_value;
-			}
-
-			for (size_t i = 0; i < transition->perceptParameterMarshalls().size(); i++)
-			{
-				transitionCopy->perceptParameterMarshalls()[i]->m_type = transition->perceptParameterMarshalls()[i]->m_type;
-				transitionCopy->perceptParameterMarshalls()[i]->m_value = transition->perceptParameterMarshalls()[i]->m_value;
-			}
-
-			for (size_t i = 0; i < transition->perceptResourceMarshalls().size(); i++)
-			{
-				transitionCopy->perceptResourceMarshalls()[i]->m_type = transition->perceptResourceMarshalls()[i]->m_type;
-				transitionCopy->perceptResourceMarshalls()[i]->m_value = transition->perceptResourceMarshalls()[i]->m_value;
-			}
+			transitionCopy->copyFrom(transition);
 
 			transitionCopy->setState(copyStates[oldStatesToIndex[transition->state()]]);
 

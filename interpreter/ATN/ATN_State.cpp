@@ -90,6 +90,26 @@ namespace ATN
 		return m_parameterMarshalls;
 	}
 
+	void State::copyNetworkTransition(const State *other)
+	{
+		this->setNetworkTransition(other->networkTransition());
+
+		if (other->networkTransition() != nullptr)
+		{
+			for (size_t i = 0; i < other->parameterMarshalls().size(); i++)
+			{
+				this->parameterMarshalls()[i]->m_type = other->parameterMarshalls()[i]->m_type;
+				this->parameterMarshalls()[i]->m_value = other->parameterMarshalls()[i]->m_value;
+			}
+
+			for (size_t i = 0; i < other->resourceMarshalls().size(); i++)
+			{
+				this->resourceMarshalls()[i]->m_type = other->resourceMarshalls()[i]->m_type;
+				this->resourceMarshalls()[i]->m_value = other->resourceMarshalls()[i]->m_value;
+			}
+		}
+	}
+
 	void State::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

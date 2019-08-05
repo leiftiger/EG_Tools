@@ -73,7 +73,15 @@ namespace ATN
 		for (size_t i = 1; i < instance().m_lists.size(); i++)
 		{
 			ATN::List<ATN::Entry> *list = instance().m_lists[i];
-			util::writeATN(list->name(), *list);
+
+			try
+			{
+				util::writeATN(list->name(), *list);
+			}
+			catch (ATN::Exception &e)
+			{
+				throw ATN::Exception("An error occured while writing to \"%s\":\n%s", list->name(), e.what());
+			}
 		}
 	}
 
@@ -337,5 +345,15 @@ namespace ATN
 	const std::vector<Network*> &Manager::getNetworks()
 	{
 		return instance().m_networks;
+	}
+
+	const ATN::Entry *Manager::getStoredEntry()
+	{
+		return instance().m_storedEntry;
+	}
+
+	void Manager::setStoredEntry(const ATN::Entry *entry)
+	{
+		instance().m_storedEntry = entry;
 	}
 }

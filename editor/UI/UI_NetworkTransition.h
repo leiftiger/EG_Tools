@@ -64,6 +64,14 @@ public:
 
 	void setHighlighted(bool highlighted);
 
+protected slots:
+	void openContextMenu(const QPoint &pos);
+
+	void handleCopy();
+	void handlePaste();
+
 signals:
 	void unlockTransitionEditor();
+
+	void requestPaste();
 };

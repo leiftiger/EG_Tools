@@ -134,6 +134,11 @@ void UI_ConnectorStart::setReadOnly(bool readonly)
 	m_readOnly = readonly;
 }
 
+bool UI_ConnectorStart::isReadOnly() const
+{
+	return m_readOnly;
+}
+
 void UI_ConnectorStart::highlightConnector()
 {
 	m_connector->setHovered(false);
@@ -171,6 +176,9 @@ void UI_ConnectorStart::openContextMenu(const QPoint &pos)
 		actionJump.setEnabled(false);
 
 	connect(&actionJump, SIGNAL(triggered()), this, SLOT(jumpToEndConnector()));
+
+	// Repaint since the mouse is probably no longer on top of the connector
+	connect(&contextMenu, SIGNAL(destroyed()), this, SLOT(update()));
 
 	contextMenu.addAction(&actionHighlight);
 	contextMenu.addAction(&actionJump);

@@ -46,6 +46,13 @@ public:
 	// Disables the state from being edited
 	void setReadOnly(bool readonly);
 
+protected slots:
+	void openContextMenu(const QPoint &pos);
+
+	void handleCopy();
+	void handlePaste();
+	void handlePasteLimited();
+
 public slots:
 	void enableExternalNetwork(bool enable);
 	void selectExternalNetwork(int index);
@@ -60,4 +67,7 @@ signals:
 	void openNetworkRequest(int id);
 	void requestLayout();
 	void requestNewTransition();
+
+	void requestPaste();
+	void requestPasteLimited();
 };
