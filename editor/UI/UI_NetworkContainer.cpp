@@ -968,6 +968,10 @@ void UI_NetworkContainer::receiveStateLayoutRequest()
 
 void UI_NetworkContainer::receiveStatePaste()
 {
+	// Shouldn't be called, but just in case, we guard against it
+	if (m_editingDisabled)
+		return;
+
 	UI_NetworkState *utState = (UI_NetworkState*)sender();
 
 	// Remove old transitions backwards to reduce need to sort lists afterwards
@@ -1023,6 +1027,10 @@ void UI_NetworkContainer::receiveStatePaste()
 
 void UI_NetworkContainer::receiveStatePasteLimited()
 {
+	// Shouldn't be called, but just in case, we guard against it
+	if (m_editingDisabled)
+		return;
+
 	UI_NetworkState *utState = (UI_NetworkState*)sender();
 
 	const ATN::State *stateToPaste = (ATN::State*)ATN::Manager::getStoredEntry();
@@ -1281,6 +1289,10 @@ void UI_NetworkContainer::deleteTransition()
 
 void UI_NetworkContainer::receiveTransitionPaste()
 {
+	// Shouldn't be called, but just in case, we guard against it
+	if (m_editingDisabled)
+		return;
+
 	UI_NetworkTransition *ut = (UI_NetworkTransition*)sender();
 
 	ATN::Transition *transitionTo = ut->transition();
