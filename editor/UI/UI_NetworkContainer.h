@@ -223,6 +223,9 @@ public slots:
 	void stateMoveDown();
 	void stateRemove();
 
+	void stateCreateAt(const QPoint &pos);
+	void statePasteAt(const QPoint &pos);
+
 	void resourceCreate();
 	void resourceMoveUp();
 	void resourceMoveDown();

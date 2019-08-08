@@ -67,5 +67,8 @@ public:
 	// Remove connector space held by this connector as it's being destroyed
 	void clearMyMemory(ConnectFlags flags, const UI_Connector *connector);
 
+	// Recalculates all connector heights
+	void recalculateHeights();
+
 };
 

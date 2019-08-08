@@ -416,6 +416,74 @@ void UI_NetworkContainer::stateRemove()
 	ut->deleteLater();
 }
 
+void UI_NetworkContainer::stateCreateAt(const QPoint &pos)
+{
+	if (m_editingDisabled)
+		return;
+
+	int index = m_states.size();
+
+	for (size_t i = 0; i < m_states.size(); i++)
+	{
+		if (m_states[i]->x() > pos.x())
+		{
+			index = (int)i;
+			break;
+		}
+	}
+
+	ATN::State *s = new ATN::State();
+
+	s->setID(ATN::Manager::maxID() + 1);
+	s->setName(std::string("State ") + std::to_string(m_states.size() + 1));
+
+	// Add this object to the same ATN list the network belongs to
+	ATN::List<ATN::Entry> *outList;
+
+	ATN::Manager::findByID(m_network->id(), outList);
+
+	outList->add(*s);
+	ATN::Manager::addEntry(*s);
+
+	m_network->add(*s);
+
+	UI_NetworkState *ut = createStateUI(s);
+	ut->show();
+
+	m_states.push_back(ut);
+
+	for (int i = 0; i < m_states.size() - index - 1; i++)
+	{
+		itemMove(m_states, ut, true);
+		m_network->moveUp(*ut->m_state);
+	}
+
+	layoutStates();
+}
+
+void UI_NetworkContainer::statePasteAt(const QPoint &pos)
+{
+	if (m_editingDisabled)
+		return;
+
+	stateCreateAt(pos);
+
+	// Find the new state
+	int index = 0;
+
+	for (size_t i = 0; i < m_states.size(); i++)
+	{
+		if (m_states[i]->x() > pos.x())
+		{
+			index = (int)i;
+			break;
+		}
+	}
+
+	// Trigger normal paste
+	emit m_states[index]->requestPaste();
+}
+
 void UI_NetworkContainer::resourceCreate()
 {
 	ATN::Resource *r = new ATN::Resource(ATN::ResourceType::Number, std::string("Resource ") + std::to_string(m_resources.size() + 1), true);
@@ -1427,6 +1495,7 @@ void UI_NetworkContainer::layoutStates()
 	m_proxy.setLowerHeight(ui.frameStates->y() + ui.frameStates->height());
 
 	m_proxy.setStateSpaces(stateSpaces);
+	m_proxy.recalculateHeights();
 
 	ui.networkContents->update();
 }
@@ -1624,6 +1693,8 @@ void UI_NetworkContainer::setReadOnly(bool readonly)
 
 		ui.comboTransitionPercept->setDisabled(true);
 		ui.comboTransitionEffect->setDisabled(true);
+
+		ui.frameStates->setReadOnly(true);
 	}
 	else
 	{
@@ -1640,5 +1711,7 @@ void UI_NetworkContainer::setReadOnly(bool readonly)
 
 		ui.comboTransitionPercept->setEnabled(true);
 		ui.comboTransitionEffect->setEnabled(true);
+
+		ui.frameStates->setReadOnly(false);
 	}
 }

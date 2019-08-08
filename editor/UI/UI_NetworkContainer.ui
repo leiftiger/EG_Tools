@@ -43,7 +43,7 @@
         <height>553</height>
        </size>
       </property>
-      <widget class="QFrame" name="frameStates">
+      <widget class="UI_NetworkContainerStateFrame" name="frameStates">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -938,6 +938,16 @@
    <extends>QLineEdit</extends>
    <header>UI_LineEdit.h</header>
   </customwidget>
+  <customwidget>
+   <class>UI_NetworkContainerStateFrame</class>
+   <extends>QFrame</extends>
+   <header>UI_NetworkContainerStateFrame.h</header>
+   <container>1</container>
+   <slots>
+    <signal>requestStateCreation(QPoint)</signal>
+    <signal>requestStatePaste(QPoint)</signal>
+   </slots>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -1149,6 +1159,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>frameStates</sender>
+   <signal>requestStateCreation(QPoint)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>stateCreateAt(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>242</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>590</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>frameStates</sender>
+   <signal>requestStatePaste(QPoint)</signal>
+   <receiver>UI_NetworkContainer</receiver>
+   <slot>statePasteAt(QPoint)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>296</x>
+     <y>471</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>296</x>
+     <y>585</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>threadCreate()</slot>
@@ -1164,5 +1206,7 @@
   <slot>findTransitions()</slot>
   <slot>moveTransitionUp()</slot>
   <slot>moveTransitionDown()</slot>
+  <slot>stateCreateAt(QPoint)</slot>
+  <slot>statePasteAt(QPoint)</slot>
  </slots>
 </ui>

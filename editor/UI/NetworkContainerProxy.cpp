@@ -191,3 +191,25 @@ void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connector
 
 	moveCollisions(*offsetList, *connectorPositions);
 }
+
+void NetworkContainerProxy::recalculateHeights()
+{
+	std::unordered_map<const UI_Connector *, QLine> oldAbove = m_connectorPositionsAbove;
+	std::unordered_map<const UI_Connector *, QLine> oldBelow = m_connectorPositionsBelow;
+
+	m_connectorPositionsAbove.clear();
+	m_connectorPositionsBelow.clear();
+
+	m_heightOffsetsAbove.clear();
+	m_heightOffsetsBelow.clear();
+
+	for (std::pair<const UI_Connector * const, QLine> &pair : oldAbove)
+	{
+		stateHeight(ConnectFlags::Above, pair.first);
+	}
+
+	for (std::pair<const UI_Connector * const, QLine> &pair : oldBelow)
+	{
+		stateHeight(ConnectFlags::None, pair.first);
+	}
+}
