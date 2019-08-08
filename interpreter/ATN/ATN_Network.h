@@ -121,11 +121,11 @@ namespace ATN
 
 		// Counts the number of dependencies of the specified resource
 		// in this network and external network transitions
-		int countDependencies(Resource &resource) const;
+		int countDependencies(Resource &resource, bool includeInternal = true, bool includeExternal = true) const;
 
 		// Counts the number of dependencies of the specified parameter
 		// in this network and external network transitions
-		int countDependencies(Parameter &param) const;
+		int countDependencies(Parameter &param, bool includeInternal = true, bool includeExternal = true) const;
 
 		// Checks whether all references in the transition are valid
 		// and resets them to invalid pointers or constants otherwise

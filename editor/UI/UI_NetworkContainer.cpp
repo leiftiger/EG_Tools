@@ -468,7 +468,7 @@ void UI_NetworkContainer::resourceRemove()
 {
 	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
 
-	int numDependencies = m_network->countDependencies(*ut->m_resource);
+	int numDependencies = m_network->countDependencies(*ut->m_resource, true, false);
 
 	if (numDependencies > 0)
 	{
@@ -487,7 +487,7 @@ void UI_NetworkContainer::resourceRemove()
 		msg.setWindowTitle(tr(" "));
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" may become invalid</b></span>"));
 
-		msg.setInformativeText(tr("Removing this resource will make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) set to an arbitrary resource or left as an invalid pointer.") +
+		msg.setInformativeText(tr("Removing this resource will make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" set to an arbitrary resource or left as an invalid pointer.") +
 			tr("\n\nYou will need to inspect all dependencies after this operation."));
 
 		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -653,7 +653,7 @@ void UI_NetworkContainer::parameterRemove()
 {
 	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
 
-	int numDependencies = m_network->countDependencies(*ut->m_parameter);
+	int numDependencies = m_network->countDependencies(*ut->m_parameter, true, false);
 
 	if (numDependencies > 0)
 	{
@@ -672,7 +672,7 @@ void UI_NetworkContainer::parameterRemove()
 		msg.setWindowTitle(tr(" "));
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
 
-		msg.setInformativeText(tr("Removing this parameter type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
+		msg.setInformativeText(tr("Removing this parameter will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" to UNDEFINED.") +
 			tr("\n\nYou will need to inspect all dependencies after this operation."));
 
 		msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);

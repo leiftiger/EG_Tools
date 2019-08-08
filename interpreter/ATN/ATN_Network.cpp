@@ -447,65 +447,71 @@ namespace ATN
 		return false;
 	}
 
-	int Network::countDependencies(Resource &resource) const
+	int Network::countDependencies(Resource &resource, bool includeInternal, bool includeExternal) const
 	{
-		std::int64_t index = -1;
-
-		for (size_t i = 0; i < m_resources.size(); i++)
-		{
-			if (m_resources[i] == &resource)
-			{
-				index = (std::int64_t)i;
-				break;
-			}
-		}
-
 		int numDependencies = 0;
 
-		for (ATN::State *state : this->states())
+		if (includeInternal)
 		{
-			for (ATN::ResourceMarshall *resourceMarshall : state->resourceMarshalls())
+			std::int64_t index = -1;
+
+			for (size_t i = 0; i < m_resources.size(); i++)
 			{
-				if (resourceMarshall->m_value == index)
-					numDependencies++;
+				if (m_resources[i] == &resource)
+				{
+					index = (std::int64_t)i;
+					break;
+				}
 			}
 
-			for (ATN::Transition *transition : state->transitions())
+			for (ATN::State *state : this->states())
 			{
-				for (ATN::ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
+				for (ATN::ResourceMarshall *resourceMarshall : state->resourceMarshalls())
 				{
 					if (resourceMarshall->m_value == index)
 						numDependencies++;
 				}
-				for (ATN::ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
+
+				for (ATN::Transition *transition : state->transitions())
 				{
-					if (resourceMarshall->m_value == index)
-						numDependencies++;
+					for (ATN::ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
+					{
+						if (resourceMarshall->m_value == index)
+							numDependencies++;
+					}
+					for (ATN::ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
+					{
+						if (resourceMarshall->m_value == index)
+							numDependencies++;
+					}
 				}
 			}
 		}
 
-		if (!resource.m_internalResource)
+		if (includeExternal)
 		{
-			for (ATN::Network *net : ATN::Manager::getNetworks())
+			if (!resource.m_internalResource)
 			{
-				for (ATN::State *state : net->states())
+				for (ATN::Network *net : ATN::Manager::getNetworks())
 				{
-					if (state->networkTransition() != nullptr && state->networkTransition() == this)
+					for (ATN::State *state : net->states())
 					{
-						std::int64_t transitionIndex = -1;
-
-						// Because the transitions only refer to the input indices, we have to take care to remove that index instead
-						for (ATN::Resource *r : this->resources())
+						if (state->networkTransition() != nullptr && state->networkTransition() == this)
 						{
-							if (!r->m_internalResource)
-							{
-								transitionIndex++;
+							std::int64_t transitionIndex = -1;
 
-								if (r == &resource)
+							// Because the transitions only refer to the input indices, we have to take care to remove that index instead
+							for (ATN::Resource *r : this->resources())
+							{
+								if (!r->m_internalResource)
 								{
-									numDependencies++;
-									break;
+									transitionIndex++;
+
+									if (r == &resource)
+									{
+										numDependencies++;
+										break;
+									}
 								}
 							}
 						}
@@ -517,52 +523,58 @@ namespace ATN
 		return numDependencies;
 	}
 
-	int Network::countDependencies(Parameter &param) const
+	int Network::countDependencies(Parameter &param, bool includeInternal, bool includeExternal) const
 	{
-		std::int64_t index = -1;
-
-		for (size_t i = 0; i < m_parameters.size(); i++)
-		{
-			if (m_parameters[i] == &param)
-			{
-				index = (std::int64_t)i;
-				break;
-			}
-		}
-
 		int numDependencies = 0;
 
-		for (ATN::State *state : this->states())
+		if (includeInternal)
 		{
-			for (ATN::ParameterMarshall *paramMarshall : state->parameterMarshalls())
+			std::int64_t index = -1;
+
+			for (size_t i = 0; i < m_parameters.size(); i++)
 			{
-				if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex && paramMarshall->m_value == index)
-					numDependencies++;
+				if (m_parameters[i] == &param)
+				{
+					index = (std::int64_t)i;
+					break;
+				}
 			}
 
-			for (ATN::Transition *transition : state->transitions())
+			for (ATN::State *state : this->states())
 			{
-				for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+				for (ATN::ParameterMarshall *paramMarshall : state->parameterMarshalls())
 				{
 					if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex && paramMarshall->m_value == index)
 						numDependencies++;
 				}
 
-				for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+				for (ATN::Transition *transition : state->transitions())
 				{
-					if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex && paramMarshall->m_value == index)
-						numDependencies++;
+					for (ATN::ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+					{
+						if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex && paramMarshall->m_value == index)
+							numDependencies++;
+					}
+
+					for (ATN::ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+					{
+						if (paramMarshall->m_type == ParameterMarshallType::ParameterIndex && paramMarshall->m_value == index)
+							numDependencies++;
+					}
 				}
 			}
 		}
 
-		for (ATN::Network *net : ATN::Manager::getNetworks())
+		if (includeExternal)
 		{
-			for (ATN::State *state : net->states())
+			for (ATN::Network *net : ATN::Manager::getNetworks())
 			{
-				if (state->networkTransition() == this)
+				for (ATN::State *state : net->states())
 				{
-					numDependencies++;
+					if (state->networkTransition() == this)
+					{
+						numDependencies++;
+					}
 				}
 			}
 		}
