@@ -15,6 +15,8 @@
 #include <QListWidgetItem>
 #include <QToolTip>
 
+#include "UI_ConfigWindow.h"
+
 UI_MainWindow::UI_MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -163,6 +165,12 @@ void UI_MainWindow::newNetwork()
 void UI_MainWindow::openHashTool()
 {
 	m_hashWindow.show();
+}
+
+void UI_MainWindow::openConfigWindow()
+{
+	UI_ConfigWindow *uiWindow = new UI_ConfigWindow(this);
+	uiWindow->show();
 }
 
 void UI_MainWindow::searchName(const QString &str)

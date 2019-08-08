@@ -394,7 +394,7 @@
   </widget>
   <action name="actionSet_Evil_Genius_installation_path">
    <property name="text">
-    <string>Set Evil Genius installation path...</string>
+    <string>Set definition paths...</string>
    </property>
   </action>
   <action name="actionLoad_ATN">
@@ -586,6 +586,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSet_Evil_Genius_installation_path</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>openConfigWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>932</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>searchName(QString)</slot>
@@ -596,5 +612,6 @@
   <slot>saveFiles()</slot>
   <slot>newFile()</slot>
   <slot>newNetwork()</slot>
+  <slot>openConfigWindow()</slot>
  </slots>
 </ui>

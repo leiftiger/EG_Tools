@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UI_ConfigWindow</class>
+ <widget class="QMainWindow" name="UI_ConfigWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>670</width>
+    <height>345</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>670</width>
+    <height>345</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>345</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Definition paths</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>The ATN Editor loads definitions from three ERB paths in order to decode certain parameter values.
+
+For the base definitions, you must use the ERBReader application (not included with this program) to extract the Resource.erb and LResource_en_UK.erb files for reading. You can find these files in your Evil Genius/ResourcePAK directory.
+
+When all paths are set, just close this window and the ATN Editor will load all definitions and save these settings.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Extracted LResource_en_UK.erb folder:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Extracted Resource.erb folder:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="UI_LineEdit" name="textPathResource"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="buttonPathResource">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="UI_LineEdit" name="textPathText"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="buttonPathText">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Evil Genius/DynamicResources folder:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="UI_LineEdit" name="textPathDynamic"/>
+      </item>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="buttonPathDynamic">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="3" column="0">
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>If you find the instructions above daunting, then these paths can be extracted automatically by the ATN Editor if you specify a path to your Evil Genius installation together with a path to the ERBReader executable below:</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="Line" name="line_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Evil Genius installation folder:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="UI_LineEdit" name="textPathERB"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="buttonPathERB">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Path to ERBReader.exe:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="UI_LineEdit" name="textPathEG"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="buttonPathEG">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>UI_LineEdit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>textPathResource</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>setPathResource(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>244</x>
+     <y>-3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPathResource</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>openPathResource()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>591</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>592</x>
+     <y>-2</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathText</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>setPathText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>274</x>
+     <y>175</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>-12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPathText</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>openPathText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>615</x>
+     <y>175</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>616</x>
+     <y>6</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathDynamic</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>setPathDynamic(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>324</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPathDynamic</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>openPathDynamic()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>649</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>667</x>
+     <y>17</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathERB</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>setPathERB(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>461</x>
+     <y>1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPathERB</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>openPathERB()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>595</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>594</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonPathEG</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>openPathEG()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>637</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textPathEG</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_ConfigWindow</receiver>
+   <slot>setPathEG(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>428</x>
+     <y>326</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>444</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setPathResource(QString)</slot>
+  <slot>setPathText(QString)</slot>
+  <slot>setPathDynamic(QString)</slot>
+  <slot>setPathEG(QString)</slot>
+  <slot>setPathERB(QString)</slot>
+  <slot>openPathResource()</slot>
+  <slot>openPathText()</slot>
+  <slot>openPathDynamic()</slot>
+  <slot>openPathEG()</slot>
+  <slot>openPathERB()</slot>
+ </slots>
+</ui>

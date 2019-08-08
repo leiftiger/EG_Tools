@@ -42,6 +42,7 @@
     <QtUic Include="UI\UI_ErrorWindow.ui" />
     <QtUic Include="UI\UI_ConnectorBranch.ui" />
     <QtUic Include="UI\UI_HashWindow.ui" />
+    <QtUic Include="UI\UI_ConfigWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="UI\UI_ComboBox.cpp" />
     <ClCompile Include="UI\UI_LineEdit.cpp" />
     <ClCompile Include="UI\UI_NetworkContainerStateFrame.cpp" />
+    <ClCompile Include="UI\UI_ConfigWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\interpreter\ATN_Interpreter.vcxproj">
@@ -94,6 +96,10 @@
   <ItemGroup>
     <ClInclude Include="UI\NetworkContainerProxy.h" />
     <ClInclude Include="UI\UI_ConnectFlags.h" />
+    <QtMoc Include="UI\UI_ConfigWindow.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\resourceloader;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\resourceloader;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
     <QtMoc Include="UI\UI_NetworkContainerStateFrame.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\resourceloader;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\resourceloader;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>

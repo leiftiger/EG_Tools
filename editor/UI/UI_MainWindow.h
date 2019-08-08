@@ -40,6 +40,7 @@ public slots:
 	void newNetwork();
 
 	void openHashTool();
+	void openConfigWindow();
 
 	void searchName(const QString &str);
 	void searchID(const QString &str);

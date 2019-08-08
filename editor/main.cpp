@@ -82,6 +82,7 @@ int main(int argc, char *argv[])
 				{"UNKNOWN_16",	16},
 				{"32",			32},
 				{"64",			64},
+				{"128",			128},
 			}));
 
 		ATN::Manager::setDefinitions("Boolean Value", util::createDefinition(
@@ -268,7 +269,7 @@ int main(int argc, char *argv[])
 
 		std::vector<std::string> strConfig = util::configPaths("config.txt");
 
-		if (strConfig.size() > 0)
+		if (strConfig.size() == 3)
 		{
 			RL::FileLoader resourceLoader(strConfig[0]);
 
