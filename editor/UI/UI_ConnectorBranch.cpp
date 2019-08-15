@@ -133,6 +133,26 @@ void UI_ConnectorBranch::layout()
 			farthestConnectorDistance = ut->m_connector->mapToParent(ut->m_connector->center()).x();
 	}
 
+	// Keep track of what height the designer set for us, to ensure we're always in center
+	if (m_centerHeight == -1)
+		m_centerHeight = height() / 2;
+
+	// Too large to fit in current state - increase size of state to compensate,
+	// even if this causes visual discontinuities (but since it should be rare to breach the limit, this is probably acceptable)
+	if (desiredHeight + m_newTransitionConnector->height() > parentWidget()->height())
+	{
+		int diff = desiredHeight + m_newTransitionConnector->height() - parentWidget()->height();
+
+		// Make sure the height change is divisible by two so we consistently move the branch
+		if ((diff % 2) != 0)
+			diff -= 1;
+
+		parentWidget()->setFixedHeight(parentWidget()->height() + diff);
+
+		// Re-center
+		m_centerHeight += diff / 2;
+	}
+
 	// Remove the space unused by the first element and add missing odd halves from connector and first element
 	if (totalBranches > 1)
 	{
@@ -140,10 +160,6 @@ void UI_ConnectorBranch::layout()
 
 		desiredHeight += 2;
 	}
-
-	// Keep track of what height the designer set for us, to ensure we're always in center
-	if (m_centerHeight == -1)
-		m_centerHeight = height() / 2;
 
 	setFixedHeight(desiredHeight);
 
