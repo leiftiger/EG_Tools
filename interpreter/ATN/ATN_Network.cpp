@@ -616,7 +616,7 @@ namespace ATN
 				else
 				{
 					// Parameter at this index can't be used for the transition
-					if (m_parameters[paramMarshall->m_value]->m_type != transition.effect()->parameters()[i]->m_type)
+					if (m_parameters[paramMarshall->m_value]->m_type != transition.percept()->parameters()[i]->m_type)
 						paramMarshall->resetConstant();
 				}
 			}
