@@ -101,10 +101,10 @@ TATNEffectCreateItemInHand
 give ::resource0:: item ::resource1:: = new instance of ::param0::
 
 TATNEffectLockEntity
-lock interaction slot "::param0::" of ::resource0::
+lock mutex "::param0::" of ::resource0::
 
 TATNEffectUnlockEntity
-unlock interaction slot "::param0::" of ::resource0::
+unlock mutex "::param0::" of ::resource0::
 
 TATNEffectDropItem
 drop ::resource1:: held by ::resource0::

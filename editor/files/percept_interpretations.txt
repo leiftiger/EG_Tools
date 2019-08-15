@@ -74,13 +74,13 @@ TATNPerceptEntityAtPosition
 pos of ::resource0:: == (::param0:: cm, ::param1:: cm)
 
 TATNPerceptTestEntityLock::45
-interaction slot "::param0::" of ::resource0:: is locked
+mutex "::param0::" of ::resource0:: is locked
 
 TATNPerceptTestEntityLock::753
-interaction slot "::param0::" of ::resource0:: is unlocked
+mutex "::param0::" of ::resource0:: is unlocked
 
 TATNPerceptTestEntityLock::20523
-interaction slot "::param0::" of ::resource0:: is not locked
+mutex "::param0::" of ::resource0:: is not locked
 
 TATNPerceptLastEffectReturnValue::18
 exited subnetwork
@@ -179,7 +179,7 @@ TATNPerceptGuiIsIdle
 GUI is idle
 
 TATNPerceptIsEntityDescriptionPresent
-::param0:: is present
+::param0:: is defined in a resource pack
 
 TATNPerceptIsRegionSetToActivity
 minion activity in region ::param0:: is ::param1::
