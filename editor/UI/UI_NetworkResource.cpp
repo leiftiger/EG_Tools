@@ -25,6 +25,16 @@ void UI_NetworkResource::setResourceInput(bool input)
 
 void UI_NetworkResource::setResourceName(const QString &name)
 {
+	ui.resourceDesc->setInputError(false);
+
+	if (name.contains('"'))
+	{
+		ui.resourceDesc->setInputError(true);
+		QToolTip::showText(ui.resourceDesc->mapToGlobal(ui.resourceDesc->pos()), tr("Description cannot contain quotes (\")"));
+
+		return;
+	}
+
 	m_resource->m_desc = name.toStdString();
 
 	emit repopulateArguments();

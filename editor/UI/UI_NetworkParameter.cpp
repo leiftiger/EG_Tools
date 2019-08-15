@@ -86,6 +86,16 @@ void UI_NetworkParameter::setParameterValue(const QString &value)
 
 void UI_NetworkParameter::setParameterName(const QString &name)
 {
+	ui.paramDesc->setInputError(false);
+
+	if (name.contains('"'))
+	{
+		ui.paramDesc->setInputError(true);
+		QToolTip::showText(ui.paramDesc->mapToGlobal(ui.paramDesc->pos()), tr("Description cannot contain quotes (\")"));
+
+		return;
+	}
+
 	m_parameter->m_desc = name.toStdString();
 
 	emit repopulateArguments();

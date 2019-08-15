@@ -31,7 +31,7 @@
     </property>
    </item>
   </widget>
-  <widget class="QLineEdit" name="paramDesc">
+  <widget class="UI_LineEdit" name="paramDesc">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -155,6 +155,11 @@
    <class>UI_ComboBox</class>
    <extends>QComboBox</extends>
    <header>UI_ComboBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UI_LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>UI_LineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

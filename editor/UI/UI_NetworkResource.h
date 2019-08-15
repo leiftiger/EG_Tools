@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QToolTip>
 #include "GeneratedFiles/ui_UI_NetworkResource.h"
 
 #include "ATN/ATN_Resources.h"
