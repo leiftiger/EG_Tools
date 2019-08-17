@@ -166,6 +166,10 @@ void UI_ConnectorBranch::layout()
 	// Align the branch to center on same plane as connector
 	desiredHeight -= CONNECTOR_SIZE + 1;
 
+	// Ensure height is even to allow proper re-centering
+	if ((desiredHeight % 2) != 0)
+		desiredHeight += 1;
+
 	move(x(), m_centerHeight - desiredHeight / 2);
 
 	int branchY = 0;
