@@ -60,13 +60,13 @@ namespace RL
 	{
 		return ".desc";
 	}
-	std::vector<BaseResource*> EntityDescLoader::load(const std::string &filename)
+	std::vector<BaseResource*> EntityDescLoader::load(const std::string &filename, const FileLoader &loader)
 	{
-		std::ifstream file(filename);
+		std::istream *fs = loader.openFile(filename);
 
 		std::string line;
 
-		std::getline(file, line);
+		util::getline(*fs, line);
 
 		std::vector<BaseResource*> res;
 
@@ -74,7 +74,11 @@ namespace RL
 
 		// Things like room walls which will probably never be relevant in the context of ATNs
 		if (type == "Scenery")
+		{
+			delete fs;
+
 			return res;
+		}
 
 		std::string name = IResourceLoader::pathToFileName(filename);
 
@@ -103,7 +107,7 @@ namespace RL
 		}
 
 		// Parse any hotspots defined in the file
-		while (std::getline(file, line))
+		while (util::getline(*fs, line))
 		{
 			if (line.length() >= strlen("HotspotName=") && line.substr(0, strlen("HotspotName=")) == "HotspotName=")
 			{
@@ -111,6 +115,8 @@ namespace RL
 				res.push_back(new BaseResource("Hotspot", line, util::hashFNV132(line)));
 			}
 		}
+
+		delete fs;
 
 		return res;
 	}

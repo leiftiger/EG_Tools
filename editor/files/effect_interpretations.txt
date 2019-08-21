@@ -194,7 +194,7 @@ TATNEffectEventGetEntity
 ::resource0:: = entity ::param0:: of last event
 
 TATNEffectGUIGetControl
-::resource0:: = control "::param1::" with dialog "::param0::"
+::resource0:: = control "::param1::" of dialog "::param0::"
 
 TATNEffectGUIHighlightControl
 ::param0::		highlight ::resource0:: as clickable		highlight ::resource0::		highlight ::resource0:: (indicate click: ::param0::)

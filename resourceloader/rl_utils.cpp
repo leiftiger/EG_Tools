@@ -30,12 +30,13 @@ namespace util
 		return hash;
 	}
 
-	std::vector<std::pair<std::string, std::int64_t>> loadResources(RL::IResourceLoader *loader, const std::string &fileExtension)
+	std::istream &getline(std::istream &stream, std::string &line)
 	{
-		std::vector<std::pair<std::string, std::int64_t>> res;
+		std::getline(stream, line);
 
+		if (line.length() > 0 && line[line.length() - 1] == '\r')
+			line = line.substr(0, line.length() - 1);
 
-
-		return res;
+		return stream;
 	}
 }

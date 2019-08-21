@@ -11,12 +11,19 @@
 
 #include "RL_IResourceLoader.h"
 
+#include "rl_utils.h"
+
 namespace RL
 {
+	// Forward declared
+	class IResourceLoader;
+
 	class FileLoader
 	{
-	private:
+	protected:
 		std::unordered_map<std::string, std::vector<std::string>> m_files;
+
+		std::string m_resourceListFolder;
 
 	public:
 
@@ -24,7 +31,10 @@ namespace RL
 		FileLoader(const std::string &resourceListFolder);
 		~FileLoader();
 
+		// Opens a requested file for reading
+		virtual std::istream *openFile(const std::string &filename) const;
+
 		// Load resources of specified type into a list of definitions
-		std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> loadResources(RL::IResourceLoader *loader) const;
+		std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> loadResources(IResourceLoader *loader);
 	};
 }

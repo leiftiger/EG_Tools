@@ -7,16 +7,16 @@ namespace RL
 		return ".as";
 	}
 
-	std::vector<BaseResource*> AnimationLoader::load(const std::string &filename)
+	std::vector<BaseResource*> AnimationLoader::load(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 
-		std::ifstream file(filename);
+		std::istream *fs = loader.openFile(filename);
 
 		std::string line;
 
 		// Parse all animation definitions
-		while (std::getline(file, line))
+		while (util::getline(*fs, line))
 		{
 			if (line.length() >= strlen("*ID_STRING") && line.substr(0, strlen("*ID_STRING")) == "*ID_STRING")
 			{
@@ -24,6 +24,8 @@ namespace RL
 				res.push_back(new BaseResource("Animation", line, util::hashFNV132(line)));
 			}
 		}
+
+		delete fs;
 
 		return res;
 	}

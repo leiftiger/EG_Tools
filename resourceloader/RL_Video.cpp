@@ -6,7 +6,7 @@ namespace RL
 	{
 		return ".md";
 	}
-	std::vector<BaseResource*> VideoLoader::load(const std::string &filename)
+	std::vector<BaseResource*> VideoLoader::load(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 

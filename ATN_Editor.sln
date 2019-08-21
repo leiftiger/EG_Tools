@@ -7,11 +7,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATN_Editor", "editor\ATN_Ed
 	ProjectSection(ProjectDependencies) = postProject
 		{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F} = {BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}
 		{F08ED980-A123-49C0-881F-06C1FE97486C} = {F08ED980-A123-49C0-881F-06C1FE97486C}
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB} = {36E144E6-AC35-4EC9-9C42-7D2132FE82AB}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATN_Interpreter", "interpreter\ATN_Interpreter.vcxproj", "{F08ED980-A123-49C0-881F-06C1FE97486C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceLoader", "resourceloader\resourceloader.vcxproj", "{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ERB_Packer", "resourcepacker\ERB_Packer.vcxproj", "{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +46,14 @@ Global
 		{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}.Release|x64.Build.0 = Release|x64
 		{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}.Release|x86.ActiveCfg = Release|Win32
 		{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}.Release|x86.Build.0 = Release|Win32
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Debug|x64.ActiveCfg = Debug|x64
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Debug|x64.Build.0 = Debug|x64
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Debug|x86.ActiveCfg = Debug|Win32
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Debug|x86.Build.0 = Debug|Win32
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Release|x64.ActiveCfg = Release|x64
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Release|x64.Build.0 = Release|x64
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Release|x86.ActiveCfg = Release|Win32
+		{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

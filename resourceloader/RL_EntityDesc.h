@@ -4,6 +4,9 @@
 #include <fstream>
 
 #include "RL_IResourceLoader.h"
+
+#include "RL_FileLoader.h"
+
 #include "rl_utils.h"
 
 namespace RL
@@ -20,7 +23,7 @@ namespace RL
 	public:
 		virtual const char * const extension() const override;
 
-		virtual std::vector<BaseResource*> load(const std::string &filename) override;
+		virtual std::vector<BaseResource*> load(const std::string &filename, const FileLoader &loader) override;
 
 	};
 }

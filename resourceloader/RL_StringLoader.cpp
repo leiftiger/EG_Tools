@@ -9,7 +9,6 @@ namespace RL
 			(int)filename.find("Strings_DefeatSA"),
 			(int)filename.find("Strings_Henchman_Recruit"),
 			(int)filename.find("Strings_Objective"),
-			(int)filename.find("Strings_Objective"),
 			(int)filename.find("Strings_Research"),
 		};
 
@@ -27,22 +26,21 @@ namespace RL
 		return ".txt";
 	}
 
-	std::vector<BaseResource*> StringLoader::load(const std::string &filename)
+	std::vector<BaseResource*> StringLoader::load(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 
 		if (!shouldParseFile(IResourceLoader::pathToFileName(filename)) && filename.rfind("Strings.txt") == -1)
 			return res;
 
-		std::ifstream file(filename);
+		std::istream *fs = loader.openFile(filename);
 
 		std::string lineCur;
 		std::string linePrev;
 
 		bool isObjective = false;
 
-
-		while (std::getline(file, lineCur))
+		while (util::getline(*fs, lineCur))
 		{
 			if ((int)lineCur.find("##") >= 0)
 			{
@@ -54,6 +52,8 @@ namespace RL
 
 			if (lineCur == "<BEGIN>")
 			{
+				res.push_back(new BaseResource("String ID", linePrev, util::hashFNV132(linePrev)));
+
 				int index;
 
 				index = (int)linePrev.find("EVENT_");
@@ -61,8 +61,8 @@ namespace RL
 				if (index >= 0)
 				{
 					res.push_back(new BaseResource("Event", linePrev, util::hashFNV132(linePrev)));
-					res.push_back(new BaseResource("String ID", linePrev, util::hashFNV132(linePrev)));
 				}
+
 
 				index = (int)linePrev.find("OBJECTIVE_");
 
@@ -76,13 +76,13 @@ namespace RL
 
 					if (isObjective)
 						res.push_back(new BaseResource("Objective ID", linePrev, util::hashFNV132(linePrev)));
-					else
-						res.push_back(new BaseResource("String ID", linePrev, util::hashFNV132(linePrev)));
 				}
 			}
 
 			linePrev = lineCur;
 		}
+
+		delete fs;
 
 		return res;
 	}

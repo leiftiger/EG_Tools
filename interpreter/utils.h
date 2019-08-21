@@ -25,7 +25,7 @@ namespace util
 	// Hash used for animations and event names
 	std::int32_t hashFNV132(const std::string &str);
 
-	// Proxy to std::getline that also keeps track of the line number of the currently open file
+	// Proxy to std::getline that also keeps track of the line number of the currently open file and clears the carriage return if it exists
 	std::istream &getline(std::istream &stream, std::string &line);
 
 	// Gets the config paths set by the config file

@@ -55,7 +55,12 @@ namespace util
 	{
 		DEBUG_LINE++;
 
-		return std::getline(stream, line);
+		std::getline(stream, line);
+
+		if (line.length() > 0 && line[line.length() - 1] == '\r')
+			line = line.substr(0, line.length() - 1);
+
+		return stream;
 	}
 
 	std::vector<std::string> configPaths(const std::string &filename)

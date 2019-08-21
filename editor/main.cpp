@@ -7,10 +7,15 @@
 #include "UI/UI_ErrorWindow.h"
 
 #include "RL_FileLoader.h"
+#include "RL_PackLoader.h"
+
 #include "RL_Animation.h"
 #include "RL_EntityDesc.h"
+#include "RL_GUILoader.h"
 #include "RL_Video.h"
 #include "RL_StringLoader.h"
+
+#include "ResourcePack.h"
 
 int main(int argc, char *argv[])
 {
@@ -68,9 +73,11 @@ int main(int argc, char *argv[])
 		*/
 
 		// TODO: more string hashes in above list
-		ATN::Manager::setDefinitions("Event", util::parseHashes("files/events.txt"));
-		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/hotspots.txt"));
-		ATN::Manager::setDefinitions("SpecialEffect", util::parseHashes("files/effects.txt"));
+		ATN::Manager::setDefinitions("Event", util::parseHashes("files/param_events.txt"));
+		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/param_hotspots.txt"));
+		ATN::Manager::setDefinitions("SpecialEffect", util::parseHashes("files/param_effects.txt"));
+		ATN::Manager::setDefinitions("GUI Dialog", util::parseHashes("files/param_gui_dialogs.txt"));
+		ATN::Manager::setDefinitions("UI State", util::parseHashes("files/param_gui_states.txt"));
 
 
 		// TODO: Confirm
@@ -269,81 +276,68 @@ int main(int argc, char *argv[])
 
 		std::vector<std::string> strConfig = util::configPaths("config.txt");
 
-		if (strConfig.size() == 3)
+		if (strConfig.size() == 1)
 		{
-			RL::FileLoader resourceLoader(strConfig[0]);
+			std::string gamePath = strConfig[0];
 
-			std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
+			std::vector<std::string> resourcePackNames = util::configPaths("files/resource_packs.txt");
 
-			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader() };
-			
-			for (RL::IResourceLoader *loader : loaders)
+			std::vector<ResourcePack> resourcePacks;
+
+			for (std::string &packPath : resourcePackNames)
 			{
-				res = resourceLoader.loadResources(loader);
-
-				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
+				try
 				{
-					// Append if we already have some definitions
-					if (ATN::Manager::hasDefinitions(defList.first))
-					{
-						ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
-
-						for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
-						{
-							if (!list.contains(defPair.first))
-							{
-								ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
-
-								list.add(*prop);
-							}
-						}
-					}
-					else
-					{
-						ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
-					}
+					resourcePacks.push_back(ResourcePack(gamePath + packPath));
+				}
+				catch (std::exception e)
+				{
+					// Some packs may not be installed
 				}
 			}
 
-			// Load from language resources
+			std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> res;
 
-			loaders = { new RL::StringLoader() };
-
-			resourceLoader = RL::FileLoader(strConfig[1]);
-
-			for (RL::IResourceLoader *loader : loaders)
+			for (const ResourcePack &resourcePack : resourcePacks)
 			{
-				res = resourceLoader.loadResources(loader);
+				RL::PackLoader resourceLoader(resourcePack);
 
-				for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
+				std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader() };
+
+				for (RL::IResourceLoader *loader : loaders)
 				{
-					// Append if we already have some definitions
-					if (ATN::Manager::hasDefinitions(defList.first))
+					res = resourceLoader.loadResources(loader);
+
+					for (const std::pair<std::string, std::vector<std::pair<std::string, std::int64_t>>> &defList : res)
 					{
-						ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
-
-						for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
+						// Append if we already have some definitions
+						if (ATN::Manager::hasDefinitions(defList.first))
 						{
-							if (!list.contains(defPair.first))
-							{
-								ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
+							ATN::List<ATN::Property> &list = ATN::Manager::getDefinitions(defList.first);
 
-								list.add(*prop);
+							for (const std::pair<std::string, std::int64_t> &defPair : defList.second)
+							{
+								if (!list.contains(defPair.first))
+								{
+									ATN::Property *prop = new ATN::Property(defPair.first, (std::int32_t)defPair.second);
+
+									list.add(*prop);
+								}
 							}
 						}
-					}
-					else
-					{
-						ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
+						else
+						{
+							ATN::Manager::setDefinitions(defList.first, util::createDefinition(defList.second));
+						}
 					}
 				}
 			}
 
 			// Load mods
 
-			loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::StringLoader() };
+			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::StringLoader(), new RL::GUILoader() };
 
-			resourceLoader = RL::FileLoader(strConfig[2]);
+			RL::FileLoader resourceLoader(gamePath + "/DynamicResources");
 
 			for (RL::IResourceLoader *loader : loaders)
 			{
