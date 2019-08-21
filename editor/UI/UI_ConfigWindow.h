@@ -28,17 +28,7 @@ private:
 	void saveConfig();
 
 public slots:
-	void setPathResource(const QString &path);
-	void setPathText(const QString &path);
-	void setPathDynamic(const QString &path);
-
-	void openPathResource();
-	void openPathText();
-	void openPathDynamic();
-
-	void setPathERB(const QString &path);
 	void setPathEG(const QString &path);
 
-	void openPathERB();
 	void openPathEG();
 };
