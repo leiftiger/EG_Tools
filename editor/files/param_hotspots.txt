@@ -1,3 +1,5 @@
+// Names of hotspots, retrieved from bone information in the game's models
+
 Pos_Dummy
 Pos_Dummy01
 Pos_Dummy02

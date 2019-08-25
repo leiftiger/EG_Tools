@@ -1,3 +1,5 @@
+// Names of events that can occur, list compiled by Dameon: http://web.archive.org/web/20111122133823/http://n1nj4.com/viewtopic.php?p=124784#124784
+
 EVENT_BUILD_AREA_BLOCKED
 EVENT_MINION_ASSIGNED_ROOMBUILD
 EVENT_MINION_UNASSIGNED_ROOMBUILD

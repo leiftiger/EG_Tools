@@ -1,3 +1,5 @@
+// Names of game GUI dialogs that can be interacted with, retrieved from the game's executable
+
 m_pCharacterContextMenu
 m_pCountdownDialog
 m_pEmpireStats

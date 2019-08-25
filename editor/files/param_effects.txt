@@ -1,3 +1,5 @@
+// Names of special effects that can be activated, retrieved from the game's executable
+
 BladeTrail
 CharacterDamageEffect
 EjectedShells

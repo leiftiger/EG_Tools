@@ -1,3 +1,5 @@
+// Human-readable interpretations of what an ATN effect will do within the network
+
 TATNEffectNone
 do nothing
 

@@ -1,3 +1,5 @@
+// Names of game GUI states that may be active, retrieved from the game's executable
+
 CharacterContextMenu
 Default
 LinkMode

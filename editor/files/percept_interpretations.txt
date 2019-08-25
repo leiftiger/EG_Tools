@@ -1,3 +1,5 @@
+// Human-readable interpretations of what an ATN percept will do within the network
+
 TATNPerceptTrue
 true
 

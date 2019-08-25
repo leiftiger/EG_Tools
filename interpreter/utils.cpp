@@ -97,6 +97,10 @@ namespace util
 
 		std::string line;
 
+		// First two lines are reserved for comments
+		getline(file, line);
+		getline(file, line);
+
 		ATN::List<ATN::Property> list(filename);
 
 		while (getline(file, line))
@@ -193,6 +197,10 @@ namespace util
 		std::vector<std::pair<std::string, std::string>> list;
 
 		std::string line;
+
+		// First two lines are reserved for comments
+		getline(file, line);
+		getline(file, line);
 
 		while (std::getline(file, line))
 		{
