@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include "GeneratedFiles/ui_UI_ConfigWindow.h"
 
+#include "ATN_definitions.h"
+
 #include <QToolTip>
 
 #include <fstream>

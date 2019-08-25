@@ -52,6 +52,8 @@ void UI_ConfigWindow::saveConfig()
 
 	for (const std::string &path : m_configPaths)
 		file << path << std::endl;
+
+	util::loadDynamicDefinitions();
 }
 
 void UI_ConfigWindow::setPathEG(const QString &path)

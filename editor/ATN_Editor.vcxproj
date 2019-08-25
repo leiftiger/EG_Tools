@@ -72,6 +72,7 @@
     <ClCompile Include="UI\UI_LineEdit.cpp" />
     <ClCompile Include="UI\UI_NetworkContainerStateFrame.cpp" />
     <ClCompile Include="UI\UI_ConfigWindow.cpp" />
+    <ClCompile Include="ATN_definitions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\interpreter\ATN_Interpreter.vcxproj">
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="UI\NetworkContainerProxy.h" />
     <ClInclude Include="UI\UI_ConnectFlags.h" />
+    <ClInclude Include="ATN_definitions.h" />
     <QtMoc Include="UI\UI_ConfigWindow.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;.\..\resourceparser;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;.\..\resourceparser;.\..\interpreter;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
