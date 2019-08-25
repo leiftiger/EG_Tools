@@ -241,11 +241,12 @@ namespace util
 				{"Chariot",			8},
 			}));
 
-		// TODO: Are there more values?
+		// TODO: Confirm
 		ATN::Manager::setDefinitions("Terminate Interaction Priority", util::createDefinition(
 			{
 				{"Normal", 0},
 				{"Terminate", 1},
+				{"TerminateUrgent", 2},
 			}));
 
 		ATN::Manager::setDefinitions("World Region", util::createDefinition(
