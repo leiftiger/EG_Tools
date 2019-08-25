@@ -836,6 +836,7 @@ void UI_NetworkContainer::parameterTypeChange(const QString &qType)
 	}
 
 	uiParameter->m_parameter->m_type = newType;
+	uiParameter->m_parameter->m_defaultValue = 0;
 
 	m_network->resetParameterMarshalls(index);
 

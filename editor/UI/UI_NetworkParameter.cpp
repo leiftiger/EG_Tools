@@ -16,7 +16,6 @@ void UI_NetworkParameter::loadTranslations()
 
 	// Always clear from previous type so the user is required to input a new one
 	ui.paramValue->clear();
-	ui.paramValue->setCurrentText(QString::fromStdString(m_parameter->translateValue(0)));
 
 	std::string parameterType = m_parameter->m_type;
 
@@ -48,6 +47,8 @@ void UI_NetworkParameter::loadTranslations()
 				ui.paramValue->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
 	}
+
+	ui.paramValue->setCurrentText(QString::fromStdString(m_parameter->translateValue(0)));
 
 	m_populating = false;
 }
