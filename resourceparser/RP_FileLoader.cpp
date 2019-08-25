@@ -1,4 +1,4 @@
-#include "RL_FileLoader.h"
+#include "RP_FileLoader.h"
 
 namespace RL
 {
@@ -17,7 +17,7 @@ namespace RL
 		return new std::ifstream(filename);
 	}
 
-	std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> FileLoader::loadResources(IResourceLoader *loader)
+	std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> FileLoader::loadResources(IResourceParser *loader)
 	{
 		// Initialize file list
 		// It is called here since we need rely on the openFile virtual function for both resource packs and dynamic resources
@@ -87,7 +87,7 @@ namespace RL
 
 		for (const std::string &file : m_files.at(loader->extension()))
 		{
-			for (RL::BaseResource *resource : loader->load(file, *this))
+			for (RL::BaseResource *resource : loader->parse(file, *this))
 			{
 				if (res.find(resource->type()) == res.end())
 				{

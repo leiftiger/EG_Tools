@@ -1,8 +1,8 @@
-#include "RL_IResourceLoader.h"
+#include "RP_IResourceParser.h"
 
 namespace RL
 {
-	std::string IResourceLoader::pathToFileName(const std::string &filepath)
+	std::string IResourceParser::pathToFileName(const std::string &filepath)
 	{
 		size_t index = filepath.find_last_of('/') + 1;
 
@@ -14,7 +14,7 @@ namespace RL
 		return name.substr(0, index);
 	}
 
-	std::string IResourceLoader::pathToFolder(const std::string &filepath)
+	std::string IResourceParser::pathToFolder(const std::string &filepath)
 	{
 		size_t index2 = filepath.find_last_of('/');
 		size_t index1 = filepath.substr(0, index2).find_last_of('/');

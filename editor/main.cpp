@@ -1,20 +1,21 @@
 #include <iostream>
-#include "rl_utils.h"
 
 #include <QApplication>
 
 #include "UI/UI_MainWindow.h"
 #include "UI/UI_ErrorWindow.h"
 
-#include "RL_FileLoader.h"
-#include "RL_PackLoader.h"
+#include "utils.h"
 
-#include "RL_Animation.h"
-#include "RL_Audio.h"
-#include "RL_EntityDesc.h"
-#include "RL_GUILoader.h"
-#include "RL_Video.h"
-#include "RL_StringLoader.h"
+#include "RP_FileLoader.h"
+#include "RP_PackLoader.h"
+
+#include "RP_Animation.h"
+#include "RP_Audio.h"
+#include "RP_EntityDesc.h"
+#include "RP_GUI.h"
+#include "RP_Video.h"
+#include "RP_Strings.h"
 
 #include "ResourcePack.h"
 
@@ -303,9 +304,9 @@ int main(int argc, char *argv[])
 			{
 				RL::PackLoader resourceLoader(resourcePack);
 
-				std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader(), new RL::AudioLoader() };
+				std::vector<RL::IResourceParser*> loaders = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
 
-				for (RL::IResourceLoader *loader : loaders)
+				for (RL::IResourceParser *loader : loaders)
 				{
 					res = resourceLoader.loadResources(loader);
 
@@ -336,11 +337,11 @@ int main(int argc, char *argv[])
 
 			// Load mods
 
-			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader(), new RL::AudioLoader() };
+			std::vector<RL::IResourceParser*> loaders = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
 
 			RL::FileLoader resourceLoader(gamePath + "/DynamicResources");
 
-			for (RL::IResourceLoader *loader : loaders)
+			for (RL::IResourceParser *loader : loaders)
 			{
 				res = resourceLoader.loadResources(loader);
 

@@ -1,8 +1,8 @@
-#include "RL_StringLoader.h"
+#include "RP_Strings.h"
 
 namespace RL
 {
-	bool StringLoader::shouldParseFile(const std::string &filename)
+	bool StringParser::shouldParseFile(const std::string &filename)
 	{
 		int indices[] =
 		{
@@ -21,16 +21,16 @@ namespace RL
 		return false;
 	}
 
-	const char * const StringLoader::extension() const
+	const char * const StringParser::extension() const
 	{
 		return ".txt";
 	}
 
-	std::vector<BaseResource*> StringLoader::load(const std::string &filename, const FileLoader &loader)
+	std::vector<BaseResource*> StringParser::parse(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 
-		if (!shouldParseFile(IResourceLoader::pathToFileName(filename)) && filename.rfind("Strings.txt") == -1)
+		if (!shouldParseFile(IResourceParser::pathToFileName(filename)) && filename.rfind("Strings.txt") == -1)
 			return res;
 
 		std::istream *fs = loader.openFile(filename);

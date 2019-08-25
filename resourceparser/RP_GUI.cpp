@@ -1,16 +1,16 @@
-#include "RL_GUILoader.h"
+#include "RP_GUI.h"
 
 namespace RL
 {
-	const char * const GUILoader::extension() const
+	const char * const GUIParser::extension() const
 	{
 		return ".csb";
 	}
-	std::vector<BaseResource*> GUILoader::load(const std::string &filename, const FileLoader &loader)
+	std::vector<BaseResource*> GUIParser::parse(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 
-		std::string state = IResourceLoader::pathToFileName(filename);
+		std::string state = IResourceParser::pathToFileName(filename);
 
 		// State appears to be the file defining all controls
 		res.push_back(new BaseResource("UI State", state, util::hashFNV132(state)));

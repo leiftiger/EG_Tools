@@ -9,14 +9,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include "RL_IResourceLoader.h"
+#include "RP_IResourceParser.h"
 
-#include "rl_utils.h"
+#include "RP_utils.h"
 
 namespace RL
 {
 	// Forward declared
-	class IResourceLoader;
+	class IResourceParser;
 
 	class FileLoader
 	{
@@ -35,6 +35,6 @@ namespace RL
 		virtual std::istream *openFile(const std::string &filename) const;
 
 		// Load resources of specified type into a list of definitions
-		std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> loadResources(IResourceLoader *loader);
+		std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> loadResources(IResourceParser *loader);
 	};
 }

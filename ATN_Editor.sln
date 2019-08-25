@@ -12,7 +12,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATN_Editor", "editor\ATN_Ed
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATN_Interpreter", "interpreter\ATN_Interpreter.vcxproj", "{F08ED980-A123-49C0-881F-06C1FE97486C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ResourceLoader", "resourceloader\resourceloader.vcxproj", "{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Resource_Parser", "resourceparser\Resource_Parser.vcxproj", "{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ERB_Packer", "resourcepacker\ERB_Packer.vcxproj", "{36E144E6-AC35-4EC9-9C42-7D2132FE82AB}"
 EndProject

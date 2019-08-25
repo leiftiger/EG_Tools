@@ -1,8 +1,8 @@
-#include "RL_EntityDesc.h"
+#include "RP_EntityDesc.h"
 
 namespace RL
 {
-	const char * const EntityDescLoader::typeToParameter(const std::string &type)
+	const char * const EntityDescParser::typeToParameter(const std::string &type)
 	{
 		if (type == "ActOfInfamy")
 			return "Act Of Infamy ID";
@@ -18,7 +18,7 @@ namespace RL
 		return nullptr;
 	}
 
-	bool EntityDescLoader::includeNumberInType(const std::string &type)
+	bool EntityDescParser::includeNumberInType(const std::string &type)
 	{
 		if (type == "ActOfInfamy")
 			return true;
@@ -34,7 +34,7 @@ namespace RL
 		return true;
 	}
 
-	int EntityDescLoader::digitCountFromName(const std::string &name)
+	int EntityDescParser::digitCountFromName(const std::string &name)
 	{
 		int digits = 0;
 
@@ -49,18 +49,18 @@ namespace RL
 		return digits;
 	}
 
-	std::int64_t EntityDescLoader::numberFromName(const std::string &name)
+	std::int64_t EntityDescParser::numberFromName(const std::string &name)
 	{
 		int digits = digitCountFromName(name);
 
 		return std::stoll(name.substr(0, digits));
 	}
 
-	const char * const EntityDescLoader::extension() const
+	const char * const EntityDescParser::extension() const
 	{
 		return ".desc";
 	}
-	std::vector<BaseResource*> EntityDescLoader::load(const std::string &filename, const FileLoader &loader)
+	std::vector<BaseResource*> EntityDescParser::parse(const std::string &filename, const FileLoader &loader)
 	{
 		std::istream *fs = loader.openFile(filename);
 
@@ -80,7 +80,7 @@ namespace RL
 			return res;
 		}
 
-		std::string name = IResourceLoader::pathToFileName(filename);
+		std::string name = IResourceParser::pathToFileName(filename);
 
 		std::int64_t value = numberFromName(name);
 
@@ -88,9 +88,12 @@ namespace RL
 
 		if (name[numEnd + 1] == '-')
 			name = name.substr(numEnd + 2);
-		// World regions seem to have an extra space for some reason
-		else if (name[numEnd + 2] == '-')
+		// World regions and AOIs seem to have an extra space for some reason
+		else if (name[numEnd + 2] == '-' && name[numEnd + 3] == ' ')
 			name = name.substr(numEnd + 4);
+		// Catch badly formatted descs
+		else if (name[numEnd + 2] == '-' && name[numEnd + 3] != ' ')
+			name = name.substr(numEnd + 3);
 
 		res.push_back(new BaseResource("Entity Type", std::to_string(value) + ": " + name, value));
 

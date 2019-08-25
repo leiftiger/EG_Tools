@@ -1,7 +1,7 @@
 #pragma once
 
-#include "RL_BaseResource.h"
-#include "RL_FileLoader.h"
+#include "RP_BaseResource.h"
+#include "RP_FileLoader.h"
 
 #include <string>
 #include <vector>
@@ -11,14 +11,14 @@ namespace RL
 	// Forward declared
 	class FileLoader;
 
-	class IResourceLoader
+	class IResourceParser
 	{
 	public:
 
 		// File extension for this loader
 		virtual const char * const extension() const = 0;
 
-		virtual std::vector<BaseResource*> load(const std::string &filename, const FileLoader &loader) = 0;
+		virtual std::vector<BaseResource*> parse(const std::string &filename, const FileLoader &loader) = 0;
 
 		// Gets the name of the file excluding the extensions from the given file path
 		static std::string pathToFileName(const std::string &filepath);

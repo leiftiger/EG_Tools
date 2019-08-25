@@ -22,9 +22,9 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{BAA79850-9FB2-47F7-9A5B-DDF1E84DA83F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>resourceloader</RootNamespace>
+    <RootNamespace>resourceparser</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>ResourceLoader</ProjectName>
+    <ProjectName>Resource_Parser</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -150,31 +150,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="RL_Animation.h" />
-    <ClInclude Include="RL_Audio.h" />
-    <ClInclude Include="RL_BaseResource.h" />
-    <ClInclude Include="RL_EntityDesc.h" />
-    <ClInclude Include="RL_FileLoader.h" />
-    <ClInclude Include="RL_GUILoader.h" />
-    <ClInclude Include="RL_IResourceLoader.h" />
-    <ClInclude Include="RL_PackLoader.h" />
-    <ClInclude Include="RL_StringLoader.h" />
-    <ClInclude Include="RL_Video.h" />
+    <ClInclude Include="RP_Animation.h" />
+    <ClInclude Include="RP_Audio.h" />
+    <ClInclude Include="RP_BaseResource.h" />
+    <ClInclude Include="RP_EntityDesc.h" />
+    <ClInclude Include="RP_FileLoader.h" />
+    <ClInclude Include="RP_GUI.h" />
+    <ClInclude Include="RP_IResourceParser.h" />
+    <ClInclude Include="RP_PackLoader.h" />
+    <ClInclude Include="RP_Strings.h" />
+    <ClInclude Include="RP_Video.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="rl_utils.h" />
+    <ClInclude Include="RP_utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RL_Animation.cpp" />
-    <ClCompile Include="RL_Audio.cpp" />
-    <ClCompile Include="RL_BaseResource.cpp" />
-    <ClCompile Include="RL_EntityDesc.cpp" />
-    <ClCompile Include="RL_FileLoader.cpp" />
-    <ClCompile Include="RL_GUILoader.cpp" />
-    <ClCompile Include="RL_IResourceLoader.cpp" />
-    <ClCompile Include="RL_PackLoader.cpp" />
-    <ClCompile Include="RL_StringLoader.cpp" />
-    <ClCompile Include="rl_utils.cpp" />
-    <ClCompile Include="RL_Video.cpp" />
+    <ClCompile Include="RP_Animation.cpp" />
+    <ClCompile Include="RP_Audio.cpp" />
+    <ClCompile Include="RP_BaseResource.cpp" />
+    <ClCompile Include="RP_EntityDesc.cpp" />
+    <ClCompile Include="RP_FileLoader.cpp" />
+    <ClCompile Include="RP_GUI.cpp" />
+    <ClCompile Include="RP_IResourceParser.cpp" />
+    <ClCompile Include="RP_PackLoader.cpp" />
+    <ClCompile Include="RP_Strings.cpp" />
+    <ClCompile Include="RP_utils.cpp" />
+    <ClCompile Include="RP_Video.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\resourcepacker\ERB_Packer.vcxproj">

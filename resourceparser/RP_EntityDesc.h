@@ -3,15 +3,15 @@
 #include <iostream>
 #include <fstream>
 
-#include "RL_IResourceLoader.h"
+#include "RP_IResourceParser.h"
 
-#include "RL_FileLoader.h"
+#include "RP_FileLoader.h"
 
-#include "rl_utils.h"
+#include "RP_utils.h"
 
 namespace RL
 {
-	class EntityDescLoader : public IResourceLoader
+	class EntityDescParser : public IResourceParser
 	{
 	protected:
 		static const char * const  typeToParameter(const std::string &type);
@@ -23,7 +23,7 @@ namespace RL
 	public:
 		virtual const char * const extension() const override;
 
-		virtual std::vector<BaseResource*> load(const std::string &filename, const FileLoader &loader) override;
+		virtual std::vector<BaseResource*> parse(const std::string &filename, const FileLoader &loader) override;
 
 	};
 }

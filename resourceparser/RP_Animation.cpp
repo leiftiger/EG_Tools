@@ -1,13 +1,13 @@
-#include "RL_Animation.h"
+#include "RP_Animation.h"
 
 namespace RL
 {
-	const char * const AnimationLoader::extension() const
+	const char * const AnimationParser::extension() const
 	{
 		return ".as";
 	}
 
-	std::vector<BaseResource*> AnimationLoader::load(const std::string &filename, const FileLoader &loader)
+	std::vector<BaseResource*> AnimationParser::parse(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 

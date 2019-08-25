@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "RL_IResourceLoader.h"
-
 namespace util
 {
 	std::int32_t hashFNV132(const std::string &str);

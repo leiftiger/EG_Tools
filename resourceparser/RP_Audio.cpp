@@ -1,13 +1,13 @@
-#include "RL_Audio.h"
+#include "RP_Audio.h"
 
 namespace RL
 {
-	const char * const AudioLoader::extension() const
+	const char * const AudioParser::extension() const
 	{
 		return ".spb";
 	}
 
-	std::vector<BaseResource*> AudioLoader::load(const std::string &filename, const FileLoader &loader)
+	std::vector<BaseResource*> AudioParser::parse(const std::string &filename, const FileLoader &loader)
 	{
 		std::vector<BaseResource*> res;
 
