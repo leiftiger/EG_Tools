@@ -298,9 +298,9 @@ namespace util
 			{
 				RL::PackLoader resourceLoader(resourcePack);
 
-				std::vector<RL::IResourceParser*> loaders = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
+				std::vector<RL::IResourceParser*> parsers = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
 
-				for (RL::IResourceParser *loader : loaders)
+				for (RL::IResourceParser *loader : parsers)
 				{
 					res = resourceLoader.loadResources(loader);
 
@@ -331,11 +331,11 @@ namespace util
 
 			// Load mods
 
-			std::vector<RL::IResourceParser*> loaders = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
+			std::vector<RL::IResourceParser*> parsers = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
 
 			RL::FileLoader resourceLoader(gamePath + "/DynamicResources");
 
-			for (RL::IResourceParser *loader : loaders)
+			for (RL::IResourceParser *loader : parsers)
 			{
 				res = resourceLoader.loadResources(loader);
 
