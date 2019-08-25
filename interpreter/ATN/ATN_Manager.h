@@ -67,10 +67,13 @@ namespace ATN
 		// Gets the interpretation format for this type
 		static const std::string &getInterpreration(const std::string &type);
 
+		// Loads a number of ATN lists from the specified file names
 		static void loadFromFiles(const std::vector<std::string> &filenames);
 
+		// Saves a number of ATN lists to file names of each list in the manager
 		static void saveToFiles();
 
+		// Adds a new list to the manager
 		static void addList(List<Entry> *list);
 
 		// Add new entry to the global list as it has been added elsewhere

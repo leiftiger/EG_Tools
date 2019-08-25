@@ -29,12 +29,14 @@ namespace ATN
 		virtual void serialize(std::ostream &stream) const override;
 		virtual void deserialize(std::istream &stream) override;
 
+		// Swaps all parameter index references so that index1 references point to index2 instead and vice versa
 		void swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2);
 		// Add a new parameter marshall in all states to represent a new parameter being added
 		void addParameterMarshall();
 		// Remove a specified parameter marshall index from all states and transitions
 		void removeParameterMarshalls(std::int64_t index);
 
+		// Swaps all resource index references so that index1 references point to index2 instead and vice versa
 		void swapResourceMarshallIndices(std::int64_t index1, std::int64_t index2);
 
 		// Swap input resource marshalls if the input order has changed

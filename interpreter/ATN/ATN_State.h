@@ -23,8 +23,8 @@ namespace ATN
 
 		std::vector<ResourceMarshall*> m_resourceMarshalls;
 		std::vector<ParameterMarshall*> m_parameterMarshalls;
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
 
 	public:
 

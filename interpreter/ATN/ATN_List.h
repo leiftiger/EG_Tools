@@ -87,11 +87,13 @@ namespace ATN
 			return m_maxUniqueID;
 		}
 
+		// Returns the number of entries stored in this list
 		size_t size() const
 		{
 			return m_idMap.size();
 		}
 
+		// Add a new entry to this list
 		void add(T &element)
 		{
 			m_idMap.insert_or_assign(element.id(), &element);
@@ -102,11 +104,13 @@ namespace ATN
 			registerName(element);
 		}
 
+		// Registers the entry's name for quick lookup in the list
 		void registerName(const T &element)
 		{
 			m_nameMap[element.name()] = (IATN_Data*)&element;
 		}
 
+		// Sets the name of the entry to the specified name, updating the references in the list
 		void updateName(T &element, const std::string &newName)
 		{
 			m_nameMap.erase(element.name());
@@ -116,13 +120,13 @@ namespace ATN
 			registerName(element);
 		}
 
-		// Note where this entry appeared in the header list
+		// Note where this entry appeared in the header list - used for preserving write order
 		void recordOrderHeader(const T &element)
 		{
 			m_numOrderHeader[(IATN_Data*)&element] = m_numOrderHeaderNext++;
 		}
 
-		// Note where this entry appeared in the data list
+		// Note where this entry appeared in the data list - used for preserving write order
 		void recordOrderData(const T &element)
 		{
 			m_numOrderData[(IATN_Data*)&element] = m_numOrderDataNext++;
@@ -202,6 +206,7 @@ namespace ATN
 			return order;
 		}
 
+		// Removes an entry from this list and clears it from the preserved write order
 		void remove(const T &element)
 		{
 			m_idMap.erase(element.id());

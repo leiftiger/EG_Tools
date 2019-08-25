@@ -42,7 +42,7 @@ namespace ATN
 		// Get effect to perform if transition is taken
 		Effect *effect() const;
 
-		// Set effect to perform if transition is taken
+		// Set effect to perform if transition is taken, recreating resource and parameter marshalls to suit new call
 		void setEffect(Effect *effect);
 
 		// Resource arguments sent to effect, populated from current set effect
@@ -54,7 +54,7 @@ namespace ATN
 		// Get percept to check if this transition should be taken
 		Percept *percept() const;
 
-		// Set percept to check if this transition should be taken
+		// Set percept to check if this transition should be taken, recreating resource and parameter marshalls to suit new call
 		void setPercept(Percept *percept);
 
 		// Resource arguments sent to percept, populated from current set percept

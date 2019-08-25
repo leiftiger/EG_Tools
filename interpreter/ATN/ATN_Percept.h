@@ -32,8 +32,10 @@ namespace ATN
 		// NOT EDITABLE FOR YOUR OWN SAFETY
 		virtual bool isEditable() const override;
 
+		// Executable game function that this percept calls
 		const std::string &gameFunction() const;
 
+		// Sets the executable game function that this percept calls
 		void setGameFunction(std::string &gameFunction);
 
 		virtual const char * const typeName() const override;
