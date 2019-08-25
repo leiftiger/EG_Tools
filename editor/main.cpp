@@ -10,6 +10,7 @@
 #include "RL_PackLoader.h"
 
 #include "RL_Animation.h"
+#include "RL_Audio.h"
 #include "RL_EntityDesc.h"
 #include "RL_GUILoader.h"
 #include "RL_Video.h"
@@ -302,7 +303,7 @@ int main(int argc, char *argv[])
 			{
 				RL::PackLoader resourceLoader(resourcePack);
 
-				std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader() };
+				std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader(), new RL::AudioLoader() };
 
 				for (RL::IResourceLoader *loader : loaders)
 				{
@@ -335,7 +336,7 @@ int main(int argc, char *argv[])
 
 			// Load mods
 
-			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::StringLoader(), new RL::GUILoader() };
+			std::vector<RL::IResourceLoader*> loaders = { new RL::AnimationLoader(), new RL::EntityDescLoader(), new RL::VideoLoader(), new RL::GUILoader(), new RL::StringLoader(), new RL::AudioLoader() };
 
 			RL::FileLoader resourceLoader(gamePath + "/DynamicResources");
 

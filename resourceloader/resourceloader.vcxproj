@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="RL_Animation.h" />
+    <ClInclude Include="RL_Audio.h" />
     <ClInclude Include="RL_BaseResource.h" />
     <ClInclude Include="RL_EntityDesc.h" />
     <ClInclude Include="RL_FileLoader.h" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RL_Animation.cpp" />
+    <ClCompile Include="RL_Audio.cpp" />
     <ClCompile Include="RL_BaseResource.cpp" />
     <ClCompile Include="RL_EntityDesc.cpp" />
     <ClCompile Include="RL_FileLoader.cpp" />
