@@ -68,6 +68,8 @@ $RECYCLE.BIN/
 *.ipdb
 *.pdb
 .suo
+*.vcxproj.filters
+*.vcxproj.user
 
 # The ATN files
 *.ros
