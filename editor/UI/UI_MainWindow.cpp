@@ -78,6 +78,7 @@ void UI_MainWindow::createNetworkResourceTab(ATN::Network &el)
 
 void UI_MainWindow::closeEvent(QCloseEvent *event)
 {
+	m_aboutWindow.close();
 	m_hashWindow.close();
 	m_errorWindow.close();
 }
@@ -150,6 +151,10 @@ void UI_MainWindow::newNetwork()
 {
 	int index = ui.comboATNList->currentIndex();
 
+	// Didn't load any ATN file
+	if (index == -1)
+		return;
+
 	ATN::List<ATN::Entry> *netList = ATN::Manager::lists()[index];
 
 	ATN::Network *net = new ATN::Network();
@@ -165,6 +170,11 @@ void UI_MainWindow::newNetwork()
 void UI_MainWindow::openHashTool()
 {
 	m_hashWindow.show();
+}
+
+void UI_MainWindow::openAboutWindow()
+{
+	m_aboutWindow.show();
 }
 
 void UI_MainWindow::openConfigWindow()

@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "GeneratedFiles/ui_UI_MainWindow.h"
 
+#include "UI_AboutWindow.h"
 #include "UI_HashWindow.h"
 #include "UI_ErrorWindow.h"
 
@@ -17,6 +18,7 @@ class UI_MainWindow : public QMainWindow
 protected:
 	std::vector<std::string> m_atnFiles;
 
+	UI_AboutWindow m_aboutWindow;
 	UI_HashWindow m_hashWindow;
 
 	UI_ErrorWindow m_errorWindow;
@@ -40,6 +42,8 @@ public slots:
 	void newNetwork();
 
 	void openHashTool();
+
+	void openAboutWindow();
 	void openConfigWindow();
 
 	void searchName(const QString &str);
