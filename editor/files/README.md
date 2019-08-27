@@ -1,1 +1,0 @@
-This folder contains the ATN files of the base game which is used as a reference for the ATN patcher of what's changed, and a list of events to help translate those
