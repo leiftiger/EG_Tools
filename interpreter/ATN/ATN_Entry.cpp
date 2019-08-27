@@ -11,6 +11,7 @@ namespace ATN
 
 	void Entry::deserialize(std::istream &stream)
 	{
+		// TypeName and UniqueID were already read to identify this entry
 		std::string line;
 
 		util::getline(stream, line);
@@ -18,6 +19,20 @@ namespace ATN
 		line = line.substr(strlen("Name="));
 
 		setName(line);
+	}
+
+	bool Entry::equals(const Entry *other) const
+	{
+		if (this->id() != other->id())
+			return false;
+
+		if (this->name() != other->name())
+			return false;
+
+		if (this->typeName() != other->typeName())
+			return false;
+
+		return true;
 	}
 
 	std::int32_t Entry::id() const
@@ -68,5 +83,15 @@ namespace ATN
 			throw Exception("Expected end of object, got \"%s\"", line);
 
 		return stream;
+	}
+
+	bool operator==(const Entry &lhs, const Entry &rhs)
+	{
+		return (&lhs)->equals(&rhs);
+	}
+
+	bool operator!=(const Entry &lhs, const Entry &rhs)
+	{
+		return !(lhs == rhs);
 	}
 }

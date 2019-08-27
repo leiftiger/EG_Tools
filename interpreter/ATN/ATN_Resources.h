@@ -76,6 +76,10 @@ namespace ATN
 		friend std::istream &operator>>(std::istream &stream, std::vector<Parameter*> &params);
 		// Serialize to ATN string
 		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Parameter*> &params);
+
+		// Checks whether the parameters have identical values
+		friend bool operator==(const Parameter &lhs, const Parameter &rhs);
+		friend bool operator!=(const Parameter &lhs, const Parameter &rhs);
 	};
 
 	// Triple for resources
@@ -93,6 +97,10 @@ namespace ATN
 		friend std::istream &operator>>(std::istream &stream, std::vector<Resource*> &resources);
 		// Serialize to ATN string
 		friend std::ostream &operator<<(std::ostream &stream, const std::vector<Resource*> &resources);
+
+		// Checks whether the resources have identical values
+		friend bool operator==(const Resource &lhs, const Resource &rhs);
+		friend bool operator!=(const Resource &lhs, const Resource &rhs);
 	};
 
 	// Triple for storing parameter marshalls
@@ -120,6 +128,10 @@ namespace ATN
 		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
 		// Serialize to ATN string
 		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ParameterMarshall*> &params);
+
+		// Checks whether the parameter marshalls have identical values
+		friend bool operator==(const ParameterMarshall &lhs, const ParameterMarshall &rhs);
+		friend bool operator!=(const ParameterMarshall &lhs, const ParameterMarshall &rhs);
 	};
 
 	// Triple for resource marshalls
@@ -158,5 +170,9 @@ namespace ATN
 		friend std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources);
 		// Serialize to ATN string
 		friend std::ostream &operator<<(std::ostream &stream, const std::vector<ResourceMarshall*> &resources);
+
+		// Checks whether the resource marshalls have identical values
+		friend bool operator==(const ResourceMarshall &lhs, const ResourceMarshall &rhs);
+		friend bool operator!=(const ResourceMarshall &lhs, const ResourceMarshall &rhs);
 	};
 }

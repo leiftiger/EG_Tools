@@ -724,6 +724,52 @@ namespace ATN
 		m_threads = util::parseEntryIDs<Thread>(stream, "Threads=");
 	}
 
+	bool Network::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const Network *other = (Network*)otherEntry;
+
+		if (this->states().size() != other->states().size())
+			return false;
+
+		if (this->threads().size() != other->threads().size())
+			return false;
+
+		if (this->parameters().size() != other->parameters().size())
+			return false;
+
+		if (this->resources().size() != other->resources().size())
+			return false;
+
+		for (size_t i = 0; i < this->states().size(); i++)
+		{
+			if (this->states()[i]->id() != other->states()[i]->id())
+				return false;
+		}
+
+		for (size_t i = 0; i < this->threads().size(); i++)
+		{
+			if (this->threads()[i]->id() != other->threads()[i]->id())
+				return false;
+		}
+
+		for (size_t i = 0; i < this->parameters().size(); i++)
+		{
+			if (*this->parameters()[i] != *other->parameters()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->resources().size(); i++)
+		{
+			if (*this->resources()[i] != *other->resources()[i])
+				return false;
+		}
+
+		return true;
+	}
+
 	void Network::swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2)
 	{
 		for (State *state : m_states)

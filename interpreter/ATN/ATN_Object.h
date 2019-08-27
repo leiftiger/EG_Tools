@@ -12,6 +12,9 @@ namespace ATN
 
 		virtual void serialize(std::ostream &stream) const override;
 		virtual void deserialize(std::istream &stream) override;
+		virtual bool equals(const Entry *other) const override;
+
+
 	public:
 
 		virtual const char * const typeName() const override;

@@ -64,4 +64,20 @@ namespace ATN
 		if (line != "{ }")
 			throw Exception("Expected \"{ }\", got \"%s\"", line);
 	}
+
+	bool Object::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const Object *other = (Object*)otherEntry;
+
+		if (this->parent() == nullptr && other->parent() != nullptr)
+			return false;
+
+		if (this->parent() != nullptr && other->parent() == nullptr)
+			return false;
+
+		return (this->parent()->id() == other->parent()->id());
+	}
 }

@@ -30,8 +30,9 @@ namespace ATN
 		// State to transition to if transition is taken
 		State *m_state = nullptr;
 
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
+		virtual bool equals(const Entry *other) const override;
 
 	public:
 

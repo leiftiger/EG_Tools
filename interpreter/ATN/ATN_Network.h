@@ -28,6 +28,7 @@ namespace ATN
 
 		virtual void serialize(std::ostream &stream) const override;
 		virtual void deserialize(std::istream &stream) override;
+		virtual bool equals(const Entry *other) const override;
 
 		// Swaps all parameter index references so that index1 references point to index2 instead and vice versa
 		void swapParameterMarshallIndices(std::int64_t index1, std::int64_t index2);

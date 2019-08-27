@@ -18,8 +18,9 @@ namespace ATN
 		// Input parameters to this effect
 		std::vector<Parameter*> m_parameters;
 
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
+		virtual bool equals(const Entry *other) const override;
 
 	public:
 

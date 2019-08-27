@@ -73,4 +73,35 @@ namespace ATN
 		if (line != "Compounds=0")
 			throw Exception("Expected \"Compounds=0\", got \"%s\"", line);
 	}
+
+	bool Effect::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const Effect *other = (Effect*)otherEntry;
+
+		if (this->gameFunction() != other->gameFunction())
+			return false;
+
+		if (this->parameters().size() != other->parameters().size())
+			return false;
+
+		if (this->resources().size() != other->resources().size())
+			return false;
+
+		for (size_t i = 0; i < this->parameters().size(); i++)
+		{
+			if (*this->parameters()[i] != *other->parameters()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->resources().size(); i++)
+		{
+			if (*this->resources()[i] != *other->resources()[i])
+				return false;
+		}
+
+		return true;
+	}
 }

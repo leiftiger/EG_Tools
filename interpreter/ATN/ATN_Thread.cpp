@@ -69,4 +69,14 @@ namespace ATN
 
 		m_state = (State*)&Manager::findByID(stateID);
 	}
+
+	bool Thread::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const Thread *other = (Thread*)otherEntry;
+
+		return (this->state()->id() == other->state()->id());
+	}
 }

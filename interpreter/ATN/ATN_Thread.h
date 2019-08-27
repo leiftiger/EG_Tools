@@ -19,8 +19,9 @@ namespace ATN
 		// Initial state in thread
 		State *m_state = nullptr;
 
-		virtual void serialize(std::ostream & stream) const override;
-		virtual void deserialize(std::istream & stream) override;
+		virtual void serialize(std::ostream &stream) const override;
+		virtual void deserialize(std::istream &stream) override;
+		virtual bool equals(const Entry *other) const override;
 
 	public:
 

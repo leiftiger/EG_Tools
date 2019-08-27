@@ -23,6 +23,9 @@ namespace ATN
 		// Load in the properties of this object from an ATN string entry, read to the blank line
 		virtual void deserialize(std::istream &stream);
 
+		// Checks whether this entry is identical to the other one
+		virtual bool equals(const Entry *other) const;
+
 	public:
 
 		// ATN type name of this class
@@ -45,6 +48,10 @@ namespace ATN
 		friend std::ostream &operator<<(std::ostream &stream, const Entry &e);
 		// Load in the properties of this object from an ATN string entry, read to the blank line
 		friend std::istream &operator>>(std::istream &stream, Entry &e);
+
+		// Compare whether an entry is identical to another (including subclasses)
+		friend bool operator==(const Entry &lhs, const Entry &rhs);
+		friend bool operator!=(const Entry &lhs, const Entry &rhs);
 	};
 }
 

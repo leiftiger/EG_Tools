@@ -212,4 +212,53 @@ namespace ATN
 
 		m_state = (State*)&Manager::findByID(stateID);
 	}
+
+	bool Transition::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const Transition *other = (Transition*)otherEntry;
+
+		if (this->state()->id() != other->state()->id())
+			return false;
+
+		if (this->effectParameterMarshalls().size() != other->effectParameterMarshalls().size())
+			return false;
+
+		if (this->effectResourceMarshalls().size() != other->effectResourceMarshalls().size())
+			return false;
+
+		if (this->perceptParameterMarshalls().size() != other->perceptParameterMarshalls().size())
+			return false;
+
+		if (this->perceptResourceMarshalls().size() != other->perceptResourceMarshalls().size())
+			return false;
+
+		for (size_t i = 0; i < this->effectParameterMarshalls().size(); i++)
+		{
+			if (*this->effectParameterMarshalls()[i] != *other->effectParameterMarshalls()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->effectResourceMarshalls().size(); i++)
+		{
+			if (*this->effectResourceMarshalls()[i] != *other->effectResourceMarshalls()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->perceptParameterMarshalls().size(); i++)
+		{
+			if (*this->perceptParameterMarshalls()[i] != *other->perceptParameterMarshalls()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->perceptResourceMarshalls().size(); i++)
+		{
+			if (*this->perceptResourceMarshalls()[i] != *other->perceptResourceMarshalls()[i])
+				return false;
+		}
+
+		return true;
+	}
 }

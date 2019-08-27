@@ -117,15 +117,6 @@ namespace ATN
 		// Header for transitions
 		stream << "ContainerID=ATNData" << std::endl;
 
-		/*
-		std::vector<Transition*> revTransitions;
-
-		for (int i = (int)m_stateTransitions.size() - 1; i >= 0; i--)
-		{
-			revTransitions.push_back(m_stateTransitions[i]);
-		}
-		*/
-
 		util::writeEntryIDs<Transition>(stream, "StateTransitions=", m_stateTransitions);
 
 		stream << "NetworkThreshold=0.0001" << std::endl;
@@ -151,18 +142,6 @@ namespace ATN
 
 		m_stateTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
 
-		/*
-		std::vector<Transition*> revTransitions = util::parseEntryIDs<Transition>(stream, "StateTransitions=");
-
-		// It appears that the transitions are sorted according from 0 = [least priority] to n = [most priority]
-		// So the list is reversed to keep all methods working the same way
-		
-		for (int i = (int)revTransitions.size() - 1; i >= 0; i--)
-		{
-			m_stateTransitions.push_back(revTransitions[i]);
-		}
-		*/
-
 		util::getline(stream, line);
 
 		if (line != "NetworkThreshold=0.0001")
@@ -183,5 +162,51 @@ namespace ATN
 		}
 
 		stream >> m_resourceMarshalls >> m_parameterMarshalls;
+	}
+
+	bool State::equals(const Entry *otherEntry) const
+	{
+		if (!Entry::equals(otherEntry))
+			return false;
+
+		const State *other = (State*)otherEntry;
+
+		if (this->transitions().size() != other->transitions().size())
+			return false;
+
+		if (this->networkTransition() == nullptr && other->networkTransition() != nullptr)
+			return false;
+
+		if (this->networkTransition() != nullptr && other->networkTransition() == nullptr)
+			return false;
+
+		if (this->networkTransition() != nullptr && this->networkTransition()->id() != other->networkTransition()->id())
+			return false;
+
+		if (this->parameterMarshalls().size() != other->parameterMarshalls().size())
+			return false;
+
+		if (this->resourceMarshalls().size() != other->resourceMarshalls().size())
+			return false;
+
+		for (size_t i = 0; i < this->transitions().size(); i++)
+		{
+			if (this->transitions()[i]->id() != other->transitions()[i]->id())
+				return false;
+		}
+
+		for (size_t i = 0; i < this->parameterMarshalls().size(); i++)
+		{
+			if (*this->parameterMarshalls()[i] != *other->parameterMarshalls()[i])
+				return false;
+		}
+
+		for (size_t i = 0; i < this->resourceMarshalls().size(); i++)
+		{
+			if (*this->resourceMarshalls()[i] != *other->resourceMarshalls()[i])
+				return false;
+		}
+
+		return true;
 	}
 }

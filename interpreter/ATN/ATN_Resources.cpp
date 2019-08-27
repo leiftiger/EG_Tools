@@ -335,6 +335,16 @@ namespace ATN
 		return stream;
 	}
 
+	bool operator==(const ParameterMarshall &lhs, const ParameterMarshall &rhs)
+	{
+		return lhs.m_type == rhs.m_type && lhs.m_value == rhs.m_value;
+	}
+
+	bool operator!=(const ParameterMarshall & lhs, const ParameterMarshall & rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	std::istream &operator>>(std::istream &stream, std::vector<ResourceMarshall*> &resources)
 	{
 		std::string line;
@@ -384,6 +394,16 @@ namespace ATN
 		stream << "}" << std::endl;
 
 		return stream;
+	}
+
+	bool operator==(const ResourceMarshall &lhs, const ResourceMarshall &rhs)
+	{
+		return lhs.m_type == rhs.m_type && lhs.m_value == rhs.m_value;
+	}
+
+	bool operator!=(const ResourceMarshall &lhs, const ResourceMarshall &rhs)
+	{
+		return !(lhs == rhs);
 	}
 
 	std::istream &operator>>(std::istream &stream, std::vector<Parameter*> &params)
@@ -437,6 +457,16 @@ namespace ATN
 		return stream;
 	}
 
+	bool operator==(const Parameter &lhs, const Parameter &rhs)
+	{
+		return lhs.m_defaultValue == rhs.m_defaultValue && lhs.m_type == rhs.m_type && lhs.m_desc == rhs.m_desc;
+	}
+
+	bool operator!=(const Parameter &lhs, const Parameter &rhs)
+	{
+		return !(lhs == rhs);
+	}
+
 	std::istream &operator>>(std::istream &stream, std::vector<Resource*> &resources)
 	{
 		std::string line;
@@ -486,5 +516,15 @@ namespace ATN
 		stream << "}" << std::endl;
 
 		return stream;
+	}
+
+	bool operator==(const Resource &lhs, const Resource &rhs)
+	{
+		return lhs.m_type == rhs.m_type && lhs.m_internalResource == rhs.m_internalResource && lhs.m_desc == rhs.m_desc;
+	}
+
+	bool operator!=(const Resource &lhs, const Resource &rhs)
+	{
+		return !(lhs == rhs);
 	}
 }
