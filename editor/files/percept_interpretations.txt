@@ -64,10 +64,10 @@ TATNPerceptInteractionTerminationConditions
 ::resource0:: should stop interacting
 
 TATNPerceptNumberInteractionSlotsInUseGreaterEqual
-number of vacant interaction slots of ::resource0:: >= ::param0::
+number of used interaction slots of ::resource0:: >= ::param0::
 
 TATNPerceptNumberInteractionSlotsInUseLessEqual
-number of vacant interaction slots of ::resource0:: <= ::param0::
+number of used interaction slots of ::resource0:: <= ::param0::
 
 TATNPerceptIsCharacterMale
 ::resource0:: is male
@@ -130,7 +130,7 @@ TATNPerceptEntityCount_Class::19126
 number of class ::param0:: < ::param1::
 
 TATNPerceptEntitiesWithinRange
-::resource0:: and ::resource1:: are within ::param0:: cms of each other
+::resource0:: and ::resource1:: are within ::param0:: cm of each other
 
 TATNPerceptExitHotspotClear
 exit of hotspot "::param0::" of ::resource0:: is clear
