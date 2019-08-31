@@ -227,6 +227,10 @@ void UI_Connector::mouseMoveEvent(QMouseEvent *e)
 
 	setAttribute(Qt::WA_TransparentForMouseEvents, false);
 
+	// Mouse is outside of window
+	if (widget == nullptr)
+		return;
+
 	if (typeid(*widget) == typeid(UI_ConnectorEnd))
 	{
 		m_end = (UI_ConnectorEnd*)widget;
