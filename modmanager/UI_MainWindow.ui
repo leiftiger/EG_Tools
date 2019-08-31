@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UI_MainWindowClass</class>
+ <widget class="QMainWindow" name="UI_MainWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>795</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Evil Mod Manager</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="2">
+     <widget class="QListWidget" name="listWidgetDisabled">
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="dragDropOverwriteMode">
+       <bool>false</bool>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
+      <property name="defaultDropAction">
+       <enum>Qt::MoveAction</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QListWidget" name="listWidgetEnabled">
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="dragDropOverwriteMode">
+       <bool>false</bool>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
+      <property name="defaultDropAction">
+       <enum>Qt::MoveAction</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label">
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Enabled Mods</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1" colspan="2">
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="buttonInstallMods">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Installs the enabled mods in the given order, clearing any previous Mod Manager installations</string>
+         </property>
+         <property name="text">
+          <string>Install enabled mods</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonUninstallMods">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Uninstalls mods that were installed by the Mod Manager</string>
+         </property>
+         <property name="text">
+          <string>Uninstall managed mods</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="buttonReloadList">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Reloads the lists to discover new or removed mods in the game files</string>
+         </property>
+         <property name="text">
+          <string>Reload mod lists</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="4" rowspan="3">
+     <widget class="QFrame" name="frame">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QFormLayout" name="formLayout">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_4">
+         <property name="font">
+          <font>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Mod Info</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="textModName"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Author:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="textModAuthor"/>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QTextBrowser" name="textModDesc"/>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="QPushButton" name="buttonSaveInfo">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Save above information for subsequent uses</string>
+         </property>
+         <property name="text">
+          <string>Save mod info</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Disabled Mods</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" colspan="4">
+     <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Here you can select which mods you want to enable or disable, and in the priority of each mod. In case of conflicts, the topmost mod's changes will be prioritized, which may render some mods ineffective. Simply drag and drop each mod to reorder the list.
+
+To install a new mod, follow its instructions and either reload this program or click on the &quot;Reload mod lists&quot; button.
+
+To the right you can see information about the currently selected mod - note that in many cases these fields may be empty as the Mod Manager didn't exist when they were released.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="4">
+     <widget class="Line" name="line">
+      <property name="lineWidth">
+       <number>1</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>795</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuSet_File">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSet_Evil_Genius_installation_path"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_Mod_Manager"/>
+   </widget>
+   <addaction name="menuSet_File"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSet_Evil_Genius_installation_path">
+   <property name="text">
+    <string>Set Evil Genius installation path...</string>
+   </property>
+  </action>
+  <action name="actionAbout_Mod_Manager">
+   <property name="text">
+    <string>About Mod Manager</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonReloadList</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>populateLists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>419</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>405</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonUninstallMods</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>uninstallMods()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>403</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonInstallMods</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>installMods()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>88</x>
+     <y>359</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>83</x>
+     <y>402</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSaveInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>saveModInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>675</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>673</x>
+     <y>403</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout_Mod_Manager</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>openAboutWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSet_Evil_Genius_installation_path</sender>
+   <signal>triggered()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>openConfigWindow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>populateLists()</slot>
+  <slot>installMods()</slot>
+  <slot>uninstallMods()</slot>
+  <slot>saveModInfo()</slot>
+  <slot>openAboutWindow()</slot>
+  <slot>openConfigWindow()</slot>
+ </slots>
+</ui>
