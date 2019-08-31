@@ -10,7 +10,7 @@
 #include "UI_ConnectFlags.h"
 
 // Forward declared
-class UI_Connector;
+class UI_Connection;
 
 class UI_ConnectorStart : public QWidget
 {
@@ -20,10 +20,10 @@ public:
 	UI_ConnectorStart(QWidget *parent = Q_NULLPTR);
 	~UI_ConnectorStart();
 
-	const UI_Connector *connector() const;
-	void setConnector(UI_Connector *connector);
+	const UI_Connection *connection() const;
+	void setConnection(UI_Connection *connection);
 
-	void deleteConnector();
+	void deleteConnection();
 
 	// Flags that connections from this state should fulfill
 	ConnectFlags connectFlags();
@@ -41,7 +41,7 @@ public:
 
 	void setConnectorOffset(int offset);
 
-	// Repaints the connector attached to this connector point if it exists
+	// Repaints the connection attached to this connector point if it exists
 	void updateConnector();
 
 	// Allows the connector to be hovered & highlighted, but not connectable
@@ -58,7 +58,7 @@ private:
 
 	int m_connectorOffset = CONNECTOR_OFFSET;
 
-	UI_Connector *m_connector = nullptr;
+	UI_Connection *m_connection = nullptr;
 
 	ConnectFlags m_connectFlags = ConnectFlags::OffsetRight;
 
@@ -80,4 +80,4 @@ signals:
 	
 };
 
-#include "UI_Connector.h"
+#include "UI_Connection.h"

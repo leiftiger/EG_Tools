@@ -3,8 +3,6 @@
 #include <QWidget>
 #include <QPaintEvent>
 
-#include "GeneratedFiles/ui_UI_Connector.h"
-
 #include "UI_ConnectorStart.h"
 #include "UI_ConnectorEnd.h"
 
@@ -17,13 +15,13 @@ class UI_ConnectorStart;
 class UI_ConnectorEnd;
 class NetworkContainerProxy;
 
-class UI_Connector : public QWidget
+class UI_Connection : public QWidget
 {
 	Q_OBJECT
 
 public:
-	UI_Connector(QWidget *parent = Q_NULLPTR);
-	~UI_Connector();
+	UI_Connection(QWidget *parent = Q_NULLPTR);
+	~UI_Connection();
 
 	bool hovered() const;
 	void setHovered(bool hovered);
@@ -49,7 +47,6 @@ public:
 	virtual void mousePressEvent(QMouseEvent *e) override;
 
 private:
-	Ui::UI_Connector ui;
 
 	bool m_hovered = false;
 	bool m_highlighted = false;

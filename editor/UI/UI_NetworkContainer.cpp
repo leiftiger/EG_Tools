@@ -154,14 +154,14 @@ UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *
 
 	uiTransition->initialize(transition, m_network);
 
-	UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+	UI_Connection *uiConnection = new UI_Connection(ui.networkContents);
 
-	uiConnector->setNetwork(&m_proxy);
+	uiConnection->setNetwork(&m_proxy);
 
-	uiConnector->setStart(uiTransition->m_connector);
-	uiConnector->setEnd(uiStateTo->ui.connectorIn);
+	uiConnection->setStart(uiTransition->m_connector);
+	uiConnection->setEnd(uiStateTo->ui.connectorIn);
 
-	uiTransition->m_connector->setConnector(uiConnector);
+	uiTransition->m_connector->setConnection(uiConnection);
 
 	connect(uiTransition->m_connector, SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 	connect(uiTransition->m_connector, SIGNAL(establishTransition()), this, SLOT(updateTransition()));
@@ -170,7 +170,7 @@ UI_NetworkTransition * UI_NetworkContainer::createTransitionUI(ATN::Transition *
 	connect(uiTransition, SIGNAL(unlockTransitionEditor()), this, SLOT(editTransition()));
 	connect(uiTransition, SIGNAL(requestPaste()), this, SLOT(receiveTransitionPaste()));
 
-	uiConnector->show();
+	uiConnection->show();
 	uiTransition->show();
 
 	uiStateFrom->ui.connectorOut->addTransition(uiTransition);
@@ -355,9 +355,9 @@ void UI_NetworkContainer::stateRemove()
 	{
 		for (UI_NetworkTransition *uiTransition : uiState->ui.connectorOut->transitions())
 		{
-			if (uiTransition->m_connector->connector() != nullptr && uiTransition->m_connector->connector()->end() == ut->ui.connectorIn)
+			if (uiTransition->m_connector->connection() != nullptr && uiTransition->m_connector->connection()->end() == ut->ui.connectorIn)
 			{
-				uiTransition->m_connector->deleteConnector();
+				uiTransition->m_connector->deleteConnection();
 			}
 		}
 
@@ -375,9 +375,9 @@ void UI_NetworkContainer::stateRemove()
 	// Likewise for threads
 	for (UI_NetworkThread *uiThread : m_threads)
 	{
-		if (uiThread->ui.connector->connector() != nullptr && uiThread->ui.connector->connector()->end() == ut->ui.connectorIn)
+		if (uiThread->ui.connector->connection() != nullptr && uiThread->ui.connector->connection()->end() == ut->ui.connectorIn)
 		{
-			uiThread->ui.connector->deleteConnector();
+			uiThread->ui.connector->deleteConnection();
 		}
 	}
 
@@ -1084,10 +1084,10 @@ void UI_NetworkContainer::receiveStatePaste()
 		outList->add(*transitionCopy);
 		ATN::Manager::addEntry(*transitionCopy);
 
-		// Connect to ourselves, then delete that connector
+		// Connect to ourselves, then delete that connection
 		UI_NetworkTransition *utTransition = createTransitionUI(transitionCopy, utState, utState);
 
-		utTransition->m_connector->deleteConnector();
+		utTransition->m_connector->deleteConnection();
 	}
 
 	// Handle network updates
@@ -1150,20 +1150,20 @@ void UI_NetworkContainer::createNewConnector()
 {
 	UI_ConnectorStart* start = (UI_ConnectorStart*)sender();
 
-	UI_Connector *connector = new UI_Connector(ui.networkContents);
+	UI_Connection *connection = new UI_Connection(ui.networkContents);
 
-	connector->setNetwork(&m_proxy);
+	connection->setNetwork(&m_proxy);
 
-	start->setConnector(connector);
-	connector->setStart(start);
+	start->setConnection(connection);
+	connection->setStart(start);
 
-	connector->show();
+	connection->show();
 }
 
 void UI_NetworkContainer::createNewTransition()
 {
 	UI_NetworkState* uiStateFrom = (UI_NetworkState*)sender();
-	UI_NetworkState* uiStateTo = (UI_NetworkState*)uiStateFrom->ui.connectorOut->transitionConnector()->connector()->end()->parent();
+	UI_NetworkState* uiStateTo = (UI_NetworkState*)uiStateFrom->ui.connectorOut->transitionConnector()->connection()->end()->parent();
 
 	ATN::Transition *t = new ATN::Transition();
 
@@ -1185,7 +1185,7 @@ void UI_NetworkContainer::createNewTransition()
 	uiStateFrom->m_state->add(*t);
 
 	// The transition connector only made a temporary connection, now we delete it since we have recreated it as the transition
-	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnector();
+	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnection();
 
 	UI_NetworkTransition *uiTransition = createTransitionUI(t, uiStateFrom, uiStateTo);
 
@@ -1202,7 +1202,7 @@ void UI_NetworkContainer::updateTransition()
 {
 	UI_NetworkTransition *ut = (UI_NetworkTransition*)sender()->parent();
 
-	UI_NetworkState *state = (UI_NetworkState*)ut->m_connector->connector()->end()->parent();
+	UI_NetworkState *state = (UI_NetworkState*)ut->m_connector->connection()->end()->parent();
 
 	ut->transition()->setState(state->m_state);
 }
@@ -1476,7 +1476,7 @@ void UI_NetworkContainer::layoutStates()
 
 		x += ut->width() + STATE_MARGIN;
 
-		// Important that these positions are in the same coordinate space as UI_Connector
+		// Important that these positions are in the same coordinate space as UI_Connection
 		QPoint pos = ut->pos();
 
 		QRect rect(pos.x(), pos.y(), ut->width(), ut->height());
@@ -1525,14 +1525,14 @@ void UI_NetworkContainer::initializeStates()
 		{
 			UI_NetworkState *uiState = uiStates[state];
 
-			UI_Connector *uiConnector = new UI_Connector(ui.networkContents);
+			UI_Connection *uiConnection = new UI_Connection(ui.networkContents);
 
-			uiConnector->setNetwork(&m_proxy);
+			uiConnection->setNetwork(&m_proxy);
 
-			uiConnector->setStart(uiThread->ui.connector);
-			uiConnector->setEnd(uiState->ui.connectorIn);
+			uiConnection->setStart(uiThread->ui.connector);
+			uiConnection->setEnd(uiState->ui.connectorIn);
 
-			uiThread->ui.connector->setConnector(uiConnector);
+			uiThread->ui.connector->setConnection(uiConnection);
 		}
 	}
 
@@ -1548,12 +1548,12 @@ void UI_NetworkContainer::initializeStates()
 
 	layoutStates();
 
-	// Precompute all connector offsets such that when they paint for the first time they're already correct
+	// Precompute all connection offsets such that when they paint for the first time they're already correct
 	for (UI_NetworkThread *uiThread : m_threads)
 	{
-		if (uiThread->ui.connector->connector() != nullptr)
+		if (uiThread->ui.connector->connection() != nullptr)
 		{
-			m_proxy.stateHeight(uiThread->ui.connector->connectFlags(), uiThread->ui.connector->connector());
+			m_proxy.stateHeight(uiThread->ui.connector->connectFlags(), uiThread->ui.connector->connection());
 		}
 	}
 
@@ -1561,9 +1561,9 @@ void UI_NetworkContainer::initializeStates()
 	{
 		for (UI_NetworkTransition *uiTransition : uiState->ui.connectorOut->transitions())
 		{
-			if (uiTransition->m_connector->connector() != nullptr)
+			if (uiTransition->m_connector->connection() != nullptr)
 			{
-				m_proxy.stateHeight(uiTransition->m_connector->connectFlags(), uiTransition->m_connector->connector());
+				m_proxy.stateHeight(uiTransition->m_connector->connectFlags(), uiTransition->m_connector->connection());
 			}
 		}
 	}

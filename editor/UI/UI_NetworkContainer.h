@@ -27,7 +27,7 @@
 
 #include "UI_ConnectFlags.h"
 
-#include "UI_Connector.h"
+#include "UI_Connection.h"
 #include "UI_ConnectorStart.h"
 #include "UI_ConnectorEnd.h"
 

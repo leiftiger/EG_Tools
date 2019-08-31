@@ -6,10 +6,10 @@
 #include <unordered_map>
 
 #include "UI_ConnectFlags.h"
-#include "UI_Connector.h"
+#include "UI_Connection.h"
 
 // Forward declared
-class UI_Connector;
+class UI_Connection;
 
 // Class for passing values between the network container and other
 // elements without risking insane circular dependencies during compilation
@@ -20,24 +20,24 @@ private:
 
 	int m_lowerHeight;
 
-	int m_maxHeightOffsetAbove = -CONNECTOR_MARGIN - CONNECTOR_SIZE;
-	int m_maxHeightOffsetBelow = -CONNECTOR_MARGIN - CONNECTOR_SIZE;
+	int m_maxHeightOffsetAbove = -CONNECTOR_MARGIN - CONNECTION_SIZE;
+	int m_maxHeightOffsetBelow = -CONNECTOR_MARGIN - CONNECTION_SIZE;
 
-	std::unordered_map<const UI_Connector*, int> m_heightOffsetsAbove;
-	std::unordered_map<const UI_Connector*, int> m_heightOffsetsBelow;
+	std::unordered_map<const UI_Connection*, int> m_heightOffsetsAbove;
+	std::unordered_map<const UI_Connection*, int> m_heightOffsetsBelow;
 
-	std::unordered_map<const UI_Connector*, QLine> m_connectorPositionsAbove;
-	std::unordered_map<const UI_Connector*, QLine> m_connectorPositionsBelow;
+	std::unordered_map<const UI_Connection*, QLine> m_connectorPositionsAbove;
+	std::unordered_map<const UI_Connection*, QLine> m_connectorPositionsBelow;
 
 	// Spaces occupied by states
 	std::vector<QRect> m_stateSpaces;
 
 	bool m_destroyed = false;
 
-	int calculateOffset(const UI_Connector* connector, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions);
+	int calculateOffset(const UI_Connection* connection, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions);
 
 	// Separate connectors that intersect and are at the same offset
-	void moveCollisions(std::unordered_map<const UI_Connector*, int> &offsetList, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions);
+	void moveCollisions(std::unordered_map<const UI_Connection*, int> &offsetList, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions);
 
 public:
 	NetworkContainerProxy();
@@ -62,12 +62,12 @@ public:
 	bool isLineClear(const QLine &line) const;
 
 	// Gets the height that is above or below the states according to the used flags
-	int stateHeight(ConnectFlags flags, const UI_Connector* connector);
+	int stateHeight(ConnectFlags flags, const UI_Connection* connection);
 
-	// Remove connector space held by this connector as it's being destroyed
-	void clearMyMemory(ConnectFlags flags, const UI_Connector *connector);
+	// Remove connection space held by this connection as it's being destroyed
+	void clearMyMemory(ConnectFlags flags, const UI_Connection *connection);
 
-	// Recalculates all connector heights
+	// Recalculates all connection heights
 	void recalculateHeights();
 
 };

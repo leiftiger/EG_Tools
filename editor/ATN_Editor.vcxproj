@@ -18,7 +18,7 @@
     <QtMoc Include="UI\UI_NetworkThread.h" />
     <QtMoc Include="UI\UI_MainWindowSearchResult.h" />
     <QtMoc Include="UI\UI_NetworkTransition.h" />
-    <QtMoc Include="UI\UI_Connector.h" />
+    <QtMoc Include="UI\UI_Connection.h" />
     <QtMoc Include="UI\UI_ConnectorStart.h" />
     <QtMoc Include="UI\UI_ConnectorEnd.h" />
     <QtMoc Include="UI\UI_NetworkState.h" />
@@ -31,7 +31,6 @@
     <QtUic Include="UI\UI_NetworkState.ui" />
     <QtUic Include="UI\UI_ConnectorEnd.ui" />
     <QtUic Include="UI\UI_ConnectorStart.ui" />
-    <QtUic Include="UI\UI_Connector.ui" />
     <QtUic Include="UI\UI_NetworkTransition.ui" />
     <QtUic Include="UI\UI_MainWindowSearchResult.ui" />
     <QtUic Include="UI\UI_NetworkThread.ui" />
@@ -48,7 +47,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UI\NetworkContainerProxy.cpp" />
-    <ClCompile Include="UI\UI_Connector.cpp" />
+    <ClCompile Include="UI\UI_Connection.cpp" />
     <ClCompile Include="UI\UI_ConnectorEnd.cpp" />
     <ClCompile Include="UI\UI_ConnectorStart.cpp" />
     <ClCompile Include="UI\UI_InputArgument.cpp" />

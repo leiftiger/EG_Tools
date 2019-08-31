@@ -16,26 +16,26 @@ UI_ConnectorStart::UI_ConnectorStart(QWidget *parent)
 UI_ConnectorStart::~UI_ConnectorStart()
 {
 	// When the connector is deleted, we have to delete the connection as well
-	if (m_connector != nullptr)
+	if (m_connection != nullptr)
 	{
-		delete m_connector;
+		delete m_connection;
 	}
 }
 
-const UI_Connector *UI_ConnectorStart::connector() const
+const UI_Connection *UI_ConnectorStart::connection() const
 {
-	return m_connector;
+	return m_connection;
 }
 
-void UI_ConnectorStart::setConnector(UI_Connector *connector)
+void UI_ConnectorStart::setConnection(UI_Connection *connection)
 {
-	m_connector = connector;
+	m_connection = connection;
 }
 
-void UI_ConnectorStart::deleteConnector()
+void UI_ConnectorStart::deleteConnection()
 {
-	m_connector->deleteLater();
-	m_connector = nullptr;
+	m_connection->deleteLater();
+	m_connection = nullptr;
 }
 
 ConnectFlags UI_ConnectorStart::connectFlags()
@@ -71,7 +71,7 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 
 	painter.drawEllipse(QRectF(rect().center() - QPointF(CONNECTOR_SIZE.width() * 0.5f, CONNECTOR_SIZE.height() * 0.5f), CONNECTOR_SIZE));
 
-	// Show that this connector is hovered
+	// Show that this connection is hovered
 	if ((option.state & QStyle::State_MouseOver) > 0)
 	{
 		painter.setPen(QPen(QColor(0, 0, 0, 192), 0.5f));
@@ -79,13 +79,13 @@ void UI_ConnectorStart::paintEvent(QPaintEvent *e)
 
 		painter.drawEllipse(QRectF(rect().center() - QPointF(CONNECTOR_SIZE.width() * 0.75f, CONNECTOR_SIZE.height() * 0.75f), QSizeF(CONNECTOR_SIZE.width() * 1.5f, CONNECTOR_SIZE.height() * 1.5f)));
 
-		if (m_connector != nullptr)
-			m_connector->setHovered(true);
+		if (m_connection != nullptr)
+			m_connection->setHovered(true);
 	}
 	else
 	{
-		if (m_connector != nullptr)
-			m_connector->setHovered(false);
+		if (m_connection != nullptr)
+			m_connection->setHovered(false);
 	}
 
 	painter.end();
@@ -95,16 +95,16 @@ void UI_ConnectorStart::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::MouseButton::LeftButton && !m_readOnly)
 	{
-		if (m_connector != nullptr)
+		if (m_connection != nullptr)
 		{
-			m_connector->setEnd(nullptr);
+			m_connection->setEnd(nullptr);
 		}
 		else
 		{
 			emit createNewConnector();
 		}
 
-		m_connector->setConnecting(true);
+		m_connection->setConnecting(true);
 	}
 }
 
@@ -125,8 +125,8 @@ void UI_ConnectorStart::setConnectorOffset(int offset)
 
 void UI_ConnectorStart::updateConnector()
 {
-	if (m_connector != nullptr)
-		m_connector->update();
+	if (m_connection != nullptr)
+		m_connection->update();
 }
 
 void UI_ConnectorStart::setReadOnly(bool readonly)
@@ -141,27 +141,27 @@ bool UI_ConnectorStart::isReadOnly() const
 
 void UI_ConnectorStart::highlightConnector()
 {
-	m_connector->setHovered(false);
-	m_connector->setHighlighted(!m_connector->highlighted());
+	m_connection->setHovered(false);
+	m_connection->setHighlighted(!m_connection->highlighted());
 }
 
 void UI_ConnectorStart::jumpToEndConnector()
 {
-	m_connector->setHovered(false);
+	m_connection->setHovered(false);
 
 	// Highlight temporarily so it's easier to see
-	if (!m_connector->highlighted())
+	if (!m_connection->highlighted())
 	{
-		m_connector->setHighlighted(true);
+		m_connection->setHighlighted(true);
 		QTimer::singleShot(2000, this, SLOT(highlightConnector()));
 	}
 
-	emit requestJumpToWidget(m_connector->end()->parentWidget());
+	emit requestJumpToWidget(m_connection->end()->parentWidget());
 }
 
 void UI_ConnectorStart::openContextMenu(const QPoint &pos)
 {
-	if (m_connector == nullptr)
+	if (m_connection == nullptr)
 		return;
 
 	QMenu contextMenu(tr("Context menu"), this);
@@ -172,7 +172,7 @@ void UI_ConnectorStart::openContextMenu(const QPoint &pos)
 
 	QAction actionJump("Jump to state", this);
 
-	if (m_connector->end() == nullptr)
+	if (m_connection->end() == nullptr)
 		actionJump.setEnabled(false);
 
 	connect(&actionJump, SIGNAL(triggered()), this, SLOT(jumpToEndConnector()));

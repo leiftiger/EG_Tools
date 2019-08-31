@@ -2,16 +2,16 @@
 
 
 
-int NetworkContainerProxy::calculateOffset(const UI_Connector *connector, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions)
+int NetworkContainerProxy::calculateOffset(const UI_Connection *connection, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions)
 {
-	const QLine &curLine = connectorPositions.at(connector);
+	const QLine &curLine = connectorPositions.at(connection);
 
 	int offset = 0;
 
-	for (const std::pair<const UI_Connector*, QLine> &pair : connectorPositions)
+	for (const std::pair<const UI_Connection*, QLine> &pair : connectorPositions)
 	{
 		// Can't overlap ourselves
-		if (pair.first == connector)
+		if (pair.first == connection)
 			continue;
 
 		const QLine &otherLine = pair.second;
@@ -19,20 +19,20 @@ int NetworkContainerProxy::calculateOffset(const UI_Connector *connector, const 
 		// Encapsulates other line
 		if (curLine.x1() <= otherLine.x1() && otherLine.x1() <= curLine.x2() && curLine.x1() <= otherLine.x2() && otherLine.x2() <= curLine.x2())
 		{
-			offset += CONNECTOR_SIZE + CONNECTOR_MARGIN;
+			offset += CONNECTION_SIZE + CONNECTOR_MARGIN;
 		}
 	}
 
 	return offset;
 }
 
-void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connector*, int> &offsetList, const std::unordered_map<const UI_Connector*, QLine> &connectorPositions)
+void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connection*, int> &offsetList, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions)
 {
-	for (const std::pair<const UI_Connector*, int> &pair1 : offsetList)
+	for (const std::pair<const UI_Connection*, int> &pair1 : offsetList)
 	{
 		const QLine &curLine = connectorPositions.at(pair1.first);
 
-		for (const std::pair<const UI_Connector*, int> &pair2 : offsetList)
+		for (const std::pair<const UI_Connection*, int> &pair2 : offsetList)
 		{
 			if (pair1.first == pair2.first)
 				continue;
@@ -44,9 +44,9 @@ void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connector
 			{
 				// Let the shorter connections stay above the longer ones
 				if ((otherLine.x2() - otherLine.x1()) > (curLine.x2() - curLine.x1()))
-					offsetList[pair2.first] += CONNECTOR_SIZE + CONNECTOR_MARGIN;
+					offsetList[pair2.first] += CONNECTION_SIZE + CONNECTOR_MARGIN;
 				else
-					offsetList[pair1.first] += CONNECTOR_SIZE + CONNECTOR_MARGIN;
+					offsetList[pair1.first] += CONNECTION_SIZE + CONNECTOR_MARGIN;
 
 				moveCollisions(offsetList, connectorPositions);
 			}
@@ -96,13 +96,13 @@ bool NetworkContainerProxy::isLineClear(const QLine &arbitraryLine) const
 	return true;
 }
 
-int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connector* connector)
+int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connection* connection)
 {
 	int offset = 0;
 
-	std::unordered_map<const UI_Connector*, int> *offsetList = &m_heightOffsetsBelow;
+	std::unordered_map<const UI_Connection*, int> *offsetList = &m_heightOffsetsBelow;
 
-	std::unordered_map<const UI_Connector*, QLine> *connectorPositions = &m_connectorPositionsBelow;
+	std::unordered_map<const UI_Connection*, QLine> *connectorPositions = &m_connectorPositionsBelow;
 
 	if (flags & ConnectFlags::Above)
 	{
@@ -112,15 +112,15 @@ int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connector* c
 
 	QLine *line = nullptr;
 
-	if (connectorPositions->find(connector) != connectorPositions->end())
+	if (connectorPositions->find(connection) != connectorPositions->end())
 	{
-		line = &(*connectorPositions)[connector];
+		line = &(*connectorPositions)[connection];
 
 		QPoint end = QCursor::pos();
 
-		if (connector->end() != nullptr)
+		if (connection->end() != nullptr)
 		{
-			end = connector->mapFromGlobal(connector->end()->mapToGlobal(connector->end()->center()));
+			end = connection->mapFromGlobal(connection->end()->mapToGlobal(connection->end()->center()));
 		}
 
 		if (line->p1() != end && line->p2() != end)
@@ -131,27 +131,27 @@ int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connector* c
 
 	if (line != nullptr)
 	{
-		offset = (*offsetList)[connector];
+		offset = (*offsetList)[connection];
 	}
 	else
 	{
-		QPoint end = connector->mapFromGlobal(QCursor::pos());
+		QPoint end = connection->mapFromGlobal(QCursor::pos());
 
-		if (connector->end() != nullptr)
+		if (connection->end() != nullptr)
 		{
-			end = connector->mapFromGlobal(connector->end()->mapToGlobal(connector->end()->center()));
+			end = connection->mapFromGlobal(connection->end()->mapToGlobal(connection->end()->center()));
 		}
 
-		(*connectorPositions)[connector] = QLine(connector->mapFromGlobal(connector->start()->mapToGlobal(connector->start()->center()+QPoint(connector->start()->connectorOffset(), 0))), end);
+		(*connectorPositions)[connection] = QLine(connection->mapFromGlobal(connection->start()->mapToGlobal(connection->start()->center()+QPoint(connection->start()->connectorOffset(), 0))), end);
 
-		if ((*connectorPositions)[connector].x1() > (*connectorPositions)[connector].x2())
-			(*connectorPositions)[connector] = QLine((*connectorPositions)[connector].p2(), (*connectorPositions)[connector].p1());
+		if ((*connectorPositions)[connection].x1() > (*connectorPositions)[connection].x2())
+			(*connectorPositions)[connection] = QLine((*connectorPositions)[connection].p2(), (*connectorPositions)[connection].p1());
 
-		offset = (*offsetList)[connector] = calculateOffset(connector, *connectorPositions);
+		offset = (*offsetList)[connection] = calculateOffset(connection, *connectorPositions);
 
-		for (const std::pair<const UI_Connector*, int> &pair : *offsetList)
+		for (const std::pair<const UI_Connection*, int> &pair : *offsetList)
 		{
-			if (pair.first == connector)
+			if (pair.first == connection)
 				continue;
 
 			(*offsetList)[pair.first] = calculateOffset(pair.first, *connectorPositions);
@@ -166,14 +166,14 @@ int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connector* c
 	return m_lowerHeight + offset;
 }
 
-void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connector *connector)
+void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connection *connection)
 {
 	if (m_destroyed)
 		return;
 
-	std::unordered_map<const UI_Connector*, int> *offsetList = &m_heightOffsetsBelow;
+	std::unordered_map<const UI_Connection*, int> *offsetList = &m_heightOffsetsBelow;
 
-	std::unordered_map<const UI_Connector*, QLine> *connectorPositions = &m_connectorPositionsBelow;
+	std::unordered_map<const UI_Connection*, QLine> *connectorPositions = &m_connectorPositionsBelow;
 
 	if (flags & ConnectFlags::Above)
 	{
@@ -181,10 +181,10 @@ void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connector
 		connectorPositions = &m_connectorPositionsAbove;
 	}
 
-	offsetList->erase(connector);
-	connectorPositions->erase(connector);
+	offsetList->erase(connection);
+	connectorPositions->erase(connection);
 
-	for (const std::pair<const UI_Connector*, int> &pair : *offsetList)
+	for (const std::pair<const UI_Connection*, int> &pair : *offsetList)
 	{
 		(*offsetList)[pair.first] = calculateOffset(pair.first, *connectorPositions);
 	}
@@ -194,8 +194,8 @@ void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connector
 
 void NetworkContainerProxy::recalculateHeights()
 {
-	std::unordered_map<const UI_Connector *, QLine> oldAbove = m_connectorPositionsAbove;
-	std::unordered_map<const UI_Connector *, QLine> oldBelow = m_connectorPositionsBelow;
+	std::unordered_map<const UI_Connection *, QLine> oldAbove = m_connectorPositionsAbove;
+	std::unordered_map<const UI_Connection *, QLine> oldBelow = m_connectorPositionsBelow;
 
 	m_connectorPositionsAbove.clear();
 	m_connectorPositionsBelow.clear();
@@ -203,12 +203,12 @@ void NetworkContainerProxy::recalculateHeights()
 	m_heightOffsetsAbove.clear();
 	m_heightOffsetsBelow.clear();
 
-	for (std::pair<const UI_Connector * const, QLine> &pair : oldAbove)
+	for (std::pair<const UI_Connection * const, QLine> &pair : oldAbove)
 	{
 		stateHeight(ConnectFlags::Above, pair.first);
 	}
 
-	for (std::pair<const UI_Connector * const, QLine> &pair : oldBelow)
+	for (std::pair<const UI_Connection * const, QLine> &pair : oldBelow)
 	{
 		stateHeight(ConnectFlags::None, pair.first);
 	}

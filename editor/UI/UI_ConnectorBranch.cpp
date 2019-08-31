@@ -23,22 +23,22 @@ void UI_ConnectorBranch::paintEvent(QPaintEvent *e)
 
 	// Connector bounds
 
-	painter.setPen(QPen(QColor(0, 0, 0, 255), CONNECTOR_SIZE));
+	painter.setPen(QPen(QColor(0, 0, 0, 255), CONNECTION_SIZE));
 	painter.setBrush(Qt::BrushStyle::NoBrush);
 
 	int totalBranches = m_transitions.size() + 1;
 
 	QPointF center = QPointF(width()*0.5f, height()*0.5f);
 
-	painter.drawLine(0, center.y() - CONNECTOR_SIZE/2, center.x(), center.y() - CONNECTOR_SIZE / 2);
+	painter.drawLine(0, center.y() - CONNECTION_SIZE/2, center.x(), center.y() - CONNECTION_SIZE / 2);
 
 	if (totalBranches > 1)
 	{
 		painter.drawLine(center.x(), 0, center.x(), height());
 
-		double branchHeight = (height() - CONNECTOR_SIZE) / (totalBranches - 1);
+		double branchHeight = (height() - CONNECTION_SIZE) / (totalBranches - 1);
 
-		double branchY = CONNECTOR_SIZE / 2;
+		double branchY = CONNECTION_SIZE / 2;
 
 		for (int i = 0; i < totalBranches; i++)
 		{
@@ -51,7 +51,7 @@ void UI_ConnectorBranch::paintEvent(QPaintEvent *e)
 			branchY += branchHeight;
 
 			if (i == totalBranches - 2)
-				branchY = (height() - CONNECTOR_SIZE/2);
+				branchY = (height() - CONNECTION_SIZE/2);
 		}
 	}
 	else
@@ -163,8 +163,8 @@ void UI_ConnectorBranch::layout()
 
 	setFixedHeight(desiredHeight);
 
-	// Align the branch to center on same plane as connector
-	desiredHeight -= CONNECTOR_SIZE + 1;
+	// Align the branch to center on same plane as the connector
+	desiredHeight -= CONNECTION_SIZE + 1;
 
 	// Ensure height is even to allow proper re-centering
 	if ((desiredHeight % 2) != 0)

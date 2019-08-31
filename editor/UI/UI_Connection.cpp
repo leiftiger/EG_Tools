@@ -1,10 +1,8 @@
-#include "UI_Connector.h"
+#include "UI_Connection.h"
 
-UI_Connector::UI_Connector(QWidget *parent)
+UI_Connection::UI_Connection(QWidget *parent)
 	: QWidget(parent)
 {
-	ui.setupUi(this);
-
 	// TODO: Better way of rendering over entire network container
 	setFixedSize(parent->size()*100);
 
@@ -16,18 +14,18 @@ UI_Connector::UI_Connector(QWidget *parent)
 	setMouseTracking(true);
 }
 
-UI_Connector::~UI_Connector()
+UI_Connection::~UI_Connection()
 {
 	if (m_network != nullptr)
 		m_network->clearMyMemory(m_start->connectFlags(), this);
 }
 
-bool UI_Connector::hovered() const
+bool UI_Connection::hovered() const
 {
 	return m_hovered;
 }
 
-void UI_Connector::setHovered(bool hovered)
+void UI_Connection::setHovered(bool hovered)
 {
 	bool bDifferent = (m_hovered != hovered);
 
@@ -43,12 +41,12 @@ void UI_Connector::setHovered(bool hovered)
 	}
 }
 
-bool UI_Connector::highlighted() const
+bool UI_Connection::highlighted() const
 {
 	return m_highlighted;
 }
 
-void UI_Connector::setHighlighted(bool highlighted)
+void UI_Connection::setHighlighted(bool highlighted)
 {
 	bool bDifferent = (m_highlighted != highlighted);
 
@@ -64,32 +62,32 @@ void UI_Connector::setHighlighted(bool highlighted)
 	}
 }
 
-const UI_ConnectorStart *UI_Connector::start() const
+const UI_ConnectorStart *UI_Connection::start() const
 {
 	return m_start;
 }
 
-void UI_Connector::setStart(UI_ConnectorStart *start)
+void UI_Connection::setStart(UI_ConnectorStart *start)
 {
 	m_start = start;
 }
 
-const UI_ConnectorEnd *UI_Connector::end() const
+const UI_ConnectorEnd *UI_Connection::end() const
 {
 	return m_end;
 }
 
-void UI_Connector::setEnd(UI_ConnectorEnd *end)
+void UI_Connection::setEnd(UI_ConnectorEnd *end)
 {
 	m_end = end;
 }
 
-const bool UI_Connector::connecting() const
+const bool UI_Connection::connecting() const
 {
 	return m_connecting;
 }
 
-void UI_Connector::setConnecting(bool connecting)
+void UI_Connection::setConnecting(bool connecting)
 {
 	m_connecting = connecting;
 	m_highlighted = false;
@@ -97,12 +95,12 @@ void UI_Connector::setConnecting(bool connecting)
 	this->setAttribute(Qt::WA_TransparentForMouseEvents, !connecting);
 }
 
-void UI_Connector::setNetwork(NetworkContainerProxy *network)
+void UI_Connection::setNetwork(NetworkContainerProxy *network)
 {
 	m_network = network;
 }
 
-void UI_Connector::paintEvent(QPaintEvent *e)
+void UI_Connection::paintEvent(QPaintEvent *e)
 {
 	QPainter painter;
 	painter.begin(this);
@@ -203,11 +201,11 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	}
 
 	if (m_highlighted)
-		painter.setPen(QPen(CONNECTOR_COLOR_HIGHLIGHTED, CONNECTOR_SIZE));
+		painter.setPen(QPen(CONNECTOR_COLOR_HIGHLIGHTED, CONNECTION_SIZE));
 	else if (m_hovered || m_connecting)
-		painter.setPen(QPen(CONNECTOR_COLOR_HOVERED, CONNECTOR_SIZE));
+		painter.setPen(QPen(CONNECTOR_COLOR_HOVERED, CONNECTION_SIZE));
 	else
-		painter.setPen(QPen(CONNECTOR_COLOR_DEFAULT, CONNECTOR_SIZE));
+		painter.setPen(QPen(CONNECTOR_COLOR_DEFAULT, CONNECTION_SIZE));
 
 	painter.setBrush(Qt::BrushStyle::NoBrush);
 
@@ -216,7 +214,7 @@ void UI_Connector::paintEvent(QPaintEvent *e)
 	painter.end();
 }
 
-void UI_Connector::mouseMoveEvent(QMouseEvent *e)
+void UI_Connection::mouseMoveEvent(QMouseEvent *e)
 {
 	if (!m_connecting)
 		return;
@@ -243,12 +241,12 @@ void UI_Connector::mouseMoveEvent(QMouseEvent *e)
 	update();
 }
 
-void UI_Connector::mousePressEvent(QMouseEvent *e)
+void UI_Connection::mousePressEvent(QMouseEvent *e)
 {
 	// Cancel connect operation
 	if (e->button() == Qt::MouseButton::RightButton)
 	{
-		m_start->setConnector(nullptr);
+		m_start->setConnection(nullptr);
 
 		deleteLater();
 	}
