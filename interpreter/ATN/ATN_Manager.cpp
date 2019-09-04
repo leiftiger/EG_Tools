@@ -1,4 +1,5 @@
 #include "ATN_Manager.h"
+#include <fstream>
 
 namespace ATN
 {
@@ -52,12 +53,29 @@ namespace ATN
 
 			atns.push_back(entries);
 
-			util::parseATN(file, *entries, false);
+			std::ifstream stream(file);
+
+			if (stream.fail())
+			{
+				throw ATN::Exception("Couldn't find file %s", file);
+			}
+
+			util::parseATN(stream, *entries, false);
+
+			addList(entries);
 		}
 
 		for (size_t i = 0; i < files.size(); i++)
 		{
-			util::parseATN(files[i], *atns[i], true);
+
+			std::ifstream stream(files[i]);
+
+			if (stream.fail())
+			{
+				throw ATN::Exception("Couldn't find file %s", files[i]);
+			}
+
+			util::parseATN(stream, *atns[i], true);
 		}
 
 		// Since names are added in the second pass, but the global ATN list required all IDs for that to run, we add the names afterwards here (for quick look-up)
@@ -76,7 +94,14 @@ namespace ATN
 
 			try
 			{
-				util::writeATN(list->name(), *list);
+				std::ofstream file(list->name(), std::ios::trunc);
+
+				if (file.fail())
+				{
+					throw ATN::Exception("Couldn't create file %s", list->name());
+				}
+
+				util::writeATN(file, *list);
 			}
 			catch (ATN::Exception &e)
 			{

@@ -39,11 +39,11 @@ namespace util
 
 	std::vector<std::pair<std::string, std::string>> parseInterpretations(const std::string &filename);
 
-	// Parse all entries from specified file
-	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass);
+	// Parse all entries from specified stream
+	void parseATN(std::istream &stream, ATN::List<ATN::Entry> &outList, bool secondPass);
 
-	// Write all ATN entries to specified file
-	void writeATN(const std::string &filename, const ATN::List<ATN::Entry> &list);
+	// Write all ATN entries to specified stream
+	void writeATN(std::ostream &stream, const ATN::List<ATN::Entry> &list);
 
 	// Parse a series of entry IDs from an ATN entry
 	template <class T>

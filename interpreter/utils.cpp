@@ -218,19 +218,12 @@ namespace util
 		return list;
 	}
 
-	// Parse ATN values from specified text file
+	// Parse ATN values from specified stream
 	// outList: list whose entries we'll add or update
 	// secondPass: if true, no entires will be added, but references will be updated
-	void parseATN(const std::string &filename, ATN::List<ATN::Entry> &outList, bool secondPass)
+	void parseATN(std::istream &file, ATN::List<ATN::Entry> &outList, bool secondPass)
 	{
 		DEBUG_LINE = -1;
-
-		std::ifstream file(filename);
-
-		if (file.fail())
-		{
-			throw ATN::Exception("Couldn't find file %s", filename);
-		}
 
 		std::string line;
 
@@ -346,27 +339,15 @@ namespace util
 				file >> el;
 			}
 		}
-		else
-		{
-			ATN::Manager::addList(&outList);
-		}
 
 		util::DEBUG_LINE = -1;
 	}
 
-	// Write ATN values to specified text file
-	// outList: list whose entries we'll add or update
-	// secondPass: if true, no entires will be added, but references will be updated
-	void writeATN(const std::string &filename, const ATN::List<ATN::Entry> &list)
+	// Write ATN values to specified stream
+	// outList: list whose entries to write
+	void writeATN(std::ostream &stream, const ATN::List<ATN::Entry> &list)
 	{
 		DEBUG_LINE = -1;
-
-		std::ofstream stream(filename, std::ios::trunc);
-
-		if (stream.fail())
-		{
-			throw ATN::Exception("Couldn't create file %s", filename);
-		}
 
 		stream << "[Header]" << std::endl;
 
