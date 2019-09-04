@@ -198,7 +198,7 @@ private:
 	void initializeStates();
 
 	// Populates the resource and parameter arguments for the effects & percepts
-	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls);
+	void populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> &paramMarshalls, const std::vector<ATN::ResourceMarshall*> &resourceMarshalls);
 
 public:
 	UI_NetworkContainer(QWidget *parent = Q_NULLPTR);
@@ -254,6 +254,8 @@ public slots:
 	void receiveOpenNetworkRequest(int id);
 
 	void receiveStateLayoutRequest();
+
+	void receiveStateHighlight();
 
 	void receiveStatePaste();
 	void receiveStatePasteLimited();

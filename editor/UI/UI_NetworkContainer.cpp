@@ -125,6 +125,7 @@ UI_NetworkState *UI_NetworkContainer::createStateUI(ATN::State *state)
 
 	connect(ut->ui.connectorOut->transitionConnector(), SIGNAL(createNewConnector()), this, SLOT(createNewConnector()));
 
+	connect(ut, SIGNAL(requestHighlight()), this, SLOT(receiveStateHighlight()));
 	connect(ut, SIGNAL(requestPaste()), this, SLOT(receiveStatePaste()));
 	connect(ut, SIGNAL(requestPasteLimited()), this, SLOT(receiveStatePasteLimited()));
 
@@ -1032,6 +1033,22 @@ void UI_NetworkContainer::receiveStateLayoutRequest()
 	layoutStates();
 }
 
+void UI_NetworkContainer::receiveStateHighlight()
+{
+	UI_NetworkState *utState = (UI_NetworkState*)sender();
+
+	for (UI_NetworkState *uiState : m_states)
+	{
+		for (UI_NetworkTransition *uiTransition : uiState->ui.connectorOut->transitions())
+		{
+			if (uiTransition->transition()->state() == utState->m_state)
+			{
+				uiTransition->highlightConnection();
+			}
+		}
+	}
+}
+
 void UI_NetworkContainer::receiveStatePaste()
 {
 	// Shouldn't be called, but just in case, we guard against it
@@ -1568,7 +1585,7 @@ void UI_NetworkContainer::initializeStates()
 	setUpdatesEnabled(true);
 }
 
-void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> paramMarshalls, const std::vector<ATN::ResourceMarshall*> resourceMarshalls)
+void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgument*> &argumentList, std::vector<UI_InputResource*> &resourceList, QWidget *argumentWidget, QWidget *resourceWidget, const ATN::IResourceHolder *resourceHolder, const std::vector<ATN::ParameterMarshall*> &paramMarshalls, const std::vector<ATN::ResourceMarshall*> &resourceMarshalls)
 {
 	for (UI_InputArgument *ut : argumentList)
 		ut->deleteLater();

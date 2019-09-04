@@ -49,6 +49,7 @@ public:
 protected slots:
 	void openContextMenu(const QPoint &pos);
 
+	void handleHighlight();
 	void handleCopy();
 	void handlePaste();
 	void handlePasteLimited();
@@ -68,6 +69,7 @@ signals:
 	void requestLayout();
 	void requestNewTransition();
 
+	void requestHighlight();
 	void requestPaste();
 	void requestPasteLimited();
 };

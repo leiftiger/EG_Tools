@@ -62,7 +62,11 @@ public:
 
 	ATN::Transition *transition() const;
 
+	// Sets the transition name as highlighted
 	void setHighlighted(bool highlighted);
+
+	// Highlight the transition connection
+	void highlightConnection();
 
 protected slots:
 	void openContextMenu(const QPoint &pos);

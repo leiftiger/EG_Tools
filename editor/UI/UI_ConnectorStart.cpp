@@ -139,8 +139,11 @@ bool UI_ConnectorStart::isReadOnly() const
 	return m_readOnly;
 }
 
-void UI_ConnectorStart::highlightConnector()
+void UI_ConnectorStart::highlightConnection()
 {
+	if (m_connection == nullptr)
+		return;
+
 	m_connection->setHovered(false);
 	m_connection->setHighlighted(!m_connection->highlighted());
 }
@@ -153,7 +156,7 @@ void UI_ConnectorStart::jumpToEndConnector()
 	if (!m_connection->highlighted())
 	{
 		m_connection->setHighlighted(true);
-		QTimer::singleShot(2000, this, SLOT(highlightConnector()));
+		QTimer::singleShot(2000, this, SLOT(highlightConnection()));
 	}
 
 	emit requestJumpToWidget(m_connection->end()->parentWidget());
@@ -168,7 +171,7 @@ void UI_ConnectorStart::openContextMenu(const QPoint &pos)
 
 	QAction actionHighlight("Highlight", this);
 
-	connect(&actionHighlight, SIGNAL(triggered()), this, SLOT(highlightConnector()));
+	connect(&actionHighlight, SIGNAL(triggered()), this, SLOT(highlightConnection()));
 
 	QAction actionJump("Jump to state", this);
 

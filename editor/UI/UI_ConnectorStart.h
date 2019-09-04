@@ -66,10 +66,12 @@ private:
 
 protected slots:
 	void openContextMenu(const QPoint &pos);
-	void highlightConnector();
 	void jumpToEndConnector();
 
-public:
+public slots:
+	// Highlights the connection made from this connector
+	void highlightConnection();
+
 signals:
 	void createNewConnector();
 

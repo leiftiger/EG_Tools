@@ -169,6 +169,11 @@ void UI_NetworkState::setReadOnly(bool readonly)
 		ut->ui.comboBox->setDisabled(readonly);
 }
 
+void UI_NetworkState::handleHighlight()
+{
+	emit requestHighlight();
+}
+
 void UI_NetworkState::handleCopy()
 {
 	ATN::Manager::setStoredEntry(m_state);
@@ -192,6 +197,8 @@ void UI_NetworkState::openContextMenu(const QPoint &pos)
 
 	QMenu contextMenu(tr("Context menu"), this);
 
+	QAction actionHighlight("Highlight incoming transitions", this);
+
 	QAction actionCopy("Copy values and transitions", this);
 
 	QAction actionPaste("Paste values and transitions", this);
@@ -207,12 +214,14 @@ void UI_NetworkState::openContextMenu(const QPoint &pos)
 		actionPasteLimited.setEnabled(false);
 	}
 
+	connect(&actionHighlight, SIGNAL(triggered()), this, SLOT(handleHighlight()));
 	connect(&actionCopy, SIGNAL(triggered()), this, SLOT(handleCopy()));
 	connect(&actionPaste, SIGNAL(triggered()), this, SLOT(handlePaste()));
 	connect(&actionPasteLimited, SIGNAL(triggered()), this, SLOT(handlePasteLimited()));
 
 	connect(&contextMenu, SIGNAL(destroyed()), this, SLOT(update()));
 
+	contextMenu.addAction(&actionHighlight);
 	contextMenu.addAction(&actionCopy);
 	contextMenu.addAction(&actionPaste);
 	contextMenu.addAction(&actionPasteLimited);

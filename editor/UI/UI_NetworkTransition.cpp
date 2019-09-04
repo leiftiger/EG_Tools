@@ -78,6 +78,11 @@ void UI_NetworkTransition::setHighlighted(bool highlighted)
 	update();
 }
 
+void UI_NetworkTransition::highlightConnection()
+{
+	m_connector->highlightConnection();
+}
+
 void UI_NetworkTransition::handleCopy()
 {
 	ATN::Manager::setStoredEntry(m_transition);
