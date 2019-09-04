@@ -1,4 +1,4 @@
-This is a collection of ATN tools for the 2004 game Evil Genius, which for now only encompasses an ATN editor.
+This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN editor and a Mod Manager.
 
 # ATN Editor
 With the ATN Editor, you are able to edit key logic in Evil Genius, making it possible to:
@@ -11,3 +11,9 @@ With the ATN Editor, you are able to edit key logic in Evil Genius, making it po
 * Enable the cloning chamber on island 2
 * Earn money in the casino and hotel business
 * And much more!
+
+Note that the ATNs only govern parts of the game, you will still have to add string entries or entity descriptions to fully utilize it.
+
+# Mod Manager
+With the Mod Manager, you can safely use mods that partially change the same files (such as the ATN files).
+It will automatically scan for the changes made by each mod and try to merge them to a single file without altering the behaviour of the mods.

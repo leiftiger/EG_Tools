@@ -46,8 +46,8 @@ It's important that the order is preserved as it is uncertain how rigid these st
 
 This stucture is used by almost all objects, including training/trainee, stat recharging, tourist interactions, loot and more. Certain exceptions are noted below.
 
-# Research object networks
+## Research object networks
 Similar to object networks, research objects have the character and object being interacted with. To add to that, they also have a research card `Item` as the third input resource, which is the research vial being carried around. In addition, they also have an `Integer` parameter denoting how long the research should take in milliseconds, which should have a default value of 10 000 milliseconds.
 
-# Interrogation object networks
+## Interrogation object networks
 Similar to object networks, the first two `Character` input resources is the guard and the prisoner being interrogated. The third input resource is the `Object` being used to interrogate them with.

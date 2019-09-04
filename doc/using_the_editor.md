@@ -2,7 +2,7 @@
 
 To begin with, you need to set definition paths for your Evil Genius files using the instructions in the appropriate window. These will load certain definitions directly from the game, including changes made by mods. The editor will work without them, but it may make it harder to use and view.
 
-To begin with, you need to load a copy of an ATN file, such as `ATNData.ros` or `ATNData_Objects.ros`. Make sure to also load `ATNResources.ros` as that file contains necessary resource relationships that the editor uses. It is also prudent to load all available ATN files when editing as they share global unique IDs, which could potentially conflict if editing only one by one. The ATN editor will use unique IDs starting from the highest in any loaded file for any new additions to the ATN files. Unique IDs are purposedly locked from editing as there should be no reason to edit them manually.
+To begin with, you need to load a copy of an ATN file, such as `ATNData.ros` or `ATNData_Objects.ros`. `ATNResources.ros` contains necessary resource relationships that the editor uses, but should be loaded automatically in the background from the definition paths. It is also prudent to load all available ATN files when editing as they share global unique IDs, which could potentially conflict if editing only one by one. The ATN editor will use unique IDs starting from the highest in any loaded file for any new additions to the ATN files. Unique IDs are purposedly locked from editing as there should be no reason to edit them manually.
 
 Now that you've loaded a file, you can use the search field to find networks that you want to inspect or edit or you can choose to create a new network in a specific ATN file.
 
