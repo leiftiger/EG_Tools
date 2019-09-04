@@ -1309,7 +1309,7 @@ void UI_NetworkContainer::updateTransitionInterpretation()
 	if (m_currentEditTransition == nullptr)
 		return;
 
-	ui.labelTransitionInterpretation->setText(QString::fromStdString(std::string("Interpretation: ") + m_currentEditTransition->interpret()));
+	ui.labelTransitionInterpretation->setText(QString::fromStdString(m_currentEditTransition->interpret()));
 }
 
 void UI_NetworkContainer::moveTransitionUp()

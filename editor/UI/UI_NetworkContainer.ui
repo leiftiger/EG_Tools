@@ -499,9 +499,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>40</y>
           <width>1011</width>
-          <height>21</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="font">
@@ -509,8 +509,14 @@
           <pointsize>10</pointsize>
          </font>
         </property>
+        <property name="toolTip">
+         <string>Interpretation</string>
+        </property>
         <property name="text">
-         <string>Interpretation: </string>
+         <string/>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QToolButton" name="buttonTransitionSortDown">
