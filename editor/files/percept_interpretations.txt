@@ -97,10 +97,10 @@ TATNPerceptLastEffectReturnValue::880
 network returned false
 
 TATNPerceptResourceExists::46
-::resource0:: exists
+::resource0:: is not NULL
 
 TATNPerceptResourceExists::8830
-::resource0:: does not exist
+::resource0:: is NULL
 
 TATNPerceptWaitForEventWithEntities
 "::param0::" has occurred with ::resource0:: and ::resource1::
