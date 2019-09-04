@@ -383,7 +383,7 @@ void UI_MainWindow::openNetworkButton()
 
 		msg.setInformativeText(tr("This network is defined in multiple files, thus it is set to read-only due to program limitations.") +
 			tr("\n\nIf you want to edit it, you must load only \"") + res->ui.textATNList->text() +
-			tr("\" and \"ATNResources.ros\".\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
+			tr("\".\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
 
 		msg.setStandardButtons(QMessageBox::Ok);
 		msg.setDefaultButton(QMessageBox::Ok);
@@ -433,8 +433,8 @@ void UI_MainWindow::receiveOpenNetworkRequest(int id)
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Network is read-only</b></span>"));
 
 		msg.setInformativeText(tr("This network is defined in multiple files, thus it is set to read-only due to program limitations.") +
-			tr("\n\nIf you want to edit it, you must load only one of the files it is defined in ") +
-			tr("and \"ATNResources.ros\".\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
+			tr("\n\nIf you want to edit it, you must load only one of the files it is defined in.") +
+			tr("\n\nIf you do edit this network, you must apply the same changes in the other files or risk crashing the game."));
 
 		msg.setStandardButtons(QMessageBox::Ok);
 		msg.setDefaultButton(QMessageBox::Ok);

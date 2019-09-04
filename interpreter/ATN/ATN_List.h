@@ -207,7 +207,7 @@ namespace ATN
 		}
 
 		// Removes an entry from this list and clears it from the preserved write order
-		void remove(const T &element)
+		void remove(const T &element, bool keepManaged = true)
 		{
 			m_idMap.erase(element.id());
 
@@ -234,7 +234,8 @@ namespace ATN
 				}
 			}
 
-			Manager::removeEntry(element);
+			if (keepManaged)
+				Manager::removeEntry(element);
 		}
 
 		// Returns true if this list contains an element with the given ID

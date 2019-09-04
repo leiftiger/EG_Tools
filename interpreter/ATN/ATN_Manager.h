@@ -43,6 +43,8 @@ namespace ATN
 	private:
 		std::vector<List<Entry>*> m_lists;
 
+		std::vector<Entry*> m_orphanEntries;
+
 		std::unordered_map<std::string, List<Property>> m_descValues;
 
 		std::unordered_map<std::string, std::string> m_interpretationFormats;
@@ -76,11 +78,17 @@ namespace ATN
 		// Adds a new list to the manager
 		static void addList(List<Entry> *list);
 
+		// Add a new entry to the global list that doesn't belong to any managed lists
+		static void addOrphanEntry(Entry &el);
+
 		// Add new entry to the global list as it has been added elsewhere
 		static void addEntry(Entry &el);
 
 		// Remove entry from global list (should only get called from ATN::List)
 		static void removeEntry(const Entry &el);
+
+		// Clear all lists managed by the manager and reset all references
+		static void clear();
 
 		// Returns the maximum ID noted in the global list
 		static uint32_t maxID();

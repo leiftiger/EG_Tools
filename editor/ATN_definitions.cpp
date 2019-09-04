@@ -269,6 +269,41 @@ namespace util
 		}
 	}
 
+	void loadResourceRelationships(const ResourcePack &pack)
+	{
+		std::istream *file = pack.openFile("./ATN/ATNResources.ros");
+
+		ATN::List<ATN::Entry> *objectRelationships = new ATN::List<ATN::Entry>("ERB: ./ATN/ATNResources.ros");
+
+		util::parseATN(*file, *objectRelationships, false);
+
+		for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : *objectRelationships)
+		{
+			ATN::Manager::addOrphanEntry(*(ATN::Entry*)pair.second);
+		}
+
+		file->seekg(0, std::ios::beg);
+
+		util::parseATN(*file, *objectRelationships, true);
+
+		std::vector<ATN::Entry*> entries;
+
+		for (const std::pair<std::uint32_t, ATN::IATN_Data*> &pair : *objectRelationships)
+		{
+			entries.push_back((ATN::Entry*)pair.second);
+		}
+
+		// Remove all entries from the list so only the manager handles them
+		for (ATN::Entry *e : entries)
+		{
+			objectRelationships->remove(*e, false);
+		}
+
+		delete objectRelationships;
+
+		delete file;
+	}
+
 	void loadDynamicDefinitions()
 	{
 		std::vector<std::string> strConfig = util::configPaths("config.txt");
@@ -286,6 +321,11 @@ namespace util
 				try
 				{
 					resourcePacks.push_back(ResourcePack(gamePath + packPath));
+
+					if (packPath.find("/Resource.erb") >= 0)
+					{
+						loadResourceRelationships(resourcePacks.back());
+					}
 				}
 				catch (std::exception e)
 				{

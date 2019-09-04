@@ -14,6 +14,11 @@ namespace ATN
 
 		delete m_lists[0];
 
+		for (Entry *e : m_orphanEntries)
+		{
+			delete e;
+		}
+
 		for (size_t i = 1; i < m_lists.size(); i++)
 		{
 			m_lists[i]->clear();
@@ -150,6 +155,13 @@ namespace ATN
 		instance().m_lists.push_back(list);
 	}
 
+	void Manager::addOrphanEntry(Entry &el)
+	{
+		instance().m_orphanEntries.push_back(&el);
+
+		addEntry(el);
+	}
+
 	void Manager::addEntry(Entry &el)
 	{
 		instance().m_lists[0]->add(el);
@@ -217,6 +229,37 @@ namespace ATN
 			// Then sort the list again
 			std::sort(instance().m_networks.begin(), instance().m_networks.end(), compareLessThanPointersIATN);
 		}
+	}
+
+	void Manager::clear()
+	{
+		instance().m_lists[0]->clear();
+
+		for (Entry *e : instance().m_orphanEntries)
+		{
+			delete e;
+		}
+
+		instance().m_orphanEntries.clear();
+
+		for (size_t i = 1; i < instance().m_lists.size(); i++)
+		{
+			instance().m_lists[i]->clear();
+
+			delete instance().m_lists[i];
+		}
+
+		instance().m_lists.erase(instance().m_lists.begin() + 1, instance().m_lists.end());
+
+		// Also clear definitions
+		for (const std::pair<std::string, List<Property>> &pair : instance().m_descValues)
+		{
+			instance().m_descValues.at(pair.first).clear();
+		}
+
+		instance().m_effects.clear();
+		instance().m_percepts.clear();
+		instance().m_networks.clear();
 	}
 
 	uint32_t Manager::maxID()
