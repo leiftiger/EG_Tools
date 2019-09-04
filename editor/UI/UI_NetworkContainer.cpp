@@ -552,7 +552,7 @@ void UI_NetworkContainer::resourceRemove()
 		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 		msg.setIcon(QMessageBox::Icon::Warning);
 
-		msg.setWindowTitle(tr(" "));
+		msg.setWindowTitle(" ");
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" may become invalid</b></span>"));
 
 		msg.setInformativeText(tr("Removing this resource will make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" set to an arbitrary resource or left as an invalid pointer.") +
@@ -615,7 +615,7 @@ void UI_NetworkContainer::resourceTypeChange(const QString &qType)
 		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 		msg.setIcon(QMessageBox::Icon::Warning);
 
-		msg.setWindowTitle(tr(" "));
+		msg.setWindowTitle(" ");
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" may become invalid</b></span>"));
 
 		msg.setInformativeText(tr("Changing the resource type may make ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) unable to cast to the new type and will thus be changed to an arbitrary resource or left as an invalid pointer.") +
@@ -737,7 +737,7 @@ void UI_NetworkContainer::parameterRemove()
 		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 		msg.setIcon(QMessageBox::Icon::Warning);
 
-		msg.setWindowTitle(tr(" "));
+		msg.setWindowTitle(" ");
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
 
 		msg.setInformativeText(tr("Removing this parameter will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" to UNDEFINED.") +
@@ -800,7 +800,7 @@ void UI_NetworkContainer::parameterTypeChange(const QString &qType)
 		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 		msg.setIcon(QMessageBox::Icon::Warning);
 
-		msg.setWindowTitle(tr(" "));
+		msg.setWindowTitle(" ");
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>") + strNumDependencies + tr(" reference") + strDependencySuffix + tr(" will be undefined</b></span>"));
 
 		msg.setInformativeText(tr("Changing the parameter type will set ") + strNumDependencies + tr(" dependent transition") + strDependencySuffix + tr(" (including external network ones) to UNDEFINED.") +
@@ -936,9 +936,6 @@ void UI_NetworkContainer::setTransitionEffect(int index)
 
 void UI_NetworkContainer::deleteNetwork()
 {
-	// TODO: Prompt user to confirm this very dangerous action
-	// TODO: Check if any states not owned by this network transitions to it and force user to remove those references first
-
 	bool hasReferences = false;
 
 	for (ATN::Network *net : ATN::Manager::getNetworks())
@@ -960,7 +957,7 @@ void UI_NetworkContainer::deleteNetwork()
 		msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 		msg.setIcon(QMessageBox::Icon::Critical);
 
-		msg.setWindowTitle(tr(" "));
+		msg.setWindowTitle(" ");
 		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Network dependencies exist</b></span>"));
 
 		msg.setInformativeText(tr("To delete this network, you must first remove all network transitions to it."));
@@ -979,7 +976,7 @@ void UI_NetworkContainer::deleteNetwork()
 	msg.setWindowFlags(Qt::Dialog | Qt::Desktop);
 	msg.setIcon(QMessageBox::Icon::Warning);
 
-	msg.setWindowTitle(tr(" "));
+	msg.setWindowTitle(" ");
 	msg.setText(tr("<span style=\"font-size:12pt;\"><b>Are you sure?</b></span>"));
 
 	msg.setInformativeText(tr("Deleting this network means deleting all states, transitions and resources that belongs to it."));

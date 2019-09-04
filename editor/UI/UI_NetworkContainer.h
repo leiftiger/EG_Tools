@@ -49,12 +49,12 @@ private:
 
 	// Hardcoded since there are no other types
 	QStringList m_parameterTypes = QStringList({
-			tr("3D Gui Element"), tr("Act Of Infamy ID"), tr("Agent Group Type"), tr("Agent Operation Type"), tr("Animation Attachment"), tr("Animation Biped Type"),
-			tr("Animation Flags"), tr("Animation"), tr("Boolean Value"), tr("Camera View ID"), tr("Character Tag"), tr("Dialog Type"), tr("Effect return value"),
-			tr("Entity Class"), tr("Entity Type"), tr("Event"), tr("Floating Graphic"), tr("Game Feature"), tr("Game Flag"), tr("GUI Control"), tr("Hotspot"),
-			tr("Integer"), tr("Interaction Reason"), tr("LockName"), tr("Mouse Button"), tr("Move Flag"), tr("Network ID"), tr("Objective ID"), tr("Region Activity"),
-			tr("Research card status"), tr("Room Type"), tr("ScaleType"), tr("Sound Category ID"), tr("Sound ID"), tr("Spawn Type"), tr("SpecialEffect"), tr("String ID"),
-			tr("Terminate Interaction Priority"), tr("UI State"), tr("Video ID"), tr("World Map Region"), tr("World Region"),
+			"3D Gui Element", "Act Of Infamy ID", "Agent Group Type", "Agent Operation Type", "Animation Attachment", "Animation Biped Type",
+			"Animation Flags", "Animation", "Boolean Value", "Camera View ID", "Character Tag", "Dialog Type", "Effect return value",
+			"Entity Class", "Entity Type", "Event", "Floating Graphic", "Game Feature", "Game Flag", "GUI Control", "Hotspot",
+			"Integer", "Interaction Reason", "LockName", "Mouse Button", "Move Flag", "Network ID", "Objective ID", "Region Activity",
+			"Research card status", "Room Type", "ScaleType", "Sound Category ID", "Sound ID", "Spawn Type", "SpecialEffect", "String ID",
+			"Terminate Interaction Priority", "UI State", "Video ID", "World Map Region", "World Region",
 		});
 
 	QStringList m_resourceTypes;
