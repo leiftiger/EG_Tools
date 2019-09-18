@@ -6,7 +6,9 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
+// A pack of files from a stored ERB file
 class ResourcePack
 {
 public:
@@ -22,6 +24,11 @@ public:
 protected:
 
 	std::unordered_map<std::string, Entry> m_files;
+
+	// Files stored in this resource pack
+	std::vector<std::string> m_filenames;
+
+	std::unordered_map<std::string, std::string> m_expandedFilenames;
 
 	// Name of package file
 	std::string m_filename;
@@ -76,6 +83,9 @@ public:
 
 	// Opens a file for reading
 	std::istream *openFile(const std::string &filename) const;
+
+	// Retrieves a list of all filenames stored in this resource pack
+	const std::vector<std::string> &files() const;
 
 	friend std::istream &operator>>(std::istream &stream, ResourcePack &list);
 	friend std::ostream &operator<<(std::ostream &stream, ResourcePack &list);

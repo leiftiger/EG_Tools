@@ -1,0 +1,4 @@
+/ResourcePAK/AudioResource.erb
+/ResourcePAK/DominationPackResources.erb
+/ResourcePAK/LResource_en_UK.erb
+/ResourcePAK/Resource.erb

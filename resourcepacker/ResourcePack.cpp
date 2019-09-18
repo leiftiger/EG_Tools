@@ -23,12 +23,21 @@ std::istream *ResourcePack::openFile(const std::string &filename) const
 
 	if (m_files.find(erbFileName) == m_files.end())
 	{
-		// Files in the main directory for some reason don't have ./ as the lead path, so we check if it was such a file
-		erbFileName = erbFileName.substr(2);
-
-		if (m_files.find(erbFileName) == m_files.end())
+		// The full path might not have been specified
+		if (m_expandedFilenames.find(erbFileName) != m_expandedFilenames.end())
 		{
-			throw std::exception(("File \"" + filename + "\" is not present in resource pack").c_str());
+			erbFileName = m_expandedFilenames.at(erbFileName);
+		}
+		else
+		{
+
+			// Files in the main directory for some reason don't have ./ as the lead path, so we check if it was such a file
+			erbFileName = erbFileName.substr(2);
+
+			if (m_files.find(erbFileName) == m_files.end())
+			{
+				throw std::exception(("File \"" + filename + "\" is not present in resource pack").c_str());
+			}
 		}
 	}
 
@@ -55,6 +64,11 @@ std::istream *ResourcePack::openFile(const std::string &filename) const
 	return stream;
 }
 
+const std::vector<std::string> &ResourcePack::files() const
+{
+	return m_filenames;
+}
+
 
 std::istream &operator>>(std::istream &stream, ResourcePack &list)
 {
@@ -69,8 +83,8 @@ std::istream &operator>>(std::istream &stream, ResourcePack &list)
 
 	erbVersion = list.read<std::uint32_t>(stream);
 
-	if (erbVersion > 2)
-		throw std::exception("This ERB Packer can only read ERB version <= 2");
+	if (erbVersion != 2)
+		throw std::exception("This ERB Packer can only read ERB version 2");
 
 	dirOffset = list.read<std::uint32_t>(stream);
 
@@ -84,6 +98,8 @@ std::istream &operator>>(std::istream &stream, ResourcePack &list)
 
 		std::string entryName = list.read<std::string>(stream);
 
+		std::string entryShortName = entryName.substr(entryName.find_last_of('/') + 1);
+
 		entry.m_size = list.read<std::uint32_t>(stream);
 		entry.m_offset = list.read<std::uint32_t>(stream);
 
@@ -93,6 +109,10 @@ std::istream &operator>>(std::istream &stream, ResourcePack &list)
 		entry.m_unknown2 = list.read<std::uint32_t>(stream);
 
 		list.m_files[entryName] = entry;
+
+		list.m_filenames.push_back(entryName);
+
+		list.m_expandedFilenames[entryShortName] = entryName;
 	}
 
 	return stream;

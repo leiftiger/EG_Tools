@@ -62,11 +62,14 @@ namespace ATN
 		List<T>(const std::string &name) : m_name(name) {}
 
 		// Deletes the memory used by all elements in the list
-		void clear()
+		void clear(bool freeMemory = true)
 		{
-			for (const std::pair<std::uint32_t, IATN_Data*> &pair : m_idMap)
+			if (freeMemory)
 			{
-				delete pair.second;
+				for (const std::pair<std::uint32_t, IATN_Data*> &pair : m_idMap)
+				{
+					delete pair.second;
+				}
 			}
 
 			m_idMap.clear();

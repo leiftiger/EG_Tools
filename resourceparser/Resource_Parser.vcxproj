@@ -160,7 +160,6 @@
     <ClInclude Include="RP_PackLoader.h" />
     <ClInclude Include="RP_Strings.h" />
     <ClInclude Include="RP_Video.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="RP_utils.h" />
   </ItemGroup>
   <ItemGroup>

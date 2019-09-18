@@ -3,9 +3,59 @@
 
 #include <filesystem>
 #include <fstream>
-#include <unordered_map>
+#include <unordered_set>
 
 #include "utils.h"
+
+#include "ModPack.h"
+#include "ResourceMerger.h"
+#include "ResourcePacks.h"
+
+#include <sstream>
+
+void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std::string> &mods)
+{
+	std::vector<std::string> strPacks = util::configPaths("files/resource_packs.txt");
+
+	for (std::string &str : strPacks)
+	{
+		str = basePath + str;
+	}
+
+	ResourceMerger merger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
+
+	for (const std::string &mod : mods)
+	{
+		ModPack *modPack = new ModPack(mod);
+
+		addModFiles(basePath + MOD_DISABLED_DIR + "/" + mod, *modPack);
+
+		merger.addMod(modPack);
+	}
+
+	std::stringstream stream;
+
+	merger.mergeMods(stream);
+}
+
+void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod)
+{
+	for (const std::filesystem::directory_entry &entry : std::filesystem::directory_iterator(path))
+	{
+		if (entry.is_directory())
+		{
+			addModFiles(entry.path().string(), mod);
+		}
+		else
+		{
+			std::string filename = entry.path().filename().string();
+
+			// Skip mod info files as they're just dummies to contain info for non-managed mods
+			if (filename.length() < strlen("modinfo_") || filename.substr(0, strlen("modinfo_")) != "modinfo_")
+				mod.addFile(entry.path().string());
+		}
+	}
+}
 
 UI_MainWindow::UI_MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -107,13 +157,13 @@ void UI_MainWindow::populateLists()
 
 	std::vector<std::string> enabledMods = util::configPaths(egPath + MOD_ENABLED_LIST);
 
-	std::unordered_map<std::string, bool> isEnabled;
+	std::unordered_set<std::string> isEnabled;
 
 	for (std::string &mod : enabledMods)
 	{
 		ui.listWidgetEnabled->addItem(QString::fromStdString(mod));
 
-		isEnabled[mod] = true;
+		isEnabled.emplace(mod);
 	}
 
 	QStringList disabledMods;
@@ -159,12 +209,19 @@ void UI_MainWindow::installMods()
 
 	std::ofstream file(config[0] + MOD_ENABLED_LIST, std::ios::trunc);
 
+	std::vector<std::string> enabledMods;
+
 	for (int i = 0; i < ui.listWidgetEnabled->count(); i++)
 	{
-		file << ui.listWidgetEnabled->item(i)->text().toStdString() << std::endl;
+		enabledMods.push_back(ui.listWidgetEnabled->item(i)->text().toStdString());
 	}
 
-	// TODO: Do mod content merging
+	for(const std::string &mod : enabledMods)
+	{
+		file << mod << std::endl;
+	}
+
+	mergeMods(config[0], enabledMods);
 }
 
 void UI_MainWindow::uninstallMods()

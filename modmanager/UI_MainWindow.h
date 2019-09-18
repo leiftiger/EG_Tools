@@ -7,6 +7,8 @@
 #include "UI_AboutWindow.h"
 #include "UI_ConfigWindow.h"
 
+#include "ModPack.h"
+
 class UI_MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -14,6 +16,12 @@ class UI_MainWindow : public QMainWindow
 private:
 
 	UI_AboutWindow m_aboutWindow;
+
+	// Merge the mods in the list in the given order to the specified game directory
+	void mergeMods(const std::string &basePath, const std::vector<std::string> &mods);
+
+	// Adds all files recursively from the given path to the mod pack
+	void addModFiles(const std::string &path, ModPack &mod);
 
 public:
 	UI_MainWindow(QWidget *parent = Q_NULLPTR);

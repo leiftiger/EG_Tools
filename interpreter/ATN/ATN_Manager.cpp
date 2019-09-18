@@ -231,9 +231,21 @@ namespace ATN
 		}
 	}
 
+	void Manager::removeList(List<Entry>* list)
+	{
+		for (std::vector<List<Entry>*>::iterator it = instance().m_lists.begin(); it < instance().m_lists.end(); it++)
+		{
+			if (*it == list)
+			{
+				instance().m_lists.erase(it);
+				break;
+			}
+		}
+	}
+
 	void Manager::clear()
 	{
-		instance().m_lists[0]->clear();
+		instance().m_lists[0]->clear(false);
 
 		for (Entry *e : instance().m_orphanEntries)
 		{

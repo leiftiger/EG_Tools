@@ -87,6 +87,9 @@ namespace ATN
 		// Remove entry from global list (should only get called from ATN::List)
 		static void removeEntry(const Entry &el);
 
+		// Removes a list from the manager (note: does not clear global references)
+		static void removeList(List<Entry> *list);
+
 		// Clear all lists managed by the manager and reset all references
 		static void clear();
 
