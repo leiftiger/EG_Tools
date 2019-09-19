@@ -3,6 +3,8 @@
 #include "IResourcePatch.h"
 #include "ResourceMerger.h"
 
+#include "ModPack.h"
+
 #include <vector>
 
 // Forward declared
@@ -16,6 +18,6 @@ public:
 	virtual const char * const extension() const = 0;
 
 	// Creates a series of patches from the given files and base resource packs
-	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, const std::vector<std::string> &files) const = 0;
+	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, ModPack &mod, const std::vector<std::string> &files) const = 0;
 };
 

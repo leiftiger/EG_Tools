@@ -7,5 +7,5 @@ PatchCopy::PatchCopy(const std::string &filename, const std::string &modFilename
 
 std::vector<std::string> PatchCopy::apply(std::istream &in, std::ostream &out) const
 {
-	return apply(m_modPack, out);
+	return IResourcePatch::apply(m_modPack, out);
 }

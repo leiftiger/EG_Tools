@@ -38,6 +38,9 @@ protected:
 
 	std::unordered_set<int> m_reservedDescIDs;
 
+	// Buffer size to use when copying files
+	const int COPY_BUFFER_SIZE = 4096;
+
 public:
 
 	ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder);

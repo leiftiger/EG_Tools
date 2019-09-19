@@ -15,9 +15,9 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 	{
 		if (filePath.substr(filePath.length() - 5, 5) == ".desc")
 		{
-			int folderSlash = filePath.find_first_of('/', strlen("./EntityDescriptions/"));
+			int folderSlash = (int)filePath.find_first_of('/', strlen("./EntityDescriptions/"));
 
-			int fileSlash = filePath.find_first_of('/', folderSlash + 1);
+			int fileSlash = (int)filePath.find_first_of('/', folderSlash + 1);
 
 			std::string filename = filePath.substr(fileSlash + 1);
 
@@ -111,11 +111,11 @@ void ResourceMerger::mergeMods(std::ostream &output)
 {
 	if (m_mods.size() == 1)
 	{
-		output << "Only one mod is loaded, copying files directly from " << m_mods[0]->name() << std::endl;
+		output << "Only one mod is loaded" << std::endl << "Copying files directly from " << m_mods[0]->name() << std::endl;
 
 		const ModPack *mod = m_mods[0];
 
-		char *buffer = new char[4096];
+		char *buffer = new char[COPY_BUFFER_SIZE];
 
 		std::streamsize bufferLength = 0;
 
@@ -129,12 +129,14 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 			if (mergedFile.fail())
 			{
-				throw std::exception(("Failed to open \"" + mergedName + "\" for writing").c_str());
+				throw std::exception(("Failed to open \"" + mergedName + "\" for writing (managed)").c_str());
 			}
 
 			while (!modFile->eof())
 			{
-				bufferLength = modFile->readsome(buffer, sizeof(buffer) / sizeof(char));
+				modFile->read(buffer, COPY_BUFFER_SIZE);
+
+				bufferLength = modFile->gcount();
 
 				mergedFile.write(buffer, bufferLength);
 			}
@@ -146,12 +148,13 @@ void ResourceMerger::mergeMods(std::ostream &output)
 	}
 	else
 	{
-		for (const ModPack *mod : m_mods)
+		for (ModPack *mod : m_mods)
 		{
-			output << "Installing mod " << mod->name() << ":" << std::endl << std::endl;
+			output << "Installing \"" << mod->name() << "\":" << std::endl << std::endl;
 
 			std::vector<IResourcePatch*> patches;
 
+			// Files are grouped by extension as the patcher may be dependent on several files (e.g. ATN global pointers)
 			std::unordered_map<std::string, std::vector<std::string>> m_extFiles;
 
 			for (const std::string &fullFilePath : mod->files())
@@ -185,7 +188,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 			for (const std::pair<std::string, std::vector<std::string>> &pair : m_extFiles)
 			{
-				std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, pair.second);
+				std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, *mod, pair.second);
 
 				patches.insert(patches.end(), subPatches.begin(), subPatches.end());
 			}
@@ -207,7 +210,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 					if (fsOut.fail())
 					{
-						output << "ERROR: Failed to open \"" + filename + "\" for writing" << std::endl;
+						output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
 					}
 
 					try
@@ -224,7 +227,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 						delete fsBase;
 					}
-					catch (std::exception &e)
+					catch (std::exception e)
 					{
 						// This is a file that doesn't exist in the base game, apply directly
 
@@ -243,13 +246,15 @@ void ResourceMerger::mergeMods(std::ostream &output)
 					// fsIn is a copy of the original since we want to write back to the same file immediately
 					std::stringstream fsIn;
 
-					char *buffer = new char[4096];
+					char *buffer = new char[COPY_BUFFER_SIZE];
 
 					std::streamsize bufferLength = 0;
 
 					while (!fsManaged.eof())
 					{
-						bufferLength = fsManaged.readsome(buffer, sizeof(buffer) / sizeof(char));
+						fsManaged.read(buffer, COPY_BUFFER_SIZE);
+
+						bufferLength = fsManaged.gcount();
 
 						fsIn.write(buffer, bufferLength);
 					}
@@ -260,7 +265,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 					if (fsOut.fail())
 					{
-						output << "ERROR: Failed to open \"" + filename + "\" for writing" << std::endl;
+						output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
 					}
 
 					std::vector<std::string> errors = patch->apply(fsIn, fsOut);
@@ -272,7 +277,11 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 					delete[] buffer;
 				}
+
+				delete patch;
 			}
+
+			output << "Patches applied" << std::endl << std::endl;
 		}
 	}
 }
@@ -291,6 +300,8 @@ const std::string &ResourceMerger::descClass(int descID)
 			return pair.second;
 		}
 	}
+
+	return m_descClassRanges[0].second;
 }
 
 int ResourceMerger::reserveDescID(const std::string &descClass)

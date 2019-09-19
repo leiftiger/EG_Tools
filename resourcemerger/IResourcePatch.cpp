@@ -17,16 +17,20 @@ std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::ostream 
 
 	if (modFile->fail())
 	{
-		return std::vector<std::string>({ "Couldn't open \"" + m_modFile + "\" for reading." });
+		return std::vector<std::string>({ "Couldn't open \"" + m_modFile + "\" for reading (mod)" });
 	}
 
-	char *buffer = new char[4096];
+	char *buffer = new char[COPY_BUFFER_SIZE];
 
 	std::streamsize bufferLength = 0;
 
 	while (!modFile->eof())
 	{
-		bufferLength = modFile->readsome(buffer, sizeof(buffer) / sizeof(char));
+		int len = sizeof(buffer) / sizeof(char);
+
+		modFile->read(buffer, COPY_BUFFER_SIZE);
+
+		bufferLength = modFile->gcount();
 
 		out.write(buffer, bufferLength);
 	}

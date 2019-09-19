@@ -26,7 +26,6 @@
     <ClInclude Include="IResourcePatch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IResourcePatcher.cpp" />
     <ClCompile Include="ModPack.cpp" />
     <ClCompile Include="PatchCopy.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />

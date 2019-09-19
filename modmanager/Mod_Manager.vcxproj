@@ -119,6 +119,7 @@
     <ClCompile Include="UI_AboutWindow.cpp" />
     <ClCompile Include="UI_ConfigWindow.cpp" />
     <ClCompile Include="UI_MainWindow.cpp" />
+    <ClCompile Include="UI_MergeWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="UI_MainWindow.h" />
@@ -127,6 +128,7 @@
     <QtUic Include="UI_AboutWindow.ui" />
     <QtUic Include="UI_ConfigWindow.ui" />
     <QtUic Include="UI_MainWindow.ui" />
+    <QtUic Include="UI_MergeWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\interpreter\ATN_Interpreter.vcxproj">
@@ -144,6 +146,12 @@
     <QtMoc Include="UI_ConfigWindow.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.\..\interpreter;.\..\resourcepacker;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.\..\interpreter;.\..\resourcepacker;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="UI_MergeWindow.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.\..\interpreter;.\..\resourcemerger;.\..\resourcepacker;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.\..\interpreter;.\..\resourcemerger;.\..\resourcepacker;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

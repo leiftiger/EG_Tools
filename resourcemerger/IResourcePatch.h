@@ -17,6 +17,9 @@ protected:
 	// Original mod file that may be copied directly if a mod introduced a new file
 	std::string m_modFile;
 
+	// Buffer size to use when copying files
+	const int COPY_BUFFER_SIZE = 4096;
+
 public:
 
 	IResourcePatch(const std::string &filename, const std::string &modFilename);

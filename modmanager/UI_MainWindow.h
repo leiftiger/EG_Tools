@@ -7,6 +7,8 @@
 #include "UI_AboutWindow.h"
 #include "UI_ConfigWindow.h"
 
+#include "UI_MergeWindow.h"
+
 #include "ModPack.h"
 
 class UI_MainWindow : public QMainWindow

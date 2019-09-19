@@ -15,5 +15,4 @@ public:
 	PatchCopy(const std::string &filename, const std::string &modFilename, const ModPack &modPack);
 
 	virtual std::vector<std::string> apply(std::istream &in, std::ostream &out) const override;
-	virtual std::vector<std::string> apply(const ModPack &mod, std::ostream &out) const override;
 };

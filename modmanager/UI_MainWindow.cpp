@@ -15,6 +15,8 @@
 
 void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std::string> &mods)
 {
+	std::filesystem::create_directory(basePath + MOD_ENABLED_DIR);
+
 	std::vector<std::string> strPacks = util::configPaths("files/resource_packs.txt");
 
 	for (std::string &str : strPacks)
@@ -33,9 +35,15 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 		merger.addMod(modPack);
 	}
 
-	std::stringstream stream;
+	std::stringstream output;
 
-	merger.mergeMods(stream);
+	merger.mergeMods(output);
+
+	UI_MergeWindow *uiResult = new UI_MergeWindow(this);
+
+	uiResult->ui.textOutput->setText(QString::fromStdString(output.str()));
+
+	uiResult->show();
 }
 
 void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod)
@@ -52,7 +60,7 @@ void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod)
 
 			// Skip mod info files as they're just dummies to contain info for non-managed mods
 			if (filename.length() < strlen("modinfo_") || filename.substr(0, strlen("modinfo_")) != "modinfo_")
-				mod.addFile(entry.path().string());
+				mod.addFile(path + "/" + filename);
 		}
 	}
 }
@@ -206,6 +214,8 @@ void UI_MainWindow::installMods()
 
 		return;
 	}
+
+	uninstallMods();
 
 	std::ofstream file(config[0] + MOD_ENABLED_LIST, std::ios::trunc);
 
