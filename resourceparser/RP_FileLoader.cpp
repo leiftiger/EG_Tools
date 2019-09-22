@@ -14,7 +14,14 @@ namespace RL
 
 	std::istream *FileLoader::openFile(const std::string &filename) const
 	{
-		return new std::ifstream(filename);
+		std::istream *stream  = new std::ifstream(filename);
+
+		if (stream->fail())
+		{
+			throw std::exception(("Couldn't open file " + filename + " for reading").c_str());
+		}
+
+		return stream;
 	}
 
 	std::unordered_map<std::string, std::vector<std::pair<std::string, std::int64_t>>> FileLoader::loadResources(IResourceParser *loader)

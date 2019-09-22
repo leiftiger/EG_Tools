@@ -10,13 +10,13 @@
     <x>0</x>
     <y>0</y>
     <width>670</width>
-    <height>119</height>
+    <height>169</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>670</width>
-    <height>119</height>
+    <height>169</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -47,7 +47,9 @@
       <property name="text">
        <string>The ATN Editor loads definitions from the base game files in order to decode certain parameter values.
 
-By specifying the path to your Evil Genius installation, it will find all necessary files and load them each time you use the editor.</string>
+By specifying the path to your Evil Genius installation, it will find all necessary files and load them each time you use the editor.
+
+In addition, the editor will include any currently loaded mods. Note that you must launch the game for the editor to detect new or removed mod files.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
