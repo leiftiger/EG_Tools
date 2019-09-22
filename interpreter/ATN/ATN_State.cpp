@@ -48,6 +48,10 @@ namespace ATN
 				this->setNetworkTransition(nullptr);
 			}
 		}
+		else if (original.networkTransition() == nullptr && change.networkTransition() == nullptr)
+		{
+			// Do nothing
+		}
 		else
 		{
 			// TODO: Could maybe be problematic to change the transition, but hopefully the marshalls should capture the change as well

@@ -61,6 +61,10 @@ namespace ATN
 				this->setEffect(nullptr);
 			}
 		}
+		else if (original.effect() == nullptr && change.effect() == nullptr)
+		{
+			// Do nothing
+		}
 		else
 		{
 			// TODO: Could maybe be problematic to change the effect, but hopefully the marshalls should capture the change as well

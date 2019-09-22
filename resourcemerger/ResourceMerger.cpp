@@ -314,6 +314,11 @@ void ResourceMerger::mergeMods(std::ostream &output)
 							break;
 						}
 
+						fsIn->seekg(0, std::ios::beg);
+
+						inStreams.push_back(fsIn);
+						outStreams.push_back(fsOut);
+
 						delete[] buffer;
 					}
 				}
