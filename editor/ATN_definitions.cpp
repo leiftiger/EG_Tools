@@ -21,7 +21,7 @@ namespace util
 		All existing parameter types:
 
 		3D Gui Element			hash
-		Act Of Infamy ID		hash
+		Act Of Infamy ID				int - from desc id
 		Agent Group Type				int - from desc id
 		Agent Operation Type			int
 		Animation Attachment	hash
