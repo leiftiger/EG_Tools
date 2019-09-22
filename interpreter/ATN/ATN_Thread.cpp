@@ -7,6 +7,27 @@ namespace ATN
 		return "TATNThread";
 	}
 
+	void Thread::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	{
+		Entry::applyChanges(originalEntry, changeEntry);
+
+		const Thread &original = (Thread&)originalEntry;
+		const Thread &change = (Thread&)changeEntry;
+
+		if (original.state()->id() != change.state()->id())
+		{
+			if (this->state()->id() == original.state()->id())
+				this->setState(change.m_state);
+		}
+
+		// This should never be used, but it's here if someone is crazy to do this
+		if (original.network().id() != change.network().id())
+		{
+			if (this->network().id() == original.network().id())
+				this->setNetwork(*change.m_network);
+		}
+	}
+
 	const Network &Thread::network() const
 	{
 		return *m_network;

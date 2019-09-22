@@ -34,6 +34,8 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
+		virtual void applyChanges(const Entry &original, const Entry &change) override;
+
 		// Gets the possible transitions from this state
 		const std::vector<Transition*> &transitions() const;
 

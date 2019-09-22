@@ -29,7 +29,8 @@ namespace ATN
 		if (this->name() != other->name())
 			return false;
 
-		if (this->typeName() != other->typeName())
+		// Not using typename since it may return different C strings for effects & percepts
+		if (typeid(*this) != typeid(*other))
 			return false;
 
 		return true;
@@ -58,6 +59,22 @@ namespace ATN
 	bool Entry::isEditable() const
 	{
 		return true;
+	}
+
+	void Entry::applyChanges(const Entry &original, const Entry &change)
+	{
+		if (original.id() != change.id() || this->id() != original.id())
+			throw ATN::Exception("applyChanges requires that all entries share the same unique ID");
+
+		// All changes should be dealt with in the deriving classes, here we just do a type checking that all derived ones assume
+		if (typeid(original) != typeid(change))
+			throw ATN::Exception("Cannot apply changes from different classes, %s != %s", original.typeName(), change.typeName());
+
+		if (original.name() != change.name())
+		{
+			if (this->name() == original.name())
+				this->setName(change.name());
+		}
 	}
 
 	std::ostream &operator<<(std::ostream &stream, const Entry &e)

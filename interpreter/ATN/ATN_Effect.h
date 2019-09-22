@@ -30,13 +30,15 @@ namespace ATN
 		// NOT EDITABLE FOR YOUR OWN SAFETY
 		virtual bool isEditable() const override;
 
+		virtual const char * const typeName() const override;
+
+		virtual void applyChanges(const Entry &original, const Entry &change) override;
+
 		// Executable game function that this effect calls
 		const std::string &gameFunction() const;
 
 		// Sets the executable game function that this effect calls
 		void setGameFunction(std::string &gameFunction);
-
-		virtual const char * const typeName() const override;
 
 		// Gets all parameters expected by this effect
 		virtual const std::vector<Parameter*> &parameters() const override;

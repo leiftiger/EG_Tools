@@ -7,6 +7,31 @@ namespace ATN
 		return "TATNObjectType";
 	}
 
+	void Object::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	{
+		Entry::applyChanges(originalEntry, changeEntry);
+
+		const Object &original = (Object&)originalEntry;
+		const Object &change = (Object&)changeEntry;
+
+		// Why anyone would do this is a wild guess, but it's here anyway
+		if (original.parent() == nullptr && change.parent() != nullptr)
+		{
+			if (this->parent() == nullptr)
+				this->m_parent = change.m_parent;
+		}
+		else if (original.parent() != nullptr && change.parent() == nullptr)
+		{
+			if (this->parent() != nullptr && this->parent()->id() == original.parent()->id())
+				this->m_parent = nullptr;
+		}
+		else
+		{
+			if (this->parent() != nullptr && this->parent()->id() == original.parent()->id())
+				this->m_parent = change.m_parent;
+		}
+	}
+
 	const Object *Object::parent() const
 	{
 		return m_parent;

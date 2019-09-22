@@ -6,31 +6,34 @@
 
 #include "ModPack.h"
 
+// Forward declared
+class ModPack;
+
 // A patch applied to current resources
 class IResourcePatch
 {
 protected:
 
-	// File that the patch applies to
-	std::string m_filename;
+	// Files that the patch applies to
+	std::vector<std::string> m_filenames;
 
-	// Original mod file that may be copied directly if a mod introduced a new file
-	std::string m_modFile;
+	// Original mod files that may be copied directly if a mod introduced a new file
+	std::vector<std::string> m_modFiles;
 
 	// Buffer size to use when copying files
 	const int COPY_BUFFER_SIZE = 4096;
 
 public:
 
-	IResourcePatch(const std::string &filename, const std::string &modFilename);
+	IResourcePatch(const std::initializer_list<std::string> &filenames, const std::initializer_list<std::string> &modFilenames);
 
-	// File that the patch applies to
-	const std::string &filename() const;
+	// Files that the patch applies to
+	const std::vector<std::string> &filenames() const;
 
 	// Applies the patch on the input stream through the output stream, returning a list of strings mentioning any errors that occured during the patch
-	virtual std::vector<std::string> apply(std::istream &in, std::ostream &out) const = 0;
+	virtual std::vector<std::string> apply(std::vector<std::istream*> &inStreams, std::vector<std::ostream*> &outStreams) const = 0;
 
 	// Applies the patch as a new file as there was no existing file to use
-	virtual std::vector<std::string> apply(const ModPack &mod, std::ostream &out) const;
+	virtual std::vector<std::string> apply(const ModPack &mod, std::vector<std::ostream*> &outStreams) const;
 };
 

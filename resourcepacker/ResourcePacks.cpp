@@ -29,6 +29,11 @@ ResourcePacks::ResourcePacks(const std::vector<std::string> &filenames)
 			m_files.push_back(packFile);
 
 			m_fileToPack[packFile] = pack;
+
+
+			std::string shortName = packFile.substr(packFile.find_last_of('/') + 1);
+
+			m_expandedFilenames[shortName] = packFile;
 		}
 	}
 }
@@ -44,7 +49,19 @@ ResourcePacks::~ResourcePacks()
 std::istream *ResourcePacks::openFile(const std::string &filename) const
 {
 	if (m_fileToPack.find(filename) == m_fileToPack.end())
-		throw std::exception(("Couldn't find a pack for file \"" + filename + "\"").c_str());
+	{
+		// Might be the shortened file name
+		if (m_expandedFilenames.find(filename) != m_expandedFilenames.end())
+		{
+			const std::string &fullName = m_expandedFilenames.at(filename);
+
+			return m_fileToPack.at(fullName)->openFile(fullName);
+		}
+		else
+		{
+			throw std::exception(("Couldn't find a pack for file \"" + filename + "\"").c_str());
+		}
+	}
 
 	return m_fileToPack.at(filename)->openFile(filename);
 }

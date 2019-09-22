@@ -1,43 +1,63 @@
 #include "IResourcePatch.h"
 
-IResourcePatch::IResourcePatch(const std::string &filename, const std::string &modFilename) : m_filename(filename), m_modFile(modFilename)
+IResourcePatch::IResourcePatch(const std::initializer_list<std::string> &filenames, const std::initializer_list<std::string> &modFilenames)
 {
-
-}
-
-const std::string &IResourcePatch::filename() const
-{
-	return m_filename;
-}
-
-std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::ostream &out) const
-{
-
-	std::istream *modFile = mod.openFile(m_modFile);
-
-	if (modFile->fail())
+	for (const std::string &filename : filenames)
 	{
-		return std::vector<std::string>({ "Couldn't open \"" + m_modFile + "\" for reading (mod)" });
+		m_filenames.push_back(filename);
 	}
 
-	char *buffer = new char[COPY_BUFFER_SIZE];
-
-	std::streamsize bufferLength = 0;
-
-	while (!modFile->eof())
+	for (const std::string &filename : modFilenames)
 	{
-		int len = sizeof(buffer) / sizeof(char);
+		m_modFiles.push_back(filename);
+	}
+}
 
-		modFile->read(buffer, COPY_BUFFER_SIZE);
+const std::vector<std::string> &IResourcePatch::filenames() const
+{
+	return m_filenames;
+}
 
-		bufferLength = modFile->gcount();
+std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::vector<std::ostream*> &outStreams) const
+{
+	std::vector<std::string> strOutputs;
 
-		out.write(buffer, bufferLength);
+	for (int i = 0; i < m_filenames.size(); i++)
+	{
+		const std::string &modFilename = m_modFiles[i];
+
+		std::ostream *out = outStreams[i];
+
+		std::istream *modFile = mod.openFile(modFilename);
+
+		if (modFile->fail())
+		{
+			strOutputs.push_back("Couldn't open \"" + modFilename + "\" for reading (mod)");
+			continue;
+		}
+
+		char *buffer = new char[COPY_BUFFER_SIZE];
+
+		std::streamsize bufferLength = 0;
+
+		while (!modFile->eof())
+		{
+			int len = sizeof(buffer) / sizeof(char);
+
+			modFile->read(buffer, COPY_BUFFER_SIZE);
+
+			bufferLength = modFile->gcount();
+
+			out->write(buffer, bufferLength);
+		}
+
+		strOutputs.push_back("Copied " + m_filenames[i]);
+
+		delete modFile;
+
+		delete[] buffer;
+
 	}
 
-	delete modFile;
-
-	delete[] buffer;
-
-	return std::vector<std::string>();
+	return strOutputs;
 }

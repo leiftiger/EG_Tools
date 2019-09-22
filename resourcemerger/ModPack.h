@@ -5,6 +5,11 @@
 
 #include <unordered_map>
 
+#include "ResourceMerger.h"
+
+// Forward declared
+class ResourceMerger;
+
 // A collection of files and references used by a mod
 class ModPack
 {
@@ -16,6 +21,8 @@ protected:
 	std::vector<std::string> m_files;
 
 	std::unordered_map<int, int> m_descTranslations;
+
+	std::unordered_map<int, int> m_uniqueTranslations;
 
 public:
 
@@ -35,6 +42,19 @@ public:
 	// Translates an entity description ID that local mod references used to the globally assigned one
 	int translateDescID(int descID);
 
+	// Translates an entity description ID that local mod references used to the globally assigned one
+	// or assigns it if not defined
+	int translateDescID(int descID, ResourceMerger &merger);
+
 	void setDescTranslation(int original, int global);
+
+	// Translates an ATN unique ID that local mod references used to the globally assigned one
+	int translateUniqueID(int uniqueID);
+
+	// Translates an ATN unique ID that local mod references used to the globally assigned one
+	// or assigns it if not defined
+	int translateUniqueID(int uniqueID, ResourceMerger &merger);
+
+	void setUniqueTranslation(int original, int global);
 };
 

@@ -8,7 +8,7 @@
 #include <vector>
 
 // Forward declared
-class ResourceMerger;
+class ResourceMerger; class IResourcePatch; class ModPack;
 
 class IResourcePatcher
 {
@@ -18,6 +18,6 @@ public:
 	virtual const char * const extension() const = 0;
 
 	// Creates a series of patches from the given files and base resource packs
-	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, ModPack &mod, const std::vector<std::string> &files) const = 0;
+	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, ModPack &mod, const std::vector<std::string> &files) = 0;
 };
 

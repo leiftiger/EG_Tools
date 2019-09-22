@@ -50,6 +50,11 @@ namespace ATN
 		return m_resources;
 	}
 
+	void Percept::applyChanges(const Entry &original, const Entry &change)
+	{
+		throw std::exception("Delta changes not supported for percepts");
+	}
+
 	void Percept::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

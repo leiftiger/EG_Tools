@@ -33,7 +33,39 @@ int ModPack::translateDescID(int descID)
 	return descID;
 }
 
+int ModPack::translateDescID(int descID, ResourceMerger &merger)
+{
+	if (m_descTranslations.find(descID) == m_descTranslations.end())
+	{
+		if (descID != ATN_UNDEF_VALUE || descID != ATN_UNDEF_VALUE2)
+			setDescTranslation(descID, merger.reserveDescID(merger.descClass(descID)));
+	}
+
+	return translateDescID(descID);
+}
+
 void ModPack::setDescTranslation(int original, int global)
 {
 	m_descTranslations[original] = global;
+}
+
+int ModPack::translateUniqueID(int uniqueID)
+{
+	if (m_uniqueTranslations.find(uniqueID) != m_uniqueTranslations.end())
+		return m_uniqueTranslations.at(uniqueID);
+
+	return uniqueID;
+}
+
+int ModPack::translateUniqueID(int uniqueID, ResourceMerger &merger)
+{
+	if (m_uniqueTranslations.find(uniqueID) == m_uniqueTranslations.end())
+		setUniqueTranslation(uniqueID, merger.reserveUniqueID());
+
+	return translateUniqueID(uniqueID);
+}
+
+void ModPack::setUniqueTranslation(int original, int global)
+{
+	m_uniqueTranslations[original] = global;
 }

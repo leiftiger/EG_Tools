@@ -33,19 +33,20 @@ namespace ATN
 		// NOT EDITABLE FOR YOUR OWN SAFETY
 		virtual bool isEditable() const override;
 
+		virtual const char * const typeName() const override;
+
+		virtual void applyChanges(const Entry &original, const Entry &change) override;
+
 		// Executable game function that this percept calls
 		const std::string &gameFunction() const;
 
 		// Sets the executable game function that this percept calls
 		void setGameFunction(std::string &gameFunction);
 
-		virtual const char * const typeName() const override;
-
 		// Gets all parameters expected by this percept
 		virtual const std::vector<Parameter*> &parameters() const override;
 
 		// Gets all resources expected by this percept
 		virtual const std::vector<Resource*> &resources() const override;
-
 	};
 }

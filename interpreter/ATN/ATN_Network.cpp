@@ -20,6 +20,262 @@ namespace ATN
 		return "TATNNetwork";
 	}
 
+	void Network::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	{
+		Entry::applyChanges(originalEntry, changeEntry);
+
+		const Network &original = (Network&)originalEntry;
+		const Network &change = (Network&)changeEntry;
+
+		// Thread order is not important, just need to see if there were new additions or removals
+
+		// Add new threads
+		for (Thread *changeThread : change.threads())
+		{
+			bool bExists = false;
+
+			for (Thread *originalThread : original.threads())
+			{
+				if (originalThread->id() == changeThread->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				this->add(*changeThread);
+			}
+		}
+
+		// Remove existing threads
+		for (Thread *originalThread : original.threads())
+		{
+			bool bExists = false;
+
+			for (Thread *changeThread : change.threads())
+			{
+				if (originalThread->id() == changeThread->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				for (Thread *thisThread : this->threads())
+				{
+					if (thisThread->id() == originalThread->id())
+					{
+						this->remove(*thisThread);
+						break;
+					}
+				}
+			}
+		}
+
+		// Add new resources
+		for (Resource *changeResource : change.resources())
+		{
+			bool bExists = false;
+
+			for (Resource *originalResource : original.resources())
+			{
+				if (*originalResource == *changeResource)
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				this->add(*new Resource(*changeResource));
+			}
+		}
+
+		// Remove existing resources
+		for (Resource *originalResource : original.resources())
+		{
+			bool bExists = false;
+
+			for (Resource *changeResource : change.resources())
+			{
+				if (*originalResource == *changeResource)
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				for (Resource *thisResource : this->resources())
+				{
+					if (*thisResource == *originalResource)
+					{
+						this->remove(*thisResource);
+
+						delete thisResource;
+						break;
+					}
+				}
+			}
+		}
+
+		// Perform modification assuming both original and change were using the same indices
+		// TODO: Could these types of changes be captured better? Hopefully it will be rare so we won't have to worry about that
+		for (int i = 0; i < std::min(original.resources().size(), change.resources().size()); i++)
+		{
+			Resource *originalResource = original.resources()[i];
+			Resource *changeResource = change.resources()[i];
+
+			if (*originalResource != *changeResource)
+			{
+				for (int i2 = 0; i2 < this->resources().size(); i2++)
+				{
+					Resource *thisResource = this->resources()[i2];
+
+					// We only modify the resource if we can still find the original somewhere
+					// (otherwise this means we've already modified this resource)
+					if (*thisResource == *originalResource)
+					{
+						this->m_resources[i2] = new Resource(*changeResource);
+
+						delete thisResource;
+						break;
+					}
+				}
+			}
+		}
+
+		// Add new parameters
+		for (Parameter *changeParam : change.parameters())
+		{
+			bool bExists = false;
+
+			for (Parameter *originalParam : original.parameters())
+			{
+				if (*originalParam == *changeParam)
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				this->add(*new Parameter(*changeParam));
+			}
+		}
+
+		// Remove existing resources
+		for (Parameter *originalParam : original.parameters())
+		{
+			bool bExists = false;
+
+			for (Parameter *changeParam : change.parameters())
+			{
+				if (*originalParam == *changeParam)
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				for (Parameter *thisParam : this->parameters())
+				{
+					if (*thisParam == *originalParam)
+					{
+						this->remove(*thisParam);
+
+						delete thisParam;
+						break;
+					}
+				}
+			}
+		}
+
+		// Perform modification assuming both original and change were using the same indices
+		// TODO: See above for resources
+		for (int i = 0; i < std::min(original.parameters().size(), change.parameters().size()); i++)
+		{
+			Parameter *originalParam = original.parameters()[i];
+			Parameter *changeParam = change.parameters()[i];
+
+			if (*originalParam != *changeParam)
+			{
+				for (int i2 = 0; i2 < this->parameters().size(); i2++)
+				{
+					Parameter *thisParam = this->parameters()[i2];
+
+					// We only modify the resource if we can still find the original somewhere
+					// (otherwise this means we've already modified this resource)
+					if (*thisParam == *originalParam)
+					{
+						this->m_parameters[i2] = new Parameter(*changeParam);
+
+						delete thisParam;
+						break;
+					}
+				}
+			}
+		}
+
+		// For states, the order is not important, so we only add or remove states like threads
+
+		// Add new states
+		for (State *changeState : change.states())
+		{
+			bool bExists = false;
+
+			for (State *originalState : original.states())
+			{
+				if (originalState->id() == changeState->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				this->add(*changeState);
+			}
+		}
+
+		// Remove existing states
+		for (State *originalState : original.states())
+		{
+			bool bExists = false;
+
+			for (State *changeState : change.states())
+			{
+				if (originalState->id() == changeState->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				for (State *thisState : this->states())
+				{
+					if (thisState->id() == originalState->id())
+					{
+						this->remove(*thisState);
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	const std::vector<State*> &Network::states() const
 	{
 		return m_states;

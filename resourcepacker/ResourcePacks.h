@@ -15,6 +15,8 @@ protected:
 
 	std::vector<std::string> m_files;
 
+	std::unordered_map<std::string, std::string> m_expandedFilenames;
+
 public:
 
 	ResourcePacks(const std::vector<std::string> &filenames);

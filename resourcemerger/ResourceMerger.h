@@ -4,13 +4,15 @@
 #include "ModPack.h"
 #include "ResourcePacks.h"
 
+#include "ATN/ATN_Manager.h"
+
 #include <iostream>
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
 
 // Forward declared
-class IResourcePatcher;
+class IResourcePatch; class IResourcePatcher; class ModPack;
 
 class ResourceMerger
 {
@@ -38,6 +40,8 @@ protected:
 
 	std::unordered_set<int> m_reservedDescIDs;
 
+	std::uint32_t m_vacantUniqueID;
+
 	// Buffer size to use when copying files
 	const int COPY_BUFFER_SIZE = 4096;
 
@@ -45,6 +49,9 @@ public:
 
 	ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder);
 	~ResourceMerger();
+
+	// Access resources stored in any resource packs
+	const ResourcePacks &resourcePacks();
 
 	// Adds a new mod to be merged last
 	void addMod(ModPack *modPack);
@@ -61,7 +68,13 @@ public:
 	// Returns the entity description class that the given desc ID should belong to
 	const std::string &descClass(int descID);
 
+	// Returns whether or not the specified desc ID already exists in the base game
+	bool isDescDefined(int descID);
+
 	// Reserves a new desc ID for use in a mod
 	int reserveDescID(const std::string &descClass);
+
+	// Reserves a new ATN unique ID for use in a mod
+	std::uint32_t reserveUniqueID();
 };
 

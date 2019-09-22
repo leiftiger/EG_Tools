@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="IResourcePatcher.h" />
     <ClInclude Include="ModPack.h" />
+    <ClInclude Include="PatchATN.h" />
     <ClInclude Include="PatchCopy.h" />
     <ClInclude Include="ResourceMerger.h" />
     <ClInclude Include="IResourcePatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModPack.cpp" />
+    <ClCompile Include="PatchATN.cpp" />
     <ClCompile Include="PatchCopy.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />
     <ClCompile Include="IResourcePatch.cpp" />
@@ -107,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\resourcepacker;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\resourcepacker;..\interpreter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,7 +157,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\resourcepacker;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\resourcepacker;..\interpreter;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

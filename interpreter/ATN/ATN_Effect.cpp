@@ -50,6 +50,11 @@ namespace ATN
 		return m_resources;
 	}
 
+	void Effect::applyChanges(const Entry &original, const Entry &change)
+	{
+		throw std::exception("Delta changes not supported for effects");
+	}
+
 	void Effect::serialize(std::ostream &stream) const
 	{
 		Entry::serialize(stream);

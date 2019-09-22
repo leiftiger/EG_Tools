@@ -58,6 +58,20 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 				m_vacantDescIDs[descClass] = minID;
 			}
 		}
+		else if (filePath.substr(filePath.length() - 4, 4) == ".ros")
+		{
+			// As we only care about the IDs, we only need to run the first ATN parse pass
+			ATN::List<ATN::Entry> list;
+
+			std::istream *fs = m_resourcePacks->openFile(filePath);
+
+			util::parseATN(*fs, list, false);
+
+			if (list.maxID() + 1 > m_vacantUniqueID)
+				m_vacantUniqueID = list.maxID() + 1;
+
+			delete fs;
+		}
 	}
 
 	for (const std::pair<std::string, int> &pair : groups)
@@ -89,10 +103,15 @@ ResourceMerger::~ResourceMerger()
 		delete mod;
 	}
 
-	for (IResourcePatcher *patch : m_patchers)
+	for (IResourcePatcher *patcher : m_patchers)
 	{
-		delete patch;
+		delete patcher;
 	}
+}
+
+const ResourcePacks &ResourceMerger::resourcePacks()
+{
+	return *m_resourcePacks;
 }
 
 void ResourceMerger::addMod(ModPack *modPack)
@@ -129,7 +148,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 			if (mergedFile.fail())
 			{
-				throw std::exception(("Failed to open \"" + mergedName + "\" for writing (managed)").c_str());
+				throw ATN::Exception("Failed to open \"%s\" for writing (managed)", mergedName);
 			}
 
 			while (!modFile->eof())
@@ -188,94 +207,142 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 			for (const std::pair<std::string, std::vector<std::string>> &pair : m_extFiles)
 			{
-				std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, *mod, pair.second);
+				try
+				{
+					std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, *mod, pair.second);
 
-				patches.insert(patches.end(), subPatches.begin(), subPatches.end());
+					patches.insert(patches.end(), subPatches.begin(), subPatches.end());
+				}
+				catch (std::exception &e)
+				{
+					output << "Failed to create patch for extension \"" + pair.first + "\":" << std::endl;
+					output << e.what() << std::endl;
+				}
 			}
 
-			output << "Created " << patches.size() << " patches" << std::endl;
+			if (patches.size() == 1)
+				output << "Created 1 patch" << std::endl;
+			else
+				output << "Created " << patches.size() << " patches" << std::endl;
 
 			for (IResourcePatch *patch : patches)
 			{
-				const std::string &filename = patch->filename();
+				const std::vector<std::string> &filenames = patch->filenames();
 
-				std::ifstream fsManaged(m_outputPath + "/" + filename);
+				std::vector<std::istream*> inStreams;
+				std::vector<std::ostream*> outStreams;
 
-				// First occurence of this file
-				if (fsManaged.fail())
+				bool bStreamsStable = true;
+
+				for (const std::string &filename : filenames)
 				{
-					fsManaged.close();
+					std::ifstream *fsManaged = new std::ifstream(m_outputPath + "/" + filename);
 
-					std::ofstream fsOut(m_outputPath + "/" + filename, std::ios::trunc);
-
-					if (fsOut.fail())
+					// First occurence of this file
+					if (fsManaged->fail())
 					{
-						output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
-					}
+						delete fsManaged;
 
-					try
-					{
-						// Patch from base files
-						std::istream *fsBase = m_resourcePacks->openFile(filename);
+						std::ofstream *fsOut = new std::ofstream(m_outputPath + "/" + filename, std::ios::trunc);
 
-						std::vector<std::string> errors = patch->apply(*fsBase, fsOut);
-
-						for (std::string &err : errors)
+						if (fsOut->fail())
 						{
-							output << err << std::endl;
+							output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
+
+							delete fsOut;
+
+							bStreamsStable = false;
+							break;
 						}
 
-						delete fsBase;
-					}
-					catch (std::exception e)
-					{
-						// This is a file that doesn't exist in the base game, apply directly
-
-						std::vector<std::string> errors = patch->apply(*mod, fsOut);
-
-						for (std::string &err : errors)
+						try
 						{
-							output << err << std::endl;
+							// Patch from base files
+							std::istream *fsBase = m_resourcePacks->openFile(filename);
+
+							// Note: if file doesn't exist in base game, these won't be called
+							inStreams.push_back(fsBase);
+							outStreams.push_back(fsOut);
+						}
+						catch (std::exception e)
+						{
+							// This is a file that doesn't exist in the base game, apply directly
+
+							std::vector<std::ostream*> directApplied;
+
+							directApplied.push_back(fsOut);
+
+							std::vector<std::string> strOutputs = patch->apply(*mod, directApplied);
+
+							for (std::string &strOut : strOutputs)
+							{
+								output << strOut << std::endl;
+							}
+
+							delete fsOut;
+						}
+					}
+					else
+					{
+						// Otherwise, we patch to an already patched file
+
+						// fsIn is a copy of the original since we want to write back to the same file immediately
+						std::stringstream *fsIn = new std::stringstream();
+
+						char *buffer = new char[COPY_BUFFER_SIZE];
+
+						std::streamsize bufferLength = 0;
+
+						while (!fsManaged->eof())
+						{
+							fsManaged->read(buffer, COPY_BUFFER_SIZE);
+
+							bufferLength = fsManaged->gcount();
+
+							fsIn->write(buffer, bufferLength);
+						}
+
+						delete fsManaged;
+
+						std::ofstream *fsOut = new std::ofstream(m_outputPath + "/" + filename, std::ios::trunc);
+
+						if (fsOut->fail())
+						{
+							output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
+
+							bStreamsStable = false;
+							break;
+						}
+
+						delete[] buffer;
+					}
+				}
+
+				if (bStreamsStable)
+				{
+					if (inStreams.size() > 0)
+					{
+						std::vector<std::string> strOutputs = patch->apply(inStreams, outStreams);
+
+						for (std::string &strOut : strOutputs)
+						{
+							output << strOut << std::endl;
 						}
 					}
 				}
 				else
 				{
-					// Otherwise, we patch to an already patched file
+					output << "Patch not applied due to previous error!" << std::endl;
+				}
 
-					// fsIn is a copy of the original since we want to write back to the same file immediately
-					std::stringstream fsIn;
+				for (std::istream *stream : inStreams)
+				{
+					delete stream;
+				}
 
-					char *buffer = new char[COPY_BUFFER_SIZE];
-
-					std::streamsize bufferLength = 0;
-
-					while (!fsManaged.eof())
-					{
-						fsManaged.read(buffer, COPY_BUFFER_SIZE);
-
-						bufferLength = fsManaged.gcount();
-
-						fsIn.write(buffer, bufferLength);
-					}
-
-					fsManaged.close();
-
-					std::ofstream fsOut(m_outputPath + "/" + filename, std::ios::trunc);
-
-					if (fsOut.fail())
-					{
-						output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
-					}
-
-					std::vector<std::string> errors = patch->apply(fsIn, fsOut);
-
-					for (std::string &err : errors)
-					{
-						output << err << std::endl;
-					}
-
-					delete[] buffer;
+				for (std::ostream *stream : outStreams)
+				{
+					delete stream;
 				}
 
 				delete patch;
@@ -304,6 +371,11 @@ const std::string &ResourceMerger::descClass(int descID)
 	return m_descClassRanges[0].second;
 }
 
+bool ResourceMerger::isDescDefined(int descID)
+{
+	return (m_reservedDescIDs.find(descID) != m_reservedDescIDs.end());
+}
+
 int ResourceMerger::reserveDescID(const std::string &descClass)
 {
 	int cur = m_vacantDescIDs[descClass];
@@ -315,9 +387,14 @@ int ResourceMerger::reserveDescID(const std::string &descClass)
 	}
 
 	if (this->descClass(cur) != descClass)
-		throw std::exception(("Ran out of entity description IDs for class \"" + descClass + "\"").c_str());
+		throw ATN::Exception("Ran out of entity description IDs for class \"%s\"", descClass);
 
 	m_vacantDescIDs[descClass] = cur + 1;
 
 	return cur;
+}
+
+std::uint32_t ResourceMerger::reserveUniqueID()
+{
+	return m_vacantUniqueID++;
 }

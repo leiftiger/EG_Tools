@@ -13,8 +13,6 @@ namespace ATN
 		std::int32_t m_id;
 		std::string m_name;
 
-		std::string *m_file = nullptr;
-
 	protected:
 
 		// Converts this object into an ATN string entry (not including object header)
@@ -28,11 +26,14 @@ namespace ATN
 
 	public:
 
+		virtual std::int32_t id() const override;
+		virtual const std::string &name() const override;
+
 		// ATN type name of this class
 		virtual const char * const typeName() const = 0;
 
-		virtual std::int32_t id() const override;
-		virtual const std::string &name() const override;
+		// Applies a delta update corresponding to the difference between the original and changed entry to this object
+		virtual void applyChanges(const Entry &original, const Entry &change);
 
 		// Sets the user-readable name of this entry.
 		// If this entry is already in a list, you must call List<Entry>.updateName() instead!

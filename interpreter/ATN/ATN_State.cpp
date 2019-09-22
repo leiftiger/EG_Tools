@@ -15,6 +15,278 @@ namespace ATN
 		return "TATNState";
 	}
 
+	void State::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	{
+		Entry::applyChanges(originalEntry, changeEntry);
+
+		const State &original = (State&)originalEntry;
+		const State &change = (State&)changeEntry;
+
+		// Added new network transition at this state
+		if (original.networkTransition() == nullptr && change.networkTransition() != nullptr)
+		{
+			if (this->networkTransition() == nullptr)
+			{
+				m_networkTransition = change.networkTransition();
+
+				for (ResourceMarshall *r : change.resourceMarshalls())
+				{
+					m_resourceMarshalls.push_back(new ResourceMarshall(*r));
+				}
+
+				for (ParameterMarshall *p : change.parameterMarshalls())
+				{
+					m_parameterMarshalls.push_back(new ParameterMarshall(*p));
+				}
+			}
+		}
+		// Removed network transition at this state
+		else if (original.networkTransition() != nullptr && change.networkTransition() == nullptr)
+		{
+			if (this->networkTransition() != nullptr && this->networkTransition()->id() == original.networkTransition()->id())
+			{
+				this->setNetworkTransition(nullptr);
+			}
+		}
+		else
+		{
+			// TODO: Could maybe be problematic to change the transition, but hopefully the marshalls should capture the change as well
+			if (original.networkTransition()->id() != change.networkTransition()->id())
+			{
+				if (this->networkTransition() != nullptr && this->networkTransition()->id() == original.networkTransition()->id())
+				{
+					this->m_networkTransition = change.networkTransition();
+				}
+			}
+
+			// Add new resource marshalls
+			for (ResourceMarshall *changeResource : change.resourceMarshalls())
+			{
+				bool bExists = false;
+
+				for (ResourceMarshall *originalResource : original.resourceMarshalls())
+				{
+					if (*originalResource == *changeResource)
+					{
+						bExists = true;
+						break;
+					}
+				}
+
+				if (!bExists)
+				{
+					m_resourceMarshalls.push_back(new ResourceMarshall(*changeResource));
+				}
+			}
+
+			// Remove existing resource marshalls
+			for (ResourceMarshall *originalResource : original.resourceMarshalls())
+			{
+				bool bExists = false;
+
+				for (ResourceMarshall *changeResource : change.resourceMarshalls())
+				{
+					if (*originalResource == *changeResource)
+					{
+						bExists = true;
+						break;
+					}
+				}
+
+				if (!bExists)
+				{
+					for (std::vector<ResourceMarshall*>::iterator it = m_resourceMarshalls.begin(); it != m_resourceMarshalls.end(); it++)
+					{
+						ResourceMarshall *thisResource = *it;
+
+						if (*thisResource == *originalResource)
+						{
+							m_resourceMarshalls.erase(it);
+
+							delete thisResource;
+							break;
+						}
+					}
+				}
+			}
+
+			// Perform modification assuming both original and change were using the same indices
+			// TODO: Try to improve this similar to Network::applyChanges()
+			for (int i = 0; i < std::min(original.resourceMarshalls().size(), change.resourceMarshalls().size()); i++)
+			{
+				ResourceMarshall *originalResource = original.resourceMarshalls()[i];
+				ResourceMarshall *changeResource = change.resourceMarshalls()[i];
+
+				if (*originalResource != *changeResource)
+				{
+					for (int i2 = 0; i2 < this->resourceMarshalls().size(); i2++)
+					{
+						ResourceMarshall *thisResource = this->resourceMarshalls()[i2];
+
+						// We only modify the resource if we can still find the original somewhere
+						// (otherwise this means we've already modified this resource)
+						if (*thisResource == *originalResource)
+						{
+							this->m_resourceMarshalls[i2] = new ResourceMarshall(*changeResource);
+
+							delete thisResource;
+							break;
+						}
+					}
+				}
+			}
+
+			// Add new parameter marshalls
+			for (ParameterMarshall *changeParam : change.parameterMarshalls())
+			{
+				bool bExists = false;
+
+				for (ParameterMarshall *originalParam : original.parameterMarshalls())
+				{
+					if (*originalParam == *changeParam)
+					{
+						bExists = true;
+						break;
+					}
+				}
+
+				if (!bExists)
+				{
+					m_parameterMarshalls.push_back(new ParameterMarshall(*changeParam));
+				}
+			}
+
+			// Remove existing parameter marshalls
+			for (ParameterMarshall *originalParam : original.parameterMarshalls())
+			{
+				bool bExists = false;
+
+				for (ParameterMarshall *changeParam : change.parameterMarshalls())
+				{
+					if (*originalParam == *changeParam)
+					{
+						bExists = true;
+						break;
+					}
+				}
+
+				if (!bExists)
+				{
+					for (std::vector<ParameterMarshall*>::iterator it = m_parameterMarshalls.begin(); it != m_parameterMarshalls.end(); it++)
+					{
+						ParameterMarshall *thisParam = *it;
+
+						if (*thisParam == *originalParam)
+						{
+							m_parameterMarshalls.erase(it);
+
+							delete thisParam;
+							break;
+						}
+					}
+				}
+			}
+
+			// Perform modification assuming both original and change were using the same indices
+			// TODO: Try to improve this similar to Network::applyChanges()
+			for (int i = 0; i < std::min(original.parameterMarshalls().size(), change.parameterMarshalls().size()); i++)
+			{
+				ParameterMarshall *originalParam = original.parameterMarshalls()[i];
+				ParameterMarshall *changeParam = change.parameterMarshalls()[i];
+
+				if (*originalParam != *changeParam)
+				{
+					for (int i2 = 0; i2 < this->parameterMarshalls().size(); i2++)
+					{
+						ParameterMarshall *thisParam = this->parameterMarshalls()[i2];
+
+						// We only modify the resource if we can still find the original somewhere
+						// (otherwise this means we've already modified this resource)
+						if (*thisParam == *originalParam)
+						{
+							this->m_parameterMarshalls[i2] = new ParameterMarshall(*changeParam);
+
+							delete thisParam;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// Add new transitions
+		for (Transition *changeTransition : change.transitions())
+		{
+			bool bExists = false;
+
+			for (Transition *originalTransition : original.transitions())
+			{
+				if (originalTransition->id() == changeTransition->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				this->add(*changeTransition);
+			}
+		}
+
+		// Remove existing transitions
+		for (Transition *originalTransition : original.transitions())
+		{
+			bool bExists = false;
+
+			for (Transition *changeTransition : change.transitions())
+			{
+				if (originalTransition->id() == changeTransition->id())
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				for (Transition *thisTransition : this->transitions())
+				{
+					if (thisTransition->id() == originalTransition->id())
+					{
+						this->remove(*thisTransition);
+						break;
+					}
+				}
+			}
+		}
+
+		// While the order won't matter for most transitions, it's possible that some mods depend on this,
+		// but then we assume the same things as above and in Network::applyChanges
+		for (int i = 0; i < std::min(original.transitions().size(), change.transitions().size()); i++)
+		{
+			Transition *originalTransition = original.transitions()[i];
+			Transition *changeTransition = change.transitions()[i];
+
+			if (originalTransition->id() != changeTransition->id())
+			{
+				for (int i2 = 0; i2 < this->transitions().size(); i2++)
+				{
+					Transition *thisTransition = this->transitions()[i2];
+
+					// We only modify the transition if we can still find the original somewhere
+					// (otherwise this means we've already modified this transition)
+					if (thisTransition->id() == originalTransition->id())
+					{
+						this->m_stateTransitions[i2] = changeTransition;
+
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	const std::vector<Transition*>& State::transitions() const
 	{
 		return m_stateTransitions;

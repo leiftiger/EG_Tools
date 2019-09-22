@@ -28,6 +28,7 @@ protected:
 	// Files stored in this resource pack
 	std::vector<std::string> m_filenames;
 
+	// Finds the full file path from just the filename
 	std::unordered_map<std::string, std::string> m_expandedFilenames;
 
 	// Name of package file
