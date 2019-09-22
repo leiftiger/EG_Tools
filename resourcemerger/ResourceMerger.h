@@ -6,10 +6,14 @@
 
 #include "ATN/ATN_Manager.h"
 
+#include "MutexCommunication.h"
+
 #include <iostream>
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+
+#include <queue>
 
 // Forward declared
 class IResourcePatch; class IResourcePatcher; class ModPack;
@@ -59,8 +63,8 @@ public:
 	// Adds a patcher for use in merging files
 	void addPatcher(IResourcePatcher *patcher);
 
-	// Merge the mods currently loaded in the merger, reporting conflicts to the given output stream
-	void mergeMods(std::ostream &output);
+	// Merge the mods currently loaded in the merger, reporting progress to the given string queue
+	void mergeMods(Mutex::Server &mutex);
 
 	// Prevent a file from being modified by further patches
 	void lockFile(const std::string &file);

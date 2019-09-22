@@ -21,15 +21,19 @@
   <ItemGroup>
     <ClInclude Include="IResourcePatcher.h" />
     <ClInclude Include="ModPack.h" />
+    <ClInclude Include="MutexCommunication.h" />
     <ClInclude Include="PatchATN.h" />
     <ClInclude Include="PatchCopy.h" />
+    <ClInclude Include="PatchDesc.h" />
     <ClInclude Include="ResourceMerger.h" />
     <ClInclude Include="IResourcePatch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModPack.cpp" />
+    <ClCompile Include="MutexCommunication.cpp" />
     <ClCompile Include="PatchATN.cpp" />
     <ClCompile Include="PatchCopy.cpp" />
+    <ClCompile Include="PatchDesc.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />
     <ClCompile Include="IResourcePatch.cpp" />
   </ItemGroup>

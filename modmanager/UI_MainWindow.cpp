@@ -11,8 +11,6 @@
 #include "ResourceMerger.h"
 #include "ResourcePacks.h"
 
-#include "PatchATN.h"
-
 #include <sstream>
 
 void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std::string> &mods)
@@ -26,7 +24,7 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 		str = basePath + str;
 	}
 
-	ResourceMerger merger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
+	ResourceMerger *merger = new ResourceMerger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
 
 	for (const std::string &mod : mods)
 	{
@@ -34,18 +32,10 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 
 		addModFiles(basePath + MOD_DISABLED_DIR + "/" + mod, *modPack);
 
-		merger.addMod(modPack);
+		merger->addMod(modPack);
 	}
 
-	merger.addPatcher(new PatcherATN());
-
-	std::stringstream output;
-
-	merger.mergeMods(output);
-
-	UI_MergeWindow *uiResult = new UI_MergeWindow(this);
-
-	uiResult->ui.textOutput->setText(QString::fromStdString(output.str()));
+	UI_MergeWindow *uiResult = new UI_MergeWindow(this, merger);
 
 	uiResult->show();
 }

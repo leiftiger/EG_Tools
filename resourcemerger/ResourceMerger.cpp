@@ -5,6 +5,7 @@
 #include "PatchCopy.h"
 
 #include <algorithm>
+#include <thread>
 
 ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder) : m_resourcePacks(packs), m_outputPath(outputFolder)
 {
@@ -126,11 +127,13 @@ void ResourceMerger::addPatcher(IResourcePatcher *patcher)
 	m_extToPatch[patcher->extension()] = patcher;
 }
 
-void ResourceMerger::mergeMods(std::ostream &output)
+void ResourceMerger::mergeMods(Mutex::Server &mutex)
 {
+	const std::string tabString("    ");
+
 	if (m_mods.size() == 1)
 	{
-		output << "Only one mod is loaded" << std::endl << "Copying files directly from " << m_mods[0]->name() << std::endl;
+		mutex.queue.push("Only one mod is loaded\nCopying files directly from " + m_mods[0]->name() + "\n");
 
 		const ModPack *mod = m_mods[0];
 
@@ -167,14 +170,18 @@ void ResourceMerger::mergeMods(std::ostream &output)
 	}
 	else
 	{
+		int numModsProcessed = 0;
+
 		for (ModPack *mod : m_mods)
 		{
-			output << "Installing \"" << mod->name() << "\":" << std::endl << std::endl;
+			mutex.queue.push("Installing \"" + mod->name() + "\":\n");
 
 			std::vector<IResourcePatch*> patches;
 
 			// Files are grouped by extension as the patcher may be dependent on several files (e.g. ATN global pointers)
 			std::unordered_map<std::string, std::vector<std::string>> m_extFiles;
+
+			double modProgress = 0;
 
 			for (const std::string &fullFilePath : mod->files())
 			{
@@ -185,7 +192,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 				// This file isn't permitted to be changed further
 				if (m_lockedFiles.find(filename) != m_lockedFiles.end())
 				{
-					output << "Not including \"" << filename << "\" due to conflicts" << std::endl;
+					mutex.queue.push(tabString + "Not including \"" + filename + "\" due to conflicts\n");
 					continue;
 				}
 
@@ -205,6 +212,12 @@ void ResourceMerger::mergeMods(std::ostream &output)
 				}
 			}
 
+			modProgress += 0.1;
+
+			mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+
+			mutex.wait();
+
 			for (const std::pair<std::string, std::vector<std::string>> &pair : m_extFiles)
 			{
 				try
@@ -215,15 +228,21 @@ void ResourceMerger::mergeMods(std::ostream &output)
 				}
 				catch (std::exception &e)
 				{
-					output << "Failed to create patch for extension \"" + pair.first + "\":" << std::endl;
-					output << e.what() << std::endl;
+					mutex.queue.push(tabString + tabString + "Failed to create patch for extension \"" + pair.first + "\":\n");
+					mutex.queue.push(std::string(e.what()) + "\n");
 				}
 			}
 
 			if (patches.size() == 1)
-				output << "Created 1 patch" << std::endl;
+				mutex.queue.push("\n" + tabString + "Created 1 patch\n");
 			else
-				output << "Created " << patches.size() << " patches" << std::endl;
+				mutex.queue.push("\n" + tabString + "Created " + std::to_string(patches.size()) + " patches\n");
+
+			modProgress += 0.5;
+
+			mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+
+			mutex.wait();
 
 			for (IResourcePatch *patch : patches)
 			{
@@ -247,7 +266,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 						if (fsOut->fail())
 						{
-							output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
+							mutex.queue.push(tabString + tabString + "ERROR: Failed to open \"" + filename + "\" for writing (managed)\n");
 
 							delete fsOut;
 
@@ -276,7 +295,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 							for (std::string &strOut : strOutputs)
 							{
-								output << strOut << std::endl;
+								mutex.queue.push(tabString + tabString + strOut + "\n");
 							}
 
 							delete fsOut;
@@ -308,7 +327,7 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 						if (fsOut->fail())
 						{
-							output << "ERROR: Failed to open \"" + filename + "\" for writing (managed)" << std::endl;
+							mutex.queue.push(tabString + tabString + "ERROR: Failed to open \"" + filename + "\" for writing (managed)\n");
 
 							bStreamsStable = false;
 							break;
@@ -331,13 +350,13 @@ void ResourceMerger::mergeMods(std::ostream &output)
 
 						for (std::string &strOut : strOutputs)
 						{
-							output << strOut << std::endl;
+							mutex.queue.push(tabString + tabString + strOut + "\n");
 						}
 					}
 				}
 				else
 				{
-					output << "Patch not applied due to previous error!" << std::endl;
+					mutex.queue.push(tabString + tabString + "Patch not applied due to previous error!\n");
 				}
 
 				for (std::istream *stream : inStreams)
@@ -351,9 +370,17 @@ void ResourceMerger::mergeMods(std::ostream &output)
 				}
 
 				delete patch;
+
+				modProgress += 0.5 / patches.size();
+
+				mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+
+				mutex.wait();
 			}
 
-			output << "Patches applied" << std::endl << std::endl;
+			mutex.queue.push("\n" + tabString + "Patches applied\n\n\n");
+
+			numModsProcessed++;
 		}
 	}
 }
