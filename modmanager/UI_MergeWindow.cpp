@@ -2,6 +2,8 @@
 
 #include "PatchATN.h"
 #include "PatchDesc.h"
+#include "PatchGeneric.h"
+#include "PatchStrings.h"
 
 #include <QPropertyAnimation>
 #include <QScrollBar>
@@ -16,6 +18,22 @@ void UI_MergeWindow::initialize()
 
 	m_merger->addPatcher(new PatcherATN());
 	m_merger->addPatcher(new PatcherDesc());
+	m_merger->addPatcher(new PatcherStrings());
+
+	// Generic text patchers that either isn't handled in detail 
+	// or offer no meaningful way to perform extended delta patching
+	m_merger->addPatcher(new PatcherGeneric(".ane", false));	// Animation sounds
+	m_merger->addPatcher(new PatcherGeneric(".as", false));		// Animation set
+	m_merger->addPatcher(new PatcherGeneric(".COL", false));	// Model metadata
+	m_merger->addPatcher(new PatcherGeneric(".csb", false));	// UI
+	m_merger->addPatcher(new PatcherGeneric(".csv", true));		// Comma separated configs
+	m_merger->addPatcher(new PatcherGeneric(".ini", true));		// Configs
+	m_merger->addPatcher(new PatcherGeneric(".mus", true));		// Music settings
+	m_merger->addPatcher(new PatcherGeneric(".nam", false));	// Agent names
+	m_merger->addPatcher(new PatcherGeneric(".pat", false));	// Patterns for construction
+	m_merger->addPatcher(new PatcherGeneric(".pap", false));	// Particles
+	m_merger->addPatcher(new PatcherGeneric(".spb", true));		// Sound definitions
+	m_merger->addPatcher(new PatcherGeneric(".xml", false));	// Glossaries, objective details
 
 	m_thread = new QThread();
 

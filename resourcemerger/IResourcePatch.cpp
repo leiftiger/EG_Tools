@@ -56,7 +56,6 @@ std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::vector<s
 		delete modFile;
 
 		delete[] buffer;
-
 	}
 
 	return strOutputs;

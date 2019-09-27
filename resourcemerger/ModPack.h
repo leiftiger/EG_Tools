@@ -40,7 +40,7 @@ public:
 	std::istream *openFile(const std::string &filename) const;
 
 	// Translates an entity description ID that local mod references used to the globally assigned one
-	int translateDescID(int descID);
+	int translateDescID(int descID) const;
 
 	// Translates an entity description ID that local mod references used to the globally assigned one
 	// or assigns it if not defined
@@ -49,7 +49,7 @@ public:
 	void setDescTranslation(int original, int global);
 
 	// Translates an ATN unique ID that local mod references used to the globally assigned one
-	int translateUniqueID(int uniqueID);
+	int translateUniqueID(int uniqueID) const;
 
 	// Translates an ATN unique ID that local mod references used to the globally assigned one
 	// or assigns it if not defined

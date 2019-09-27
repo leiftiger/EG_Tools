@@ -88,7 +88,8 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 	
 		[](const std::pair<int, std::string> &lhs, const std::pair<int, std::string> &rhs)
 		{
-			return lhs.first < rhs.first;
+			// Important to use upper end as super-classes should be evaluated last
+			return lhs.second < rhs.second;
 		}
 	);
 
@@ -412,7 +413,7 @@ int ResourceMerger::reserveDescID(const std::string &descClass)
 {
 	int cur = m_vacantDescIDs[descClass];
 
-	// Scan for vacant positions (somehow there may be some open slots between base definitions)
+	// Scan for vacant positions (for some reason there may be some open slots between base definitions)
 	while (m_reservedDescIDs.find(cur) != m_reservedDescIDs.end())
 	{
 		cur++;

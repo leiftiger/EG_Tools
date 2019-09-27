@@ -25,6 +25,8 @@
     <ClInclude Include="PatchATN.h" />
     <ClInclude Include="PatchCopy.h" />
     <ClInclude Include="PatchDesc.h" />
+    <ClInclude Include="PatchGeneric.h" />
+    <ClInclude Include="PatchStrings.h" />
     <ClInclude Include="ResourceMerger.h" />
     <ClInclude Include="IResourcePatch.h" />
   </ItemGroup>
@@ -34,6 +36,8 @@
     <ClCompile Include="PatchATN.cpp" />
     <ClCompile Include="PatchCopy.cpp" />
     <ClCompile Include="PatchDesc.cpp" />
+    <ClCompile Include="PatchGeneric.cpp" />
+    <ClCompile Include="PatchStrings.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />
     <ClCompile Include="IResourcePatch.cpp" />
   </ItemGroup>

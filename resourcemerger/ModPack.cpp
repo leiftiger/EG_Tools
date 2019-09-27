@@ -25,7 +25,7 @@ std::istream *ModPack::openFile(const std::string &filename) const
 	return new std::ifstream(filename);
 }
 
-int ModPack::translateDescID(int descID)
+int ModPack::translateDescID(int descID) const
 {
 	if (m_descTranslations.find(descID) != m_descTranslations.end())
 		return m_descTranslations.at(descID);
@@ -35,7 +35,7 @@ int ModPack::translateDescID(int descID)
 
 int ModPack::translateDescID(int descID, ResourceMerger &merger)
 {
-	if (m_descTranslations.find(descID) == m_descTranslations.end())
+	if (m_descTranslations.find(descID) == m_descTranslations.end() && !merger.isDescDefined(descID))
 	{
 		if (descID != ATN_UNDEF_VALUE || descID != ATN_UNDEF_VALUE2)
 			setDescTranslation(descID, merger.reserveDescID(merger.descClass(descID)));
@@ -49,7 +49,7 @@ void ModPack::setDescTranslation(int original, int global)
 	m_descTranslations[original] = global;
 }
 
-int ModPack::translateUniqueID(int uniqueID)
+int ModPack::translateUniqueID(int uniqueID) const
 {
 	if (m_uniqueTranslations.find(uniqueID) != m_uniqueTranslations.end())
 		return m_uniqueTranslations.at(uniqueID);
