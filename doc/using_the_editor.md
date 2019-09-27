@@ -17,3 +17,9 @@ When finished, save all open ATN files and your changes will be applied to the f
 As the editor is unofficial, some parameter type definitions couldn't be found - these have been labelled as either `MISSING: <NUMBER>` or the raw number directly. The number is a hash digest using FNV1 32-bit, which the game uses to store string references in a cheaper manner. You can use the hash tool included with the editor to manually set the number that a percept or effect may need, and use the same `MISSING: <NUMBER>` format to apply it in the files.
 
 In certain situations, it may also be necessary to pass `NULL` as the argument - this is defined in the editor for all parameter types but may only work in certain cases. Known usage is to pass `NULL` to certain events where it doesn't matter whether or not the event involves the first or second entity. If you want to pass a resource as `NULL` the best practice is to name it `_NULL` and never modify it.
+
+# Best practices
+
+To reduce the risks of mod conflicts, it is encouraged of mods to primarily add new entries, as modifications are more likely to cause conflicts in the Mod Manager.
+
+For instance, when creating a new objective, it would be prudent to use a new thread along with a new state to launch the new network. Adding new transitions, resources and parameters (preferably last in the lists) are likewise non-conflicting modifications to existing entries.
