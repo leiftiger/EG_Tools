@@ -195,9 +195,24 @@ std::vector<std::string> PatchStrings::apply(std::vector<std::istream*> &inStrea
 		{
 		case ADD_INCLUDE:
 		{
-			list.addInclude(subPatch.m_mod.first);
+			bool bExists = false;
 
-			numApplied++;
+			// Already added by some other mod
+			for (const std::string &includeFile : list.includes())
+			{
+				if (includeFile == subPatch.m_mod.first)
+				{
+					bExists = true;
+					break;
+				}
+			}
+
+			if (!bExists)
+			{
+				list.addInclude(subPatch.m_mod.first);
+
+				numApplied++;
+			}
 		}
 		break;
 		case REM_INCLUDE:
@@ -209,9 +224,12 @@ std::vector<std::string> PatchStrings::apply(std::vector<std::istream*> &inStrea
 		break;
 		case ADD_ENTRY:
 		{
-			list.set(subPatch.m_mod.first, subPatch.m_mod.second);
+			if (!list.contains(subPatch.m_mod.first))
+			{
+				list.set(subPatch.m_mod.first, subPatch.m_mod.second);
 
-			numApplied++;
+				numApplied++;
+			}
 		}
 		break;
 		case MOD_ENTRY:
@@ -474,8 +492,6 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 		{
 			std::istream *fsBase = merger.resourcePacks().openFile(filename);
 
-			PatchStrings *patch = new PatchStrings(filename, modFile);
-
 			std::ifstream fsMod(modFile);
 
 			if (fsMod.fail())
@@ -517,7 +533,7 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 			buildPatch(merger, mod, patch, emptyList, modList);
 		}
 
-		patches.push_back(new PatchStrings(filename, modFile));
+		patches.push_back(patch);
 	}
 
 	return patches;
