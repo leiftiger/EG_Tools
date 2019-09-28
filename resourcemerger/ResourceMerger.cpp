@@ -4,6 +4,8 @@
 
 #include "PatchCopy.h"
 
+#include "StringList.h"
+
 #include <algorithm>
 #include <thread>
 
@@ -32,7 +34,6 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 				filename = subFolder;
 				subFolder = masterFolder;
 			}
-
 
 			int id = std::stoi(filename.substr(0, 5));
 
@@ -70,6 +71,28 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 
 			if (list.maxID() + 1 > m_vacantUniqueID)
 				m_vacantUniqueID = list.maxID() + 1;
+
+			delete fs;
+		}
+		else if (filePath.substr(filePath.length() - 4, 4) == ".txt")
+		{
+			// We also reserve any desc IDs defined in text files,
+			// as it's possible that some things aren't defined in the ERB
+			StringList list;
+
+			std::istream *fs = m_resourcePacks->openFile(filePath);
+
+			*fs >> list;
+
+			for (const std::string &key : list.keys())
+			{
+				if (key.length() >= 5 && list.isNumeric(key.substr(0, 5)))
+				{
+					int id = std::stoi(key.substr(0, 5));
+
+					m_reservedDescIDs.emplace(id);
+				}
+			}
 
 			delete fs;
 		}

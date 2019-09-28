@@ -29,6 +29,7 @@
     <ClInclude Include="PatchStrings.h" />
     <ClInclude Include="ResourceMerger.h" />
     <ClInclude Include="IResourcePatch.h" />
+    <ClInclude Include="StringList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModPack.cpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="PatchStrings.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />
     <ClCompile Include="IResourcePatch.cpp" />
+    <ClCompile Include="StringList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\resourcepacker\ERB_Packer.vcxproj">
