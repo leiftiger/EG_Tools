@@ -15,6 +15,11 @@ protected:
 	std::vector<std::string> m_keys;
 	std::vector<std::string> m_values;
 
+	bool m_newlineEOF = false;
+
+	// Reads a line from the stream, returning true if a line was read, or false if the stream is at EOF
+	bool getline(std::istream &stream, std::string &line);
+
 public:
 
 	// Number of elements in this entity description

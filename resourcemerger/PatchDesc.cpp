@@ -77,6 +77,41 @@ const std::vector<std::string> &EntityDesc::values() const
 	return m_values;
 }
 
+bool EntityDesc::getline(std::istream &stream, std::string &line)
+{
+	line = "";
+
+	if (!stream.eof())
+		m_newlineEOF = false;
+
+	bool bReadSomething = false;
+
+	while (!stream.eof())
+	{
+		char c = stream.get();
+
+		bReadSomething = true;
+
+		// Otherwise we seemingly read an invalid character
+		if (stream.eof())
+			break;
+
+		if (c == '\n')
+		{
+			m_newlineEOF = true;
+			return true;
+		}
+		else if (c != '\r')
+		{
+			line += c;
+		}
+	}
+
+	if (bReadSomething)
+		return true;
+
+	return false;
+}
 
 std::istream &operator>>(std::istream &stream, EntityDesc &desc)
 {
@@ -84,7 +119,7 @@ std::istream &operator>>(std::istream &stream, EntityDesc &desc)
 
 	std::string line;
 
-	while (util::getline(stream, line))
+	while (desc.getline(stream, line))
 	{
 		std::string key, value;
 
@@ -116,11 +151,17 @@ std::ostream &operator<<(std::ostream &stream, const EntityDesc &desc)
 
 		if (value == "")
 		{
-			stream << key << std::endl;
+			stream << key;
 		}
 		else
 		{
-			stream << key << "=" << value << std::endl;
+			stream << key << "=" << value;
+		}
+
+		// Preserve original newline EOF termination
+		if (desc.m_newlineEOF || (i < (desc.size() - 1)))
+		{
+			stream << std::endl;
 		}
 	}
 
@@ -279,13 +320,13 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 	for (int i = 1; i <= baseDesc.size(); i++)
 	{
 		distance[i][0] = i;
-		operation[i][0] = REM;
+		operation[i][0] = ADD;
 	}
 
 	for (int i = 1; i <= modDesc.size(); i++)
 	{
 		distance[0][i] = i;
-		operation[0][i] = ADD;
+		operation[0][i] = REM;
 	}
 
 	distance[0][0] = 0;
@@ -312,13 +353,13 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 			if ((distance[iBase - 1][iMod] + 1) < dist)
 			{
 				dist = distance[iBase - 1][iMod] + 1;
-				op = ADD;
+				op = REM;
 			}
 
 			if ((distance[iBase][iMod - 1] + 1) < dist)
 			{
 				dist = distance[iBase][iMod - 1] + 1;
-				op = REM;
+				op = ADD;
 			}
 
 			distance[iBase][iMod] = dist;

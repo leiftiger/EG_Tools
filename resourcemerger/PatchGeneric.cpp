@@ -133,13 +133,13 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 	for (int i = 1; i <= baseFile.size(); i++)
 	{
 		distance[i][0] = i;
-		operation[i][0] = REM;
+		operation[i][0] = ADD;
 	}
 
 	for (int i = 1; i <= modFile.size(); i++)
 	{
 		distance[0][i] = i;
-		operation[0][i] = ADD;
+		operation[0][i] = REM;
 	}
 
 	distance[0][0] = 0;
@@ -166,13 +166,13 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 			if ((distance[iBase - 1][iMod] + 1) < dist)
 			{
 				dist = distance[iBase - 1][iMod] + 1;
-				op = ADD;
+				op = REM;
 			}
 
 			if ((distance[iBase][iMod - 1] + 1) < dist)
 			{
 				dist = distance[iBase][iMod - 1] + 1;
-				op = REM;
+				op = ADD;
 			}
 
 			distance[iBase][iMod] = dist;
@@ -278,9 +278,17 @@ bool PatcherGeneric::getline(std::istream &stream, std::string &line) const
 
 	line = "";
 
+	bool bReadSomething = false;
+
 	while (!stream.eof())
 	{
 		char c = stream.get();
+
+		bReadSomething = true;
+
+		// Otherwise we seemingly read an invalid character
+		if (stream.eof())
+			break;
 
 		if (c == '\n')
 			return true;
@@ -289,6 +297,9 @@ bool PatcherGeneric::getline(std::istream &stream, std::string &line) const
 			line += c;
 		}
 	}
+
+	if (bReadSomething)
+		return true;
 
 	return false;
 }
