@@ -171,10 +171,10 @@ void UI_MainWindow::populateLists()
 
 	for (std::string &mod : enabledMods)
 	{
-		ui.listWidgetEnabled->addItem(QString::fromStdString(mod));
-
 		if (std::filesystem::exists(modPath + "/" + mod))
 		{
+			ui.listWidgetEnabled->addItem(QString::fromStdString(mod));
+
 			isEnabled.emplace(mod);
 		}
 	}
