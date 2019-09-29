@@ -190,7 +190,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 
 	if (m_mods.size() == 1)
 	{
-		mutex.queue.push("Only one mod is loaded\nCopying files directly from " + m_mods[0]->name() + "\n");
+		mutex.queue.push("Only one mod is loaded\nCopying files directly from \"" + m_mods[0]->name() + "\"\n");
 
 		const ModPack *mod = m_mods[0];
 
