@@ -32,6 +32,9 @@ void UI_MergeWindowWorker::signalLogic(Mutex::Client &mutex)
 
 void UI_MergeWindowWorker::mergeLogic(Mutex::Server &mutex)
 {
+	// Wait for the merge window to show
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
 	m_merger.mergeMods(mutex);
 }
 

@@ -242,8 +242,10 @@ std::vector<std::string> PatchDesc::apply(std::vector<std::istream*> &inStreams,
 
 	if (numApplied != m_subPatches.size())
 		strOutputs.push_back("Applied " + std::to_string(numApplied) + " of " + std::to_string(m_subPatches.size()) + " changes to " + filename);
-	else
+	else if (numApplied != 1)
 		strOutputs.push_back("Applied all " + std::to_string(numApplied) + " changes to " + filename);
+	else
+		strOutputs.push_back("Applied the 1 change to " + filename);
 
 	return strOutputs;
 }

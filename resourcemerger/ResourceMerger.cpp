@@ -9,12 +9,27 @@
 #include <algorithm>
 #include <thread>
 
-ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder) : m_resourcePacks(packs), m_outputPath(outputFolder)
+void ResourceMerger::initialize(Mutex::Server &mutex, double maxPerc)
 {
+	if (m_initialized)
+		return;
+
+	mutex.queue.push("Processing base files for reserved IDs...\n\n");
+
+	mutex.progress = 0;
+
+	mutex.wait();
+
+	m_initialized = true;
+
+	int numFilesProcessed = 0;
+
+	double numFiles = (double)m_resourcePacks->files().size();
+
 	std::unordered_map<std::string, int> groups;
 
 	// Scans desc IDs from resource packs to determine various classes and know vacant IDs
-	for (const std::string &filePath : packs->files())
+	for (const std::string &filePath : m_resourcePacks->files())
 	{
 		if (filePath.substr(filePath.length() - 5, 5) == ".desc")
 		{
@@ -24,7 +39,7 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 
 			std::string filename = filePath.substr(fileSlash + 1);
 
-			std::string subFolder = filePath.substr(folderSlash+1, fileSlash - folderSlash - 1);
+			std::string subFolder = filePath.substr(folderSlash + 1, fileSlash - folderSlash - 1);
 
 			std::string masterFolder = filePath.substr(strlen("./EntityDescriptions/"), folderSlash - strlen("./EntityDescriptions/"));
 
@@ -96,6 +111,14 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 
 			delete fs;
 		}
+
+		numFilesProcessed++;
+
+		if ((numFilesProcessed % 100) == 0)
+		{
+			mutex.progress = (numFilesProcessed / numFiles) * maxPerc;
+			mutex.wait();
+		}
 	}
 
 	for (const std::pair<std::string, int> &pair : groups)
@@ -107,16 +130,19 @@ ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &ou
 	m_vacantDescIDs["Unknown"] = 30000;
 	m_descClassRanges.push_back(std::make_pair(49999, "Unknown"));
 
-	std::sort(m_descClassRanges.begin(), m_descClassRanges.end(), 
-	
-		[](const std::pair<int, std::string> &lhs, const std::pair<int, std::string> &rhs)
-		{
-			// Important to use upper end as super-classes should be evaluated last
-			return lhs.second < rhs.second;
-		}
-	);
+	std::sort(m_descClassRanges.begin(), m_descClassRanges.end(),
 
-	std::cout << "hi";
+		[](const std::pair<int, std::string> &lhs, const std::pair<int, std::string> &rhs)
+	{
+		// Important to use upper end as super-classes should be evaluated last
+		return lhs.second < rhs.second;
+	}
+	);
+}
+
+ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder) : m_resourcePacks(packs), m_outputPath(outputFolder)
+{
+
 }
 
 ResourceMerger::~ResourceMerger()
@@ -154,6 +180,13 @@ void ResourceMerger::addPatcher(IResourcePatcher *patcher)
 void ResourceMerger::mergeMods(Mutex::Server &mutex)
 {
 	const std::string tabString("    ");
+
+	double initPerc = 0.1;
+
+	initialize(mutex, initPerc);
+
+	mutex.progress = initPerc;
+	mutex.wait();
 
 	if (m_mods.size() == 1)
 	{
@@ -238,7 +271,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 
 			modProgress += 0.1;
 
-			mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+			mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
 
 			mutex.wait();
 
@@ -264,7 +297,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 
 			modProgress += 0.5;
 
-			mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+			mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
 
 			mutex.wait();
 
@@ -397,7 +430,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 
 				modProgress += 0.5 / patches.size();
 
-				mutex.progress = (numModsProcessed + modProgress) / m_mods.size();
+				mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);
 
 				mutex.wait();
 			}
@@ -407,6 +440,12 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 			numModsProcessed++;
 		}
 	}
+
+	mutex.queue.push("Merging complete");
+
+	// Send last output texts
+	mutex.progress = 1;
+	mutex.wait();
 }
 
 void ResourceMerger::lockFile(const std::string &file)

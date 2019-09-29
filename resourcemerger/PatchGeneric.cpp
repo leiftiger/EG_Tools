@@ -98,8 +98,10 @@ std::vector<std::string> PatchGeneric::apply(std::vector<std::istream*> &inStrea
 
 	if (numApplied != m_subPatches.size())
 		strOutputs.push_back("Applied " + std::to_string(numApplied) + " of " + std::to_string(m_subPatches.size()) + " changes to " + filename);
-	else
+	else if (numApplied != 1)
 		strOutputs.push_back("Applied all " + std::to_string(numApplied) + " changes to " + filename);
+	else
+		strOutputs.push_back("Applied the 1 change to " + filename);
 
 	return strOutputs;
 }
@@ -180,7 +182,7 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 		}
 	}
 
-	int iBase = baseFile.size() - 1, iMod = modFile.size() - 1;
+	int iBase = (int)baseFile.size() - 1, iMod = (int)modFile.size() - 1;
 
 	while (iBase >= 0 && iMod >= 0)
 	{
@@ -368,7 +370,7 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (size_t i = 0; i < fileBase.size(); i++)
+			for (int i = 0; i < fileBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}

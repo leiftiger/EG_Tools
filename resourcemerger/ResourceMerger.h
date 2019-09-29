@@ -49,6 +49,11 @@ protected:
 	// Buffer size to use when copying files
 	const int COPY_BUFFER_SIZE = 4096;
 
+	bool m_initialized = false;
+
+	// Initializes known desc IDs and max unique IDs from the base game's files
+	void initialize(Mutex::Server &mutex, double maxPerc);
+
 public:
 
 	ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder);

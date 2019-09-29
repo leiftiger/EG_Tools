@@ -18,7 +18,7 @@ namespace RL
 
 		if (stream->fail())
 		{
-			throw std::exception(("Couldn't open file " + filename + " for reading").c_str());
+			throw std::exception(("Couldn't open file \"" + filename + "\" for reading").c_str());
 		}
 
 		return stream;
@@ -35,7 +35,7 @@ namespace RL
 			if (fs->fail())
 			{
 				delete fs;
-				throw std::exception(("Couldn't find folder " + m_resourceListFolder).c_str());
+				throw std::exception(("Couldn't find folder \"" + m_resourceListFolder + "\"").c_str());
 			}
 
 			std::string line;
