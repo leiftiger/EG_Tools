@@ -18,6 +18,10 @@ int main(int argc, char *argv[])
 		util::loadDynamicDefinitions();
 
 		QApplication a(argc, argv);
+
+		// Currently many UI elements are dependent on no DPI-scaling
+		a.setAttribute(Qt::AA_EnableHighDpiScaling, false);
+
 		UI_MainWindow w;
 		w.show();
 
@@ -28,7 +32,15 @@ int main(int argc, char *argv[])
 	{
 		QApplication a(argc, argv);
 		UI_ErrorWindow w;
-		w.setErrorMessage(e.what());
+
+		std::string strError(e.what());
+
+		if ((int)strError.find("/DynamicResources/") != -1)
+		{
+			strError += "\n\nThis is likely due to a mod that has been uninstalled, please launch the game again before opening the ATN Editor.";
+		}
+
+		w.setErrorMessage(strError);
 		w.show();
 
 		return a.exec();
