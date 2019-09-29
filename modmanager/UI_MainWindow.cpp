@@ -24,6 +24,8 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 		str = basePath + str;
 	}
 
+	// TODO: Read Current.opt to retrieve game locale to allow for non-english patching
+
 	ResourceMerger *merger = new ResourceMerger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
 
 	for (const std::string &mod : mods)
@@ -145,8 +147,14 @@ void UI_MainWindow::populateLists()
 		{
 			for (std::filesystem::path &path : unmanagedMods)
 			{
-				std::filesystem::remove_all(modPath + "/" + path.filename().string());
-				std::filesystem::rename(path, modPath + "/" + path.filename().string());
+				std::string modName = path.filename().string();
+
+				// This is the only mod we can be relatively certain of
+				if (modName == "Patch")
+					modName = "Unofficial Patch";
+
+				std::filesystem::remove_all(modPath + "/" + modName);
+				std::filesystem::rename(path, modPath + "/" + modName);
 			}
 			break;
 		}
