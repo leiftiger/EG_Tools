@@ -64,7 +64,7 @@ By specifying the path to your Evil Genius installation, it will find all necess
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="textPathEG"/>
+       <widget class="UI_LineEdit" name="textPathEG"/>
       </item>
      </layout>
     </item>
@@ -72,6 +72,13 @@ By specifying the path to your Evil Genius installation, it will find all necess
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>UI_LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>UI_LineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

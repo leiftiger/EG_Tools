@@ -58,6 +58,8 @@ void UI_ConfigWindow::saveConfig()
 
 void UI_ConfigWindow::setPathEG(const QString &path)
 {
+	ui.textPathEG->setInputError(false);
+
 	if (path.length() == 0)
 		return;
 
@@ -65,6 +67,8 @@ void UI_ConfigWindow::setPathEG(const QString &path)
 
 	if (file.fail())
 	{
+		ui.textPathEG->setInputError(true);
+
 		QToolTip::showText(this->mapToGlobal(ui.textPathEG->pos()), tr("Incorrect path"));
 		return;
 	}
