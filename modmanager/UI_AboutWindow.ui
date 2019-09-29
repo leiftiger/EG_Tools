@@ -29,7 +29,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Mod Manager 0.2.0</string>
+       <string>Mod Manager 0.8.0</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignHCenter|Qt::AlignTop</set>

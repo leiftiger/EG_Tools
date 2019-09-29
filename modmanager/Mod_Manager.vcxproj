@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModInfo.cpp" />
     <ClCompile Include="UI_AboutWindow.cpp" />
     <ClCompile Include="UI_ConfigWindow.cpp" />
     <ClCompile Include="UI_ErrorWindow.cpp" />
@@ -169,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="UI_LineEdit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ModInfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

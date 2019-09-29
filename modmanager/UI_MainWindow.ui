@@ -146,7 +146,7 @@
      </widget>
     </item>
     <item row="2" column="4" rowspan="3">
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="modFrame">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -219,7 +219,11 @@
         <widget class="QLineEdit" name="textModAuthor"/>
        </item>
        <item row="3" column="0" colspan="2">
-        <widget class="QTextBrowser" name="textModDesc"/>
+        <widget class="QTextBrowser" name="textModDesc">
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0" colspan="2">
         <widget class="QPushButton" name="buttonSaveInfo">
@@ -333,8 +337,8 @@ Also note that the Mod Manager does not affect mods changing game configurations
    <slot>populateLists()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>419</x>
-     <y>356</y>
+     <x>509</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
      <x>428</x>
@@ -349,8 +353,8 @@ Also note that the Mod Manager does not affect mods changing game configurations
    <slot>uninstallMods()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>263</x>
-     <y>355</y>
+     <x>353</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
      <x>271</x>
@@ -365,8 +369,8 @@ Also note that the Mod Manager does not affect mods changing game configurations
    <slot>installMods()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>88</x>
-     <y>359</y>
+     <x>98</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
      <x>83</x>
@@ -381,8 +385,8 @@ Also note that the Mod Manager does not affect mods changing game configurations
    <slot>saveModInfo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>675</x>
-     <y>356</y>
+     <x>780</x>
+     <y>406</y>
     </hint>
     <hint type="destinationlabel">
      <x>673</x>
@@ -422,6 +426,86 @@ Also note that the Mod Manager does not affect mods changing game configurations
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>listWidgetDisabled</sender>
+   <signal>itemPressed(QListWidgetItem*)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>viewModInfo(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>501</x>
+     <y>293</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>787</x>
+     <y>204</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidgetEnabled</sender>
+   <signal>itemPressed(QListWidgetItem*)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>viewModInfo(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>786</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textModName</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>setModName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>756</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>787</x>
+     <y>262</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textModAuthor</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>setModAuthor(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>770</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>788</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>textModDesc</sender>
+   <signal>textChanged()</signal>
+   <receiver>UI_MainWindowClass</receiver>
+   <slot>setModDesc()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>768</x>
+     <y>316</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>787</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>populateLists()</slot>
@@ -430,5 +514,9 @@ Also note that the Mod Manager does not affect mods changing game configurations
   <slot>saveModInfo()</slot>
   <slot>openAboutWindow()</slot>
   <slot>openConfigWindow()</slot>
+  <slot>viewModInfo(QListWidgetItem*)</slot>
+  <slot>setModName(QString)</slot>
+  <slot>setModAuthor(QString)</slot>
+  <slot>setModDesc()</slot>
  </slots>
 </ui>

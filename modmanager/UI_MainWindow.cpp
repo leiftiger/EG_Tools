@@ -173,7 +173,10 @@ void UI_MainWindow::populateLists()
 	{
 		ui.listWidgetEnabled->addItem(QString::fromStdString(mod));
 
-		isEnabled.emplace(mod);
+		if (std::filesystem::exists(modPath + "/" + mod))
+		{
+			isEnabled.emplace(mod);
+		}
 	}
 
 	QStringList disabledMods;
@@ -186,6 +189,51 @@ void UI_MainWindow::populateLists()
 
 			if (isEnabled.find(mod) == isEnabled.end())
 				disabledMods.push_back(QString::fromStdString(mod));
+
+			bool hasModInfo = false;
+
+			for (const std::filesystem::directory_entry &modEntry : std::filesystem::directory_iterator(entry.path()))
+			{
+				std::string &filename = modEntry.path().filename().string();
+
+				if (filename.length() >= strlen("modinfo_") && filename.substr(0, strlen("modinfo_")) == "modinfo_")
+				{
+					ModInfo info;
+
+					info.setFilename(modEntry.path().string());
+
+					std::ifstream fs(info.filename());
+
+					fs >> info;
+
+					m_modDetails[mod] = info;
+
+					hasModInfo = true;
+				}
+			}
+
+			if (!hasModInfo)
+			{
+				ModInfo info;
+
+				std::string modInfoName("modinfo_");
+
+				for (char c : mod)
+				{
+					if (c != ' ')
+						modInfoName += tolower(c);
+					else
+						modInfoName += '_';
+				}
+
+				info.setFilename(modPath + "/" + mod + "/" + modInfoName + ".xml");
+
+				info["name"] = mod;
+				info["author"] = "N/A";
+				info["desc"] = "";
+
+				m_modDetails[mod] = info;
+			}
 		}
 	}
 
@@ -263,11 +311,6 @@ void UI_MainWindow::uninstallMods()
 	std::filesystem::remove_all(config[0] + MOD_ENABLED_DIR);
 }
 
-void UI_MainWindow::saveModInfo()
-{
-
-}
-
 void UI_MainWindow::openAboutWindow()
 {
 	m_aboutWindow.show();
@@ -279,4 +322,54 @@ void UI_MainWindow::openConfigWindow()
 	window->show();
 
 	connect(window, SIGNAL(onClose()), this, SLOT(populateLists()));
+}
+
+void UI_MainWindow::saveModInfo()
+{
+	ModInfo &info = *m_currentModDetails;
+
+	std::ofstream fs(info.filename(), std::ios::trunc);
+
+	fs << info;
+}
+
+void UI_MainWindow::viewModInfo(QListWidgetItem *item)
+{
+	m_currentModDetails = nullptr;
+
+	std::string mod = item->text().toStdString();
+
+	ModInfo &info = m_modDetails[mod];
+
+	ui.modFrame->setEnabled(true);
+
+	ui.textModName->setText(QString::fromStdString(info["name"]));
+	ui.textModAuthor->setText(QString::fromStdString(info["author"]));
+	ui.textModDesc->setHtml(QString::fromStdString(info["desc"]));
+
+	m_currentModDetails = &info;
+}
+
+void UI_MainWindow::setModName(const QString &name)
+{
+	if (m_currentModDetails == nullptr)
+		return;
+
+	(*m_currentModDetails)["name"] = name.toStdString();
+}
+
+void UI_MainWindow::setModAuthor(const QString &author)
+{
+	if (m_currentModDetails == nullptr)
+		return;
+
+	(*m_currentModDetails)["author"] = author.toStdString();
+}
+
+void UI_MainWindow::setModDesc()
+{
+	if (m_currentModDetails == nullptr)
+		return;
+
+	(*m_currentModDetails)["desc"] = ui.textModDesc->toPlainText().toStdString();
 }

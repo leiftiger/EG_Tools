@@ -10,6 +10,9 @@
 #include "UI_MergeWindow.h"
 
 #include "ModPack.h"
+#include "ModInfo.h"
+
+#include <unordered_map>
 
 class UI_MainWindow : public QMainWindow
 {
@@ -18,6 +21,10 @@ class UI_MainWindow : public QMainWindow
 private:
 
 	UI_AboutWindow m_aboutWindow;
+
+	std::unordered_map<std::string, ModInfo> m_modDetails;
+
+	ModInfo *m_currentModDetails = nullptr;
 
 	// Merge the mods in the list in the given order to the specified game directory
 	void mergeMods(const std::string &basePath, const std::vector<std::string> &mods);
@@ -41,10 +48,16 @@ protected slots:
 	void installMods();
 	void uninstallMods();
 
-	void saveModInfo();
-
 	void openAboutWindow();
 	void openConfigWindow();
+
+	void saveModInfo();
+
+	void viewModInfo(QListWidgetItem *item);
+
+	void setModName(const QString &name);
+	void setModAuthor(const QString &author);
+	void setModDesc();
 
 private:
 	Ui::UI_MainWindowClass ui;
