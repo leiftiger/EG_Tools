@@ -32,6 +32,7 @@
     <ClInclude Include="StringList.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IResourcePatcher.cpp" />
     <ClCompile Include="ModPack.cpp" />
     <ClCompile Include="MutexCommunication.cpp" />
     <ClCompile Include="PatchATN.cpp" />

@@ -61,7 +61,7 @@ namespace ATN
 		return true;
 	}
 
-	void Entry::applyChanges(const Entry &original, const Entry &change)
+	void Entry::applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory)
 	{
 		if (original.id() != change.id() || this->id() != original.id())
 			throw ATN::Exception("applyChanges requires that all entries share the same unique ID");

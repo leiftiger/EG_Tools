@@ -55,7 +55,7 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
-		virtual void applyChanges(const Entry &original, const Entry &change);
+		virtual void applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory);
 
 		// Gets all states belonging to this network
 		const std::vector<State*> &states() const;

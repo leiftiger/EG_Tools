@@ -15,9 +15,9 @@ namespace ATN
 		return "TATNState";
 	}
 
-	void State::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	void State::applyChanges(const Entry &originalEntry, const Entry &changeEntry, DeltaMemory &memory)
 	{
-		Entry::applyChanges(originalEntry, changeEntry);
+		Entry::applyChanges(originalEntry, changeEntry, memory);
 
 		const State &original = (State&)originalEntry;
 		const State &change = (State&)changeEntry;
@@ -38,6 +38,9 @@ namespace ATN
 				{
 					m_parameterMarshalls.push_back(new ParameterMarshall(*p));
 				}
+
+				memory.lock("resources");
+				memory.lock("parameters");
 			}
 		}
 		// Removed network transition at this state
@@ -46,6 +49,9 @@ namespace ATN
 			if (this->networkTransition() != nullptr && this->networkTransition()->id() == original.networkTransition()->id())
 			{
 				this->setNetworkTransition(nullptr);
+
+				memory.lock("resources");
+				memory.lock("parameters");
 			}
 		}
 		else if (original.networkTransition() == nullptr && change.networkTransition() == nullptr)
@@ -54,244 +60,52 @@ namespace ATN
 		}
 		else
 		{
-			// TODO: Could maybe be problematic to change the transition, but hopefully the marshalls should capture the change as well
+			bool allowUpdate = true;
+			bool lockAfter = false;
+
+			// Might be problematic to change the transition, but hopefully the marshalls should capture the change as well
 			if (original.networkTransition()->id() != change.networkTransition()->id())
 			{
 				if (this->networkTransition() != nullptr && this->networkTransition()->id() == original.networkTransition()->id())
 				{
-					this->m_networkTransition = change.networkTransition();
-				}
-			}
-
-			// Add new resource marshalls
-			for (ResourceMarshall *changeResource : change.resourceMarshalls())
-			{
-				bool bExists = false;
-
-				for (ResourceMarshall *originalResource : original.resourceMarshalls())
-				{
-					if (*originalResource == *changeResource)
+					// If some other mod has changed the marshalls, then we can't change the transition without breaking that
+					if (memory.isChanged("resources") || memory.isChanged("parameters"))
 					{
-						bExists = true;
-						break;
+						allowUpdate = false;
+						lockAfter = true;
 					}
-				}
-
-				if (!bExists)
-				{
-					m_resourceMarshalls.push_back(new ResourceMarshall(*changeResource));
-				}
-			}
-
-			// Remove existing resource marshalls
-			for (ResourceMarshall *originalResource : original.resourceMarshalls())
-			{
-				bool bExists = false;
-
-				for (ResourceMarshall *changeResource : change.resourceMarshalls())
-				{
-					if (*originalResource == *changeResource)
+					else
 					{
-						bExists = true;
-						break;
-					}
-				}
+						this->m_networkTransition = change.networkTransition();
 
-				if (!bExists)
-				{
-					for (std::vector<ResourceMarshall*>::iterator it = m_resourceMarshalls.begin(); it != m_resourceMarshalls.end(); it++)
-					{
-						ResourceMarshall *thisResource = *it;
-
-						if (*thisResource == *originalResource)
-						{
-							m_resourceMarshalls.erase(it);
-
-							delete thisResource;
-							break;
-						}
+						// Prevent other mods from doing marshall updates as they would be dependent on the original transition
+						lockAfter = true;
 					}
 				}
 			}
 
-			// Perform modification assuming both original and change were using the same indices
-			// TODO: Try to improve this similar to Network::applyChanges()
-			for (int i = 0; i < std::min(original.resourceMarshalls().size(), change.resourceMarshalls().size()); i++)
+			if (allowUpdate)
 			{
-				ResourceMarshall *originalResource = original.resourceMarshalls()[i];
-				ResourceMarshall *changeResource = change.resourceMarshalls()[i];
+				if (!memory.isLocked("resources"))
+					deltaUpdateMemory(original.resourceMarshalls(), change.resourceMarshalls(), this->m_resourceMarshalls, memory, "resources");
 
-				if (*originalResource != *changeResource)
-				{
-					for (int i2 = 0; i2 < this->resourceMarshalls().size(); i2++)
-					{
-						ResourceMarshall *thisResource = this->resourceMarshalls()[i2];
-
-						// We only modify the resource if we can still find the original somewhere
-						// (otherwise this means we've already modified this resource)
-						if (*thisResource == *originalResource)
-						{
-							this->m_resourceMarshalls[i2] = new ResourceMarshall(*changeResource);
-
-							delete thisResource;
-							break;
-						}
-					}
-				}
+				if (!memory.isLocked("parameters"))
+					deltaUpdateMemory(original.parameterMarshalls(), change.parameterMarshalls(), this->m_parameterMarshalls, memory, "parameters");
 			}
 
-			// Add new parameter marshalls
-			for (ParameterMarshall *changeParam : change.parameterMarshalls())
+			if (lockAfter)
 			{
-				bool bExists = false;
-
-				for (ParameterMarshall *originalParam : original.parameterMarshalls())
-				{
-					if (*originalParam == *changeParam)
-					{
-						bExists = true;
-						break;
-					}
-				}
-
-				if (!bExists)
-				{
-					m_parameterMarshalls.push_back(new ParameterMarshall(*changeParam));
-				}
-			}
-
-			// Remove existing parameter marshalls
-			for (ParameterMarshall *originalParam : original.parameterMarshalls())
-			{
-				bool bExists = false;
-
-				for (ParameterMarshall *changeParam : change.parameterMarshalls())
-				{
-					if (*originalParam == *changeParam)
-					{
-						bExists = true;
-						break;
-					}
-				}
-
-				if (!bExists)
-				{
-					for (std::vector<ParameterMarshall*>::iterator it = m_parameterMarshalls.begin(); it != m_parameterMarshalls.end(); it++)
-					{
-						ParameterMarshall *thisParam = *it;
-
-						if (*thisParam == *originalParam)
-						{
-							m_parameterMarshalls.erase(it);
-
-							delete thisParam;
-							break;
-						}
-					}
-				}
-			}
-
-			// Perform modification assuming both original and change were using the same indices
-			// TODO: Try to improve this similar to Network::applyChanges()
-			for (int i = 0; i < std::min(original.parameterMarshalls().size(), change.parameterMarshalls().size()); i++)
-			{
-				ParameterMarshall *originalParam = original.parameterMarshalls()[i];
-				ParameterMarshall *changeParam = change.parameterMarshalls()[i];
-
-				if (*originalParam != *changeParam)
-				{
-					for (int i2 = 0; i2 < this->parameterMarshalls().size(); i2++)
-					{
-						ParameterMarshall *thisParam = this->parameterMarshalls()[i2];
-
-						// We only modify the resource if we can still find the original somewhere
-						// (otherwise this means we've already modified this resource)
-						if (*thisParam == *originalParam)
-						{
-							this->m_parameterMarshalls[i2] = new ParameterMarshall(*changeParam);
-
-							delete thisParam;
-							break;
-						}
-					}
-				}
+				memory.lock("resources");
+				memory.lock("parameters");
 			}
 		}
 
-		// Add new transitions
-		for (Transition *changeTransition : change.transitions())
-		{
-			bool bExists = false;
-
-			for (Transition *originalTransition : original.transitions())
-			{
-				if (originalTransition->id() == changeTransition->id())
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				this->add(*changeTransition);
-			}
-		}
-
-		// Remove existing transitions
-		for (Transition *originalTransition : original.transitions())
-		{
-			bool bExists = false;
-
-			for (Transition *changeTransition : change.transitions())
-			{
-				if (originalTransition->id() == changeTransition->id())
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				for (Transition *thisTransition : this->transitions())
-				{
-					if (thisTransition->id() == originalTransition->id())
-					{
-						this->remove(*thisTransition);
-						break;
-					}
-				}
-			}
-		}
-
-		// While the order won't matter for most transitions, it's possible that some mods depend on this,
-		// but then we assume the same things as above and in Network::applyChanges
-		for (int i = 0; i < std::min(original.transitions().size(), change.transitions().size()); i++)
-		{
-			Transition *originalTransition = original.transitions()[i];
-			Transition *changeTransition = change.transitions()[i];
-
-			if (originalTransition->id() != changeTransition->id())
-			{
-				for (int i2 = 0; i2 < this->transitions().size(); i2++)
-				{
-					Transition *thisTransition = this->transitions()[i2];
-
-					// We only modify the transition if we can still find the original somewhere
-					// (otherwise this means we've already modified this transition)
-					if (thisTransition->id() == originalTransition->id())
-					{
-						this->m_stateTransitions[i2] = changeTransition;
-
-						break;
-					}
-				}
-			}
-		}
+		// While the order for transitions is largely unimportant, we make sure we capture the changes by the mod either way
+		if (!memory.isLocked("transitions"))
+			deltaUpdateID(original.transitions(), change.transitions(), this->m_stateTransitions, memory, "transitions");
 	}
 
-	const std::vector<Transition*>& State::transitions() const
+	const std::vector<Transition*> &State::transitions() const
 	{
 		return m_stateTransitions;
 	}

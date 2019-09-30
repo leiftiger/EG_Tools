@@ -19,7 +19,7 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
-		virtual void applyChanges(const Entry &original, const Entry &change);
+		virtual void applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory);
 
 		// Gets the parent of this resource type
 		const Object *parent() const;

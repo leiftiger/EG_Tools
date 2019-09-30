@@ -19,5 +19,8 @@ public:
 
 	// Creates a series of patches from the given files and base resource packs
 	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, ModPack &mod, const std::vector<std::string> &files) = 0;
+
+	// Clears any global references held by this patcher for another merge session
+	virtual void clearMemory();
 };
 

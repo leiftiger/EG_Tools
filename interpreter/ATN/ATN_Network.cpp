@@ -20,9 +20,9 @@ namespace ATN
 		return "TATNNetwork";
 	}
 
-	void Network::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	void Network::applyChanges(const Entry &originalEntry, const Entry &changeEntry, DeltaMemory &memory)
 	{
-		Entry::applyChanges(originalEntry, changeEntry);
+		Entry::applyChanges(originalEntry, changeEntry, memory);
 
 		const Network &original = (Network&)originalEntry;
 		const Network &change = (Network&)changeEntry;
@@ -76,155 +76,9 @@ namespace ATN
 			}
 		}
 
-		// Add new resources
-		for (Resource *changeResource : change.resources())
-		{
-			bool bExists = false;
-
-			for (Resource *originalResource : original.resources())
-			{
-				if (*originalResource == *changeResource)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				this->add(*new Resource(*changeResource));
-			}
-		}
-
-		// Remove existing resources
-		for (Resource *originalResource : original.resources())
-		{
-			bool bExists = false;
-
-			for (Resource *changeResource : change.resources())
-			{
-				if (*originalResource == *changeResource)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				for (Resource *thisResource : this->resources())
-				{
-					if (*thisResource == *originalResource)
-					{
-						this->remove(*thisResource);
-
-						delete thisResource;
-						break;
-					}
-				}
-			}
-		}
-
-		// Perform modification assuming both original and change were using the same indices
-		// TODO: Could these types of changes be captured better? Hopefully it will be rare so we won't have to worry about that
-		for (int i = 0; i < std::min(original.resources().size(), change.resources().size()); i++)
-		{
-			Resource *originalResource = original.resources()[i];
-			Resource *changeResource = change.resources()[i];
-
-			if (*originalResource != *changeResource)
-			{
-				for (int i2 = 0; i2 < this->resources().size(); i2++)
-				{
-					Resource *thisResource = this->resources()[i2];
-
-					// We only modify the resource if we can still find the original somewhere
-					// (otherwise this means we've already modified this resource)
-					if (*thisResource == *originalResource)
-					{
-						this->m_resources[i2] = new Resource(*changeResource);
-
-						delete thisResource;
-						break;
-					}
-				}
-			}
-		}
-
-		// Add new parameters
-		for (Parameter *changeParam : change.parameters())
-		{
-			bool bExists = false;
-
-			for (Parameter *originalParam : original.parameters())
-			{
-				if (*originalParam == *changeParam)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				this->add(*new Parameter(*changeParam));
-			}
-		}
-
-		// Remove existing resources
-		for (Parameter *originalParam : original.parameters())
-		{
-			bool bExists = false;
-
-			for (Parameter *changeParam : change.parameters())
-			{
-				if (*originalParam == *changeParam)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				for (Parameter *thisParam : this->parameters())
-				{
-					if (*thisParam == *originalParam)
-					{
-						this->remove(*thisParam);
-
-						delete thisParam;
-						break;
-					}
-				}
-			}
-		}
-
-		// Perform modification assuming both original and change were using the same indices
-		// TODO: See above for resources
-		for (int i = 0; i < std::min(original.parameters().size(), change.parameters().size()); i++)
-		{
-			Parameter *originalParam = original.parameters()[i];
-			Parameter *changeParam = change.parameters()[i];
-
-			if (*originalParam != *changeParam)
-			{
-				for (int i2 = 0; i2 < this->parameters().size(); i2++)
-				{
-					Parameter *thisParam = this->parameters()[i2];
-
-					// We only modify the resource if we can still find the original somewhere
-					// (otherwise this means we've already modified this resource)
-					if (*thisParam == *originalParam)
-					{
-						this->m_parameters[i2] = new Parameter(*changeParam);
-
-						delete thisParam;
-						break;
-					}
-				}
-			}
-		}
+		// Order-preserving delta updates
+		deltaUpdate(original.resources(), change.resources(), this->m_resources, memory, "resources");
+		deltaUpdate(original.parameters(), change.parameters(), this->m_parameters, memory, "parameters");
 
 		// For states, the order is not important, so we only add or remove states like threads
 

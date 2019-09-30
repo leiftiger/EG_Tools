@@ -7,9 +7,9 @@ namespace ATN
 		return "TATNThread";
 	}
 
-	void Thread::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	void Thread::applyChanges(const Entry &originalEntry, const Entry &changeEntry, DeltaMemory &memory)
 	{
-		Entry::applyChanges(originalEntry, changeEntry);
+		Entry::applyChanges(originalEntry, changeEntry, memory);
 
 		const Thread &original = (Thread&)originalEntry;
 		const Thread &change = (Thread&)changeEntry;

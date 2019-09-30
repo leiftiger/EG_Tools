@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ATN\ATN_DeltaPatching.h" />
     <ClInclude Include="ATN\ATN_Effect.h" />
     <ClInclude Include="ATN\ATN_Entry.h" />
     <ClInclude Include="ATN\ATN_Exception.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ATN\ATN_DeltaPatching.cpp" />
     <ClCompile Include="ATN\ATN_Effect.cpp" />
     <ClCompile Include="ATN\ATN_Entry.cpp" />
     <ClCompile Include="ATN\ATN_Exception.cpp" />

@@ -7,9 +7,9 @@ namespace ATN
 		return "TATNObjectType";
 	}
 
-	void Object::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	void Object::applyChanges(const Entry &originalEntry, const Entry &changeEntry, DeltaMemory &memory)
 	{
-		Entry::applyChanges(originalEntry, changeEntry);
+		Entry::applyChanges(originalEntry, changeEntry, memory);
 
 		const Object &original = (Object&)originalEntry;
 		const Object &change = (Object&)changeEntry;

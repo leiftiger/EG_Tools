@@ -32,7 +32,7 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
-		virtual void applyChanges(const Entry &original, const Entry &change) override;
+		virtual void applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory) override;
 
 		// Executable game function that this effect calls
 		const std::string &gameFunction() const;

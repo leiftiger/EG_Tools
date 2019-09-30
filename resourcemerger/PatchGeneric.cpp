@@ -394,3 +394,8 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 
 	return patches;
 }
+
+void PatcherGeneric::clearMemory()
+{
+	m_baseTranslations.clear();
+}

@@ -20,9 +20,9 @@ namespace ATN
 		return "TATNStateTransition";
 	}
 
-	void Transition::applyChanges(const Entry &originalEntry, const Entry &changeEntry)
+	void Transition::applyChanges(const Entry &originalEntry, const Entry &changeEntry, DeltaMemory &memory)
 	{
-		Entry::applyChanges(originalEntry, changeEntry);
+		Entry::applyChanges(originalEntry, changeEntry, memory);
 
 		const Transition &original = (Transition&)originalEntry;
 		const Transition &change = (Transition&)changeEntry;
@@ -52,6 +52,9 @@ namespace ATN
 				{
 					m_effectParameters.push_back(new ParameterMarshall(*p));
 				}
+
+				memory.lock("effect_resources");
+				memory.lock("effect_parameters");
 			}
 		}
 		else if (original.effect() != nullptr && change.effect() == nullptr)
@@ -59,6 +62,9 @@ namespace ATN
 			if (this->effect() != nullptr && this->effect()->id() == original.effect()->id())
 			{
 				this->setEffect(nullptr);
+
+				memory.lock("effect_resources");
+				memory.lock("effect_parameters");
 			}
 		}
 		else if (original.effect() == nullptr && change.effect() == nullptr)
@@ -67,331 +73,83 @@ namespace ATN
 		}
 		else
 		{
-			// TODO: Could maybe be problematic to change the effect, but hopefully the marshalls should capture the change as well
+			bool allowUpdate = true;
+			bool lockAfter = false;
+
+			// Might be problematic to change the effect, but hopefully the marshalls should capture the change as well
 			if (original.effect()->id() != change.effect()->id())
 			{
 				if (this->effect() != nullptr && this->effect()->id() == original.effect()->id())
 				{
-					m_effect = change.effect();
-				}
-			}
-
-			// Add new resource marshalls
-			for (ResourceMarshall *changeResource : change.effectResourceMarshalls())
-			{
-				bool bExists = false;
-
-				for (ResourceMarshall *originalResource : original.effectResourceMarshalls())
-				{
-					if (*originalResource == *changeResource)
+					// If some other mod has changed the marshalls, then we can't change the effect without breaking that
+					if (memory.isChanged("effect_resources") || memory.isChanged("effect_parameters"))
 					{
-						bExists = true;
-						break;
+						allowUpdate = false;
+						lockAfter = true;
 					}
-				}
-
-				if (!bExists)
-				{
-					m_effectResources.push_back(new ResourceMarshall(*changeResource));
-				}
-			}
-
-			// Remove existing resource marshalls
-			for (ResourceMarshall *originalResource : original.effectResourceMarshalls())
-			{
-				bool bExists = false;
-
-				for (ResourceMarshall *changeResource : change.effectResourceMarshalls())
-				{
-					if (*originalResource == *changeResource)
+					else
 					{
-						bExists = true;
-						break;
-					}
-				}
+						m_effect = change.effect();
 
-				if (!bExists)
-				{
-					for (std::vector<ResourceMarshall*>::iterator it = m_effectResources.begin(); it != m_effectResources.end(); it++)
-					{
-						ResourceMarshall *thisResource = *it;
-
-						if (*thisResource == *originalResource)
-						{
-							m_effectResources.erase(it);
-
-							delete thisResource;
-							break;
-						}
+						// Prevent other mods from doing marshall updates as they would be dependent on the original transition
+						lockAfter = true;
 					}
 				}
 			}
 
-			// Perform modification assuming both original and change were using the same indices
-			// TODO: Try to improve this similar to Network::applyChanges()
-			for (int i = 0; i < std::min(original.effectResourceMarshalls().size(), change.effectResourceMarshalls().size()); i++)
+			if (allowUpdate)
 			{
-				ResourceMarshall *originalResource = original.effectResourceMarshalls()[i];
-				ResourceMarshall *changeResource = change.effectResourceMarshalls()[i];
+				if (!memory.isLocked("effect_resources"))
+					deltaUpdateMemory(original.effectResourceMarshalls(), change.effectResourceMarshalls(), this->m_effectResources, memory, "effect_resources");
 
-				if (*originalResource != *changeResource)
-				{
-					for (int i2 = 0; i2 < this->effectResourceMarshalls().size(); i2++)
-					{
-						ResourceMarshall *thisResource = this->effectResourceMarshalls()[i2];
-
-						// We only modify the resource if we can still find the original somewhere
-						// (otherwise this means we've already modified this resource)
-						if (*thisResource == *originalResource)
-						{
-							this->m_effectResources[i2] = new ResourceMarshall(*changeResource);
-
-							delete thisResource;
-							break;
-						}
-					}
-				}
+				if (!memory.isLocked("effect_parameters"))
+					deltaUpdateMemory(original.effectParameterMarshalls(), change.effectParameterMarshalls(), this->m_effectParameters, memory, "effect_parameters");
 			}
 
-			// Add new parameter marshalls
-			for (ParameterMarshall *changeParam : change.effectParameterMarshalls())
+			if (lockAfter)
 			{
-				bool bExists = false;
-
-				for (ParameterMarshall *originalParam : original.effectParameterMarshalls())
-				{
-					if (*originalParam == *changeParam)
-					{
-						bExists = true;
-						break;
-					}
-				}
-
-				if (!bExists)
-				{
-					m_effectParameters.push_back(new ParameterMarshall(*changeParam));
-				}
-			}
-
-			// Remove existing parameter marshalls
-			for (ParameterMarshall *originalParam : original.effectParameterMarshalls())
-			{
-				bool bExists = false;
-
-				for (ParameterMarshall *changeParam : change.effectParameterMarshalls())
-				{
-					if (*originalParam == *changeParam)
-					{
-						bExists = true;
-						break;
-					}
-				}
-
-				if (!bExists)
-				{
-					for (std::vector<ParameterMarshall*>::iterator it = m_effectParameters.begin(); it != m_effectParameters.end(); it++)
-					{
-						ParameterMarshall *thisParam = *it;
-
-						if (*thisParam == *originalParam)
-						{
-							m_effectParameters.erase(it);
-
-							delete thisParam;
-							break;
-						}
-					}
-				}
-			}
-
-			// Perform modification assuming both original and change were using the same indices
-			// TODO: Try to improve this similar to Network::applyChanges()
-			for (int i = 0; i < std::min(original.effectParameterMarshalls().size(), change.effectParameterMarshalls().size()); i++)
-			{
-				ParameterMarshall *originalParam = original.effectParameterMarshalls()[i];
-				ParameterMarshall *changeParam = change.effectParameterMarshalls()[i];
-
-				if (*originalParam != *changeParam)
-				{
-					for (int i2 = 0; i2 < this->effectParameterMarshalls().size(); i2++)
-					{
-						ParameterMarshall *thisParam = this->effectParameterMarshalls()[i2];
-
-						// We only modify the resource if we can still find the original somewhere
-						// (otherwise this means we've already modified this resource)
-						if (*thisParam == *originalParam)
-						{
-							this->m_effectParameters[i2] = new ParameterMarshall(*changeParam);
-
-							delete thisParam;
-							break;
-						}
-					}
-				}
+				memory.lock("effect_resources");
+				memory.lock("effect_parameters");
 			}
 		}
 
-		// TODO: Could maybe be problematic to change the effect, but hopefully the marshalls should capture the change as well
+		bool allowUpdate = true;
+		bool lockAfter = false;
+
+		// Might be problematic to change the percept, but hopefully the marshalls should capture the change as well
 		if (original.percept()->id() != change.percept()->id())
 		{
 			if (this->percept()->id() == original.percept()->id())
 			{
-				m_percept = change.percept();
-			}
-		}
-
-		// Add new resource marshalls
-		for (ResourceMarshall *changeResource : change.perceptResourceMarshalls())
-		{
-			bool bExists = false;
-
-			for (ResourceMarshall *originalResource : original.perceptResourceMarshalls())
-			{
-				if (*originalResource == *changeResource)
+				// If some other mod has changed the marshalls, then we can't change the percept without breaking that
+				if (memory.isChanged("percept_resources") || memory.isChanged("percept_parameters"))
 				{
-					bExists = true;
-					break;
+					allowUpdate = false;
+					lockAfter = true;
 				}
-			}
-
-			if (!bExists)
-			{
-				m_perceptResources.push_back(new ResourceMarshall(*changeResource));
-			}
-		}
-
-		// Remove existing resource marshalls
-		for (ResourceMarshall *originalResource : original.perceptResourceMarshalls())
-		{
-			bool bExists = false;
-
-			for (ResourceMarshall *changeResource : change.perceptResourceMarshalls())
-			{
-				if (*originalResource == *changeResource)
+				else
 				{
-					bExists = true;
-					break;
-				}
-			}
+					m_percept = change.percept();
 
-			if (!bExists)
-			{
-				for (std::vector<ResourceMarshall*>::iterator it = m_perceptResources.begin(); it != m_perceptResources.end(); it++)
-				{
-					ResourceMarshall *thisResource = *it;
-
-					if (*thisResource == *originalResource)
-					{
-						m_perceptResources.erase(it);
-
-						delete thisResource;
-						break;
-					}
+					// Prevent other mods from doing marshall updates as they would be dependent on the original transition
+					lockAfter = true;
 				}
 			}
 		}
 
-		// Perform modification assuming both original and change were using the same indices
-		// TODO: Try to improve this similar to Network::applyChanges()
-		for (int i = 0; i < std::min(original.perceptResourceMarshalls().size(), change.perceptResourceMarshalls().size()); i++)
+		if (allowUpdate)
 		{
-			ResourceMarshall *originalResource = original.perceptResourceMarshalls()[i];
-			ResourceMarshall *changeResource = change.perceptResourceMarshalls()[i];
+			if (!memory.isLocked("percept_resources"))
+				deltaUpdateMemory(original.perceptResourceMarshalls(), change.perceptResourceMarshalls(), this->m_perceptResources, memory, "percept_resources");
 
-			if (*originalResource != *changeResource)
-			{
-				for (int i2 = 0; i2 < this->perceptResourceMarshalls().size(); i2++)
-				{
-					ResourceMarshall *thisResource = this->perceptResourceMarshalls()[i2];
-
-					// We only modify the resource if we can still find the original somewhere
-					// (otherwise this means we've already modified this resource)
-					if (*thisResource == *originalResource)
-					{
-						this->m_perceptResources[i2] = new ResourceMarshall(*changeResource);
-
-						delete thisResource;
-						break;
-					}
-				}
-			}
+			if (!memory.isLocked("percept_parameters"))
+				deltaUpdateMemory(original.perceptParameterMarshalls(), change.perceptParameterMarshalls(), this->m_perceptParameters, memory, "percept_parameters");
 		}
 
-		// Add new parameter marshalls
-		for (ParameterMarshall *changeParam : change.perceptParameterMarshalls())
+		if (lockAfter)
 		{
-			bool bExists = false;
-
-			for (ParameterMarshall *originalParam : original.perceptParameterMarshalls())
-			{
-				if (*originalParam == *changeParam)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				m_perceptParameters.push_back(new ParameterMarshall(*changeParam));
-			}
-		}
-
-		// Remove existing parameter marshalls
-		for (ParameterMarshall *originalParam : original.perceptParameterMarshalls())
-		{
-			bool bExists = false;
-
-			for (ParameterMarshall *changeParam : change.perceptParameterMarshalls())
-			{
-				if (*originalParam == *changeParam)
-				{
-					bExists = true;
-					break;
-				}
-			}
-
-			if (!bExists)
-			{
-				for (std::vector<ParameterMarshall*>::iterator it = m_perceptParameters.begin(); it != m_perceptParameters.end(); it++)
-				{
-					ParameterMarshall *thisParam = *it;
-
-					if (*thisParam == *originalParam)
-					{
-						m_perceptParameters.erase(it);
-
-						delete thisParam;
-						break;
-					}
-				}
-			}
-		}
-
-		// Perform modification assuming both original and change were using the same indices
-		// TODO: Try to improve this similar to Network::applyChanges()
-		for (int i = 0; i < std::min(original.perceptParameterMarshalls().size(), change.perceptParameterMarshalls().size()); i++)
-		{
-			ParameterMarshall *originalParam = original.perceptParameterMarshalls()[i];
-			ParameterMarshall *changeParam = change.perceptParameterMarshalls()[i];
-
-			if (*originalParam != *changeParam)
-			{
-				for (int i2 = 0; i2 < this->perceptParameterMarshalls().size(); i2++)
-				{
-					ParameterMarshall *thisParam = this->perceptParameterMarshalls()[i2];
-
-					// We only modify the resource if we can still find the original somewhere
-					// (otherwise this means we've already modified this resource)
-					if (*thisParam == *originalParam)
-					{
-						this->m_perceptParameters[i2] = new ParameterMarshall(*changeParam);
-
-						delete thisParam;
-						break;
-					}
-				}
-			}
+			memory.lock("percept_resources");
+			memory.lock("percept_parameters");
 		}
 	}
 

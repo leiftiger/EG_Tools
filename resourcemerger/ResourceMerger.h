@@ -44,7 +44,7 @@ protected:
 
 	std::unordered_set<int> m_reservedDescIDs;
 
-	std::uint32_t m_vacantUniqueID;
+	std::uint32_t m_vacantUniqueID = 0;
 
 	// Buffer size to use when copying files
 	const int COPY_BUFFER_SIZE = 4096;

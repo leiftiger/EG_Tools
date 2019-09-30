@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>791</width>
-    <height>437</height>
+    <width>834</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>791</width>
-    <height>437</height>
+    <width>834</width>
+    <height>461</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -272,7 +272,7 @@ To install a new mod, follow its instructions and either reload this program or 
 
 To the right you can see information about the currently selected mod - note that in many cases these fields may be empty as the Mod Manager didn't exist when they were released.
 
-Also note that the Mod Manager does not affect mods changing game configurations (&quot;BalancingSpreadsheets&quot; &amp; &quot;Config&quot;) since those files aren't defined in the ERBs.</string>
+Also note that the Mod Manager does not affect mods changing game configurations (&quot;BalancingSpreadsheets&quot; &amp; &quot;Config&quot;) since those files aren't defined in the ERBs. Furthermore, be aware that you may have to start a new game to see effects of the mods and that loading old saves could potentially crash the game.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -296,7 +296,7 @@ Also note that the Mod Manager does not affect mods changing game configurations
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>791</width>
+     <width>834</width>
      <height>21</height>
     </rect>
    </property>

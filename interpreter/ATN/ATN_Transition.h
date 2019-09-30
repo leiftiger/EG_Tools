@@ -40,7 +40,7 @@ namespace ATN
 
 		virtual const char * const typeName() const override;
 
-		virtual void applyChanges(const Entry &original, const Entry &change) override;
+		virtual void applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory) override;
 
 		// Get effect to perform if transition is taken
 		Effect *effect() const;

@@ -2,7 +2,7 @@
 
 // Can ignore modFilenames here since apply(ModPack, outStreams) should never be called for this
 // Because the ATN files can share definitions, we must always load all of them to prevent errors during patching
-PatchATN::PatchATN() : IResourcePatch({ "ATNData.ros", "ATNData_Objects.ros", "ATNData_Tutorials.ros", "ATNResources.ros" }, {})
+PatchATN::PatchATN(PatcherATN &patcher) : IResourcePatch({ "ATNData.ros", "ATNData_Objects.ros", "ATNData_Tutorials.ros", "ATNResources.ros" }, {}), m_patcher(patcher)
 {
 
 }
@@ -48,7 +48,7 @@ std::vector<std::string> PatchATN::apply(std::vector<std::istream*> &inStreams, 
 			{
 				ATN::Entry &curEntry = list->find(patch.m_modEntry->id());
 
-				curEntry.applyChanges(*patch.m_baseEntry, *patch.m_modEntry);
+				curEntry.applyChanges(*patch.m_baseEntry, *patch.m_modEntry, m_patcher.translations(patch.m_file, patch.m_modEntry->id()));
 			}
 			else
 			{
@@ -178,9 +178,9 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 	}
 }
 
-PatchATN *PatcherATN::buildPatch(ResourceMerger &merger, ModPack &mod, int listNum, ATN::List<ATN::Entry> &baseList, ATN::List<ATN::Entry> &modList) const
+PatchATN *PatcherATN::buildPatch(ResourceMerger &merger, ModPack &mod, int listNum, ATN::List<ATN::Entry> &baseList, ATN::List<ATN::Entry> &modList)
 {
-	PatchATN* patch = new PatchATN();
+	PatchATN* patch = new PatchATN(*this);
 
 	for (std::pair<const std::uint32_t, ATN::IATN_Data*> &pair : modList)
 	{
@@ -226,6 +226,21 @@ PatchATN *PatcherATN::buildPatch(ResourceMerger &merger, ModPack &mod, int listN
 	}
 
 	return patch;
+}
+
+ATN::DeltaMemory &PatcherATN::translations(int file, std::int32_t uniqueID)
+{
+	if (m_baseTranslations.find(file) == m_baseTranslations.end())
+	{
+		m_baseTranslations[file] = std::unordered_map<std::int32_t, ATN::DeltaMemory>();
+	}
+
+	std::unordered_map<std::int32_t, ATN::DeltaMemory> &allTranslations = m_baseTranslations[file];
+
+	if (allTranslations.find(uniqueID) == allTranslations.end())
+		allTranslations[uniqueID] = ATN::DeltaMemory();
+
+	return allTranslations[uniqueID];
 }
 
 PatcherATN::~PatcherATN()
@@ -353,9 +368,9 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 	// Clear manager references to a clean state
 	ATN::Manager::clear();
 
-	PatchATN *patchAdds = new PatchATN();
-	PatchATN *patchMods = new PatchATN();
-	PatchATN *patchRems = new PatchATN();
+	PatchATN *patchAdds = new PatchATN(*this);
+	PatchATN *patchMods = new PatchATN(*this);
+	PatchATN *patchRems = new PatchATN(*this);
 
 	// Build patches by comparing each base file with its modded counterpart
 	for (int i = 0; i < baseFiles.size(); i++)
@@ -391,7 +406,7 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 		}
 	}
 
-	PatchATN *masterPatch = new PatchATN();
+	PatchATN *masterPatch = new PatchATN(*this);
 
 	// As some modifications may rely on objects being present, we always add objects first
 	// then modify them, and then delete them, when it should be safe to do so
@@ -428,4 +443,9 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 	}
 
 	return std::vector<IResourcePatch*>({ masterPatch });
+}
+
+void PatcherATN::clearMemory()
+{
+	m_baseTranslations.clear();
 }

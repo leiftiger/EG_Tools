@@ -441,6 +441,12 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 		}
 	}
 
+	// In case this resource merger is used again, we need to clear any global references
+	for (IResourcePatcher *patcher : m_patchers)
+	{
+		patcher->clearMemory();
+	}
+
 	mutex.queue.push("Merging complete");
 
 	// Send last output texts

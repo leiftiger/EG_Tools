@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#include "ATN_DeltaPatching.h"
+
 namespace ATN
 {
 	class Entry : public IATN_Data
@@ -33,7 +35,7 @@ namespace ATN
 		virtual const char * const typeName() const = 0;
 
 		// Applies a delta update corresponding to the difference between the original and changed entry to this object
-		virtual void applyChanges(const Entry &original, const Entry &change);
+		virtual void applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory);
 
 		// Sets the user-readable name of this entry.
 		// If this entry is already in a list, you must call List<Entry>.updateName() instead!

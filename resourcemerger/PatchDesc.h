@@ -111,4 +111,6 @@ public:
 
 	virtual const char * const extension() const override;
 	virtual std::vector<IResourcePatch*> createPatches(ResourceMerger &merger, ModPack &mod, const std::vector<std::string> &files) override;
+	
+	virtual void clearMemory() override;
 };
