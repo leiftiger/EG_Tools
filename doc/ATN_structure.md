@@ -12,7 +12,7 @@ A thread acts as an individual FSM pointer, which keeps track of where it is in 
 Threads can in a transition be told to terminate, returning either `true` or `false`. The return value can then be read by a parent network to determine whether or not a network executed properly - it is uncertain what value is returned if multiple threads return different values.
 
 ### Resource
-A resource is a pass-by-reference object that is initially set to NULL until modified by transition effects.
+A resource is a pass-by-reference object that is initially set to `NULL` until modified by transition effects.
 
 Resources can be inputs to the network by checking the input checkbox, meaning that they will point to an external reference used in a parent network. The inputs don't necessarily have to be first in the list, but it's a good practice to keep them as such in any case.
 
@@ -40,7 +40,7 @@ If the transition is taken, it can also perform an effect function - modifying t
 To summarize, when a transition can be taken, the effect is executed and then the FSM will now point to the next state the transition is connected to.
 
 # Object networks
-If the network is spawned by an object being interacted with by the interaction slot containing the key `ATNNetworkName`, then it will be passed two resources automatically as input by the game. The first resource being the `Character` that interacted with it and the second resource being the `Object` that's being interacted with.
+If the network is spawned by an object being interacted with by an entity description interaction slot containing the key `ATNNetworkName`, then it will be passed two resources automatically as input by the game. The first resource being the `Character` that interacted with it and the second resource being the `Object` that's being interacted with.
 
 It's important that the order is preserved as it is uncertain how rigid these structures are, as all existing networks seem to require that structure. However, in certain cases, such as loot admiration, the `Object` resource is seemingly not needed, so if the network doesn't use that resource, it doesn't have to include it.
 

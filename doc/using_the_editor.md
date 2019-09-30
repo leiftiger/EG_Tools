@@ -1,6 +1,6 @@
 # Using the editor
 
-To begin with, you need to set definition paths for your Evil Genius files using the instructions in the appropriate window. These will load certain definitions directly from the game, including changes made by mods. The editor will work without them, but it may make it harder to use and view.
+To begin with, you need to set definition paths for your Evil Genius files using the instructions in the appropriate window. These will load certain definitions directly from the game, including changes made by mods. The editor will work without them, but may make it harder to use and view.
 
 With that out of the way, you need to load a copy of an ATN file, such as `ATNData.ros` or `ATNData_Objects.ros`. `ATNResources.ros` contains necessary resource relationships that the editor uses, but should be loaded automatically in the background from the definition paths. It is also prudent to load all available ATN files when editing as they share global unique IDs, which could potentially conflict if editing only one by one. The ATN editor will use unique IDs starting from the highest in any loaded file for any new additions to the ATN files. Unique IDs are purposedly locked from editing as there should be no reason to edit them manually.
 
@@ -14,7 +14,7 @@ When finished, save all open ATN files and your changes will be applied to the f
 
 # Parameter values
 
-As the editor is unofficial, some parameter type definitions couldn't be found - these have been labelled as either `MISSING: <NUMBER>` or the raw number directly. The number is a hash digest using FNV1 32-bit, which the game uses to store string references in a cheaper manner. You can use the hash tool included with the editor to manually set the number that a percept or effect may need, and use the same `MISSING: <NUMBER>` format to apply it in the files.
+As the editor is unofficial, some parameter type definitions may not be found - these have been labelled as either `MISSING: <NUMBER>` or the raw number directly. The number is a hash digest using FNV1 32-bit, which the game uses to store string references in a cheaper manner. You can use the hash tool included with the editor to manually set the number that a percept or effect may need, and use the same `MISSING: <NUMBER>` format to apply it in the files.
 
 In certain situations, it may also be necessary to pass `NULL` as the argument - this is defined in the editor for all parameter types but may only work in certain cases. Known usage is to pass `NULL` to certain events where it doesn't matter whether or not the event involves the first or second entity. If you want to pass a resource as `NULL` the best practice is to name it `_NULL` and never modify it.
 
