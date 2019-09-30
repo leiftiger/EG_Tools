@@ -132,10 +132,12 @@ void ResourceMerger::initialize(Mutex::Server &mutex, double maxPerc)
 
 	std::sort(m_descClassRanges.begin(), m_descClassRanges.end(),
 
-		[](const std::pair<int, std::string> &lhs, const std::pair<int, std::string> &rhs)
+		[&](const std::pair<int, std::string> &lhs, const std::pair<int, std::string> &rhs)
 	{
-		// Important to use upper end as super-classes should be evaluated last
-		return lhs.second < rhs.second;
+		if (lhs.first == rhs.first)
+			return m_vacantDescIDs[lhs.second] < m_vacantDescIDs[rhs.second];
+		else
+			return lhs.first < rhs.first;
 	}
 	);
 }
