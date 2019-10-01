@@ -37,7 +37,7 @@ private:
 	int calculateOffset(const UI_Connection* connection, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions);
 
 	// Separate connectors that intersect and are at the same offset
-	void moveCollisions(std::unordered_map<const UI_Connection*, int> &offsetList, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions);
+	void moveCollisions(std::unordered_map<const UI_Connection*, int>::iterator itStart, std::unordered_map<const UI_Connection*, int>::iterator itEnd, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions);
 
 public:
 	NetworkContainerProxy();

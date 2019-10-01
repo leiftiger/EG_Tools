@@ -26,14 +26,18 @@ int NetworkContainerProxy::calculateOffset(const UI_Connection *connection, cons
 	return offset;
 }
 
-void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connection*, int> &offsetList, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions)
+void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connection*, int>::iterator itStart, std::unordered_map<const UI_Connection*, int>::iterator itEnd, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions)
 {
-	for (const std::pair<const UI_Connection*, int> &pair1 : offsetList)
+	for (std::unordered_map<const UI_Connection*, int>::iterator it = itStart; it != itEnd; it++)
 	{
+		const std::pair<const UI_Connection*, int> &pair1 = *it;
+
 		const QLine &curLine = connectorPositions.at(pair1.first);
 
-		for (const std::pair<const UI_Connection*, int> &pair2 : offsetList)
+		for (std::unordered_map<const UI_Connection*, int>::iterator it2 = it; it2 != itEnd; it2++)
 		{
+			const std::pair<const UI_Connection*, int> &pair2 = *it2;
+
 			if (pair1.first == pair2.first)
 				continue;
 
@@ -43,12 +47,14 @@ void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connectio
 			if (pair1.second == pair2.second && ((curLine.x1() <= otherLine.x1() && otherLine.x1() <= curLine.x2()) || (curLine.x1() <= otherLine.x2() && otherLine.x2() <= curLine.x2())))
 			{
 				// Let the shorter connections stay above the longer ones
-				if ((otherLine.x2() - otherLine.x1()) > (curLine.x2() - curLine.x1()))
-					offsetList[pair2.first] += CONNECTION_SIZE + CONNECTOR_MARGIN;
+				if ((otherLine.x2() - otherLine.x1()) >= (curLine.x2() - curLine.x1()))
+					(*it2).second += CONNECTION_SIZE + CONNECTOR_MARGIN;
 				else
-					offsetList[pair1.first] += CONNECTION_SIZE + CONNECTOR_MARGIN;
+					(*it).second += CONNECTION_SIZE + CONNECTOR_MARGIN;
 
-				moveCollisions(offsetList, connectorPositions);
+				std::unordered_map<const UI_Connection*, int>::iterator itNext = it2;
+
+				moveCollisions(++itNext, itEnd, connectorPositions);
 			}
 		}
 	}
@@ -157,7 +163,7 @@ int NetworkContainerProxy::stateHeight(ConnectFlags flags, const UI_Connection* 
 			(*offsetList)[pair.first] = calculateOffset(pair.first, *connectorPositions);
 		}
 
-		moveCollisions(*offsetList, *connectorPositions);
+		moveCollisions(offsetList->begin(), offsetList->end(), *connectorPositions);
 	}
 
 	if (flags & ConnectFlags::Above)
@@ -189,7 +195,7 @@ void NetworkContainerProxy::clearMyMemory(ConnectFlags flags, const UI_Connectio
 		(*offsetList)[pair.first] = calculateOffset(pair.first, *connectorPositions);
 	}
 
-	moveCollisions(*offsetList, *connectorPositions);
+	moveCollisions(offsetList->begin(), offsetList->end(), *connectorPositions);
 }
 
 void NetworkContainerProxy::recalculateHeights()
