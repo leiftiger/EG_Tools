@@ -416,6 +416,27 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 		}
 	}
 
+	if (iBase != -1)
+	{
+		for (int i = iBase; i > -1; i--)
+		{
+			const std::string &baseKey = baseDesc.keys()[i], &baseValue = baseDesc.values()[i];
+
+			patch->addSubPatch(PatchDesc::SubPatch{ PatchDesc::REM_ENTRY, i, std::make_pair(baseKey, baseValue), std::make_pair(baseKey, baseValue) });
+		}
+	}
+
+	if (iMod != -1)
+	{
+
+		for (int i = iMod; i > -1; i--)
+		{
+			const std::string &modKey = modDesc.keys()[i], &modValue = modDesc.values()[i];
+
+			patch->addSubPatch(PatchDesc::SubPatch{ PatchDesc::ADD_ENTRY, 0, std::make_pair(modKey, modValue), std::make_pair(modKey, modValue) });
+		}
+	}
+
 	for (int i = 0; i <= baseDesc.size(); i++)
 	{
 		delete[] distance[i];

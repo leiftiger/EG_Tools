@@ -46,7 +46,7 @@ namespace ATN
 
 		for (int i = index + 1; i < baseTranslations.size(); i++)
 		{
-			if (baseTranslations[i] != -1)
+			if (baseTranslations[i] != -2)
 				baseTranslations[i] += diff;
 		}
 	}

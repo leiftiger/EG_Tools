@@ -229,6 +229,26 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 		}
 	}
 
+	if (iBase != -1)
+	{
+		for (int i = iBase; i > -1; i--)
+		{
+			const std::string &baseLine = baseFile[i];
+
+			patch->addSubPatch(PatchGeneric::SubPatch{ PatchGeneric::REM_ENTRY, i, baseLine, baseLine });
+		}
+	}
+
+	if (iMod != -1)
+	{
+		for (int i = iMod; i > -1; i--)
+		{
+			const std::string &modLine = modFile[i];
+
+			patch->addSubPatch(PatchGeneric::SubPatch{ PatchGeneric::ADD_ENTRY, 0, modLine, modLine });
+		}
+	}
+
 	for (int i = 0; i <= baseFile.size(); i++)
 	{
 		delete[] distance[i];

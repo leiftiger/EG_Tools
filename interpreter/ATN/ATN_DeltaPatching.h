@@ -202,6 +202,26 @@ namespace ATN
 			}
 		}
 
+		if (iOriginal != -1)
+		{
+			for (int i = iOriginal; i > -1; i--)
+			{
+				const T &originalEntry = original[i];
+
+				patches.push_back(DeltaPatch<T>(REM, i, originalEntry, originalEntry));
+			}
+		}
+
+		if (iChange != -1)
+		{
+			for (int i = iChange; i > -1; i--)
+			{
+				const T &changeEntry = change[i];
+
+				patches.push_back(DeltaPatch<T>(ADD, 0, changeEntry, changeEntry));
+			}
+		}
+
 		for (int i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
@@ -231,13 +251,17 @@ namespace ATN
 			{
 				baseTranslations.push_back(i);
 			}
+
+			// If the base list is completely empty, then we set this so new additions get placed at index 0
+			if (baseTranslations.size() == 0)
+				baseTranslations.push_back(-1);
 		}
 
 		for (const DeltaPatch<T> &patch : deltaPatches)
 		{
 			int curIndex = baseTranslations[patch.m_pos];
 
-			if (curIndex == -1)
+			if (curIndex == -2)
 			{
 				continue;
 			}
@@ -257,7 +281,7 @@ namespace ATN
 				{
 					patch.remove(curIndex, list);
 
-					baseTranslations[patch.m_pos] = -1;
+					baseTranslations[patch.m_pos] = -2;
 
 					memory.updateTranslationsAfter(memoryType, curIndex, -1);
 				}
@@ -398,6 +422,26 @@ namespace ATN
 			}
 		}
 
+		if (iOriginal != -1)
+		{
+			for (int i = iOriginal; i > -1; i--)
+			{
+				T *originalEntry = original[i];
+
+				patches.push_back(DeltaPatch<T*>(REM, i, originalEntry, originalEntry));
+			}
+		}
+
+		if (iChange != -1)
+		{
+			for (int i = iChange; i > -1; i--)
+			{
+				T *changeEntry = change[i];
+
+				patches.push_back(DeltaPatch<T*>(ADD, 0, changeEntry, changeEntry));
+			}
+		}
+
 		for (int i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
@@ -427,13 +471,17 @@ namespace ATN
 			{
 				baseTranslations.push_back(i);
 			}
+
+			// If the base list is completely empty, then we set this so new additions get placed at index 0
+			if (baseTranslations.size() == 0)
+				baseTranslations.push_back(-1);
 		}
 
 		for (const DeltaPatch<T*> &patch : deltaPatches)
 		{
 			int curIndex = baseTranslations[patch.m_pos];
 
-			if (curIndex == -1)
+			if (curIndex == -2)
 			{
 				continue;
 			}
@@ -453,7 +501,7 @@ namespace ATN
 				{
 					patch.remove(curIndex, list);
 
-					baseTranslations[patch.m_pos] = -1;
+					baseTranslations[patch.m_pos] = -2;
 
 					memory.updateTranslationsAfter(memoryType, curIndex, -1);
 				}
@@ -594,6 +642,26 @@ namespace ATN
 			}
 		}
 
+		if (iOriginal != -1)
+		{
+			for (int i = iOriginal; i > -1; i--)
+			{
+				T *originalEntry = original[i];
+
+				patches.push_back(DeltaPatch<T*>(REM, i, originalEntry, originalEntry));
+			}
+		}
+
+		if (iChange != -1)
+		{
+			for (int i = iChange; i > -1; i--)
+			{
+				T *changeEntry = change[i];
+
+				patches.push_back(DeltaPatch<T*>(ADD, 0, changeEntry, changeEntry));
+			}
+		}
+
 		for (int i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
@@ -623,13 +691,19 @@ namespace ATN
 			{
 				baseTranslations.push_back(i);
 			}
+
+			// If the base list is completely empty, then we set this so new additions get placed at index 0
+			if (baseTranslations.size() == 0)
+				baseTranslations.push_back(-1);
 		}
 
 		for (const DeltaPatch<T*> &patch : deltaPatches)
 		{
 			int curIndex = baseTranslations[patch.m_pos];
 
-			if (curIndex == -1)
+			// Here we use -1 for empty lists as that works with the remaining add functionality
+			// so -2 now represents deleted base entries
+			if (curIndex == -2)
 			{
 				continue;
 			}
@@ -651,7 +725,7 @@ namespace ATN
 
 					patch.remove(curIndex, list);
 
-					baseTranslations[patch.m_pos] = -1;
+					baseTranslations[patch.m_pos] = -2;
 
 					memory.updateTranslationsAfter(memoryType, curIndex, -1);
 				}
