@@ -77,8 +77,8 @@ namespace ATN
 		}
 
 		// Order-preserving delta updates
-		deltaUpdate(original.resources(), change.resources(), this->m_resources, memory, "resources");
-		deltaUpdate(original.parameters(), change.parameters(), this->m_parameters, memory, "parameters");
+		deltaUpdateMemory(original.resources(), change.resources(), this->m_resources, memory, "resources");
+		deltaUpdateMemory(original.parameters(), change.parameters(), this->m_parameters, memory, "parameters");
 
 		// For states, the order is not important, so we only add or remove states like threads
 
