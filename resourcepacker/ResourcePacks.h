@@ -22,6 +22,9 @@ public:
 	ResourcePacks(const std::vector<std::string> &filenames);
 	~ResourcePacks();
 
+	// Returns true if any resource pack contains the given filename
+	bool contains(const std::string &filename) const;
+
 	// Opens a file for reading from any resource packs contained here
 	std::istream *openFile(const std::string &filename) const;
 

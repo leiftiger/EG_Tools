@@ -371,7 +371,7 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 	{
 		std::string filename = modFile.substr(modFile.find_last_of('/') + 1);
 
-		try
+		if (merger.resourcePacks().contains(filename))
 		{
 			std::istream *fsBase = merger.resourcePacks().openFile(filename);
 
@@ -403,7 +403,7 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 
 			delete fsBase;
 		}
-		catch (std::exception e)
+		else
 		{
 			// This is a newly added file, because of that, we can't handle any conflicts and lock this file to this mod
 			merger.lockFile(filename);

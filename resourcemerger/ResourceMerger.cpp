@@ -333,7 +333,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 							break;
 						}
 
-						try
+						if (m_resourcePacks->contains(filename))
 						{
 							// Patch from base files
 							std::istream *fsBase = m_resourcePacks->openFile(filename);
@@ -342,7 +342,7 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 							inStreams.push_back(fsBase);
 							outStreams.push_back(fsOut);
 						}
-						catch (std::exception e)
+						else
 						{
 							// This is a file that doesn't exist in the base game, apply directly
 

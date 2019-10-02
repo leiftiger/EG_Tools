@@ -310,7 +310,7 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 
 		PatchStrings *patch = new PatchStrings(filename, modFile);
 
-		try
+		if (merger.resourcePacks().contains(filename))
 		{
 			std::istream *fsBase = merger.resourcePacks().openFile(filename);
 
@@ -334,7 +334,7 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 
 			delete fsBase;
 		}
-		catch (std::exception e)
+		else
 		{
 			std::ifstream fs(modFile);
 

@@ -489,7 +489,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 		std::string descName = filename.substr(5);
 
-		try
+		if (merger.resourcePacks().contains(filename))
 		{
 			std::istream *fsBase = merger.resourcePacks().openFile(filename);
 
@@ -537,7 +537,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 			delete fsBase;
 		}
-		catch (std::exception e)
+		else
 		{
 			// New addition, we give it a unique desc ID to avoid mod conflicts
 			descID = mod.translateDescID(descID, merger);

@@ -17,6 +17,33 @@ ResourcePack::ResourcePack(const std::string &filename) : m_filename(filename)
 	file >> *this;
 }
 
+bool ResourcePack::contains(const std::string &filename) const
+{
+	std::string erbFileName = filename;
+
+	if (m_files.find(erbFileName) == m_files.end())
+	{
+		// The full path might not have been specified
+		if (m_expandedFilenames.find(erbFileName) != m_expandedFilenames.end())
+		{
+			return true;
+		}
+		else
+		{
+
+			// Files in the main directory for some reason don't have ./ as the lead path, so we check if it was such a file
+			erbFileName = erbFileName.substr(2);
+
+			if (m_files.find(erbFileName) == m_files.end())
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 std::istream *ResourcePack::openFile(const std::string &filename) const
 {
 	std::string erbFileName = filename;

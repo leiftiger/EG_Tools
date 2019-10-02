@@ -82,6 +82,9 @@ public:
 		return str;
 	}
 
+	// Returns true if the resource pack contains the given filename
+	bool contains(const std::string &filename) const;
+
 	// Opens a file for reading
 	std::istream *openFile(const std::string &filename) const;
 

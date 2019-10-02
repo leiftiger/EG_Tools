@@ -46,6 +46,24 @@ ResourcePacks::~ResourcePacks()
 	}
 }
 
+bool ResourcePacks::contains(const std::string &filename) const
+{
+	if (m_fileToPack.find(filename) == m_fileToPack.end())
+	{
+		// Might be the shortened file name
+		if (m_expandedFilenames.find(filename) != m_expandedFilenames.end())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 std::istream *ResourcePacks::openFile(const std::string &filename) const
 {
 	if (m_fileToPack.find(filename) == m_fileToPack.end())
