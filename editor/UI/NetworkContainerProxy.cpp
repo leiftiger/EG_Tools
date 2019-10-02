@@ -28,6 +28,7 @@ int NetworkContainerProxy::calculateOffset(const UI_Connection *connection, cons
 
 void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connection*, int>::iterator itStart, std::unordered_map<const UI_Connection*, int>::iterator itEnd, const std::unordered_map<const UI_Connection*, QLine> &connectorPositions)
 {
+	// TODO: Optimize and improve this, this is extremely slow with large number of connections
 	for (std::unordered_map<const UI_Connection*, int>::iterator it = itStart; it != itEnd; it++)
 	{
 		const std::pair<const UI_Connection*, int> &pair1 = *it;
@@ -52,9 +53,7 @@ void NetworkContainerProxy::moveCollisions(std::unordered_map<const UI_Connectio
 				else
 					(*it).second += CONNECTION_SIZE + CONNECTOR_MARGIN;
 
-				std::unordered_map<const UI_Connection*, int>::iterator itNext = it2;
-
-				moveCollisions(++itNext, itEnd, connectorPositions);
+				moveCollisions(itStart, itEnd, connectorPositions);
 			}
 		}
 	}
