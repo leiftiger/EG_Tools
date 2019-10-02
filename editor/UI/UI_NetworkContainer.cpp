@@ -1438,6 +1438,18 @@ void UI_NetworkContainer::maintainEditFramePositions()
 {
 	int curDistance = ui.scrollArea->horizontalScrollBar()->value();
 
+	// If the window is extremely small, we scroll the top area with the other elements so that transitions can still be modified
+	int frameWidths = m_initialFrameNetworkPos.x()*4 + ui.frameNetwork->width() + ui.frameTransition->width() + (m_initialFrameTransitionPos.x() - (m_initialFrameNetworkPos.x() + ui.frameNetwork->width()));
+
+	if (width() < frameWidths)
+	{
+		int frameNetworkOffset = frameWidths - width();
+
+		frameNetworkOffset = std::min(frameNetworkOffset, curDistance);
+
+		curDistance -= frameNetworkOffset;
+	}
+
 	ui.frameNetwork->move(m_initialFrameNetworkPos + QPoint(curDistance, 0));
 	ui.frameTransition->move(m_initialFrameTransitionPos + QPoint(curDistance, 0));
 
