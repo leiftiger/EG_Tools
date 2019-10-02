@@ -272,6 +272,9 @@
            <bold>true</bold>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Arguments sent to the percept</string>
+         </property>
          <property name="text">
           <string>Arguments</string>
          </property>
@@ -403,6 +406,9 @@
            <bold>true</bold>
           </font>
          </property>
+         <property name="toolTip">
+          <string>Arguments sent to the percept</string>
+         </property>
          <property name="text">
           <string>Arguments</string>
          </property>
@@ -425,6 +431,9 @@
            <weight>75</weight>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="toolTip">
+          <string>Resources sent to the effect</string>
          </property>
          <property name="text">
           <string>Resources</string>
@@ -806,6 +815,9 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="toolTip">
+         <string>Network threads that represent the various starting states</string>
         </property>
         <property name="text">
          <string>Threads</string>
