@@ -69,6 +69,7 @@ $RECYCLE.BIN/
 *.pdb
 .suo
 *.vcxproj.user
+*.asm
 
 # The ATN files
 *.ros
@@ -79,3 +80,6 @@ GeneratedFiles/
 
 # Configuration file
 config.txt
+
+# Definitions in executable location
+x64/*/definitions/

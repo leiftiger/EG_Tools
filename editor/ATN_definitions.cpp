@@ -66,11 +66,11 @@ namespace util
 		*/
 
 		// TODO: more string hashes in above list
-		ATN::Manager::setDefinitions("Event", util::parseHashes("files/param_events.txt"));
-		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("files/param_hotspots.txt"));
-		ATN::Manager::setDefinitions("SpecialEffect", util::parseHashes("files/param_effects.txt"));
-		ATN::Manager::setDefinitions("GUI Dialog", util::parseHashes("files/param_gui_dialogs.txt"));
-		ATN::Manager::setDefinitions("UI State", util::parseHashes("files/param_gui_states.txt"));
+		ATN::Manager::setDefinitions("Event", util::parseHashes("definitions/param_events.txt"));
+		ATN::Manager::setDefinitions("Hotspot", util::parseHashes("definitions/param_hotspots.txt"));
+		ATN::Manager::setDefinitions("SpecialEffect", util::parseHashes("definitions/param_effects.txt"));
+		ATN::Manager::setDefinitions("GUI Dialog", util::parseHashes("definitions/param_gui_dialogs.txt"));
+		ATN::Manager::setDefinitions("UI State", util::parseHashes("definitions/param_gui_states.txt"));
 
 
 		// TODO: Confirm
@@ -258,12 +258,12 @@ namespace util
 				{"SMASH",	4},
 			}));
 
-		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("files/effect_interpretations.txt"))
+		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("definitions/effect_interpretations.txt"))
 		{
 			ATN::Manager::addInterpretation(pair.first, pair.second);
 		}
 
-		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("files/percept_interpretations.txt"))
+		for (const std::pair<std::string, std::string> &pair : util::parseInterpretations("definitions/percept_interpretations.txt"))
 		{
 			ATN::Manager::addInterpretation(pair.first, pair.second);
 		}
@@ -312,7 +312,7 @@ namespace util
 		{
 			std::string gamePath = strConfig[0];
 
-			std::vector<std::string> resourcePackNames = util::configPaths("files/resource_packs.txt");
+			std::vector<std::string> resourcePackNames = util::configPaths("definitions/resource_packs.txt");
 
 			std::vector<ResourcePack> resourcePacks;
 
