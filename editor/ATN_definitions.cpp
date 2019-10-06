@@ -9,6 +9,7 @@
 #include "RP_GUI.h"
 #include "RP_Video.h"
 #include "RP_Strings.h"
+#include "RP_Objectives.h"
 
 #include "ResourcePack.h"
 
@@ -372,7 +373,7 @@ namespace util
 
 			// Load mods
 
-			std::vector<RL::IResourceParser*> parsers = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser() };
+			std::vector<RL::IResourceParser*> parsers = { new RL::AnimationParser(), new RL::EntityDescParser(), new RL::VideoParser(), new RL::GUIParser(), new RL::StringParser(), new RL::AudioParser(), new RL::ObjectiveParser() };
 
 			RL::FileLoader resourceLoader(gamePath + "/DynamicResources");
 

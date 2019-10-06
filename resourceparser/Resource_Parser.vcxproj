@@ -157,6 +157,7 @@
     <ClInclude Include="RP_FileLoader.h" />
     <ClInclude Include="RP_GUI.h" />
     <ClInclude Include="RP_IResourceParser.h" />
+    <ClInclude Include="RP_Objectives.h" />
     <ClInclude Include="RP_PackLoader.h" />
     <ClInclude Include="RP_Strings.h" />
     <ClInclude Include="RP_Video.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="RP_FileLoader.cpp" />
     <ClCompile Include="RP_GUI.cpp" />
     <ClCompile Include="RP_IResourceParser.cpp" />
+    <ClCompile Include="RP_Objectives.cpp" />
     <ClCompile Include="RP_PackLoader.cpp" />
     <ClCompile Include="RP_Strings.cpp" />
     <ClCompile Include="RP_utils.cpp" />
