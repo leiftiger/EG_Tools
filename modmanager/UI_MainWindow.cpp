@@ -232,6 +232,12 @@ void UI_MainWindow::populateLists()
 				info["author"] = "N/A";
 				info["desc"] = "";
 
+				if (mod == "Custom")
+				{
+					info["name"] = "Poorly Named Mod";
+					info["desc"] = "This is a poorly named mod, please tell the mod author that they don't have to name their DynamicResources folder \"Custom\" for it to be recognized by the game.<br><br>You may rename the folder named \"Custom\" in \"Evil Genius" + std::string(MOD_DISABLED_DIR) + "\" to something more appropriate if you know what mod it is.";
+				}
+
 				m_modDetails[mod] = info;
 			}
 		}
