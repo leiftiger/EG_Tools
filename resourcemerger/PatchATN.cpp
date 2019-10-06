@@ -103,7 +103,28 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 		entry->setID(mod.translateUniqueID(entry->id(), merger));
 	}
 
-	if (typeid(*entry) == typeid(ATN::State))
+	if (typeid(*entry) == typeid(ATN::Network))
+	{
+		ATN::Network *net = (ATN::Network*)entry;
+
+		// Just in case this network is launched manually, the default values are updated as well
+		for (int i = 0; i < net->parameters().size(); i++)
+		{
+			ATN::Parameter *param = net->parameters()[i];
+
+			if (param->m_type == "Act Of Infamy ID" || param->m_type == "Agent Group Type" || param->m_type == "Entity Type" || param->m_type == "Room Type")
+			{
+				param->m_defaultValue = mod.translateDescID((int)param->m_defaultValue, merger);
+			}
+
+			// Also update network IDs
+			if (param->m_type == "Network ID")
+			{
+				param->m_defaultValue = mod.translateUniqueID((int)param->m_defaultValue, merger);
+			}
+		}
+	}
+	else if (typeid(*entry) == typeid(ATN::State))
 	{
 		ATN::State *state = (ATN::State*)entry;
 
@@ -126,6 +147,12 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && (param->m_type == "Act Of Infamy ID" || param->m_type == "Agent Group Type" || param->m_type == "Entity Type" || param->m_type == "Room Type"))
 				{
 					marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
+				}
+
+				// Also update network IDs
+				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+				{
+					marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
 				}
 			}
 		}
@@ -159,6 +186,12 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 				{
 					marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
 				}
+
+				// Also update network IDs
+				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+				{
+					marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
+				}
 			}
 		}
 
@@ -173,6 +206,12 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 			if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && (param->m_type == "Act Of Infamy ID" || param->m_type == "Agent Group Type" || param->m_type == "Entity Type" || param->m_type == "Room Type"))
 			{
 				marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
+			}
+
+			// Also update network IDs
+			if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+			{
+				marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
 			}
 		}
 	}
