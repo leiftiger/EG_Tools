@@ -100,6 +100,9 @@ void UI_MainWindow::populateLists()
 	{
 		std::string subDir = entry.path().filename().string();
 
+		if (!entry.is_directory())
+			continue;
+
 		// Assuming that each mod uses their own directory, filter out from the default folders
 		if (subDir != "BalancingSpreadsheets" &&
 			subDir != "CodeGeneratedData" &&
