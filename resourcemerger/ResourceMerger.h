@@ -36,6 +36,9 @@ protected:
 	// A locked file should not be modified further
 	std::unordered_set<std::string> m_lockedFiles;
 
+	// Files that are defined in the base game's DynamicResources folder and must thus be replaced during merging
+	std::unordered_map<std::string, std::pair<std::string, std::string>> m_unpackedDynamicFiles;
+
 	// A map containing a counter for the next unused desc ID in the given class
 	std::unordered_map<std::string, int> m_vacantDescIDs;
 
@@ -54,6 +57,9 @@ protected:
 	// Initializes known desc IDs and max unique IDs from the base game's files
 	void initialize(Mutex::Server &mutex, double maxPerc);
 
+	// Restores or performs a backup of the base game's DynamicResources files
+	void prepareBaseDynamicFiles(Mutex::Server &mutex);
+
 public:
 
 	ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder);
@@ -67,6 +73,18 @@ public:
 
 	// Adds a patcher for use in merging files
 	void addPatcher(IResourcePatcher *patcher);
+
+	// Denote a file to be defined in the base game's DynamicResources and must thus be replaced during merging
+	void addDynamicBaseFile(const std::string &backupFile, const std::string &baseFile);
+
+	// Returns whether or not the given filename is a base game file defined in DynamicResources
+	bool isDynamicBaseFile(const std::string &filename) const;
+
+	// Opens the original base game's file for the given filename
+	std::istream *openDynamicBaseFile(const std::string &filename) const;
+
+	// Restores backed up DynamicResources files
+	void restoreBackups() const;
 
 	// Merge the mods currently loaded in the merger, reporting progress to the given string queue
 	void mergeMods(Mutex::Server &mutex);

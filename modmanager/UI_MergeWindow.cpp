@@ -1,8 +1,10 @@
 #include "UI_MergeWindow.h"
 
 #include "PatchATN.h"
+#include "PatchCSV.h"
 #include "PatchDesc.h"
 #include "PatchGeneric.h"
+#include "PatchIni.h"
 #include "PatchStrings.h"
 
 #include <QPropertyAnimation>
@@ -17,7 +19,9 @@ void UI_MergeWindow::initialize()
 	ui.progressBar->setRange(0, 10000);
 
 	m_merger->addPatcher(new PatcherATN());
+	m_merger->addPatcher(new PatcherCSV());
 	m_merger->addPatcher(new PatcherDesc());
+	m_merger->addPatcher(new PatcherIni());
 	m_merger->addPatcher(new PatcherStrings());
 
 	// Generic text patchers that either isn't handled in detail 
@@ -26,8 +30,6 @@ void UI_MergeWindow::initialize()
 	m_merger->addPatcher(new PatcherGeneric(".as", false));		// Animation set
 	m_merger->addPatcher(new PatcherGeneric(".COL", false));	// Model metadata
 	m_merger->addPatcher(new PatcherGeneric(".csb", false));	// UI
-	m_merger->addPatcher(new PatcherGeneric(".csv", true));		// Comma separated configs
-	m_merger->addPatcher(new PatcherGeneric(".ini", true));		// Configs
 	m_merger->addPatcher(new PatcherGeneric(".mus", true));		// Music settings
 	m_merger->addPatcher(new PatcherGeneric(".nam", false));	// Agent names
 	m_merger->addPatcher(new PatcherGeneric(".pat", false));	// Patterns for construction

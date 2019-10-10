@@ -142,6 +142,79 @@ void ResourceMerger::initialize(Mutex::Server &mutex, double maxPerc)
 	);
 }
 
+void ResourceMerger::prepareBaseDynamicFiles(Mutex::Server &mutex)
+{
+	mutex.queue.push("Restoring base game DynamicResources...\n");
+	mutex.wait();
+
+	char *buffer = new char[COPY_BUFFER_SIZE];
+
+	std::streamsize bufferLength = 0;
+
+	for (const std::pair<std::string, std::pair<std::string, std::string>> &keyPair : m_unpackedDynamicFiles)
+	{
+		const std::string &baseName = keyPair.second.first;
+		const std::string &backupName = keyPair.second.second;
+
+		std::ifstream backupFileIn(backupName);
+
+		if (backupFileIn.good())
+		{
+			// Restore backup
+			std::ofstream baseFile(baseName, std::ios::trunc);
+
+			if (baseFile.fail())
+			{
+				throw ATN::Exception("Failed to open \"%s\" for writing (base dynamic)", baseName);
+			}
+
+			while (!backupFileIn.eof())
+			{
+				backupFileIn.read(buffer, COPY_BUFFER_SIZE);
+
+				bufferLength = backupFileIn.gcount();
+
+				baseFile.write(buffer, bufferLength);
+			}
+		}
+		else
+		{
+			// Copy for backup
+
+			std::ofstream backupFileOut(backupName, std::ios::trunc);
+
+			if (backupFileOut.fail())
+			{
+				throw ATN::Exception("Failed to open \"%s\" for writing (backup dynamic)", backupName);
+			}
+
+			std::ifstream baseFile(baseName);
+
+			if (baseFile.fail())
+			{
+				throw ATN::Exception("Failed to open \"%s\" for reading (base dynamic)", baseName);
+			}
+
+			while (!baseFile.eof())
+			{
+				baseFile.read(buffer, COPY_BUFFER_SIZE);
+
+				bufferLength = baseFile.gcount();
+
+				backupFileOut.write(buffer, bufferLength);
+			}
+
+			std::string filename = baseName.substr(baseName.find_last_of('/') + 1);
+
+			mutex.queue.push("Backed up " + filename + "\n");
+		}
+	}
+
+	mutex.queue.push("\n");
+
+	delete[] buffer;
+}
+
 ResourceMerger::ResourceMerger(const ResourcePacks *packs, const std::string &outputFolder) : m_resourcePacks(packs), m_outputPath(outputFolder)
 {
 
@@ -179,140 +252,211 @@ void ResourceMerger::addPatcher(IResourcePatcher *patcher)
 	m_extToPatch[patcher->extension()] = patcher;
 }
 
+void ResourceMerger::addDynamicBaseFile(const std::string &backupFile, const std::string &baseFile)
+{
+	std::string filename = baseFile.substr(baseFile.find_last_of('/') + 1);
+
+	m_unpackedDynamicFiles[filename] = std::make_pair(baseFile, backupFile);
+}
+
+bool ResourceMerger::isDynamicBaseFile(const std::string &filename) const
+{
+	return (m_unpackedDynamicFiles.find(filename) != m_unpackedDynamicFiles.end());
+}
+
+std::istream *ResourceMerger::openDynamicBaseFile(const std::string &filename) const
+{
+	std::ifstream *file = new std::ifstream(m_unpackedDynamicFiles.at(filename).second);
+
+	if (file->fail())
+		throw std::exception(("Couldn't open backup file \"" + filename + "\" for reading").c_str());
+
+	return file;
+}
+
+void ResourceMerger::restoreBackups() const
+{
+	char *buffer = new char[COPY_BUFFER_SIZE];
+
+	std::streamsize bufferLength = 0;
+
+	for (const std::pair<std::string, std::pair<std::string, std::string>> &keyPair : m_unpackedDynamicFiles)
+	{
+		const std::string &baseName = keyPair.second.first;
+		const std::string &backupName = keyPair.second.second;
+
+		std::ifstream backupFileIn(backupName);
+
+		if (backupFileIn.good())
+		{
+			// Restore backup
+			std::ofstream baseFile(baseName, std::ios::trunc);
+
+			if (baseFile.fail())
+			{
+				throw ATN::Exception("Failed to open \"%s\" for writing (base dynamic)", baseName);
+			}
+
+			while (!backupFileIn.eof())
+			{
+				backupFileIn.read(buffer, COPY_BUFFER_SIZE);
+
+				bufferLength = backupFileIn.gcount();
+
+				baseFile.write(buffer, bufferLength);
+			}
+		}
+	}
+
+	delete[] buffer;
+}
+
 void ResourceMerger::mergeMods(Mutex::Server &mutex)
 {
 	const std::string tabString("    ");
 
-	double initPerc = 0.1;
+	double initPerc = 0.099;
 
 	initialize(mutex, initPerc);
 
 	mutex.progress = initPerc;
 	mutex.wait();
 
-	if (m_mods.size() == 1)
+	prepareBaseDynamicFiles(mutex);
+
+	initPerc = 0.1;
+
+	mutex.progress = initPerc;
+	mutex.wait();
+
+	int numModsProcessed = 0;
+
+	for (ModPack *mod : m_mods)
 	{
-		mutex.queue.push("Only one mod is loaded\nCopying files directly from \"" + m_mods[0]->name() + "\"\n");
+		mutex.queue.push("Installing \"" + mod->name() + "\":\n");
 
-		const ModPack *mod = m_mods[0];
+		std::vector<IResourcePatch*> patches;
 
-		char *buffer = new char[COPY_BUFFER_SIZE];
+		// Files are grouped by extension as the patcher may be dependent on several files (e.g. ATN global pointers)
+		std::unordered_map<std::string, std::vector<std::string>> m_extFiles;
 
-		std::streamsize bufferLength = 0;
+		double modProgress = 0;
 
-		for (const std::string &filename : mod->files())
+		for (const std::string &fullFilePath : mod->files())
 		{
-			std::istream *modFile = mod->openFile(filename);
+			std::string fileExt = fullFilePath.substr(fullFilePath.find_last_of('.'));
 
-			std::string mergedName = m_outputPath + "/" + filename.substr(filename.find_last_of('/'));
+			std::string filename = fullFilePath.substr(fullFilePath.find_last_of('/') + 1);
 
-			std::ofstream mergedFile(mergedName);
-
-			if (mergedFile.fail())
+			// This file isn't permitted to be changed further
+			if (m_lockedFiles.find(filename) != m_lockedFiles.end())
 			{
-				throw ATN::Exception("Failed to open \"%s\" for writing (managed)", mergedName);
+				mutex.queue.push(tabString + "Not including \"" + filename + "\" due to conflicts\n");
+				continue;
 			}
 
-			while (!modFile->eof())
+			// No patcher found for this filetype
+			if (m_extToPatch.find(fileExt) == m_extToPatch.end())
 			{
-				modFile->read(buffer, COPY_BUFFER_SIZE);
+				patches.push_back(new PatchCopy(filename, fullFilePath, *mod));
 
-				bufferLength = modFile->gcount();
-
-				mergedFile.write(buffer, bufferLength);
+				lockFile(filename);
 			}
+			else
+			{
+				if (m_extFiles.find(fileExt) == m_extFiles.end())
+					m_extFiles[fileExt] = std::vector<std::string>();
 
-			delete modFile;
+				m_extFiles[fileExt].push_back(fullFilePath);
+			}
 		}
 
-		delete[] buffer;
-	}
-	else
-	{
-		int numModsProcessed = 0;
+		modProgress += 0.1;
 
-		for (ModPack *mod : m_mods)
+		mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
+
+		mutex.wait();
+
+		for (const std::pair<std::string, std::vector<std::string>> &pair : m_extFiles)
 		{
-			mutex.queue.push("Installing \"" + mod->name() + "\":\n");
-
-			std::vector<IResourcePatch*> patches;
-
-			// Files are grouped by extension as the patcher may be dependent on several files (e.g. ATN global pointers)
-			std::unordered_map<std::string, std::vector<std::string>> m_extFiles;
-
-			double modProgress = 0;
-
-			for (const std::string &fullFilePath : mod->files())
+			try
 			{
-				std::string fileExt = fullFilePath.substr(fullFilePath.find_last_of('.'));
+				std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, *mod, pair.second);
 
-				std::string filename = fullFilePath.substr(fullFilePath.find_last_of('/') + 1);
+				patches.insert(patches.end(), subPatches.begin(), subPatches.end());
+			}
+			catch (std::exception &e)
+			{
+				mutex.queue.push(tabString + tabString + "Failed to create patch for extension \"" + pair.first + "\":\n");
+				mutex.queue.push(tabString + tabString + std::string(e.what()) + "\n");
+			}
+		}
 
-				// This file isn't permitted to be changed further
-				if (m_lockedFiles.find(filename) != m_lockedFiles.end())
+		if (patches.size() == 1)
+			mutex.queue.push("\n" + tabString + "Created 1 patch\n");
+		else
+			mutex.queue.push("\n" + tabString + "Created " + std::to_string(patches.size()) + " patches\n");
+
+		modProgress += 0.5;
+
+		mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
+
+		mutex.wait();
+
+		for (IResourcePatch *patch : patches)
+		{
+			const std::vector<std::string> &filenames = patch->filenames();
+
+			std::vector<std::istream*> inStreams;
+			std::vector<std::ostream*> outStreams;
+
+			bool bStreamsStable = true;
+
+			for (const std::string &filename : filenames)
+			{
+				// For dynamic base files, we will always have an existing file to patch (which was restored earlier)
+				if (isDynamicBaseFile(filename))
 				{
-					mutex.queue.push(tabString + "Not including \"" + filename + "\" due to conflicts\n");
-					continue;
-				}
+					std::string baseName = m_unpackedDynamicFiles[filename].first;
 
-				// No patcher found for this filetype
-				if (m_extToPatch.find(fileExt) == m_extToPatch.end())
-				{
-					patches.push_back(new PatchCopy(filename, fullFilePath, *mod));
+					std::ifstream *fsBase = new std::ifstream(baseName);
 
-					lockFile(filename);
+					// fsIn is a copy of the original since we want to write back to the same file immediately
+					std::stringstream *fsIn = new std::stringstream();
+
+					char *buffer = new char[COPY_BUFFER_SIZE];
+
+					std::streamsize bufferLength = 0;
+
+					while (!fsBase->eof())
+					{
+						fsBase->read(buffer, COPY_BUFFER_SIZE);
+
+						bufferLength = fsBase->gcount();
+
+						fsIn->write(buffer, bufferLength);
+					}
+
+					delete fsBase;
+
+					std::ofstream *fsOut = new std::ofstream(baseName, std::ios::trunc);
+
+					if (fsOut->fail())
+					{
+						mutex.queue.push(tabString + tabString + "ERROR: Failed to open \"" + filename + "\" for writing (base dynamic)\n");
+
+						bStreamsStable = false;
+						break;
+					}
+
+					fsIn->seekg(0, std::ios::beg);
+
+					inStreams.push_back(fsIn);
+					outStreams.push_back(fsOut);
+
+					delete[] buffer;
 				}
 				else
-				{
-					if (m_extFiles.find(fileExt) == m_extFiles.end())
-						m_extFiles[fileExt] = std::vector<std::string>();
-
-					m_extFiles[fileExt].push_back(fullFilePath);
-				}
-			}
-
-			modProgress += 0.1;
-
-			mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
-
-			mutex.wait();
-
-			for (const std::pair<std::string, std::vector<std::string>> &pair : m_extFiles)
-			{
-				try
-				{
-					std::vector<IResourcePatch*> subPatches = m_extToPatch[pair.first]->createPatches(*this, *mod, pair.second);
-
-					patches.insert(patches.end(), subPatches.begin(), subPatches.end());
-				}
-				catch (std::exception &e)
-				{
-					mutex.queue.push(tabString + tabString + "Failed to create patch for extension \"" + pair.first + "\":\n");
-					mutex.queue.push(std::string(e.what()) + "\n");
-				}
-			}
-
-			if (patches.size() == 1)
-				mutex.queue.push("\n" + tabString + "Created 1 patch\n");
-			else
-				mutex.queue.push("\n" + tabString + "Created " + std::to_string(patches.size()) + " patches\n");
-
-			modProgress += 0.5;
-
-			mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);;
-
-			mutex.wait();
-
-			for (IResourcePatch *patch : patches)
-			{
-				const std::vector<std::string> &filenames = patch->filenames();
-
-				std::vector<std::istream*> inStreams;
-				std::vector<std::ostream*> outStreams;
-
-				bool bStreamsStable = true;
-
-				for (const std::string &filename : filenames)
 				{
 					std::ifstream *fsManaged = new std::ifstream(m_outputPath + "/" + filename);
 
@@ -400,47 +544,47 @@ void ResourceMerger::mergeMods(Mutex::Server &mutex)
 						delete[] buffer;
 					}
 				}
-
-				if (bStreamsStable)
-				{
-					if (inStreams.size() > 0)
-					{
-						std::vector<std::string> strOutputs = patch->apply(inStreams, outStreams);
-
-						for (std::string &strOut : strOutputs)
-						{
-							mutex.queue.push(tabString + tabString + strOut + "\n");
-						}
-					}
-				}
-				else
-				{
-					mutex.queue.push(tabString + tabString + "Patch not applied due to previous error!\n");
-				}
-
-				for (std::istream *stream : inStreams)
-				{
-					delete stream;
-				}
-
-				for (std::ostream *stream : outStreams)
-				{
-					delete stream;
-				}
-
-				delete patch;
-
-				modProgress += 0.5 / patches.size();
-
-				mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);
-
-				mutex.wait();
 			}
 
-			mutex.queue.push("\n" + tabString + "Patches applied\n\n\n");
+			if (bStreamsStable)
+			{
+				if (inStreams.size() > 0)
+				{
+					std::vector<std::string> strOutputs = patch->apply(inStreams, outStreams);
 
-			numModsProcessed++;
+					for (std::string &strOut : strOutputs)
+					{
+						mutex.queue.push(tabString + tabString + strOut + "\n");
+					}
+				}
+			}
+			else
+			{
+				mutex.queue.push(tabString + tabString + "Patch not applied due to previous error!\n");
+			}
+
+			for (std::istream *stream : inStreams)
+			{
+				delete stream;
+			}
+
+			for (std::ostream *stream : outStreams)
+			{
+				delete stream;
+			}
+
+			delete patch;
+
+			modProgress += 0.5 / patches.size();
+
+			mutex.progress = initPerc + ((numModsProcessed + modProgress) / m_mods.size()) / (1 + initPerc);
+
+			mutex.wait();
 		}
+
+		mutex.queue.push("\n" + tabString + "Patches applied\n\n\n");
+
+		numModsProcessed++;
 	}
 
 	// In case this resource merger is used again, we need to clear any global references

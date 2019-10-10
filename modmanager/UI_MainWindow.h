@@ -14,6 +14,8 @@
 
 #include <unordered_map>
 
+#include "ResourceMerger.h"
+
 class UI_MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -29,8 +31,11 @@ private:
 	// Merge the mods in the list in the given order to the specified game directory
 	void mergeMods(const std::string &basePath, const std::vector<std::string> &mods);
 
+	// Adds base game DynamicResources files to the given resource merger
+	void addBaseFiles(const std::string &basePath, ResourceMerger &merger) const;
+
 	// Adds all files recursively from the given path to the mod pack
-	void addModFiles(const std::string &path, ModPack &mod);
+	void addModFiles(const std::string &path, ModPack &mod) const;
 
 public:
 	UI_MainWindow(QWidget *parent = Q_NULLPTR);
@@ -41,6 +46,10 @@ public:
 	const char * const MOD_ENABLED_DIR = "/DynamicResources/ManagedMods";
 	// File describing which mods are enabled and in what order they were compiled
 	const char * const MOD_ENABLED_LIST = "/Mods/enabled.txt";
+	// Directory in which backup files should be stored
+	const char * const BACKUP_DIR = "/Backup";
+	// Directory in which backed up DynamicResources files will be stored
+	const char * const BACKUP_DIR_DYNAMIC = "/Backup/DynamicResources";
 
 protected slots:
 	void populateLists();

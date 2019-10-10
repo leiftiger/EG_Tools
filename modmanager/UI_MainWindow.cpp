@@ -8,7 +8,6 @@
 #include "utils.h"
 
 #include "ModPack.h"
-#include "ResourceMerger.h"
 #include "ResourcePacks.h"
 
 #include <sstream>
@@ -28,6 +27,8 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 
 	ResourceMerger *merger = new ResourceMerger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
 
+	addBaseFiles(basePath, *merger);
+
 	for (const std::string &mod : mods)
 	{
 		ModPack *modPack = new ModPack(mod);
@@ -42,7 +43,33 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 	uiResult->show();
 }
 
-void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod)
+void UI_MainWindow::addBaseFiles(const std::string &basePath, ResourceMerger &merger) const
+{
+	std::string backupPath = basePath + BACKUP_DIR_DYNAMIC + "/";
+
+	for (const std::filesystem::directory_entry &entry : std::filesystem::directory_iterator(basePath + "/DynamicResources/BalancingSpreadsheets"))
+	{
+		std::string filename = entry.path().filename().string();
+
+		// May contain backup files that don't really affect anything
+		if (entry.path().extension().string() == ".csv")
+		{
+			merger.addDynamicBaseFile(backupPath + filename, basePath + "/DynamicResources/BalancingSpreadsheets/" + filename);
+		}
+	}
+
+	// Only some of the config files are relevant for modding
+	std::vector<std::string> configFiles = {"ObjectiveDetails.ini", "research.csv", "weaken.ini"};
+
+	for (std::string &filename : configFiles)
+	{
+		merger.addDynamicBaseFile(backupPath + filename, basePath + "/DynamicResources/Config/" + filename);
+	}
+
+	// TODO: Maybe include SecretLayouts in the future (which would also require a proper patcher as there's more involved than changing lines)
+}
+
+void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod) const
 {
 	for (const std::filesystem::directory_entry &entry : std::filesystem::directory_iterator(path))
 	{
@@ -93,6 +120,9 @@ void UI_MainWindow::populateLists()
 	std::string modPath = egPath + MOD_DISABLED_DIR;
 
 	std::filesystem::create_directory(modPath);
+
+	std::filesystem::create_directory(egPath + BACKUP_DIR);
+	std::filesystem::create_directory(egPath + BACKUP_DIR_DYNAMIC);
 
 	std::vector<std::filesystem::path> unmanagedMods;
 
@@ -274,7 +304,8 @@ void UI_MainWindow::installMods()
 		return;
 	}
 
-	uninstallMods();
+	// Clear currently installed mods
+	std::filesystem::remove_all(config[0] + MOD_ENABLED_DIR);
 
 	std::ofstream file(config[0] + MOD_ENABLED_LIST, std::ios::trunc);
 
@@ -317,7 +348,27 @@ void UI_MainWindow::uninstallMods()
 		return;
 	}
 
-	std::filesystem::remove_all(config[0] + MOD_ENABLED_DIR);
+	// Reset any base files changed by the mods
+	ResourceMerger merger(new ResourcePacks({}), config[0] + MOD_ENABLED_DIR);
+
+	addBaseFiles(config[0], merger);
+
+	merger.restoreBackups();
+
+	QMessageBox msg;
+
+	msg.setWindowFlags(Qt::Dialog | Qt::Desktop | Qt::WindowStaysOnTopHint);
+	msg.setIcon(QMessageBox::Icon::Information);
+
+	msg.setWindowTitle(tr(" "));
+	msg.setText(tr("<span style=\"font-size:12pt;\"><b>Successfully uninstalled mods</b></span>"));
+
+	msg.setInformativeText(tr("All managed mods have been uninstalled and the base game files have been restored."));
+
+	msg.setStandardButtons(QMessageBox::Ok);
+	msg.setDefaultButton(QMessageBox::Ok);
+
+	int msgRet = msg.exec();
 }
 
 void UI_MainWindow::openAboutWindow()
