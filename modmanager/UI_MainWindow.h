@@ -28,6 +28,8 @@ private:
 
 	ModInfo *m_currentModDetails = nullptr;
 
+	bool m_requestedConfig = false;
+
 	// Merge the mods in the list in the given order to the specified game directory
 	void mergeMods(const std::string &basePath, const std::vector<std::string> &mods);
 

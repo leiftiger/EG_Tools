@@ -266,7 +266,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Here you can select which mods you want to enable or disable, and in the priority of each mod. In case of conflicts, the topmost mod's changes will be prioritized, which may render some mods partially ineffective (but still better compared to not using the manager). Simply drag and drop each mod to reorder the list.
+       <string>Here you can select which mods you want to enable or disable, and mod priority order. In case of conflicts, the topmost mod's changes will be prioritized, which may render some mods partially ineffective (but still better compared to not using the manager). Simply drag and drop each mod to reorder the list.
 
 To install a new mod, follow its instructions and either reload this program or click on the &quot;Reload mod lists&quot; button.
 

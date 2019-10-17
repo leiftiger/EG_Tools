@@ -1,5 +1,6 @@
 #include "UI_MainWindow.h"
 #include <QMessageBox>
+#include <QTimer>
 
 #include <filesystem>
 #include <fstream>
@@ -16,14 +17,14 @@ void UI_MainWindow::mergeMods(const std::string &basePath, const std::vector<std
 {
 	std::filesystem::create_directory(basePath + MOD_ENABLED_DIR);
 
-	std::vector<std::string> strPacks = util::configPaths("files/resource_packs.txt");
+	std::vector<std::string> strPacks = util::configPaths("definitions/resource_packs.txt");
 
 	for (std::string &str : strPacks)
 	{
 		str = basePath + str;
 	}
 
-	// TODO: Read Current.opt to retrieve game locale to allow for non-english patching
+	// TODO: Read Current.opt to retrieve game locale to allow for non-english patching, problem: some locales don't even include English?
 
 	ResourceMerger *merger = new ResourceMerger(new ResourcePacks(strPacks), basePath + MOD_ENABLED_DIR);
 
@@ -93,7 +94,8 @@ UI_MainWindow::UI_MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	populateLists();
+	// Slight delay to prevent odd behaviour
+	QTimer::singleShot(200, this, SLOT(populateLists()));
 }
 
 void UI_MainWindow::populateLists()
@@ -115,6 +117,11 @@ void UI_MainWindow::populateLists()
 	{
 		openConfigWindow();
 		return;
+	}
+	else
+	{
+		// Reset as it won't be called automatically now
+		m_requestedConfig = false;
 	}
 
 	std::string modPath = egPath + MOD_DISABLED_DIR;
@@ -378,10 +385,47 @@ void UI_MainWindow::openAboutWindow()
 
 void UI_MainWindow::openConfigWindow()
 {
-	UI_ConfigWindow *window = new UI_ConfigWindow(this);
-	window->show();
+	if (m_requestedConfig)
+	{
+		QMessageBox msg;
 
-	connect(window, SIGNAL(onClose()), this, SLOT(populateLists()));
+		msg.setWindowFlags(Qt::Dialog | Qt::Desktop | Qt::WindowStaysOnTopHint);
+		msg.setIcon(QMessageBox::Icon::Question);
+
+		msg.setWindowTitle(tr(" "));
+		msg.setText(tr("<span style=\"font-size:12pt;\"><b>Evil Genius path not set!</b></span>"));
+
+		msg.setInformativeText(tr("You haven't set a path to your Evil Genius installation, please do so or click cancel to quit the program."));
+
+		msg.setStandardButtons(QMessageBox::Retry | QMessageBox::Cancel);
+		msg.setDefaultButton(QMessageBox::Retry);
+
+		int msgRet = msg.exec();
+
+		switch (msgRet)
+		{
+		case QMessageBox::Retry:
+		{
+			m_requestedConfig = false;
+			openConfigWindow();
+			break;
+		}
+		case QMessageBox::Cancel:
+		{
+			close();
+			break;
+		}
+		}
+	}
+	else
+	{
+		m_requestedConfig = true;
+
+		UI_ConfigWindow *window = new UI_ConfigWindow(this);
+		window->show();
+
+		connect(window, SIGNAL(onClose()), this, SLOT(populateLists()));
+	}
 }
 
 void UI_MainWindow::saveModInfo()
