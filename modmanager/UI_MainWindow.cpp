@@ -362,6 +362,9 @@ void UI_MainWindow::uninstallMods()
 
 	merger.restoreBackups();
 
+	// Clear currently installed mods
+	std::filesystem::remove_all(config[0] + MOD_ENABLED_DIR);
+
 	QMessageBox msg;
 
 	msg.setWindowFlags(Qt::Dialog | Qt::Desktop | Qt::WindowStaysOnTopHint);
