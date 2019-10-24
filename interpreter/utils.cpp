@@ -97,14 +97,16 @@ namespace util
 
 		std::string line;
 
-		// First two lines are reserved for comments
-		getline(file, line);
-		getline(file, line);
-
 		ATN::List<ATN::Property> list(filename);
 
 		while (getline(file, line))
 		{
+			// Ignore comments and empty lines
+			if (line.length() == 0 || (line.length() >= 2 && line.substr(0, 2) == "//"))
+			{
+				continue;
+			}
+
 			ATN::Property *el = new ATN::Property(line, hashFNV132(line));
 
 			//std::cout << el->name() << "\t" << el->id() << std::endl;

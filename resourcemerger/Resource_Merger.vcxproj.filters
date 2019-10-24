@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ResourceMerger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModPack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IResourcePatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IResourcePatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchCopy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchATN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchDesc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MutexCommunication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchStrings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchGeneric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchIni.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchCSV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ResourceMerger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModPack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IResourcePatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchCopy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchATN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchDesc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MutexCommunication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchStrings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchGeneric.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IResourcePatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchIni.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchCSV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

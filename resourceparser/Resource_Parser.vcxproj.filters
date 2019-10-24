@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="RP_Animation.cpp" />
+    <ClCompile Include="RP_Audio.cpp" />
+    <ClCompile Include="RP_BaseResource.cpp" />
+    <ClCompile Include="RP_EntityDesc.cpp" />
+    <ClCompile Include="RP_FileLoader.cpp" />
+    <ClCompile Include="RP_GUI.cpp" />
+    <ClCompile Include="RP_IResourceParser.cpp" />
+    <ClCompile Include="RP_PackLoader.cpp" />
+    <ClCompile Include="RP_Strings.cpp" />
+    <ClCompile Include="RP_utils.cpp" />
+    <ClCompile Include="RP_Video.cpp" />
+    <ClCompile Include="RP_Objectives.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RP_Animation.h" />
+    <ClInclude Include="RP_Audio.h" />
+    <ClInclude Include="RP_BaseResource.h" />
+    <ClInclude Include="RP_EntityDesc.h" />
+    <ClInclude Include="RP_FileLoader.h" />
+    <ClInclude Include="RP_GUI.h" />
+    <ClInclude Include="RP_IResourceParser.h" />
+    <ClInclude Include="RP_PackLoader.h" />
+    <ClInclude Include="RP_Strings.h" />
+    <ClInclude Include="RP_Video.h" />
+    <ClInclude Include="RP_utils.h" />
+    <ClInclude Include="RP_Objectives.h" />
+  </ItemGroup>
+</Project>
