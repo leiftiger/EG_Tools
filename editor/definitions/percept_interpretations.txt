@@ -91,10 +91,10 @@ TATNPerceptArrivedAtHotspot
 ::resource0:: arrived at hotspot "::param0::" of ::resource1::
 
 TATNPerceptLastEffectReturnValue::879
-network returned true
+last effect/network returned true
 
 TATNPerceptLastEffectReturnValue::880
-network returned false
+last effect/network returned false
 
 TATNPerceptResourceExists::46
 ::resource0:: is not NULL
@@ -181,7 +181,7 @@ TATNPerceptGuiIsIdle
 GUI is idle
 
 TATNPerceptIsEntityDescriptionPresent
-::param0:: is defined in a resource pack
+::param0:: is defined in a desc file
 
 TATNPerceptIsRegionSetToActivity
 minion activity in region ::param0:: is ::param1::
