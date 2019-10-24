@@ -1,10 +1,10 @@
 This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN editor and a Mod Manager.
 
 # ATN Editor
-With the ATN Editor, you are able to edit key logic in Evil Genius, making it possible to:
+With the [ATN Editor](doc/using_the_editor.md), you are able to edit key logic in Evil Genius, making it possible to:
 
 * Add new henchmen without having to replace any existing ones
-* Create brand new objectives or change existing ones
+* [Create brand new objectives or change existing ones](doc/creating_new_objectives.md)
 * Fix the conference table bug
 * Boost minion effects of them interacting with objects
 * Disable all tourists, or have even more of them
