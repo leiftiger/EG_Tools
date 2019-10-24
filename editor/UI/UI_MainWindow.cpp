@@ -22,6 +22,13 @@ UI_MainWindow::UI_MainWindow(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	// Until implemented, it's better if these options are hidden to not give false hopes
+	ui.actionUndo->deleteLater();
+	ui.actionRedo->deleteLater();
+
+	ui.actionUndo = Q_NULLPTR;
+	ui.actionRedo = Q_NULLPTR;
+
 	// Disable close button on search results tab
 	ui.tabWidget->tabBar()->tabButton(0, QTabBar::RightSide)->resize(0, 0);
 }
