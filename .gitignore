@@ -68,7 +68,7 @@ $RECYCLE.BIN/
 *.ipdb
 *.pdb
 .suo
-*.vcxproj.user
+*.vcxproj.*
 *.asm
 
 # The ATN files
