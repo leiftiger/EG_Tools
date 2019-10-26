@@ -190,7 +190,7 @@ void UI_MainWindow::populateLists()
 				std::string modName = path.filename().string();
 
 				// This is the only mod we can be relatively certain of
-				if (modName == "Patch")
+				if (modName == "Patch" || modName == "Patched")
 					modName = "Unofficial Patch";
 
 				std::filesystem::remove_all(modPath + "/" + modName);
