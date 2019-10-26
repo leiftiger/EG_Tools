@@ -47,7 +47,12 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 
 	// Select the first acceptable resource if we currently don't point to anything
 	if (argument->m_value == ATN::ResourceMarshall::INVALID_POINTER && ui.comboBox->count() > 0)
+	{
 		ui.comboBox->setCurrentIndex(0);
+
+		// May not be called if the combobox is already at index 0
+		selectResource(0);
+	}
 }
 
 void UI_InputResource::selectResource(int index)

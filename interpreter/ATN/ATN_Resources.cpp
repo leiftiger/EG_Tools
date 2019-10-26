@@ -388,6 +388,9 @@ namespace ATN
 
 		for (const ResourceMarshall *resource : resources)
 		{
+			if (resource->m_value == ResourceMarshall::INVALID_POINTER)
+				throw ATN::Exception("A resource marshall is set to an invalid index!");
+
 			stream << (int)resource->m_type << " " << resource->m_value << " ";
 		}
 
