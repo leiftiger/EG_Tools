@@ -83,7 +83,7 @@ void UI_MainWindow::addModFiles(const std::string &path, ModPack &mod) const
 			std::string filename = entry.path().filename().string();
 
 			// Skip mod info files as they're just dummies to contain info for non-managed mods
-			if (filename.length() < strlen("modinfo_") || filename.substr(0, strlen("modinfo_")) != "modinfo_")
+			if (filename != "mod.info")
 				mod.addFile(path + "/" + filename);
 		}
 	}
@@ -236,7 +236,7 @@ void UI_MainWindow::populateLists()
 			{
 				std::string &filename = modEntry.path().filename().string();
 
-				if (filename.length() >= strlen("modinfo_") && filename.substr(0, strlen("modinfo_")) == "modinfo_")
+				if (filename == "mod.info")
 				{
 					ModInfo info;
 
@@ -256,17 +256,7 @@ void UI_MainWindow::populateLists()
 			{
 				ModInfo info;
 
-				std::string modInfoName("modinfo_");
-
-				for (char c : mod)
-				{
-					if (c != ' ')
-						modInfoName += tolower(c);
-					else
-						modInfoName += '_';
-				}
-
-				info.setFilename(modPath + "/" + mod + "/" + modInfoName + ".xml");
+				info.setFilename(modPath + "/" + mod + "/mod.info");
 
 				info["name"] = mod;
 				info["author"] = "N/A";
