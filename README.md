@@ -1,4 +1,4 @@
-This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN editor and a Mod Manager.
+This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN Editor and a Mod Manager.
 
 # ATN Editor
 ![Example image](/doc/images/editor_example.png)
@@ -6,10 +6,10 @@ With the [ATN Editor](doc/using_the_editor.md), you are able to edit key logic i
 
 * Add new henchmen without having to replace any existing ones
 * [Create brand new objectives or change existing ones](doc/creating_new_objectives.md)
-* Fix the conference table bug
+* [Fix the conference table bug](https://www.moddb.com/games/evil-genius/downloads/objective-2-conference-table-fix)
 * Boost minion effects of them interacting with objects
 * Disable all tourists, or have even more of them
-* Earn money in the casino and hotel business
+* [Earn money in the casino and hotel business](https://www.moddb.com/games/evil-genius/downloads/hotel-earnings-mod)
 * And much more!
 
 Note that the ATNs only govern parts of the game, you will still have to add string entries or entity descriptions to make full use of it for the use cases above.
