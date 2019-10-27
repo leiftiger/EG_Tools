@@ -309,7 +309,7 @@ namespace util
 	{
 		std::vector<std::string> strConfig = util::configPaths("config.txt");
 
-		if (strConfig.size() == 1)
+		if (strConfig.size() == 1 && strConfig[0].length() > 0)
 		{
 			std::string gamePath = strConfig[0];
 
