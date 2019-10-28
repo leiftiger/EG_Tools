@@ -14,9 +14,9 @@ When finished, save all open ATN files and your changes will be applied to the f
 
 # Parameter values
 
-As the editor is unofficial, some parameter type definitions may not be found - these have been labelled as either `MISSING: <NUMBER>` or the raw number directly. The number is a hash digest using FNV1 32-bit, which the game uses to store string references in a cheaper manner. You can use the hash tool included with the editor to manually set the number that a percept or effect may need, and use the same `MISSING: <NUMBER>` format to apply it in the files.
+As the editor is unofficial, some parameter type definitions may not be found - these have been labelled as either `MISSING: <NUMBER>` or the raw number directly. The number is a hash digest using [FNV1 32-bit](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash), which the game uses to store string references in a cheaper manner. You can use the hash tool included with the editor to manually set the number that a percept or effect may need, and use the same `MISSING: <NUMBER>` format to apply it in the files.
 
-In certain situations, it may also be necessary to pass `NULL` as the argument - this is defined in the editor for all parameter types but may only work in certain cases. Known usage is to pass `NULL` to certain events where it doesn't matter whether or not the event involves the first or second entity. If you want to pass a resource as `NULL` the best practice is to name it `_NULL` and never modify it.
+In certain situations, it may also be necessary to pass `NULL` as the argument - this is defined in the editor for all parameter types but may only work in certain cases. Known usage is to pass `NULL` to certain events where it doesn't matter whether or not the event involves the first or second entity. If you want to pass a resource as `NULL` the best practice is to name it `_NULL` and never modify it, since all resources are initialized as `NULL`.
 
 # Best practices
 
