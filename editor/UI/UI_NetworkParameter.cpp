@@ -2,10 +2,14 @@
 
 #include <algorithm>
 
+#include <QAbstractItemView>
+
 UI_NetworkParameter::UI_NetworkParameter(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	ui.paramType->view()->setMinimumWidth(ui.paramType->minimumSizeHint().width());
 }
 
 UI_NetworkParameter::~UI_NetworkParameter()
@@ -51,6 +55,8 @@ void UI_NetworkParameter::loadTranslations()
 	}
 
 	ui.paramValue->setCurrentText(QString::fromStdString(m_parameter->translateValue(0)));
+
+	ui.paramValue->view()->setMinimumWidth(ui.paramValue->minimumSizeHint().width());
 
 	m_populating = false;
 }

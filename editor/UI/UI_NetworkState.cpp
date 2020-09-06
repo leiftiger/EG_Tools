@@ -1,5 +1,7 @@
 #include "UI_NetworkState.h"
 
+#include <QAbstractItemView>
+
 void UI_NetworkState::populateArguments()
 {
 	for (UI_InputArgument *ut : m_arguments)
@@ -277,6 +279,8 @@ void UI_NetworkState::enableExternalNetwork(bool enable)
 		{
 			ui.comboBoxExternalNetwork->addItem(QString::fromStdString(std::to_string(net->id()) + std::string(": ") + net->name()));
 		}
+
+		ui.comboBoxExternalNetwork->view()->setMinimumWidth(ui.comboBoxExternalNetwork->minimumSizeHint().width());
 	}
 	else
 	{

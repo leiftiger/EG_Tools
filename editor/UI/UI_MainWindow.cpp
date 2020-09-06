@@ -109,6 +109,8 @@ void UI_MainWindow::reloadFileList()
 		ui.comboATNList->addItem(QString::fromStdString(file.substr(file.find_last_of('/') + 1)));
 #endif
 	}
+
+	ui.comboATNList->view()->setMinimumWidth(ui.comboATNList->minimumSizeHint().width());
 }
 
 void UI_MainWindow::newFile()

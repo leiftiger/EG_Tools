@@ -1,5 +1,7 @@
 #include "UI_NetworkContainer.h"
 
+#include <QAbstractItemView>
+
 UI_NetworkThread *UI_NetworkContainer::createThreadUI(ATN::Thread *thread)
 {
 	UI_NetworkThread *ut = new UI_NetworkThread(ui.listNetworkThreads);
@@ -217,6 +219,9 @@ void UI_NetworkContainer::initializeArgumentLists()
 
 	ui.comboTransitionEffect->addItems(m_effectList);
 	ui.comboTransitionPercept->addItems(m_perceptList);
+
+	ui.comboTransitionEffect->view()->setMinimumWidth(ui.comboTransitionEffect->minimumSizeHint().width());
+	ui.comboTransitionPercept->view()->setMinimumWidth(ui.comboTransitionPercept->minimumSizeHint().width());
 }
 
 void UI_NetworkContainer::initializeThreads()

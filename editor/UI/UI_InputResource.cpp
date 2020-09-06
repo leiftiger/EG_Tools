@@ -1,5 +1,7 @@
 #include "UI_InputResource.h"
 
+#include <QAbstractItemView>
+
 UI_InputResource::UI_InputResource(QWidget *parent)
 	: QWidget(parent)
 {
@@ -53,6 +55,8 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 		// May not be called if the combobox is already at index 0
 		selectResource(0);
 	}
+
+	ui.comboBox->view()->setMinimumWidth(ui.comboBox->minimumSizeHint().width());
 }
 
 void UI_InputResource::selectResource(int index)

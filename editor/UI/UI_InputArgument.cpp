@@ -5,6 +5,8 @@
 
 #include <algorithm>
 
+#include <QAbstractItemView>
+
 UI_InputArgument::UI_InputArgument(QWidget *parent)
 	: QWidget(parent)
 {
@@ -89,6 +91,8 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 		else
 			ui.comboBox->setCurrentText(strValue);
 	}
+
+	ui.comboBox->view()->setMinimumWidth(ui.comboBox->minimumSizeHint().width());
 
 	m_argument = argument;
 	m_parameter = parameter;

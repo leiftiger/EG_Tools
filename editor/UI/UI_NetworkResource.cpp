@@ -1,9 +1,13 @@
 #include "UI_NetworkResource.h"
 
+#include <QAbstractItemView>
+
 UI_NetworkResource::UI_NetworkResource(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	ui.resourceType->view()->setMinimumWidth(ui.resourceType->minimumSizeHint().width());
 }
 
 UI_NetworkResource::~UI_NetworkResource()
