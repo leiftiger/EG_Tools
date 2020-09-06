@@ -3,8 +3,6 @@
 #include <exception>
 #include <string>
 
-#include "utils.h"
-
 namespace ATN
 {
 	// Class for printing helpful information as to why the program erred

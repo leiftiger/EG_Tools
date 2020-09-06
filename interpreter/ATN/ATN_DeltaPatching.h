@@ -4,6 +4,7 @@
 #include <unordered_set>
 
 #include "ATN_Entry.h"
+#include "ATN_Exception.h"
 
 namespace ATN
 {
@@ -98,25 +99,25 @@ namespace ATN
 
 		int **distance = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			distance[i] = new int[change.size() + 1];
 		}
 
 		int **operation = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			operation[i] = new int[change.size() + 1];
 		}
 
-		for (int i = 1; i <= original.size(); i++)
+		for (std::size_t i = 1; i <= original.size(); i++)
 		{
 			distance[i][0] = i;
 			operation[i][0] = ADD;
 		}
 
-		for (int i = 1; i <= change.size(); i++)
+		for (std::size_t i = 1; i <= change.size(); i++)
 		{
 			distance[0][i] = i;
 			operation[0][i] = REM;
@@ -126,9 +127,9 @@ namespace ATN
 		operation[0][0] = KEEP;
 
 		// We calculate edit distance for each list to see what was changed
-		for (int iOriginal = 1; iOriginal <= original.size(); iOriginal++)
+		for (std::size_t iOriginal = 1; iOriginal <= original.size(); iOriginal++)
 		{
-			for (int iChange = 1; iChange <= change.size(); iChange++)
+			for (std::size_t iChange = 1; iChange <= change.size(); iChange++)
 			{
 				const T &originalEntry = original[iOriginal - 1];
 				const T &changeEntry = change[iChange - 1];
@@ -222,12 +223,12 @@ namespace ATN
 			}
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] operation[i];
 		}
@@ -247,7 +248,7 @@ namespace ATN
 		// If this is the first occurence for this file then we can safely assume the current state is unmodified
 		if (baseTranslations.size() == 0)
 		{
-			for (int i = 0; i < list.size(); i++)
+			for (std::size_t i = 0; i < list.size(); i++)
 			{
 				baseTranslations.push_back(i);
 			}
@@ -268,6 +269,11 @@ namespace ATN
 
 			switch (patch.m_type)
 			{
+			case KEEP:
+			{
+				// NOOP
+			}
+			break;
 			case ADD:
 			{
 				patch.insert(curIndex + 1, patch.m_change, list);
@@ -318,25 +324,25 @@ namespace ATN
 
 		int **distance = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			distance[i] = new int[change.size() + 1];
 		}
 
 		int **operation = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			operation[i] = new int[change.size() + 1];
 		}
 
-		for (int i = 1; i <= original.size(); i++)
+		for (std::size_t i = 1; i <= original.size(); i++)
 		{
 			distance[i][0] = i;
 			operation[i][0] = ADD;
 		}
 
-		for (int i = 1; i <= change.size(); i++)
+		for (std::size_t i = 1; i <= change.size(); i++)
 		{
 			distance[0][i] = i;
 			operation[0][i] = REM;
@@ -346,9 +352,9 @@ namespace ATN
 		operation[0][0] = KEEP;
 
 		// We calculate edit distance for each list to see what was changed
-		for (int iOriginal = 1; iOriginal <= original.size(); iOriginal++)
+		for (std::size_t iOriginal = 1; iOriginal <= original.size(); iOriginal++)
 		{
-			for (int iChange = 1; iChange <= change.size(); iChange++)
+			for (std::size_t iChange = 1; iChange <= change.size(); iChange++)
 			{
 				T *originalEntry = original[iOriginal - 1];
 				T* changeEntry = change[iChange - 1];
@@ -442,12 +448,12 @@ namespace ATN
 			}
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] operation[i];
 		}
@@ -467,7 +473,7 @@ namespace ATN
 		// If this is the first occurence for this file then we can safely assume the current state is unmodified
 		if (baseTranslations.size() == 0)
 		{
-			for (int i = 0; i < list.size(); i++)
+			for (std::size_t i = 0; i < list.size(); i++)
 			{
 				baseTranslations.push_back(i);
 			}
@@ -488,6 +494,11 @@ namespace ATN
 
 			switch (patch.m_type)
 			{
+			case KEEP:
+			{
+				// NOOP
+			}
+			break;
 			case ADD:
 			{
 				patch.insert(curIndex + 1, patch.m_change, list);
@@ -538,25 +549,25 @@ namespace ATN
 
 		int **distance = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			distance[i] = new int[change.size() + 1];
 		}
 
 		int **operation = new int*[original.size() + 1];
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			operation[i] = new int[change.size() + 1];
 		}
 
-		for (int i = 1; i <= original.size(); i++)
+		for (std::size_t i = 1; i <= original.size(); i++)
 		{
 			distance[i][0] = i;
 			operation[i][0] = ADD;
 		}
 
-		for (int i = 1; i <= change.size(); i++)
+		for (std::size_t i = 1; i <= change.size(); i++)
 		{
 			distance[0][i] = i;
 			operation[0][i] = REM;
@@ -566,9 +577,9 @@ namespace ATN
 		operation[0][0] = KEEP;
 
 		// We calculate edit distance for each list to see what was changed
-		for (int iOriginal = 1; iOriginal <= original.size(); iOriginal++)
+		for (std::size_t iOriginal = 1; iOriginal <= original.size(); iOriginal++)
 		{
-			for (int iChange = 1; iChange <= change.size(); iChange++)
+			for (std::size_t iChange = 1; iChange <= change.size(); iChange++)
 			{
 				T *originalEntry = original[iOriginal - 1];
 				T* changeEntry = change[iChange - 1];
@@ -662,12 +673,12 @@ namespace ATN
 			}
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] distance[i];
 		}
 
-		for (int i = 0; i <= original.size(); i++)
+		for (std::size_t i = 0; i <= original.size(); i++)
 		{
 			delete[] operation[i];
 		}
@@ -687,7 +698,7 @@ namespace ATN
 		// If this is the first occurence for this file then we can safely assume the current state is unmodified
 		if (baseTranslations.size() == 0)
 		{
-			for (int i = 0; i < list.size(); i++)
+			for (std::size_t i = 0; i < list.size(); i++)
 			{
 				baseTranslations.push_back(i);
 			}
@@ -710,6 +721,11 @@ namespace ATN
 
 			switch (patch.m_type)
 			{
+			case KEEP:
+			{
+				// NOOP
+			}
+			break;
 			case ADD:
 			{
 				patch.insert(curIndex + 1, new T(*patch.m_change), list);

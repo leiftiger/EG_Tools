@@ -18,7 +18,7 @@ namespace RL
 
 		if (stream->fail())
 		{
-			throw std::exception(("Couldn't open file \"" + filename + "\" for reading").c_str());
+			throw std::runtime_error(("Couldn't open file \"" + filename + "\" for reading").c_str());
 		}
 
 		return stream;
@@ -35,14 +35,14 @@ namespace RL
 			if (fs->fail())
 			{
 				delete fs;
-				throw std::exception(("Couldn't find folder \"" + m_resourceListFolder + "\"").c_str());
+				throw std::runtime_error(("Couldn't find folder \"" + m_resourceListFolder + "\"").c_str());
 			}
 
 			std::string line;
 
 			// The first 20 lines are seemingly arbitrary numbers
 			for (int i = 0; i < 20; i++)
-				std::getline(*fs, line);
+				util::getline(*fs, line);
 
 			while (util::getline(*fs, line))
 			{
@@ -60,23 +60,23 @@ namespace RL
 				m_files[strExtension].push_back(m_resourceListFolder + line.substr(1));
 
 				// Type file
-				std::getline(*fs, line);
+				util::getline(*fs, line);
 				// Type name
-				std::getline(*fs, line);
+				util::getline(*fs, line);
 
-				std::getline(*fs, line);
+				util::getline(*fs, line);
 
 				int numArguments = std::stoi(line);
 
 				// Skip each argument
 				for (int i = 0; i < numArguments; i++)
 				{
-					std::getline(*fs, line);
-					std::getline(*fs, line);
+					util::getline(*fs, line);
+					util::getline(*fs, line);
 				}
 
 				// Read end number
-				std::getline(*fs, line);
+				util::getline(*fs, line);
 			}
 
 			delete fs;

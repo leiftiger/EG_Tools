@@ -1,5 +1,7 @@
 #include "RP_Audio.h"
 
+#include <cstring>
+
 namespace RL
 {
 	const char * const AudioParser::extension() const

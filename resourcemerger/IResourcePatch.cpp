@@ -22,7 +22,7 @@ std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::vector<s
 {
 	std::vector<std::string> strOutputs;
 
-	for (int i = 0; i < m_filenames.size(); i++)
+	for (std::size_t i = 0; i < m_filenames.size(); i++)
 	{
 		const std::string &modFilename = m_modFiles[i];
 
@@ -42,8 +42,6 @@ std::vector<std::string> IResourcePatch::apply(const ModPack &mod, std::vector<s
 
 		while (!modFile->eof())
 		{
-			int len = sizeof(buffer) / sizeof(char);
-
 			modFile->read(buffer, COPY_BUFFER_SIZE);
 
 			bufferLength = modFile->gcount();

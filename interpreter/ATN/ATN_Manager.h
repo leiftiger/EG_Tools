@@ -53,9 +53,6 @@ namespace ATN
 		std::vector<Percept*> m_percepts;
 		std::vector<Network*> m_networks;
 
-		// Protect against infinite recursions when removeEntry is called
-		bool m_removingGlobalElement = false;
-
 		const ATN::Entry *m_storedEntry;
 
 	public:
@@ -67,7 +64,7 @@ namespace ATN
 		static bool hasInterpretation(const std::string &type);
 
 		// Gets the interpretation format for this type
-		static const std::string &getInterpreration(const std::string &type);
+		static const std::string &getInterpretation(const std::string &type);
 
 		// Loads a number of ATN lists from the specified file names
 		static void loadFromFiles(const std::vector<std::string> &filenames);
@@ -100,7 +97,7 @@ namespace ATN
 		static const std::vector<List<Entry>*> lists();
 
 		// Set hash definitions
-		static void setDefinitions(const std::string &strType, List<Property> &list);
+		static void setDefinitions(const std::string &strType, const List<Property> &list);
 
 		// Get hash definitions
 		static List<Property> &getDefinitions(const std::string &strType);

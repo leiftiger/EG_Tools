@@ -1,5 +1,7 @@
 #include "PatchGeneric.h"
 
+#include "utils.h"
+
 void PatchGeneric::insert(std::size_t pos, const std::string &line, std::vector<std::string> &file) const
 {
 	file.push_back(line);
@@ -7,7 +9,7 @@ void PatchGeneric::insert(std::size_t pos, const std::string &line, std::vector<
 	// If not inserted in the back, move all affected elements
 	if (pos != (file.size() - 1))
 	{
-		for (size_t i = file.size() - 1; i > pos; i--)
+		for (std::size_t i = file.size() - 1; i > pos; i--)
 		{
 			file[i] = file[i - 1];
 		}
@@ -18,7 +20,7 @@ void PatchGeneric::insert(std::size_t pos, const std::string &line, std::vector<
 
 void PatchGeneric::remove(std::size_t pos, std::vector<std::string> &file) const
 {
-	for (size_t i = pos; i < file.size() - 1; i++)
+	for (std::size_t i = pos; i < file.size() - 1; i++)
 	{
 		file[i] = file[i + 1];
 	}
@@ -44,7 +46,7 @@ std::vector<std::string> PatchGeneric::apply(std::vector<std::istream*> &inStrea
 
 	std::vector<int> &baseTranslations = m_patcher.translations(filename);
 
-	int numApplied = 0;
+	std::size_t numApplied = 0;
 
 	for (const SubPatch &subPatch : m_subPatches)
 	{
@@ -115,14 +117,14 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 {
 	int **distance = new int*[baseFile.size() + 1];
 
-	for (int i = 0; i <= baseFile.size(); i++)
+	for (std::size_t i = 0; i <= baseFile.size(); i++)
 	{
 		distance[i] = new int[modFile.size() + 1];
 	}
 
 	int **operation = new int*[baseFile.size() + 1];
 
-	for (int i = 0; i <= baseFile.size(); i++)
+	for (std::size_t i = 0; i <= baseFile.size(); i++)
 	{
 		operation[i] = new int[modFile.size() + 1];
 	}
@@ -132,13 +134,13 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 	const int ADD = 2;
 	const int REM = 3;
 
-	for (int i = 1; i <= baseFile.size(); i++)
+	for (int i = 1; i <= (int)baseFile.size(); i++)
 	{
 		distance[i][0] = i;
 		operation[i][0] = ADD;
 	}
 
-	for (int i = 1; i <= modFile.size(); i++)
+	for (int i = 1; i <= (int)modFile.size(); i++)
 	{
 		distance[0][i] = i;
 		operation[0][i] = REM;
@@ -148,9 +150,9 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 	operation[0][0] = KEEP;
 
 	// We calculate edit distance for each line to find out which lines were added / removed
-	for (int iBase = 1; iBase <= baseFile.size(); iBase++)
+	for (std::size_t iBase = 1; iBase <= baseFile.size(); iBase++)
 	{
-		for (int iMod = 1; iMod <= modFile.size(); iMod++)
+		for (std::size_t iMod = 1; iMod <= modFile.size(); iMod++)
 		{
 			const std::string &baseLine = baseFile[iBase - 1];
 			const std::string &modLine = modFile[iMod - 1];
@@ -249,12 +251,12 @@ void PatcherGeneric::buildPatch(ResourceMerger &merger, ModPack &mod, PatchGener
 		}
 	}
 
-	for (int i = 0; i <= baseFile.size(); i++)
+	for (std::size_t i = 0; i <= baseFile.size(); i++)
 	{
 		delete[] distance[i];
 	}
 
-	for (int i = 0; i <= baseFile.size(); i++)
+	for (std::size_t i = 0; i <= baseFile.size(); i++)
 	{
 		delete[] operation[i];
 	}
@@ -267,7 +269,7 @@ std::vector<int> &PatcherGeneric::translations(const std::string &file)
 {
 	if (m_baseTranslations.find(file) == m_baseTranslations.end())
 	{
-		throw std::exception(("Translation list not initialized for " + file).c_str());
+		throw std::runtime_error(("Translation list not initialized for " + file).c_str());
 	}
 
 	return m_baseTranslations.at(file);
@@ -277,7 +279,7 @@ void PatcherGeneric::updateTranslationsAfter(const std::string &file, int index,
 {
 	std::vector<int> &baseTranslations = translations(file);
 
-	for (int i = index + 1; i < baseTranslations.size(); i++)
+	for (int i = index + 1; i < (int)baseTranslations.size(); i++)
 	{
 		if (baseTranslations[i] != -1)
 			baseTranslations[i] += diff;
@@ -342,7 +344,7 @@ std::vector<std::string> PatcherGeneric::loadFile(std::istream &stream) const
 
 void PatcherGeneric::writeFile(std::ostream &stream, const std::vector<std::string> &file) const
 {
-	for (int i = 0; i < (file.size() - 1); i++)
+	for (std::size_t i = 0; i < (file.size() - 1); i++)
 	{
 		stream << file[i] << std::endl;
 	}
@@ -381,7 +383,7 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			std::vector<std::string> fileBase = loadFile(*fsBase);
@@ -390,7 +392,7 @@ std::vector<IResourcePatch*> PatcherGeneric::createPatches(ResourceMerger &merge
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (int i = 0; i < fileBase.size(); i++)
+			for (int i = 0; i < (int)fileBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}

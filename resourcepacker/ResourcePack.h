@@ -61,27 +61,6 @@ public:
 		return ret;
 	}
 
-	// Specialization for reading NUL terminated strings
-	template <>
-	std::string read<std::string>(std::istream &stream)
-	{
-		char cur;
-
-		std::string str;
-
-		while (true)
-		{
-			stream.read(&cur, 1);
-
-			if (cur == '\0')
-				break;
-
-			str += cur;
-		}
-
-		return str;
-	}
-
 	// Returns true if the resource pack contains the given filename
 	bool contains(const std::string &filename) const;
 
@@ -94,3 +73,24 @@ public:
 	friend std::istream &operator>>(std::istream &stream, ResourcePack &list);
 	friend std::ostream &operator<<(std::ostream &stream, ResourcePack &list);
 };
+
+// Specialization for reading NUL terminated strings
+template <>
+inline std::string ResourcePack::read<std::string>(std::istream &stream)
+{
+	char cur;
+
+	std::string str;
+
+	while (true)
+	{
+		stream.read(&cur, 1);
+
+		if (cur == '\0')
+			break;
+
+		str += cur;
+	}
+
+	return str;
+}

@@ -1,5 +1,8 @@
 #include "ATN_Network.h"
 
+#include "ATN_Manager.h"
+#include "utils.h"
+
 namespace ATN
 {
 	Network::~Network()

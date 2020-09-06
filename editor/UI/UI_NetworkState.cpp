@@ -29,7 +29,7 @@ void UI_NetworkState::populateArguments()
 
 		ut->initialize(m_state->resourceMarshalls()[i], resources[i], m_network);
 
-		ut->move(0, y);
+		ut->move(x, y);
 		ut->show();
 
 		y += ut->size().height();
@@ -47,7 +47,7 @@ void UI_NetworkState::populateArguments()
 
 		ut->initialize(m_state->parameterMarshalls()[i], m_state->networkTransition()->parameters()[i], m_network);
 
-		ut->move(0, y);
+		ut->move(x, y);
 		ut->show();
 
 		y += ut->size().height();

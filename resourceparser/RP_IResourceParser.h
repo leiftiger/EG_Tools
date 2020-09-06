@@ -1,4 +1,5 @@
 #pragma once
+#pragma GCC diagnostic ignored "-Wignored-qualifiers" // We know that virtual overrides don't need virtual, but it's nicer that way!
 
 #include "RP_BaseResource.h"
 #include "RP_FileLoader.h"
@@ -14,6 +15,8 @@ namespace RL
 	class IResourceParser
 	{
 	public:
+
+		virtual ~IResourceParser() = default;
 
 		// File extension for this loader
 		virtual const char * const extension() const = 0;

@@ -21,7 +21,7 @@ void EntityDesc::insert(std::size_t pos, const std::string &key, const std::stri
 	// If not inserted in the back, move all affected elements
 	if (pos != (m_keys.size() - 1))
 	{
-		for (size_t i = m_keys.size() - 1; i > pos; i--)
+		for (std::size_t i = m_keys.size() - 1; i > pos; i--)
 		{
 			m_keys[i] = m_keys[i - 1];
 			m_values[i] = m_values[i - 1];
@@ -45,7 +45,7 @@ void EntityDesc::set(std::size_t pos, const std::string &key, const std::string 
 
 void EntityDesc::remove(std::size_t pos)
 {
-	for (size_t i = pos; i < m_keys.size() - 1; i++)
+	for (std::size_t i = pos; i < m_keys.size() - 1; i++)
 	{
 		m_keys[i] = m_keys[i + 1];
 		m_values[i] = m_values[i + 1];
@@ -57,7 +57,7 @@ void EntityDesc::remove(std::size_t pos)
 
 void EntityDesc::remove(const std::string &key, const std::string &value)
 {
-	for (size_t i = 0; i < m_keys.size(); i++)
+	for (std::size_t i = 0; i < m_keys.size(); i++)
 	{
 		if (m_keys[i] == key && m_values[i] == value)
 		{
@@ -144,7 +144,7 @@ std::istream &operator>>(std::istream &stream, EntityDesc &desc)
 
 std::ostream &operator<<(std::ostream &stream, const EntityDesc &desc)
 {
-	for (int i = 0; i < desc.size(); i++)
+	for (std::size_t i = 0; i < desc.size(); i++)
 	{
 		const std::string &key = desc.keys()[i];
 		const std::string &value = desc.values()[i];
@@ -188,7 +188,7 @@ std::vector<std::string> PatchDesc::apply(std::vector<std::istream*> &inStreams,
 
 	std::vector<int> &baseTranslations = m_patcher.translations(filename);
 
-	int numApplied = 0;
+	std::size_t numApplied = 0;
 
 	for (const SubPatch &subPatch : m_subPatches)
 	{
@@ -272,7 +272,7 @@ std::vector<std::string> PatchDesc::apply(const ModPack &mod, std::vector<std::o
 	*modFile >> desc;
 
 	// Process the file for any desc ID references that may have to be updated
-	for (size_t i = 0; i < desc.size(); i++)
+	for (std::size_t i = 0; i < desc.size(); i++)
 	{
 		const std::string &key = desc.keys()[i], &value = desc.values()[i];
 
@@ -302,14 +302,14 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 {
 	int **distance = new int*[baseDesc.size() + 1];
 
-	for (int i = 0; i <= baseDesc.size(); i++)
+	for (std::size_t i = 0; i <= baseDesc.size(); i++)
 	{
 		distance[i] = new int[modDesc.size() + 1];
 	}
 
 	int **operation = new int*[baseDesc.size() + 1];
 
-	for (int i = 0; i <= baseDesc.size(); i++)
+	for (std::size_t i = 0; i <= baseDesc.size(); i++)
 	{
 		operation[i] = new int[modDesc.size() + 1];
 	}
@@ -319,13 +319,13 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 	const int ADD = 2;
 	const int REM = 3;
 
-	for (int i = 1; i <= baseDesc.size(); i++)
+	for (int i = 1; i <= (int)baseDesc.size(); i++)
 	{
 		distance[i][0] = i;
 		operation[i][0] = ADD;
 	}
 
-	for (int i = 1; i <= modDesc.size(); i++)
+	for (int i = 1; i <= (int)modDesc.size(); i++)
 	{
 		distance[0][i] = i;
 		operation[0][i] = REM;
@@ -335,9 +335,9 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 	operation[0][0] = KEEP;
 
 	// We calculate edit distance for each line to find out which lines were added / removed
-	for (int iBase = 1; iBase <= baseDesc.size(); iBase++)
+	for (std::size_t iBase = 1; iBase <= baseDesc.size(); iBase++)
 	{
-		for (int iMod = 1; iMod <= modDesc.size(); iMod++)
+		for (std::size_t iMod = 1; iMod <= modDesc.size(); iMod++)
 		{
 			const std::string &baseKey = baseDesc.keys()[iBase - 1];
 			const std::string &modKey = modDesc.keys()[iMod - 1];
@@ -437,12 +437,12 @@ void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *pa
 		}
 	}
 
-	for (int i = 0; i <= baseDesc.size(); i++)
+	for (std::size_t i = 0; i <= baseDesc.size(); i++)
 	{
 		delete[] distance[i];
 	}
 
-	for (int i = 0; i <= baseDesc.size(); i++)
+	for (std::size_t i = 0; i <= baseDesc.size(); i++)
 	{
 		delete[] operation[i];
 	}
@@ -455,7 +455,7 @@ std::vector<int> &PatcherDesc::translations(const std::string &file)
 {
 	if (m_baseTranslations.find(file) == m_baseTranslations.end())
 	{
-		throw std::exception(("Translation list not initialized for " + file).c_str());
+		throw std::runtime_error(("Translation list not initialized for " + file).c_str());
 	}
 
 	return m_baseTranslations.at(file);
@@ -465,7 +465,7 @@ void PatcherDesc::updateTranslationsAfter(const std::string &file, int index, in
 {
 	std::vector<int> &baseTranslations = translations(file);
 
-	for (int i = index + 1; i < baseTranslations.size(); i++)
+	for (int i = index + 1; i < (int)baseTranslations.size(); i++)
 	{
 		if (baseTranslations[i] != -1)
 			baseTranslations[i] += diff;
@@ -499,7 +499,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			EntityDesc descBase, descMod;
@@ -511,7 +511,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (int i = 0; i < descBase.size(); i++)
+			for (int i = 0; i < (int)descBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}
@@ -519,7 +519,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 			m_baseTranslations[filename] = vecTranslations;
 
 			// Process the file for any desc ID references that may have to be updated
-			for (size_t i = 0; i < descMod.size(); i++)
+			for (std::size_t i = 0; i < descMod.size(); i++)
 			{
 				const std::string &key = descMod.keys()[i], &value = descMod.values()[i];
 
@@ -544,13 +544,13 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 			char strDesc[6];
 
-			sprintf_s(strDesc, "%05d", descID);
+			snprintf(strDesc, sizeof(strDesc), "%05d", descID);
 
 			std::ifstream fs(modFile);
 
 			if (fs.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			EntityDesc desc;
@@ -559,7 +559,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 			// Process the file for any desc ID references that may have to be updated
 			// The purpose here is not to change anything being written, but to make sure references are updated (since elsewhere we don't have access to the merger)
-			for (size_t i = 0; i < desc.size(); i++)
+			for (std::size_t i = 0; i < desc.size(); i++)
 			{
 				const std::string &key = desc.keys()[i], &value = desc.values()[i];
 

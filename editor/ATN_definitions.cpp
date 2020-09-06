@@ -297,7 +297,7 @@ namespace util
 		// Remove all entries from the list so only the manager handles them
 		for (ATN::Entry *e : entries)
 		{
-			objectRelationships->remove(*e, false);
+			objectRelationships->remove(*e);
 		}
 
 		delete objectRelationships;
@@ -323,12 +323,12 @@ namespace util
 				{
 					resourcePacks.push_back(ResourcePack(gamePath + packPath));
 
-					if (packPath.find("/Resource.erb") >= 0)
+					if ((int)packPath.find("/Resource.erb") >= 0)
 					{
 						loadResourceRelationships(resourcePacks.back());
 					}
 				}
-				catch (std::exception e)
+				catch (std::exception &e)
 				{
 					// Some packs may not be installed
 				}

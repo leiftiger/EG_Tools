@@ -1,5 +1,7 @@
 #include "PatchATN.h"
 
+#include "utils.h"
+
 // Can ignore modFilenames here since apply(ModPack, outStreams) should never be called for this
 // Because the ATN files can share definitions, we must always load all of them to prevent errors during patching
 PatchATN::PatchATN(PatcherATN &patcher) : IResourcePatch({ "ATNData.ros", "ATNData_Objects.ros", "ATNData_Tutorials.ros", "ATNResources.ros" }, {}), m_patcher(patcher)
@@ -14,7 +16,7 @@ std::vector<std::string> PatchATN::apply(std::vector<std::istream*> &inStreams, 
 	std::vector<ATN::List<ATN::Entry>*> lists;
 
 	// First pass
-	for (int i = 0; i < inStreams.size(); i++)
+	for (std::size_t i = 0; i < inStreams.size(); i++)
 	{
 		ATN::List<ATN::Entry> *list = new ATN::List<ATN::Entry>("ATN File " + std::to_string(i));
 
@@ -26,7 +28,7 @@ std::vector<std::string> PatchATN::apply(std::vector<std::istream*> &inStreams, 
 	}
 
 	// Second pass
-	for (int i = 0; i < inStreams.size(); i++)
+	for (std::size_t i = 0; i < inStreams.size(); i++)
 	{
 		inStreams[i]->seekg(0, std::ios::beg);
 
@@ -57,13 +59,13 @@ std::vector<std::string> PatchATN::apply(std::vector<std::istream*> &inStreams, 
 		}
 			break;
 		case PatchATN::REM_ENTRY:
-			list->remove(*patch.m_baseEntry, false);
+			list->remove(*patch.m_baseEntry);
 			break;
 		}
 	}
 
 	// Write back to files
-	for (int i = 0; i < outStreams.size(); i++)
+	for (std::size_t i = 0; i < outStreams.size(); i++)
 	{
 		ATN::List<ATN::Entry> *list = lists[i];
 
@@ -108,7 +110,7 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 		ATN::Network *net = (ATN::Network*)entry;
 
 		// Just in case this network is launched manually, the default values are updated as well
-		for (int i = 0; i < net->parameters().size(); i++)
+		for (std::size_t i = 0; i < net->parameters().size(); i++)
 		{
 			ATN::Parameter *param = net->parameters()[i];
 
@@ -139,7 +141,7 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 				state->parameterMarshalls()[2]->m_value = mod.translateDescID((int)state->parameterMarshalls()[2]->m_value, merger);
 
 			// For normal cases, it is however enough to just match the proper type
-			for (int i = 0; i < net->parameters().size(); i++)
+			for (std::size_t i = 0; i < net->parameters().size(); i++)
 			{
 				ATN::Parameter *param = net->parameters()[i];
 				ATN::ParameterMarshall *marshall = state->parameterMarshalls()[i];
@@ -177,7 +179,7 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 			}
 
 			// For other effects, and this one, check also for proper types
-			for (int i = 0; i < effect->parameters().size(); i++)
+			for (std::size_t i = 0; i < effect->parameters().size(); i++)
 			{
 				ATN::Parameter *param = effect->parameters()[i];
 				ATN::ParameterMarshall *marshall = transition->effectParameterMarshalls()[i];
@@ -198,7 +200,7 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 		ATN::Percept *percept = transition->percept();
 
 		// Do the same for percepts, which seemingly only uses proper types, so no need for special handling
-		for (int i = 0; i < percept->parameters().size(); i++)
+		for (std::size_t i = 0; i < percept->parameters().size(); i++)
 		{
 			ATN::Parameter *param = percept->parameters()[i];
 			ATN::ParameterMarshall *marshall = transition->perceptParameterMarshalls()[i];
@@ -327,7 +329,7 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 		}
 
 		// Second pass
-		for (int i = 0; i < baseFiles.size(); i++)
+		for (std::size_t i = 0; i < baseFiles.size(); i++)
 		{
 			std::string &baseFile = baseFiles[i];
 
@@ -354,7 +356,7 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 	}
 
 	// First pass
-	for (int i = 0; i < baseFiles.size(); i++)
+	for (std::size_t i = 0; i < baseFiles.size(); i++)
 	{
 		std::string &baseFile = baseFiles[i];
 
@@ -386,7 +388,7 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 	}
 
 	// Second pass
-	for (int i = 0; i < modFiles.size(); i++)
+	for (std::size_t i = 0; i < modFiles.size(); i++)
 	{
 		const std::string &modFile = modFiles[i];
 
@@ -412,11 +414,11 @@ std::vector<IResourcePatch*> PatcherATN::createPatches(ResourceMerger &merger, M
 	PatchATN *patchRems = new PatchATN(*this);
 
 	// Build patches by comparing each base file with its modded counterpart
-	for (int i = 0; i < baseFiles.size(); i++)
+	for (std::size_t i = 0; i < baseFiles.size(); i++)
 	{
 		const std::string &baseFile = baseFiles[i];
 
-		for (int i2 = 0; i2 < modFiles.size(); i2++)
+		for (std::size_t i2 = 0; i2 < modFiles.size(); i2++)
 		{
 			const std::string &modFile = modFiles[i2];
 

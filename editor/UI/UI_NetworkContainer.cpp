@@ -453,7 +453,7 @@ void UI_NetworkContainer::stateCreateAt(const QPoint &pos)
 
 	m_states.push_back(ut);
 
-	for (int i = 0; i < m_states.size() - index - 1; i++)
+	for (int i = 0; i < (int)m_states.size() - index - 1; i++)
 	{
 		itemMove(m_states, ut, true);
 		m_network->moveUp(*ut->m_state);
@@ -868,7 +868,7 @@ void UI_NetworkContainer::setNetworkName(const QString &name)
 			return;
 		}
 	}
-	catch (ATN::Exception e) {}
+	catch (ATN::Exception &e) {}
 
 	ATN::Manager::updateName(*m_network, name.toStdString());
 }
@@ -967,7 +967,7 @@ void UI_NetworkContainer::deleteNetwork()
 		msg.setDefaultButton(QMessageBox::Ok);
 
 		QApplication::beep();
-		int msgRet = msg.exec();
+		msg.exec();
 
 		return;
 	}
@@ -1201,7 +1201,7 @@ void UI_NetworkContainer::createNewTransition()
 	// The transition connector only made a temporary connection, now we delete it since we have recreated it as the transition
 	uiStateFrom->ui.connectorOut->transitionConnector()->deleteConnection();
 
-	UI_NetworkTransition *uiTransition = createTransitionUI(t, uiStateFrom, uiStateTo);
+	createTransitionUI(t, uiStateFrom, uiStateTo);
 
 	layoutStates();
 
@@ -1498,7 +1498,7 @@ void UI_NetworkContainer::layoutStates()
 			ut->ui.buttonSortDown->setEnabled(i != m_states.size() - 1);
 		}
 
-		ut->move(x, 0);
+		ut->move(x, y);
 
 		x += ut->width() + STATE_MARGIN;
 
@@ -1617,7 +1617,7 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 
 		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
 
-		ut->move(0, y);
+		ut->move(x, y);
 		ut->show();
 
 		y += ut->size().height();
@@ -1639,7 +1639,7 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 
 		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
 
-		ut->move(0, y);
+		ut->move(x, y);
 		ut->show();
 
 		y += ut->size().height();

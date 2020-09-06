@@ -1,5 +1,7 @@
 #include "UI_Connection.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
 UI_Connection::UI_Connection(QWidget *parent)
 	: QWidget(parent)
 {
@@ -82,7 +84,7 @@ void UI_Connection::setEnd(UI_ConnectorEnd *end)
 	m_end = end;
 }
 
-const bool UI_Connection::connecting() const
+bool UI_Connection::connecting() const
 {
 	return m_connecting;
 }

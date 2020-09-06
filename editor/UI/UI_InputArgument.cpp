@@ -1,5 +1,10 @@
 #include "UI_InputArgument.h"
 
+#include "ATN/ATN_List.h"
+#include "ATN/ATN_Manager.h"
+
+#include <algorithm>
+
 UI_InputArgument::UI_InputArgument(QWidget *parent)
 	: QWidget(parent)
 {
@@ -30,11 +35,11 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 		{
 			char str[STR_FORMAT_BUFF];
 
-			sprintf_s(str, "[%d: %s]", (int)i, netParam->m_desc.c_str());
+			snprintf(str, STR_FORMAT_BUFF, "[%d: %s]", (int)i, netParam->m_desc.c_str());
 
 			ui.comboBox->addItem(QString::fromStdString(str));
 
-			if (argument->m_type == ATN::ParameterMarshallType::ParameterIndex && argument->m_value == i)
+			if (argument->m_type == ATN::ParameterMarshallType::ParameterIndex && argument->m_value == (std::int64_t)i)
 			{
 				ui.comboBox->setCurrentIndex(ui.comboBox->count() - 1);
 			}
@@ -58,7 +63,7 @@ void UI_InputArgument::initialize(ATN::ParameterMarshall *argument, const ATN::P
 		collator.setNumericMode(true);
 		collator.setCaseSensitivity(Qt::CaseSensitivity::CaseSensitive);
 
-		qSort(translations.begin(), translations.end(), collator);
+		std::sort(translations.begin(), translations.end(), [&](const QString &strLeft, const QString &strRight){ return collator.compare(strLeft, strRight) < 0; });
 
 		ui.comboBox->addItems(translations);
 	}
@@ -98,7 +103,7 @@ void UI_InputArgument::setArgument(const QString &str)
 
 	int index = ui.comboBox->findText(str);
 
-	if (index != -1 && index < m_parameters.size())
+	if (index != -1 && index < (int)m_parameters.size())
 	{
 		m_argument->m_type = ATN::ParameterMarshallType::ParameterIndex;
 		m_argument->m_value = m_parameters[index];
@@ -114,7 +119,7 @@ void UI_InputArgument::setArgument(const QString &str)
 
 			emit updated();
 		}
-		catch (std::exception e)
+		catch (std::exception &e)
 		{
 			ui.comboBox->setInputError(true);
 			QToolTip::showText(ui.comboBox->mapToGlobal(ui.comboBox->pos()), tr("Invalid input"));

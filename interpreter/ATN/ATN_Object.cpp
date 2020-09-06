@@ -1,5 +1,7 @@
 #include "ATN_Object.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	const char * const Object::typeName() const

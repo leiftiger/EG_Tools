@@ -1,5 +1,7 @@
 #include "RP_Animation.h"
 
+#include <cstring>
+
 namespace RL
 {
 	const char * const AnimationParser::extension() const

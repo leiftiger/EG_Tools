@@ -42,7 +42,7 @@ void StringList::set(const std::string &key, const std::string &value)
 const std::string &StringList::get(const std::string &key) const
 {
 	if (m_map.find(key) == m_map.end())
-		throw std::exception(("Key not found: \"" + key + "\"").c_str());
+		throw std::runtime_error(("Key not found: \"" + key + "\"").c_str());
 
 	return m_map.at(key);
 }
@@ -58,13 +58,13 @@ void StringList::remove(const std::string &key)
 	{
 		m_map.erase(key);
 
-		for (int i = 0; i < m_keys.size(); i++)
+		for (std::size_t i = 0; i < m_keys.size(); i++)
 		{
 			std::string &curKey = m_keys[i];
 
 			if (curKey == key)
 			{
-				for (int i2 = i; i2 < m_keys.size() - 1; i2++)
+				for (std::size_t i2 = i; i2 < m_keys.size() - 1; i2++)
 				{
 					m_keys[i2] = m_keys[i2 + 1];
 				}

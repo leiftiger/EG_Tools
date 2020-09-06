@@ -57,6 +57,3 @@ namespace ATN
 		friend bool operator!=(const Entry &lhs, const Entry &rhs);
 	};
 }
-
-// Included after the class definition to avoid circular dependencies
-#include "utils.h"

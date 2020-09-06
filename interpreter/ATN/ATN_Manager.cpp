@@ -1,6 +1,8 @@
 #include "ATN_Manager.h"
 #include <fstream>
 
+#include "utils.h"
+
 namespace ATN
 {
 	Manager::Manager()
@@ -43,7 +45,7 @@ namespace ATN
 		return instance().m_interpretationFormats.find(type) != instance().m_interpretationFormats.end();
 	}
 
-	const std::string & Manager::getInterpreration(const std::string &type)
+	const std::string & Manager::getInterpretation(const std::string &type)
 	{
 		return instance().m_interpretationFormats[type];
 	}
@@ -198,16 +200,7 @@ namespace ATN
 
 	void Manager::removeEntry(const Entry &el)
 	{
-		// Because the remove call from the global list will inevitably call this function again,
-		// we protect against further calls until the main one is finished
-		if (instance().m_removingGlobalElement)
-			return;
-
-		instance().m_removingGlobalElement = true;
-
 		instance().m_lists[0]->remove(el);
-
-		instance().m_removingGlobalElement = false;
 
 		// If a network was removed, then we have to remove it from the network list to prevent faulty pointers
 		if (typeid(el) == typeid(Network))
@@ -284,7 +277,7 @@ namespace ATN
 		return std::vector<List<Entry>*>(instance().m_lists.begin() + 1, instance().m_lists.end());
 	}
 
-	void Manager::setDefinitions(const std::string &strType, List<Property> &list)
+	void Manager::setDefinitions(const std::string &strType, const List<Property> &list)
 	{
 		instance().m_descValues[strType] = list;
 	}
@@ -317,7 +310,7 @@ namespace ATN
 
 				return el;
 			}
-			catch (Exception e) {}
+			catch (Exception &e) {}
 		}
 
 		throw Exception("Couldn't find ID \"%d\" in list \"%s\"", id, instance().m_lists[0]->name());
@@ -340,7 +333,7 @@ namespace ATN
 
 				return el;
 			}
-			catch (Exception e) {}
+			catch (Exception &e) {}
 		}
 
 		throw Exception("Couldn't find name \"%s\" in list \"%s\"", name, instance().m_lists[0]->name());
@@ -368,7 +361,7 @@ namespace ATN
 
 				std::transform(lCase.begin(), lCase.end(), lCase.begin(), ::tolower);
 
-				if (lCase.find(lCaseSearch) != -1)
+				if ((int)lCase.find(lCaseSearch) != -1)
 					results.push_back(std::make_pair(e, instance().m_lists[i]));
 			}
 		}
@@ -389,7 +382,7 @@ namespace ATN
 
 				numDefinitions++;
 			}
-			catch (Exception e) { }
+			catch (Exception &e) { }
 		}
 
 		if (numDefinitions > 1)
@@ -408,7 +401,7 @@ namespace ATN
 
 				instance().m_lists[i]->updateName(el, newName);
 			}
-			catch (Exception e) {}
+			catch (Exception &e) {}
 		}
 	}
 

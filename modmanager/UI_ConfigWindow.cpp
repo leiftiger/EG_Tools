@@ -1,5 +1,9 @@
 #include "UI_ConfigWindow.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
+#include "utils.h"
+
 #include <QFileDialog>
 
 UI_ConfigWindow::UI_ConfigWindow(QWidget *parent)
@@ -35,9 +39,9 @@ void UI_ConfigWindow::loadConfig()
 	{
 		std::string line;
 
-		for (int i = 0; i < m_configPaths.size(); i++)
+		for (std::size_t i = 0; i < m_configPaths.size(); i++)
 		{
-			std::getline(file, line);
+			util::getline(file, line);
 
 			m_configPaths[i] = line;
 		}

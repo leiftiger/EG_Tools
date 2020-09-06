@@ -1,5 +1,7 @@
 #include "ATN_Thread.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	const char * const Thread::typeName() const

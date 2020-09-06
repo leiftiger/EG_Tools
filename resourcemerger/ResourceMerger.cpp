@@ -6,6 +6,8 @@
 
 #include "StringList.h"
 
+#include "utils.h"
+
 #include <algorithm>
 #include <thread>
 
@@ -269,7 +271,7 @@ std::istream *ResourceMerger::openDynamicBaseFile(const std::string &filename) c
 	std::ifstream *file = new std::ifstream(m_unpackedDynamicFiles.at(filename).second);
 
 	if (file->fail())
-		throw std::exception(("Couldn't open backup file \"" + filename + "\" for reading").c_str());
+		throw std::runtime_error(("Couldn't open backup file \"" + filename + "\" for reading").c_str());
 
 	return file;
 }

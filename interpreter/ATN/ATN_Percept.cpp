@@ -1,5 +1,7 @@
 #include "ATN_Percept.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	Percept::Percept(std::string &gameFunction) : m_gameFunction(gameFunction)
@@ -52,7 +54,7 @@ namespace ATN
 
 	void Percept::applyChanges(const Entry &original, const Entry &change, DeltaMemory &memory)
 	{
-		throw std::exception("Delta changes not supported for percepts");
+		throw std::runtime_error("Delta changes not supported for percepts");
 	}
 
 	void Percept::serialize(std::ostream &stream) const

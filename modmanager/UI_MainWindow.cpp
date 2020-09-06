@@ -234,7 +234,7 @@ void UI_MainWindow::populateLists()
 
 			for (const std::filesystem::directory_entry &modEntry : std::filesystem::directory_iterator(entry.path()))
 			{
-				std::string &filename = modEntry.path().filename().string();
+				const std::string &filename = modEntry.path().filename().string();
 
 				if (filename == "mod.info")
 				{
@@ -296,7 +296,7 @@ void UI_MainWindow::installMods()
 		msg.setDefaultButton(QMessageBox::Ok);
 
 		QApplication::beep();
-		int msgRet = msg.exec();
+		msg.exec();
 
 		return;
 	}
@@ -341,7 +341,7 @@ void UI_MainWindow::uninstallMods()
 		msg.setDefaultButton(QMessageBox::Ok);
 
 		QApplication::beep();
-		int msgRet = msg.exec();
+		msg.exec();
 		return;
 	}
 
@@ -368,7 +368,7 @@ void UI_MainWindow::uninstallMods()
 	msg.setStandardButtons(QMessageBox::Ok);
 	msg.setDefaultButton(QMessageBox::Ok);
 
-	int msgRet = msg.exec();
+	msg.exec();
 }
 
 void UI_MainWindow::openAboutWindow()

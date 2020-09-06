@@ -1,5 +1,7 @@
 #include "ATN_Exception.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	Exception::Exception(const char *msg)
@@ -14,7 +16,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1);
+		snprintf(err, ERR_SIZE, msg, param1);
 
 		m_exceptionMessage = err;
 
@@ -26,7 +28,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1.c_str());
+		snprintf(err, ERR_SIZE, msg, param1.c_str());
 
 		m_exceptionMessage = err;
 
@@ -38,7 +40,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1);
+		snprintf(err, ERR_SIZE, msg, param1);
 
 		m_exceptionMessage = err;
 
@@ -50,7 +52,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1, param2);
+		snprintf(err, ERR_SIZE, msg, param1, param2);
 
 		m_exceptionMessage = err;
 
@@ -62,7 +64,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1, param2.c_str());
+		snprintf(err, ERR_SIZE, msg, param1, param2.c_str());
 
 		m_exceptionMessage = err;
 
@@ -74,7 +76,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1.c_str(), param2);
+		snprintf(err, ERR_SIZE, msg, param1.c_str(), param2);
 
 		m_exceptionMessage = err;
 
@@ -86,7 +88,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1, param2);
+		snprintf(err, ERR_SIZE, msg, param1, param2);
 
 		m_exceptionMessage = err;
 
@@ -98,7 +100,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1.c_str(), param2);
+		snprintf(err, ERR_SIZE, msg, param1.c_str(), param2);
 
 		m_exceptionMessage = err;
 
@@ -110,7 +112,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1, param2.c_str());
+		snprintf(err, ERR_SIZE, msg, param1, param2.c_str());
 
 		m_exceptionMessage = err;
 
@@ -122,7 +124,7 @@ namespace ATN
 	{
 		char err[ERR_SIZE];
 
-		sprintf_s(err, msg, param1.c_str(), param2.c_str());
+		snprintf(err, ERR_SIZE, msg, param1.c_str(), param2.c_str());
 
 		m_exceptionMessage = err;
 

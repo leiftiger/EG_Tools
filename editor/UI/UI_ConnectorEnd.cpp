@@ -1,5 +1,7 @@
 #include "UI_ConnectorEnd.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
 UI_ConnectorEnd::UI_ConnectorEnd(QWidget *parent)
 	: QWidget(parent)
 {

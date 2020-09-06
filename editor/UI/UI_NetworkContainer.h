@@ -105,7 +105,7 @@ private:
 				ut->ui.buttonSortDown->setEnabled(i != list.size() - 1);
 			}
 
-			ut->move(0, y);
+			ut->move(x, y);
 
 			y += ut->size().height();
 		}
@@ -174,6 +174,7 @@ private:
 		ATN::Manager::findByID(obj->id(), outList);
 
 		outList->remove(*(ATN::Entry*)obj);
+		ATN::Manager::removeEntry(*(ATN::Entry*)obj);
 
 		delete obj;
 	}

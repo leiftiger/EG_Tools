@@ -1,6 +1,8 @@
 #include "ATN_Resources.h"
 
 #include "ATN_Exception.h"
+#include "ATN_Manager.h"
+#include "utils.h"
 
 #include <regex>
 #include <sstream>
@@ -48,7 +50,7 @@ namespace ATN
 
 				return std::to_string(net->id()) + std::string(": ") + net->name();
 			}
-			catch (ATN::Exception e) { }
+			catch (ATN::Exception &e) { }
 
 			return "UNDEFINED";
 		}
@@ -62,7 +64,7 @@ namespace ATN
 			{
 				return Manager::getDefinitions(m_type).find((int32_t)value).name();
 			}
-			catch (ATN::Exception e)
+			catch (ATN::Exception &e)
 			{
 				if (value == ATN_UNDEF_VALUE)
 					return "UNDEFINED";
@@ -268,7 +270,7 @@ namespace ATN
 		{
 			e = (ATN::Object*)&ATN::Manager::findByID(t);
 		}
-		catch (ATN::Exception e)
+		catch (ATN::Exception &e)
 		{
 			throw ATN::Exception("Cannot find resource dependencies! Make sure ATNResources.ros is loaded!");
 		}

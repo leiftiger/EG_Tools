@@ -1,5 +1,7 @@
 #include "ATN_State.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	State::~State()

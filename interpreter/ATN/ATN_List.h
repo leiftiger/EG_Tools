@@ -1,8 +1,9 @@
 #pragma once
 
-#include <vector>
+#include <climits>
 #include <map>
 #include <unordered_map>
+#include <vector>
 
 #include "IATN_Data.h"
 #include "ATN_Property.h"
@@ -210,7 +211,7 @@ namespace ATN
 		}
 
 		// Removes an entry from this list and clears it from the preserved write order
-		void remove(const T &element, bool freeManaged = true)
+		void remove(const T &element)
 		{
 			m_idMap.erase(element.id());
 
@@ -236,9 +237,6 @@ namespace ATN
 					}
 				}
 			}
-
-			if (freeManaged)
-				Manager::removeEntry(element);
 		}
 
 		// Returns true if this list contains an element with the given ID

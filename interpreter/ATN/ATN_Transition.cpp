@@ -1,5 +1,7 @@
 #include "ATN_Transition.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	Transition::~Transition()

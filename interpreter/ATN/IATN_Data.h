@@ -1,4 +1,5 @@
 #pragma once
+#pragma GCC diagnostic ignored "-Wignored-qualifiers" // We know that virtual overrides don't need virtual, but it's nicer that way!
 
 #include <string>
 #include <cstdint>
@@ -9,6 +10,9 @@ namespace ATN
 	class IATN_Data
 	{
 	public:
+
+		virtual ~IATN_Data() = default;
+
 		// Unique identifier of this ATN entry / event
 		virtual int32_t id() const = 0;
 		// Human-readable name of this ATN entry / event

@@ -14,6 +14,8 @@ class IResourcePatcher
 {
 public:
 
+	virtual ~IResourcePatcher() = default;
+
 	// Returns the file extension that the patcher can make patches for
 	virtual const char * const extension() const = 0;
 

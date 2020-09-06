@@ -1,6 +1,6 @@
 #include "RP_PackLoader.h"
 
-RL::PackLoader::PackLoader(const ResourcePack &erbFile) : m_resourcePack(erbFile), FileLoader(".")
+RL::PackLoader::PackLoader(const ResourcePack &erbFile) : FileLoader("."), m_resourcePack(erbFile)
 {
 
 }

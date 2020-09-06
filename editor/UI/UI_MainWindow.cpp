@@ -1,5 +1,7 @@
 #include "UI_MainWindow.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
 #include "ATN/ATN_Entry.h"
 #include "ATN/ATN_List.h"
 #include "ATN/ATN_Manager.h"
@@ -96,12 +98,16 @@ void UI_MainWindow::reloadFileList()
 
 	for (const std::string &file : m_atnFiles)
 	{
+#ifdef _WIN32
 		char filename[128];
 		char fileexst[16];
 
 		_splitpath_s(file.c_str(), nullptr, 0, nullptr, 0, filename, sizeof(filename)/sizeof(char), fileexst, 16);
 
 		ui.comboATNList->addItem(QString(filename)+QString(fileexst));
+#else
+		ui.comboATNList->addItem(QString::fromStdString(file.substr(file.find_last_of('/') + 1)));
+#endif
 	}
 }
 
@@ -242,7 +248,7 @@ void UI_MainWindow::searchID(const QString &str)
 			setNetworkResults(results);
 		}
 	}
-	catch (ATN::Exception e) {}
+	catch (ATN::Exception &e) {}
 }
 
 void UI_MainWindow::copyNetworkButton()
@@ -297,7 +303,7 @@ void UI_MainWindow::copyNetworkButton()
 		netCopy->add(*parameterCopy);
 	}
 
-	for (int stateIndex = 0; stateIndex < net->states().size(); stateIndex++)
+	for (int stateIndex = 0; stateIndex < (int)net->states().size(); stateIndex++)
 	{
 		ATN::State *state = net->states()[stateIndex];
 
@@ -364,7 +370,7 @@ void UI_MainWindow::openNetworkButton()
 
 	ATN::Network *net = (ATN::Network*)&ATN::Manager::findByID(std::stoi(res->ui.textUniqueID->text().toStdString()));
 
-	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	for (int i = 1; i < ui.tabWidget->tabBar()->count(); i++)
 	{
 		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
 
@@ -396,7 +402,7 @@ void UI_MainWindow::openNetworkButton()
 		msg.setDefaultButton(QMessageBox::Ok);
 
 		QApplication::beep();
-		int ret = msg.exec();
+		msg.exec();
 	}
 }
 
@@ -413,7 +419,7 @@ void UI_MainWindow::closeTab(int tab)
 
 void UI_MainWindow::receiveOpenNetworkRequest(int id)
 {
-	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	for (int i = 1; i < ui.tabWidget->tabBar()->count(); i++)
 	{
 		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
 
@@ -447,13 +453,13 @@ void UI_MainWindow::receiveOpenNetworkRequest(int id)
 		msg.setDefaultButton(QMessageBox::Ok);
 
 		QApplication::beep();
-		int ret = msg.exec();
+		msg.exec();
 	}
 }
 
 void UI_MainWindow::receiveCloseNetworkRequest(int id)
 {
-	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	for (int i = 1; i < ui.tabWidget->tabBar()->count(); i++)
 	{
 		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
 
@@ -466,7 +472,7 @@ void UI_MainWindow::receiveCloseNetworkRequest(int id)
 	}
 
 	// Remove the network from any open search results
-	for (size_t i = 0; i < ui.listSearchResults->count(); i++)
+	for (int i = 0; i < ui.listSearchResults->count(); i++)
 	{
 		QListWidgetItem *item = ui.listSearchResults->item(i);
 
@@ -523,7 +529,7 @@ void UI_MainWindow::receiveTransitionsRequest(int id)
 
 void UI_MainWindow::receiveRepopulationRequest(int id)
 {
-	for (size_t i = 1; i < ui.tabWidget->tabBar()->count(); i++)
+	for (int i = 1; i < ui.tabWidget->tabBar()->count(); i++)
 	{
 		UI_NetworkContainer* tabItem = (UI_NetworkContainer*)ui.tabWidget->widget(i);
 

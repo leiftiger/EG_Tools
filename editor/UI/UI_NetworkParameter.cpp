@@ -1,5 +1,7 @@
 #include "UI_NetworkParameter.h"
 
+#include <algorithm>
+
 UI_NetworkParameter::UI_NetworkParameter(QWidget *parent)
 	: QWidget(parent)
 {
@@ -34,7 +36,7 @@ void UI_NetworkParameter::loadTranslations()
 		collator.setNumericMode(true);
 		collator.setCaseSensitivity(Qt::CaseSensitivity::CaseSensitive);
 
-		qSort(translations.begin(), translations.end(), collator);
+		std::sort(translations.begin(), translations.end(), [&](const QString &strLeft, const QString &strRight){ return collator.compare(strLeft, strRight) < 0; });
 
 		ui.paramValue->addItems(translations);
 	}
@@ -78,7 +80,7 @@ void UI_NetworkParameter::setParameterValue(const QString &value)
 	{
 		m_parameter->m_defaultValue = m_parameter->translateName(value.toStdString());
 	}
-	catch (std::exception e)
+	catch (std::exception &e)
 	{
 		ui.paramValue->setInputError(true);
 		QToolTip::showText(ui.paramValue->mapToGlobal(ui.paramValue->pos()), tr("Invalid input"));

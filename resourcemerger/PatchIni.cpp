@@ -26,7 +26,7 @@ void IniList::insert(std::size_t pos, const std::string &key, const std::string 
 	// If not inserted in the back, move all affected elements
 	if (pos != (m_keys.size() - 1))
 	{
-		for (size_t i = m_keys.size() - 1; i > pos; i--)
+		for (std::size_t i = m_keys.size() - 1; i > pos; i--)
 		{
 			m_keys[i] = m_keys[i - 1];
 			m_values[i] = m_values[i - 1];
@@ -50,7 +50,7 @@ void IniList::set(std::size_t pos, const std::string &key, const std::string &va
 
 void IniList::remove(std::size_t pos)
 {
-	for (size_t i = pos; i < m_keys.size() - 1; i++)
+	for (std::size_t i = pos; i < m_keys.size() - 1; i++)
 	{
 		m_keys[i] = m_keys[i + 1];
 		m_values[i] = m_values[i + 1];
@@ -62,7 +62,7 @@ void IniList::remove(std::size_t pos)
 
 void IniList::remove(const std::string &key, const std::string &value)
 {
-	for (size_t i = 0; i < m_keys.size(); i++)
+	for (std::size_t i = 0; i < m_keys.size(); i++)
 	{
 		if (m_keys[i] == key && m_values[i] == value)
 		{
@@ -149,7 +149,7 @@ std::istream &operator>>(std::istream &stream, IniList &list)
 
 std::ostream &operator<<(std::ostream &stream, const IniList &list)
 {
-	for (int i = 0; i < list.size(); i++)
+	for (std::size_t i = 0; i < list.size(); i++)
 	{
 		const std::string &key = list.keys()[i];
 		const std::string &value = list.values()[i];
@@ -193,7 +193,7 @@ std::vector<std::string> PatchIni::apply(std::vector<std::istream*> &inStreams, 
 
 	std::vector<int> &baseTranslations = m_patcher.translations(filename);
 
-	int numApplied = 0;
+	std::size_t numApplied = 0;
 
 	for (const SubPatch &subPatch : m_subPatches)
 	{
@@ -264,14 +264,14 @@ void PatcherIni::buildPatch(ResourceMerger &merger, ModPack &mod, PatchIni *patc
 {
 	int **distance = new int*[baseList.size() + 1];
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		distance[i] = new int[modList.size() + 1];
 	}
 
 	int **operation = new int*[baseList.size() + 1];
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		operation[i] = new int[modList.size() + 1];
 	}
@@ -281,13 +281,13 @@ void PatcherIni::buildPatch(ResourceMerger &merger, ModPack &mod, PatchIni *patc
 	const int ADD = 2;
 	const int REM = 3;
 
-	for (int i = 1; i <= baseList.size(); i++)
+	for (int i = 1; i <= (int)baseList.size(); i++)
 	{
 		distance[i][0] = i;
 		operation[i][0] = ADD;
 	}
 
-	for (int i = 1; i <= modList.size(); i++)
+	for (int i = 1; i <= (int)modList.size(); i++)
 	{
 		distance[0][i] = i;
 		operation[0][i] = REM;
@@ -297,9 +297,9 @@ void PatcherIni::buildPatch(ResourceMerger &merger, ModPack &mod, PatchIni *patc
 	operation[0][0] = KEEP;
 
 	// We calculate edit distance for each line to find out which lines were added / removed
-	for (int iBase = 1; iBase <= baseList.size(); iBase++)
+	for (std::size_t iBase = 1; iBase <= baseList.size(); iBase++)
 	{
-		for (int iMod = 1; iMod <= modList.size(); iMod++)
+		for (std::size_t iMod = 1; iMod <= modList.size(); iMod++)
 		{
 			const std::string &baseKey = baseList.keys()[iBase - 1];
 			const std::string &modKey = modList.keys()[iMod - 1];
@@ -399,12 +399,12 @@ void PatcherIni::buildPatch(ResourceMerger &merger, ModPack &mod, PatchIni *patc
 		}
 	}
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		delete[] distance[i];
 	}
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		delete[] operation[i];
 	}
@@ -417,7 +417,7 @@ std::vector<int> &PatcherIni::translations(const std::string &file)
 {
 	if (m_baseTranslations.find(file) == m_baseTranslations.end())
 	{
-		throw std::exception(("Translation list not initialized for " + file).c_str());
+		throw std::runtime_error(("Translation list not initialized for " + file).c_str());
 	}
 
 	return m_baseTranslations.at(file);
@@ -427,7 +427,7 @@ void PatcherIni::updateTranslationsAfter(const std::string &file, int index, int
 {
 	std::vector<int> &baseTranslations = translations(file);
 
-	for (int i = index + 1; i < baseTranslations.size(); i++)
+	for (int i = index + 1; i < (int)baseTranslations.size(); i++)
 	{
 		if (baseTranslations[i] != -1)
 			baseTranslations[i] += diff;
@@ -470,7 +470,7 @@ std::vector<IResourcePatch*> PatcherIni::createPatches(ResourceMerger &merger, M
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			IniList listBase(delimiter), listMod(delimiter);
@@ -482,7 +482,7 @@ std::vector<IResourcePatch*> PatcherIni::createPatches(ResourceMerger &merger, M
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (int i = 0; i < listBase.size(); i++)
+			for (int i = 0; i < (int)listBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}

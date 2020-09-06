@@ -1,5 +1,7 @@
 #include "RP_EntityDesc.h"
 
+#include <cstring>
+
 namespace RL
 {
 	const char * const EntityDescParser::typeToParameter(const std::string &type)

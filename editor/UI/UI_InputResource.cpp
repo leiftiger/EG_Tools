@@ -30,11 +30,11 @@ void UI_InputResource::initialize(ATN::ResourceMarshall *argument, const ATN::Re
 		{
 			char str[STR_FORMAT_BUFF];
 
-			sprintf_s(str, "[%d: %s]", (int)i, param->m_desc.c_str());
+			snprintf(str, STR_FORMAT_BUFF, "[%d: %s]", (int)i, param->m_desc.c_str());
 
 			ui.comboBox->addItem(QString::fromStdString(str));
 
-			if (argument->m_value == i)
+			if (argument->m_value == (std::int64_t)i)
 			{
 				ui.comboBox->setCurrentIndex(ui.comboBox->count()-1);
 			}

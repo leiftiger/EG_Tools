@@ -204,17 +204,17 @@ namespace util
 		getline(file, line);
 		getline(file, line);
 
-		while (std::getline(file, line))
+		while (getline(file, line))
 		{
 			std::string type = line;
 			std::string format;
 
-			std::getline(file, format);
+			getline(file, format);
 
 			list.push_back(std::make_pair(type, format));
 
 			// Blank line for readability
-			std::getline(file, line);
+			getline(file, line);
 		}
 
 		return list;
@@ -288,11 +288,11 @@ namespace util
 				{
 					el = (ATN::Entry*)new ATN::Object();
 				}
-				else if (objType.find("TATNEffect") != -1)
+				else if ((int)objType.find("TATNEffect") != -1)
 				{
 					el = (ATN::Entry*)new ATN::Effect(objType);
 				}
-				else if (objType.find("TATNPercept") != -1)
+				else if ((int)objType.find("TATNPercept") != -1)
 				{
 					el = (ATN::Entry*)new ATN::Percept(objType);
 				}

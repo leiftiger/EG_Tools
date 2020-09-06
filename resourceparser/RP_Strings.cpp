@@ -1,5 +1,7 @@
 #include "RP_Strings.h"
 
+#include <cstring>
+
 namespace RL
 {
 	bool StringParser::shouldParseFile(const std::string &filename)
@@ -30,7 +32,7 @@ namespace RL
 	{
 		std::vector<BaseResource*> res;
 
-		if (!shouldParseFile(IResourceParser::pathToFileName(filename)) && filename.rfind("Strings.txt") == -1)
+		if (!shouldParseFile(IResourceParser::pathToFileName(filename)) && (int)filename.rfind("Strings.txt") == -1)
 			return res;
 
 		std::istream *fs = loader.openFile(filename);

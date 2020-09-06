@@ -31,7 +31,7 @@ namespace ATN
 
 		const std::vector<int> &baseTranslations = m_translations.at(type);
 
-		for (int i = 0; i < baseTranslations.size(); i++)
+		for (int i = 0; i < (int)baseTranslations.size(); i++)
 		{
 			if (baseTranslations[i] != i)
 				return true;
@@ -44,7 +44,7 @@ namespace ATN
 	{
 		std::vector<int> &baseTranslations = translations(type);
 
-		for (int i = index + 1; i < baseTranslations.size(); i++)
+		for (int i = index + 1; i < (int)baseTranslations.size(); i++)
 		{
 			if (baseTranslations[i] != -2)
 				baseTranslations[i] += diff;

@@ -1,5 +1,7 @@
 #include "ModInfo.h"
 
+#include "utils.h"
+
 std::string &ModInfo::operator[](const std::string &key)
 {
 	if (m_properties.find(key) == m_properties.end())
@@ -37,7 +39,7 @@ std::istream &operator>>(std::istream &stream, ModInfo &mod)
 	std::string line;
 	std::string strFile;
 
-	while (std::getline(stream, line))
+	while (util::getline(stream, line))
 	{
 		strFile += line;
 	}

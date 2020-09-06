@@ -18,7 +18,7 @@ std::vector<std::string> PatchStrings::apply(std::vector<std::istream*> &inStrea
 
 	*in >> list;
 
-	int numApplied = 0;
+	std::size_t numApplied = 0;
 
 	for (const SubPatch &subPatch : m_subPatches)
 	{
@@ -157,7 +157,7 @@ void PatcherStrings::updateDescReferences(ResourceMerger &merger, ModPack &mod, 
 
 		char strDesc[6];
 
-		sprintf_s(strDesc, "%05d", descID);
+		snprintf(strDesc, sizeof(strDesc), "%05d", descID);
 
 		if (strDescOriginal != strDesc)
 		{
@@ -318,7 +318,7 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			StringList baseList, modList;
@@ -340,7 +340,7 @@ std::vector<IResourcePatch*> PatcherStrings::createPatches(ResourceMerger &merge
 
 			if (fs.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			StringList modList;

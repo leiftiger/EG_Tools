@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma GCC diagnostic ignored "-Wignored-qualifiers" // We know that virtual overrides don't need virtual, but it's nicer that way!
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -26,6 +28,8 @@ protected:
 public:
 
 	IResourcePatch(const std::initializer_list<std::string> &filenames, const std::initializer_list<std::string> &modFilenames);
+
+	virtual ~IResourcePatch() = default;
 
 	// Files that the patch applies to
 	const std::vector<std::string> &filenames() const;

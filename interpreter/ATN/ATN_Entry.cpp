@@ -1,5 +1,7 @@
 #include "ATN_Entry.h"
 
+#include "utils.h"
+
 namespace ATN
 {
 	void Entry::serialize(std::ostream &stream) const

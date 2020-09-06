@@ -16,6 +16,7 @@ namespace RL
 	public:
 
 		BaseResource(const std::string &type, const std::string &key, std::int64_t value);
+		virtual ~BaseResource() = default;
 
 		// Type of resource
 		virtual const std::string &type() const;

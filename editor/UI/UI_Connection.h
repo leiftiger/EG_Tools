@@ -35,7 +35,7 @@ public:
 	const UI_ConnectorEnd *end() const;
 	void setEnd(UI_ConnectorEnd *end);
 
-	const bool connecting() const;
+	bool connecting() const;
 	void setConnecting(bool connecting);
 
 	void setNetwork(NetworkContainerProxy *network);

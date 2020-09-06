@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iostream> // Otherwise g++ reports error using <algorithm>
 #include <string>
 #include <vector>
 

@@ -1,5 +1,9 @@
 #include "UI_NetworkTransition.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
+#include "ATN/ATN_Manager.h"
+
 UI_NetworkTransition::UI_NetworkTransition(QWidget *parent)
 	: QWidget(parent)
 {
@@ -127,7 +131,7 @@ std::string UI_NetworkTransition::translateParameter(const ATN::ParameterMarshal
 
 		int index = paramMarshall->m_value;
 
-		sprintf_s(str, "[%d: %s]", index, m_network->parameters()[index]->m_desc.c_str());
+		snprintf(str, STR_FORMAT_BUFF, "[%d: %s]", index, m_network->parameters()[index]->m_desc.c_str());
 
 		return str;
 	}
@@ -146,7 +150,7 @@ std::string UI_NetworkTransition::translateResource(const ATN::ResourceMarshall 
 		return "[MISSING RESOURCE]";
 	}
 
-	sprintf_s(str, "[%d: %s]", index, m_network->resources()[index]->m_desc.c_str());
+	snprintf(str, STR_FORMAT_BUFF, "[%d: %s]", index, m_network->resources()[index]->m_desc.c_str());
 
 	return str;
 }
@@ -238,12 +242,12 @@ std::string UI_NetworkTransition::interpret()
 
 	if (ATN::Manager::hasInterpretation(perceptFunc))
 	{
-		str += parseInterpretation(ATN::Manager::getInterpreration(perceptFunc), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
+		str += parseInterpretation(ATN::Manager::getInterpretation(perceptFunc), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
 	}
 	// The percepts' graph data may differ, so we format based on unique ID
 	else if (ATN::Manager::hasInterpretation(perceptFuncID))
 	{
-		str += parseInterpretation(ATN::Manager::getInterpreration(perceptFuncID), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
+		str += parseInterpretation(ATN::Manager::getInterpretation(perceptFuncID), m_transition->perceptParameterMarshalls(), m_transition->perceptResourceMarshalls(), (ATN::IResourceHolder*)m_transition->percept());
 	}
 	else
 	{
@@ -263,11 +267,11 @@ std::string UI_NetworkTransition::interpret()
 
 		if (ATN::Manager::hasInterpretation(effectFunc))
 		{
-			str += parseInterpretation(ATN::Manager::getInterpreration(effectFunc), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
+			str += parseInterpretation(ATN::Manager::getInterpretation(effectFunc), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
 		}
 		else if (ATN::Manager::hasInterpretation(effectFuncID))
 		{
-			str += parseInterpretation(ATN::Manager::getInterpreration(effectFuncID), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
+			str += parseInterpretation(ATN::Manager::getInterpretation(effectFuncID), m_transition->effectParameterMarshalls(), m_transition->effectResourceMarshalls(), (ATN::IResourceHolder*)m_transition->effect());
 		}
 		else
 		{

@@ -11,7 +11,7 @@ ResourcePack::ResourcePack(const std::string &filename) : m_filename(filename)
 
 	if (!file.good())
 	{
-		throw std::exception(("Couldn't open \"" + filename + "\"").c_str());
+		throw std::runtime_error(("Couldn't open \"" + filename + "\"").c_str());
 	}
 
 	file >> *this;
@@ -63,7 +63,7 @@ std::istream *ResourcePack::openFile(const std::string &filename) const
 
 			if (m_files.find(erbFileName) == m_files.end())
 			{
-				throw std::exception(("File \"" + filename + "\" is not present in resource pack").c_str());
+				throw std::runtime_error(("File \"" + filename + "\" is not present in resource pack").c_str());
 			}
 		}
 	}
@@ -72,7 +72,7 @@ std::istream *ResourcePack::openFile(const std::string &filename) const
 
 	if (!file.good())
 	{
-		throw std::exception(("Couldn't open resource pack \"" + m_filename + "\" for reading").c_str());
+		throw std::runtime_error(("Couldn't open resource pack \"" + m_filename + "\" for reading").c_str());
 	}
 
 	const Entry &entry = m_files.at(erbFileName);
@@ -106,12 +106,12 @@ std::istream &operator>>(std::istream &stream, ResourcePack &list)
 	stream.read(header, sizeof(header) / sizeof(char));
 
 	if (header[0] != 'K' || header[1] != 'C' || header[2] != 'A' || header[3] != 'P')
-		throw std::exception("Not an ERB file - missing \"KCAP\" header");
+		throw std::runtime_error("Not an ERB file - missing \"KCAP\" header");
 
 	erbVersion = list.read<std::uint32_t>(stream);
 
 	if (erbVersion != 2)
-		throw std::exception("This ERB Packer can only read ERB version 2");
+		throw std::runtime_error("This ERB Packer can only read ERB version 2");
 
 	dirOffset = list.read<std::uint32_t>(stream);
 

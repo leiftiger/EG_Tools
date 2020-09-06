@@ -11,7 +11,7 @@ ResourcePacks::ResourcePacks(const std::vector<std::string> &filenames)
 		{
 			pack = new ResourcePack(filename);
 		}
-		catch (std::exception e)
+		catch (std::exception &e)
 		{
 			if (pack != nullptr)
 				delete pack;
@@ -77,7 +77,7 @@ std::istream *ResourcePacks::openFile(const std::string &filename) const
 		}
 		else
 		{
-			throw std::exception(("Couldn't find a pack for file \"" + filename + "\"").c_str());
+			throw std::runtime_error(("Couldn't find a pack for file \"" + filename + "\"").c_str());
 		}
 	}
 

@@ -18,7 +18,7 @@ void SpreadsheetCSV::clear()
 void SpreadsheetCSV::insertRow(std::size_t pos, std::vector<std::string> row)
 {
 	if (hasKey(row[0]))
-		throw std::exception(("Primary key already exists, cannot add \"" + row[0] + "\"").c_str());
+		throw std::runtime_error(("Primary key already exists, cannot add \"" + row[0] + "\"").c_str());
 
 	m_keys.emplace(row[0]);
 
@@ -85,7 +85,7 @@ std::vector<std::string> SpreadsheetCSV::splitString(std::string str, char delim
 
 	int curStart = 0;
 
-	for (int i = 0; i < str.length(); i++)
+	for (int i = 0; i < (int)str.length(); i++)
 	{
 		if (str[i] == delimiter)
 		{
@@ -145,7 +145,7 @@ std::ostream &operator<<(std::ostream &stream, const SpreadsheetCSV &list)
 {
 	stream << list.concatString(list.headers(), ',') << std::endl << std::endl;
 
-	for (int i = 0; i < list.size(); i++)
+	for (std::size_t i = 0; i < list.size(); i++)
 	{
 		stream << list.concatString(list.row(i), ',') << std::endl;
 	}
@@ -173,7 +173,7 @@ std::vector<std::string> PatchCSV::apply(std::vector<std::istream*> &inStreams, 
 
 	std::vector<int> &baseTranslations = m_patcher.translations(filename);
 
-	int numApplied = 0;
+	std::size_t numApplied = 0;
 
 	for (const SubPatch &subPatch : m_subPatches)
 	{
@@ -256,14 +256,14 @@ void PatcherCSV::buildPatch(ResourceMerger &merger, ModPack &mod, PatchCSV *patc
 {
 	int **distance = new int*[baseList.size() + 1];
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		distance[i] = new int[modList.size() + 1];
 	}
 
 	int **operation = new int*[baseList.size() + 1];
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		operation[i] = new int[modList.size() + 1];
 	}
@@ -273,13 +273,13 @@ void PatcherCSV::buildPatch(ResourceMerger &merger, ModPack &mod, PatchCSV *patc
 	const int ADD = 2;
 	const int REM = 3;
 
-	for (int i = 1; i <= baseList.size(); i++)
+	for (int i = 1; i <= (int)baseList.size(); i++)
 	{
 		distance[i][0] = i;
 		operation[i][0] = ADD;
 	}
 
-	for (int i = 1; i <= modList.size(); i++)
+	for (int i = 1; i <= (int)modList.size(); i++)
 	{
 		distance[0][i] = i;
 		operation[0][i] = REM;
@@ -289,9 +289,9 @@ void PatcherCSV::buildPatch(ResourceMerger &merger, ModPack &mod, PatchCSV *patc
 	operation[0][0] = KEEP;
 
 	// We calculate edit distance for each line to find out which lines were added / removed
-	for (int iBase = 1; iBase <= baseList.size(); iBase++)
+	for (std::size_t iBase = 1; iBase <= baseList.size(); iBase++)
 	{
-		for (int iMod = 1; iMod <= modList.size(); iMod++)
+		for (std::size_t iMod = 1; iMod <= modList.size(); iMod++)
 		{
 			bool equal = false;
 
@@ -402,12 +402,12 @@ void PatcherCSV::buildPatch(ResourceMerger &merger, ModPack &mod, PatchCSV *patc
 		}
 	}
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		delete[] distance[i];
 	}
 
-	for (int i = 0; i <= baseList.size(); i++)
+	for (std::size_t i = 0; i <= baseList.size(); i++)
 	{
 		delete[] operation[i];
 	}
@@ -420,7 +420,7 @@ std::vector<int> &PatcherCSV::translations(const std::string &file)
 {
 	if (m_baseTranslations.find(file) == m_baseTranslations.end())
 	{
-		throw std::exception(("Translation list not initialized for " + file).c_str());
+		throw std::runtime_error(("Translation list not initialized for " + file).c_str());
 	}
 
 	return m_baseTranslations.at(file);
@@ -430,7 +430,7 @@ void PatcherCSV::updateTranslationsAfter(const std::string &file, int index, int
 {
 	std::vector<int> &baseTranslations = translations(file);
 
-	for (int i = index + 1; i < baseTranslations.size(); i++)
+	for (int i = index + 1; i < (int)baseTranslations.size(); i++)
 	{
 		if (baseTranslations[i] != -1)
 			baseTranslations[i] += diff;
@@ -439,13 +439,13 @@ void PatcherCSV::updateTranslationsAfter(const std::string &file, int index, int
 
 void PatcherCSV::updateDescReferences(ResourceMerger &merger, ModPack &mod, SpreadsheetCSV &list)
 {
-	for (size_t iCol = 0; iCol < list.headers().size(); iCol++)
+	for (std::size_t iCol = 0; iCol < list.headers().size(); iCol++)
 	{
 		const std::string &header = list.headers()[iCol];
 
 		if (header == "DescID" || header == "PotentialFollower" || header == "Subject" || header == "Object 1" || header == "Object 2" || header == "Object 3" || header == "UnlockID")
 		{
-			for (size_t iRow = 0; iRow < list.size(); iRow++)
+			for (std::size_t iRow = 0; iRow < list.size(); iRow++)
 			{
 				std::string strList = list.row(iRow)[iCol];
 
@@ -489,7 +489,7 @@ std::vector<IResourcePatch*> PatcherCSV::createPatches(ResourceMerger &merger, M
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			SpreadsheetCSV listBase, listMod;
@@ -501,7 +501,7 @@ std::vector<IResourcePatch*> PatcherCSV::createPatches(ResourceMerger &merger, M
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (int i = 0; i < listBase.size(); i++)
+			for (int i = 0; i < (int)listBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}
@@ -527,7 +527,7 @@ std::vector<IResourcePatch*> PatcherCSV::createPatches(ResourceMerger &merger, M
 
 			if (fsMod.fail())
 			{
-				throw std::exception(("Couldn't open file \"" + modFile + "\" for reading").c_str());
+				throw std::runtime_error(("Couldn't open file \"" + modFile + "\" for reading").c_str());
 			}
 
 			SpreadsheetCSV listBase, listMod;
@@ -539,7 +539,7 @@ std::vector<IResourcePatch*> PatcherCSV::createPatches(ResourceMerger &merger, M
 			// Initialize base translations that later will be modified
 			std::vector<int> vecTranslations;
 
-			for (int i = 0; i < listBase.size(); i++)
+			for (int i = 0; i < (int)listBase.size(); i++)
 			{
 				vecTranslations.push_back(i);
 			}

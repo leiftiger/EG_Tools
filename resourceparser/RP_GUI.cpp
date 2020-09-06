@@ -1,5 +1,7 @@
 #include "RP_GUI.h"
 
+#include <cstring>
+
 namespace RL
 {
 	const char * const GUIParser::extension() const
@@ -18,8 +20,6 @@ namespace RL
 		std::istream *fs = loader.openFile(filename);
 
 		std::string line;
-
-		bool isObjective = false;
 
 		while (util::getline(*fs, line))
 		{
