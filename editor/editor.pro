@@ -4,7 +4,6 @@
 
 TEMPLATE = app
 TARGET = ATN_Editor.out
-INCLUDEPATH += .
 INCLUDEPATH += ./UI
 INCLUDEPATH += ../interpreter
 INCLUDEPATH += ../resourcepacker

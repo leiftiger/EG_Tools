@@ -4,7 +4,6 @@
 
 TEMPLATE = app
 TARGET = Mod_Manager.out
-INCLUDEPATH += .
 INCLUDEPATH += ../interpreter
 INCLUDEPATH += ../resourcemerger
 INCLUDEPATH += ../resourcepacker
