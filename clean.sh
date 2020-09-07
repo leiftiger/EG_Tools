@@ -8,24 +8,32 @@ cd editor
 
 cd ../resourcepacker
 make clean
+echo
 
 cd ../resourceparser
 make clean
+echo
 
 cd ../interpreter
 make clean
+echo
 
 cd ../editor
-make clean
+echo "rm -f ./bin/*.o"
 rm -f ./bin/*.o
+echo "rm -f ../x64/Release/ATN_Editor.out"
 rm -f ../x64/Release/ATN_Editor.out
+echo
 
 cd ../resourcemerger
 make clean
+echo
 
 cd ../modmanager
-make clean
+echo "rm -f ./bin/*.o"
 rm -f ./bin/*.o
+echo "rm -f ../x64/Release/Mod_Manager.out"
 rm -f ../x64/Release/Mod_Manager.out
+echo
 
-echo "Successfully compiled all EG tools!"
+echo "Cleaned all build files!"
