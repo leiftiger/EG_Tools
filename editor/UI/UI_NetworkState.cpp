@@ -1,5 +1,7 @@
 #include "UI_NetworkState.h"
 
+#pragma GCC diagnostic ignored "-Wunused-parameter" // Ignore g++ warnings about this, since it's not much we can do about Qt's events
+
 #include <QAbstractItemView>
 
 void UI_NetworkState::populateArguments()
@@ -32,6 +34,7 @@ void UI_NetworkState::populateArguments()
 		ut->initialize(m_state->resourceMarshalls()[i], resources[i], m_network);
 
 		ut->move(x, y);
+		ut->setFixedWidth(ui.listTransitionResources->width());
 		ut->show();
 
 		y += ut->size().height();
@@ -39,7 +42,7 @@ void UI_NetworkState::populateArguments()
 		m_resources.push_back(ut);
 	}
 
-	ui.listTransitionResources->setMinimumHeight(y);
+	ui.listTransitionResources->setFixedHeight(y);
 
 	x = 0, y = 0;
 
@@ -50,6 +53,7 @@ void UI_NetworkState::populateArguments()
 		ut->initialize(m_state->parameterMarshalls()[i], m_state->networkTransition()->parameters()[i], m_network);
 
 		ut->move(x, y);
+		ut->setFixedWidth(ui.listTransitionArguments->width());
 		ut->show();
 
 		y += ut->size().height();
@@ -57,13 +61,16 @@ void UI_NetworkState::populateArguments()
 		m_arguments.push_back(ut);
 	}
 
-	ui.listTransitionArguments->setMinimumHeight(y);
+	ui.listTransitionArguments->setFixedHeight(y);
 }
 
 UI_NetworkState::UI_NetworkState(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	ui.listTransitionArguments->installEventFilter(this);
+	ui.listTransitionResources->installEventFilter(this);
 
 	connect(ui.connectorOut->transitionConnector(), SIGNAL(establishTransition()), this, SLOT(establishTransition()));
 
@@ -75,6 +82,25 @@ UI_NetworkState::UI_NetworkState(QWidget *parent)
 UI_NetworkState::~UI_NetworkState()
 {
 
+}
+
+bool UI_NetworkState::eventFilter(QObject *object, QEvent *event)
+{
+	if (event->type() == QEvent::Resize)
+	{
+		QResizeEvent *resizeEvent = dynamic_cast<QResizeEvent*>(event);
+
+		// Move to accomodate scrollbar
+		if (resizeEvent->oldSize().width() != resizeEvent->size().width())
+		{
+			for (UI_InputResource *ut : m_resources)
+				ut->setFixedWidth(ui.listTransitionResources->width());
+			for (UI_InputArgument *ut : m_arguments)
+				ut->setFixedWidth(ui.listTransitionArguments->width());
+		}
+	}
+
+	return false;
 }
 
 void UI_NetworkState::initialize(ATN::State *s, const ATN::Network *net)
@@ -123,6 +149,21 @@ void UI_NetworkState::setMinimized(bool minimize)
 			}
 		}
 
+		ui.labelUniqueID->hide();
+		ui.textUniqueID->hide();
+
+		std::string strExternalNetwork = ui.checkBoxExternalNetworkConnector->text().toStdString();
+
+		if ((int)strExternalNetwork.find(':') != -1)
+		{
+			ui.checkBoxExternalNetworkConnector->setText(QString::fromStdString(strExternalNetwork.substr(0, strExternalNetwork.length()-1)));
+		}
+
+		ui.comboBoxExternalNetwork->hide();
+		ui.buttonViewExternalNetwork->hide();
+
+		/*
+
 		// Note: setGeometry is unreliable, so always use move and setFixedSize
 		ui.textStateName->setFixedWidth(101);
 
@@ -140,16 +181,34 @@ void UI_NetworkState::setMinimized(bool minimize)
 
 		ui.comboBoxExternalNetwork->setFixedWidth(111);
 
+		*/
+
 		ui.frame->setFixedWidth(271);
 
 		ui.connectorOut->move(290, ui.connectorOut->y());
 	}
 	else
 	{
+		ui.labelUniqueID->show();
+		ui.textUniqueID->show();
+
+		std::string strExternalNetwork = ui.checkBoxExternalNetworkConnector->text().toStdString();
+
+		if ((int)strExternalNetwork.find(':') == -1)
+		{
+			ui.checkBoxExternalNetworkConnector->setText(QString::fromStdString(strExternalNetwork + ":"));
+		}
+
+		ui.comboBoxExternalNetwork->show();
+		ui.buttonViewExternalNetwork->show();
+
 		for (size_t i = 0; i < m_geometries.size(); i++)
 		{
-			widgets[i]->move(m_geometries[i].topLeft());
-			widgets[i]->setFixedSize(m_geometries[i].size());
+			if (widgets[i] == ui.frame || widgets[i] == ui.connectorOut)
+			{
+				widgets[i]->move(m_geometries[i].topLeft());
+				widgets[i]->setFixedSize(m_geometries[i].size());
+			}
 		}
 	}
 

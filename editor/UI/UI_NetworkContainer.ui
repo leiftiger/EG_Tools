@@ -22,6 +22,9 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOn</enum>
      </property>
@@ -33,7 +36,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1803</width>
+        <width>1807</width>
         <height>553</height>
        </rect>
       </property>
@@ -53,10 +56,7 @@
         </rect>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
       </widget>
       <widget class="QFrame" name="frameTransition">
@@ -69,505 +69,478 @@
         </rect>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="UI_LineEdit" name="textTransitionName">
-        <property name="geometry">
-         <rect>
-          <x>140</x>
-          <y>10</y>
-          <width>391</width>
-          <height>31</height>
-         </rect>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
+        <property name="rightMargin">
+         <number>0</number>
         </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhNone</set>
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
-        <property name="plainText" stdset="0">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_12">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>A description for this transition</string>
-        </property>
-        <property name="text">
-         <string>Transition name:</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="textTransitionID">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>700</x>
-          <y>10</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="plainText" stdset="0">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_15">
-        <property name="geometry">
-         <rect>
-          <x>620</x>
-          <y>10</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Internal unique ID, non-editable</string>
-        </property>
-        <property name="text">
-         <string>Unique ID:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonDeleteTransition">
-        <property name="geometry">
-         <rect>
-          <x>910</x>
-          <y>10</y>
-          <width>111</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Deletes this transition</string>
-        </property>
-        <property name="text">
-         <string>Delete transition</string>
-        </property>
-       </widget>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>501</width>
-          <height>211</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="title">
-         <string>Percept</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QComboBox" name="comboTransitionPercept">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>481</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Required condition for this transition to be taken</string>
-         </property>
-         <item>
+        <item row="0" column="5">
+         <widget class="QToolButton" name="buttonTransitionSortUp">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
           <property name="text">
-           <string>18: &quot;Just exited subnetwork&quot; (LastEffectReturnValue)</string>
+           <string>UP</string>
           </property>
-         </item>
-        </widget>
-        <widget class="QLabel" name="label_13">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>50</y>
-           <width>231</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Resources sent to the percept</string>
-         </property>
-         <property name="text">
-          <string>Resources</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_14">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>50</y>
-           <width>231</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Arguments sent to the percept</string>
-         </property>
-         <property name="text">
-          <string>Arguments</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QScrollArea" name="scrollArea_5">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>231</width>
-           <height>121</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="listTransitionPerceptResources">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>229</width>
-            <height>119</height>
-           </rect>
+          <property name="arrowType">
+           <enum>Qt::UpArrow</enum>
           </property>
          </widget>
-        </widget>
-        <widget class="QScrollArea" name="scrollArea_6">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>80</y>
-           <width>231</width>
-           <height>121</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="listTransitionPerceptArguments">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>229</width>
-            <height>119</height>
-           </rect>
+        </item>
+        <item row="0" column="7">
+         <widget class="QPushButton" name="buttonDeleteTransition">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
           </property>
-         </widget>
-        </widget>
-        <zorder>scrollArea_6</zorder>
-        <zorder>scrollArea_5</zorder>
-        <zorder>comboTransitionPercept</zorder>
-        <zorder>label_13</zorder>
-        <zorder>label_14</zorder>
-       </widget>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="geometry">
-         <rect>
-          <x>520</x>
-          <y>80</y>
-          <width>501</width>
-          <height>211</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>14</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="title">
-         <string>Effect</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <widget class="QComboBox" name="comboTransitionEffect">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>481</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Effect to perform if this transition is taken</string>
-         </property>
-         <item>
+          <property name="toolTip">
+           <string>Deletes this transition</string>
+          </property>
           <property name="text">
-           <string>16: &quot;Terminate&quot; (SetLastEffectReturnValue)</string>
-          </property>
-         </item>
-        </widget>
-        <widget class="QLabel" name="label_16">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>50</y>
-           <width>231</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Arguments sent to the percept</string>
-         </property>
-         <property name="text">
-          <string>Arguments</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_17">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>50</y>
-           <width>231</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>10</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>Resources sent to the effect</string>
-         </property>
-         <property name="text">
-          <string>Resources</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QScrollArea" name="scrollArea_7">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>231</width>
-           <height>121</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="listTransitionEffectResources">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>229</width>
-            <height>119</height>
-           </rect>
+           <string>Delete transition</string>
           </property>
          </widget>
-        </widget>
-        <widget class="QScrollArea" name="scrollArea_8">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>80</y>
-           <width>231</width>
-           <height>121</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="listTransitionEffectArguments">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>229</width>
-            <height>119</height>
-           </rect>
+        </item>
+        <item row="2" column="0" colspan="8">
+         <widget class="QFrame" name="frameTransitionActions">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QGroupBox" name="groupBox">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="title">
+              <string>Percept</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_6">
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0" colspan="2">
+               <widget class="QComboBox" name="comboTransitionPercept">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>28</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Required condition for this transition to be taken</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>18: &quot;Just exited subnetwork&quot; (LastEffectReturnValue)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelPerceptResources">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Resources sent to the percept</string>
+                </property>
+                <property name="text">
+                 <string>Resources</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="labelPerceptArguments">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Arguments sent to the percept</string>
+                </property>
+                <property name="text">
+                 <string>Arguments</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QScrollArea" name="scrollArea_5">
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="listTransitionPerceptResources">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>240</width>
+                   <height>107</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QScrollArea" name="scrollArea_6">
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="listTransitionPerceptArguments">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>240</width>
+                   <height>107</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+             <zorder>scrollArea_6</zorder>
+             <zorder>scrollArea_5</zorder>
+             <zorder>comboTransitionPercept</zorder>
+             <zorder>labelPerceptResources</zorder>
+             <zorder>labelPerceptArguments</zorder>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QGroupBox" name="groupBox_2">
+             <property name="font">
+              <font>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="title">
+              <string>Effect</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_5">
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0" colspan="2">
+               <widget class="QComboBox" name="comboTransitionEffect">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>28</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Effect to perform if this transition is taken</string>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>16: &quot;Terminate&quot; (SetLastEffectReturnValue)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelEffectResources">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Resources sent to the effect</string>
+                </property>
+                <property name="text">
+                 <string>Resources</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLabel" name="labelEffectArguments">
+                <property name="font">
+                 <font>
+                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="toolTip">
+                 <string>Arguments sent to the percept</string>
+                </property>
+                <property name="text">
+                 <string>Arguments</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QScrollArea" name="scrollArea_7">
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="listTransitionEffectResources">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>240</width>
+                   <height>107</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QScrollArea" name="scrollArea_8">
+                <property name="font">
+                 <font>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="widgetResizable">
+                 <bool>true</bool>
+                </property>
+                <widget class="QWidget" name="listTransitionEffectArguments">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>239</width>
+                   <height>107</height>
+                  </rect>
+                 </property>
+                </widget>
+               </widget>
+              </item>
+             </layout>
+             <zorder>scrollArea_8</zorder>
+             <zorder>scrollArea_7</zorder>
+             <zorder>comboTransitionEffect</zorder>
+             <zorder>labelEffectArguments</zorder>
+             <zorder>labelEffectResources</zorder>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="labelTransitionID">
+          <property name="maximumSize">
+           <size>
+            <width>110</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Internal unique ID, non-editable</string>
+          </property>
+          <property name="text">
+           <string>Unique ID:</string>
           </property>
          </widget>
-        </widget>
-        <zorder>scrollArea_8</zorder>
-        <zorder>scrollArea_7</zorder>
-        <zorder>comboTransitionEffect</zorder>
-        <zorder>label_16</zorder>
-        <zorder>label_17</zorder>
-       </widget>
-       <widget class="QLabel" name="labelTransitionInterpretation">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>1011</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Interpretation</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QToolButton" name="buttonTransitionSortDown">
-        <property name="geometry">
-         <rect>
-          <x>870</x>
-          <y>10</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>DN</string>
-        </property>
-        <property name="autoRaise">
-         <bool>false</bool>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::DownArrow</enum>
-        </property>
-       </widget>
-       <widget class="QToolButton" name="buttonTransitionSortUp">
-        <property name="geometry">
-         <rect>
-          <x>830</x>
-          <y>10</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>UP</string>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::UpArrow</enum>
-        </property>
-       </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLineEdit" name="textTransitionID">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhDigitsOnly</set>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="UI_LineEdit" name="textTransitionName">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhNone</set>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="labelTransitionName">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>A description for this transition</string>
+          </property>
+          <property name="text">
+           <string>Transition name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="6">
+         <widget class="QToolButton" name="buttonTransitionSortDown">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>DN</string>
+          </property>
+          <property name="autoRaise">
+           <bool>false</bool>
+          </property>
+          <property name="arrowType">
+           <enum>Qt::DownArrow</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="8">
+         <widget class="QLabel" name="labelTransitionInterpretation">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Interpretation</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QFrame" name="frameNetwork">
        <property name="geometry">
@@ -579,370 +552,365 @@
         </rect>
        </property>
        <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
        </property>
-       <widget class="UI_LineEdit" name="textNetworkName">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
-          <y>10</y>
-          <width>401</width>
-          <height>31</height>
-         </rect>
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="leftMargin">
+         <number>8</number>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhNone</set>
-        </property>
-        <property name="plainText" stdset="0">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>This name is used to launch game rules</string>
-        </property>
-        <property name="whatsThis">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Network name:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>220</x>
-          <y>80</y>
-          <width>231</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Network resources that can be accessed by states and transitions in the network</string>
-        </property>
-        <property name="text">
-         <string>Resources</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_4">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>80</y>
-          <width>271</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Network parameters sent in network transitions, which can be accessed by states and transitions in the network</string>
-        </property>
-        <property name="text">
-         <string>Parameters</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="textNetworkID">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>620</x>
-          <y>10</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="inputMethodHints">
-         <set>Qt::ImhDigitsOnly</set>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-        <property name="plainText" stdset="0">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_5">
-        <property name="geometry">
-         <rect>
-          <x>540</x>
-          <y>10</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Internal unique ID, non-editable</string>
-        </property>
-        <property name="text">
-         <string>Unique ID:</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonNewState">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Add a new state to this network</string>
-        </property>
-        <property name="whatsThis">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Add state</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonNewResource">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>50</y>
-          <width>91</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Add a new network resource</string>
-        </property>
-        <property name="text">
-         <string>Add resource</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonNewParameter">
-        <property name="geometry">
-         <rect>
-          <x>320</x>
-          <y>50</y>
-          <width>91</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Add a new network parameter</string>
-        </property>
-        <property name="text">
-         <string>Add parameter</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonDeleteNetwork">
-        <property name="geometry">
-         <rect>
-          <x>430</x>
-          <y>50</y>
-          <width>101</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Deletes this network and all its components</string>
-        </property>
-        <property name="text">
-         <string>Delete network</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_6">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>80</y>
-          <width>191</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Network threads that represent the various starting states</string>
-        </property>
-        <property name="text">
-         <string>Threads</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="buttonNewThread">
-        <property name="geometry">
-         <rect>
-          <x>100</x>
-          <y>50</y>
-          <width>91</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Add a new network thread (starting state)</string>
-        </property>
-        <property name="text">
-         <string>Add thread</string>
-        </property>
-       </widget>
-       <widget class="QScrollArea" name="scrollArea_2">
-        <property name="geometry">
-         <rect>
-          <x>9</x>
-          <y>110</y>
-          <width>191</width>
-          <height>171</height>
-         </rect>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="listNetworkThreads">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>189</width>
-           <height>169</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QScrollArea" name="scrollArea_3">
-        <property name="geometry">
-         <rect>
-          <x>220</x>
-          <y>110</y>
-          <width>231</width>
-          <height>171</height>
-         </rect>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="listNetworkResources">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>229</width>
-           <height>169</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QScrollArea" name="scrollArea_4">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>110</y>
-          <width>271</width>
-          <height>171</height>
-         </rect>
-        </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="QWidget" name="listNetworkParameters">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>269</width>
-           <height>169</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QPushButton" name="buttonFindTransitions">
-        <property name="geometry">
-         <rect>
-          <x>550</x>
-          <y>50</y>
-          <width>191</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="toolTip">
-         <string>Find networks that transition to this network as a subnetwork</string>
-        </property>
-        <property name="text">
-         <string>Find transitions to this network</string>
-        </property>
-       </widget>
-       <zorder>scrollArea_4</zorder>
-       <zorder>scrollArea_3</zorder>
-       <zorder>scrollArea_2</zorder>
+        <item row="0" column="8">
+         <widget class="QLabel" name="labelNetworkUniqueID">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Internal unique ID, non-editable</string>
+          </property>
+          <property name="text">
+           <string>Unique ID:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QPushButton" name="buttonNewThread">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Add a new network thread (starting state)</string>
+          </property>
+          <property name="text">
+           <string>Add thread</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="6" colspan="2">
+         <widget class="QPushButton" name="buttonDeleteNetwork">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Deletes this network and all its components</string>
+          </property>
+          <property name="text">
+           <string>Delete network</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="9">
+         <widget class="QLineEdit" name="textNetworkID">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhDigitsOnly</set>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="8" colspan="2">
+         <widget class="QPushButton" name="buttonFindTransitions">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Find networks that transition to this network as a subnetwork</string>
+          </property>
+          <property name="text">
+           <string>Find transitions to this network</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2" colspan="6">
+         <widget class="UI_LineEdit" name="textNetworkName">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>28</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::ImhNone</set>
+          </property>
+          <property name="plainText" stdset="0">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QPushButton" name="buttonNewParameter">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Add a new network parameter</string>
+          </property>
+          <property name="text">
+           <string>Add parameter</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="labelNetworkName">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>This name is used to launch game rules</string>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Network name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="buttonNewState">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Add a new state to this network</string>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Add state</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" rowspan="2" colspan="3">
+         <widget class="QFrame" name="frame_2">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelNetworkThreads">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Network threads that represent the various starting states</string>
+             </property>
+             <property name="text">
+              <string>Threads</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QScrollArea" name="scrollArea_2">
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="listNetworkThreads">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>176</width>
+                <height>170</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="3" rowspan="2" colspan="7">
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <item row="1" column="2">
+            <widget class="QScrollArea" name="scrollArea_4">
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="listNetworkParameters">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>268</width>
+                <height>170</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QScrollArea" name="scrollArea_3">
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="listNetworkResources">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>269</width>
+                <height>170</height>
+               </rect>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelNetworkResources">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Network resources that can be accessed by states and transitions in the network</string>
+             </property>
+             <property name="text">
+              <string>Resources</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="labelNetworkParameters">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Network parameters sent in network transitions, which can be accessed by states and transitions in the network</string>
+             </property>
+             <property name="text">
+              <string>Parameters</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="3" colspan="2">
+         <widget class="QPushButton" name="buttonNewResource">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Add a new network resource</string>
+          </property>
+          <property name="text">
+           <string>Add resource</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
        <zorder>textNetworkName</zorder>
-       <zorder>label_2</zorder>
-       <zorder>label_3</zorder>
-       <zorder>label_4</zorder>
+       <zorder>labelNetworkName</zorder>
        <zorder>textNetworkID</zorder>
-       <zorder>label_5</zorder>
+       <zorder>labelNetworkUniqueID</zorder>
        <zorder>buttonNewState</zorder>
        <zorder>buttonNewResource</zorder>
        <zorder>buttonNewParameter</zorder>
        <zorder>buttonDeleteNetwork</zorder>
-       <zorder>label_6</zorder>
        <zorder>buttonNewThread</zorder>
        <zorder>buttonFindTransitions</zorder>
+       <zorder>frame</zorder>
+       <zorder>frame_2</zorder>
       </widget>
      </widget>
     </widget>
@@ -1056,8 +1024,8 @@
    <slot>deleteTransition()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1680</x>
-     <y>50</y>
+     <x>1798</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
      <x>1446</x>
@@ -1152,8 +1120,8 @@
    <slot>moveTransitionUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1612</x>
-     <y>41</y>
+     <x>1585</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
      <x>1613</x>
@@ -1168,8 +1136,8 @@
    <slot>moveTransitionDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1653</x>
-     <y>34</y>
+     <x>1623</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
      <x>1653</x>

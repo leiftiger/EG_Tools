@@ -17,9 +17,6 @@ int main(int argc, char *argv[])
 		util::loadStaticDefinitions();
 		util::loadDynamicDefinitions();
 
-		// Currently many UI elements are dependent on no DPI-scaling
-		QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, false);
-
 		QApplication a(argc, argv);
 
 		UI_MainWindow w;

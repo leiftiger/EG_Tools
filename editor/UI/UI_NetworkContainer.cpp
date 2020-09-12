@@ -261,14 +261,24 @@ void UI_NetworkContainer::threadCreate()
 	layoutSortables(m_threads, ui.listNetworkThreads);
 
 	// Scroll to bottom in case we have many items
-	QScrollArea *scroller = (QScrollArea*)ui.listNetworkThreads->parent()->parent();
+	QScrollArea *scroller = dynamic_cast<QScrollArea*>(ui.listNetworkThreads->parent()->parent());
+
+	if (scroller == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::threadCreate() - Incorrectly assumed UI hierarchy!");
+	}
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 }
 
 void UI_NetworkContainer::threadMoveUp()
 {
-	UI_NetworkThread *ut = (UI_NetworkThread*)sender()->parent();
+	UI_NetworkThread *ut = dynamic_cast<UI_NetworkThread*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::threadMoveUp() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_threads, ut, true);
 	layoutSortables(m_threads, ui.listNetworkThreads);
@@ -278,7 +288,12 @@ void UI_NetworkContainer::threadMoveUp()
 
 void UI_NetworkContainer::threadMoveDown()
 {
-	UI_NetworkThread *ut = (UI_NetworkThread*)sender()->parent();
+	UI_NetworkThread *ut = dynamic_cast<UI_NetworkThread*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::threadMoveDown() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_threads, ut, false);
 	layoutSortables(m_threads, ui.listNetworkThreads);
@@ -288,7 +303,12 @@ void UI_NetworkContainer::threadMoveDown()
 
 void UI_NetworkContainer::threadRemove()
 {
-	UI_NetworkThread *ut = (UI_NetworkThread*)sender()->parent();
+	UI_NetworkThread *ut = dynamic_cast<UI_NetworkThread*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::threadRemove() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemRemove(m_threads, ut);
 	layoutSortables(m_threads, ui.listNetworkThreads);
@@ -330,7 +350,12 @@ void UI_NetworkContainer::stateCreate()
 
 void UI_NetworkContainer::stateMoveUp()
 {
-	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
+	UI_NetworkState *ut = dynamic_cast<UI_NetworkState*>(sender()->parent()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::stateMoveUp() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_states, ut, true);
 
@@ -341,7 +366,12 @@ void UI_NetworkContainer::stateMoveUp()
 
 void UI_NetworkContainer::stateMoveDown()
 {
-	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
+	UI_NetworkState *ut = dynamic_cast<UI_NetworkState*>(sender()->parent()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::stateMoveDown() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_states, ut, false);
 
@@ -352,7 +382,12 @@ void UI_NetworkContainer::stateMoveDown()
 
 void UI_NetworkContainer::stateRemove()
 {
-	UI_NetworkState *ut = (UI_NetworkState*)sender()->parent()->parent();
+	UI_NetworkState *ut = dynamic_cast<UI_NetworkState*>(sender()->parent()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::stateRemove() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemRemove(m_states, ut);
 
@@ -505,7 +540,12 @@ void UI_NetworkContainer::resourceCreate()
 	layoutSortables(m_resources, ui.listNetworkResources);
 
 	// Scroll to bottom in case we have many items
-	QScrollArea *scroller = (QScrollArea*)ui.listNetworkResources->parent()->parent();
+	QScrollArea *scroller = dynamic_cast<QScrollArea*>(ui.listNetworkResources->parent()->parent());
+
+	if (scroller == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::resourceCreate() - Incorrectly assumed UI hierarchy!");
+	}
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 
@@ -516,7 +556,12 @@ void UI_NetworkContainer::resourceCreate()
 
 void UI_NetworkContainer::resourceMoveUp()
 {
-	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
+	UI_NetworkResource *ut = dynamic_cast<UI_NetworkResource*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::resourceMoveUp() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_resources, ut, true);
 	layoutSortables(m_resources, ui.listNetworkResources);
@@ -528,7 +573,12 @@ void UI_NetworkContainer::resourceMoveUp()
 
 void UI_NetworkContainer::resourceMoveDown()
 {
-	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
+	UI_NetworkResource *ut = dynamic_cast<UI_NetworkResource*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::resourceMoveDown() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_resources, ut, false);
 	layoutSortables(m_resources, ui.listNetworkResources);
@@ -540,7 +590,12 @@ void UI_NetworkContainer::resourceMoveDown()
 
 void UI_NetworkContainer::resourceRemove()
 {
-	UI_NetworkResource *ut = (UI_NetworkResource*)sender()->parent();
+	UI_NetworkResource *ut = dynamic_cast<UI_NetworkResource*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::resourceRemove() - Incorrectly assumed UI hierarchy!");
+	}
 
 	int numDependencies = m_network->countDependencies(*ut->m_resource, true, false);
 
@@ -692,7 +747,12 @@ void UI_NetworkContainer::parameterCreate()
 	layoutSortables(m_parameters, ui.listNetworkParameters);
 
 	// Scroll to bottom in case we have many items
-	QScrollArea *scroller = (QScrollArea*)ui.listNetworkParameters->parent()->parent();
+	QScrollArea *scroller = dynamic_cast<QScrollArea*>(ui.listNetworkParameters->parent()->parent());
+
+	if (scroller == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::parameterCreate() - Incorrectly assumed UI hierarchy!");
+	}
 
 	scroller->verticalScrollBar()->setSliderPosition(scroller->verticalScrollBar()->maximum());
 
@@ -701,7 +761,12 @@ void UI_NetworkContainer::parameterCreate()
 
 void UI_NetworkContainer::parameterMoveUp()
 {
-	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
+	UI_NetworkParameter *ut = dynamic_cast<UI_NetworkParameter*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::parameterMoveUp() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_parameters, ut, true);
 	layoutSortables(m_parameters, ui.listNetworkParameters);
@@ -713,7 +778,12 @@ void UI_NetworkContainer::parameterMoveUp()
 
 void UI_NetworkContainer::parameterMoveDown()
 {
-	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
+	UI_NetworkParameter *ut = dynamic_cast<UI_NetworkParameter*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::parameterMoveDown() - Incorrectly assumed UI hierarchy!");
+	}
 
 	itemMove(m_parameters, ut, false);
 	layoutSortables(m_parameters, ui.listNetworkParameters);
@@ -725,7 +795,12 @@ void UI_NetworkContainer::parameterMoveDown()
 
 void UI_NetworkContainer::parameterRemove()
 {
-	UI_NetworkParameter *ut = (UI_NetworkParameter*)sender()->parent();
+	UI_NetworkParameter *ut = dynamic_cast<UI_NetworkParameter*>(sender()->parent()->parent());
+
+	if (ut == nullptr)
+	{
+		throw std::runtime_error("UI_NetworkContainer::parameterRemove() - Incorrectly assumed UI hierarchy!");
+	}
 
 	int numDependencies = m_network->countDependencies(*ut->m_parameter, true, false);
 
@@ -1623,6 +1698,7 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
 
 		ut->move(x, y);
+		ut->setFixedWidth(argumentWidget->width());
 		ut->show();
 
 		y += ut->size().height();
@@ -1632,7 +1708,7 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 		resourceList.push_back(ut);
 	}
 
-	resourceWidget->setMinimumHeight(y);
+	resourceWidget->setFixedHeight(y);
 
 	x = 0, y = 0;
 
@@ -1645,6 +1721,7 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 		connect(ut, SIGNAL(updated()), this, SLOT(updateTransitionInterpretation()));
 
 		ut->move(x, y);
+		ut->setFixedWidth(resourceWidget->width());
 		ut->show();
 
 		y += ut->size().height();
@@ -1662,13 +1739,22 @@ void UI_NetworkContainer::populateTransitionArguments(std::vector<UI_InputArgume
 			ut->ui.comboBox->setDisabled(true);
 	}
 
-	argumentWidget->setMinimumHeight(y);
+	argumentWidget->setFixedHeight(y);
 }
 
 UI_NetworkContainer::UI_NetworkContainer(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+
+	ui.listNetworkThreads->installEventFilter(this);
+	ui.listNetworkResources->installEventFilter(this);
+	ui.listNetworkParameters->installEventFilter(this);
+
+	ui.listTransitionPerceptArguments->installEventFilter(this);
+	ui.listTransitionPerceptResources->installEventFilter(this);
+	ui.listTransitionEffectArguments->installEventFilter(this);
+	ui.listTransitionEffectResources->installEventFilter(this);
 
 	m_networkContentsMinimumSize = ui.networkContents->minimumSize();
 
@@ -1699,6 +1785,50 @@ void UI_NetworkContainer::initializeFromID(std::int32_t id)
 	initializeResources();
 	initializeParameters();
 	initializeStates();
+}
+
+bool UI_NetworkContainer::eventFilter(QObject *object, QEvent *event)
+{
+	if (event->type() == QEvent::Resize)
+	{
+		QResizeEvent *resizeEvent = dynamic_cast<QResizeEvent*>(event);
+
+		// Move to accomodate scrollbar
+		if (resizeEvent->oldSize().width() != resizeEvent->size().width())
+		{
+			if (object == ui.listNetworkThreads)
+				layoutSortables(m_threads, ui.listNetworkThreads);
+			else if (object == ui.listNetworkResources)
+				layoutSortables(m_resources, ui.listNetworkResources);
+			else if (object == ui.listNetworkParameters)
+				layoutSortables(m_parameters, ui.listNetworkParameters);
+			else if (m_currentEditTransition != nullptr)
+			{
+				if (object == ui.listTransitionPerceptArguments)
+				{
+					for (UI_InputArgument *ut : m_currentTransitionPerceptArguments)
+						ut->setFixedWidth(ui.listTransitionPerceptArguments->width());
+				}
+				else if (object == ui.listTransitionPerceptResources)
+				{
+					for (UI_InputResource *ut : m_currentTransitionPerceptResources)
+						ut->setFixedWidth(ui.listTransitionPerceptArguments->width());
+				}
+				else if (object == ui.listTransitionEffectArguments)
+				{
+					for (UI_InputArgument *ut : m_currentTransitionEffectArguments)
+						ut->setFixedWidth(ui.listTransitionEffectArguments->width());
+				}
+				else if (object == ui.listTransitionEffectResources)
+				{
+					for (UI_InputResource *ut : m_currentTransitionEffectResources)
+						ut->setFixedWidth(ui.listTransitionEffectResources->width());
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 const ATN::Network &UI_NetworkContainer::network()

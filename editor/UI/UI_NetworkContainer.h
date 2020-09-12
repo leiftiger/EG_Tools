@@ -92,6 +92,15 @@ private:
 	template <class T>
 	void layoutSortables(std::vector<T*> &list, QWidget *listObject)
 	{
+		QWidget *scrollContainer = dynamic_cast<QWidget*>(listObject->parent());
+
+		if (scrollContainer == nullptr)
+		{
+			throw std::runtime_error("UI_NetworkContainer::layoutSortables<T>() - Incorrectly assumed UI hierarchy!");
+		}
+
+		int containerWidth = scrollContainer->width();
+
 		int x = 0, y = 0;
 
 		for (size_t i = 0; i < list.size(); i++)
@@ -106,11 +115,12 @@ private:
 			}
 
 			ut->move(x, y);
+			ut->setFixedWidth(containerWidth);
 
 			y += ut->size().height();
 		}
 
-		listObject->setMinimumHeight(y);
+		listObject->setFixedHeight(y);
 	}
 
 	// Moves an item up or down in the list, assuming it's possible
@@ -206,6 +216,9 @@ public:
 	~UI_NetworkContainer();
 
 	void initializeFromID(std::int32_t id);
+
+	// Handles scroll area resize events
+	bool eventFilter(QObject *object, QEvent *event) override;
 
 	// Gets the network this container represents
 	const ATN::Network &network();

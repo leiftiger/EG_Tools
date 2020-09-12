@@ -34,6 +34,9 @@ public:
 	ATN::State *m_state = nullptr;
 	const ATN::Network *m_network = nullptr;
 
+	// Handles scroll area resize events
+	bool eventFilter(QObject *object, QEvent *event) override;
+
 	// Initializes state from object
 	void initialize(ATN::State *s, const ATN::Network *net);
 
