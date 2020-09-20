@@ -28,6 +28,10 @@ It will automatically scan for the changes made by each mod and try to merge the
 
 Solution and project files are provided for compilation with Visual Studio, you only need to install [Qt Visual Studio Tools](https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123) to compile the solution.
 
+The executables are placed in `/x64/Release/` or `/x64/Debug/` depending on configuration.
+
 ## Linux
 
 Run `./build.sh` and everything should build automatically. You may need to have `qtcreator` installed to have all necessary dependencies. For Ubuntu-based distros, this is available via `apt-get install qtcreator`.
+
+The executables are placed in `/x64/Release/` with the extension `.out`.
