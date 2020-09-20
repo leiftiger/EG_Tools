@@ -60,6 +60,9 @@ public:
 
 	void layout();
 
+	// Updates the transition's tooltip after external changes
+	void updateTransitionTooltip();
+
 	ATN::Transition *transition() const;
 
 	// Sets the transition name as highlighted

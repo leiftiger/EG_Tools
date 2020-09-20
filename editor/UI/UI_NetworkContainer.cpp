@@ -1390,6 +1390,8 @@ void UI_NetworkContainer::updateTransitionInterpretation()
 		return;
 
 	ui.labelTransitionInterpretation->setText(QString::fromStdString(m_currentEditTransition->interpret()));
+
+	m_currentEditTransition->updateTransitionTooltip();
 }
 
 void UI_NetworkContainer::moveTransitionUp()

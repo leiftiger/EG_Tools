@@ -68,6 +68,8 @@ void UI_NetworkTransition::initialize(ATN::Transition *transition, ATN::Network 
 {
 	m_transition = transition;
 	m_network = network;
+
+	this->updateTransitionTooltip();
 }
 
 ATN::Transition * UI_NetworkTransition::transition() const
@@ -296,4 +298,9 @@ void UI_NetworkTransition::layout()
 	m_connector->move(ui.label->x() + ui.label->width() + LABEL_PADDING, ui.label->y() + ui.label->height()/2 - m_connector->height()/2);
 
 	adjustSize();
+}
+
+void UI_NetworkTransition::updateTransitionTooltip()
+{
+	this->setToolTip(QString::fromStdString(this->interpret()));
 }
