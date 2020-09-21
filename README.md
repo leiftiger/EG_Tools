@@ -26,7 +26,7 @@ It will automatically scan for the changes made by each mod and try to merge the
 
 ## Windows
 
-Solution and project files are provided for compilation with Visual Studio, you only need to install [Qt Visual Studio Tools](https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123) to compile the solution.
+Solution and project files are provided for compilation with Visual Studio, you only need to install [Qt Visual Studio Tools](https://marketplace.visualstudio.com/items?itemName=TheQtCompany.QtVisualStudioTools-19123) to compile the solution. You may need to configure Qt project settings, linking to your installed version of Qt and including the Qt modules "Core", "GUI" and "Widgets". Use `windeployqt` to generate files needed for deployment.
 
 The executables are placed in `/x64/Release/` or `/x64/Debug/` depending on configuration.
 
