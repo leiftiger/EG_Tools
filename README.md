@@ -1,4 +1,4 @@
-This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN Editor and a Mod Manager.
+This is a collection of tools for the 2004 game Evil Genius, which encompasses an ATN Editor and a Mod Manager. See [releases](https://github.com/leiftiger/EG_Tools/releases) to download compiled versions for Windows.
 
 # Tools
 
