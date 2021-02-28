@@ -46,6 +46,9 @@ ${OBJ_DIR}/PatchGeneric.o: ${SRC_DIR}/PatchGeneric.h ${SRC_DIR}/PatchGeneric.cpp
 ${OBJ_DIR}/PatchIni.o: ${SRC_DIR}/PatchIni.h ${SRC_DIR}/PatchIni.cpp
 	${CC} ${CCFLAGS} -c ${SRC_DIR}/PatchIni.cpp -o ${OBJ_DIR}/PatchIni.o ${INCS}
 
+${OBJ_DIR}/PatchPattern.o: ${SRC_DIR}/PatchPattern.h ${SRC_DIR}/PatchPattern.cpp
+	${CC} ${CCFLAGS} -c ${SRC_DIR}/PatchPattern.cpp -o ${OBJ_DIR}/PatchPattern.o ${INCS}
+
 ${OBJ_DIR}/PatchStrings.o: ${SRC_DIR}/PatchStrings.h ${SRC_DIR}/PatchStrings.cpp
 	${CC} ${CCFLAGS} -c ${SRC_DIR}/PatchStrings.cpp -o ${OBJ_DIR}/PatchStrings.o ${INCS}
 

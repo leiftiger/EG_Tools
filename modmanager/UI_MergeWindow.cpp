@@ -5,6 +5,7 @@
 #include "PatchDesc.h"
 #include "PatchGeneric.h"
 #include "PatchIni.h"
+#include "PatchPattern.h"
 #include "PatchStrings.h"
 
 #include <QPropertyAnimation>
@@ -22,6 +23,7 @@ void UI_MergeWindow::initialize()
 	m_merger->addPatcher(new PatcherCSV());
 	m_merger->addPatcher(new PatcherDesc());
 	m_merger->addPatcher(new PatcherIni());
+	m_merger->addPatcher(new PatcherPattern());
 	m_merger->addPatcher(new PatcherStrings());
 
 	// Generic text patchers that either isn't handled in detail 
@@ -32,7 +34,6 @@ void UI_MergeWindow::initialize()
 	m_merger->addPatcher(new PatcherGeneric(".csb", false));	// UI
 	m_merger->addPatcher(new PatcherGeneric(".mus", true));		// Music settings
 	m_merger->addPatcher(new PatcherGeneric(".nam", false));	// Agent names
-	m_merger->addPatcher(new PatcherGeneric(".pat", false));	// Patterns for construction
 	m_merger->addPatcher(new PatcherGeneric(".pap", false));	// Particles
 	m_merger->addPatcher(new PatcherGeneric(".spb", true));		// Sound definitions
 	m_merger->addPatcher(new PatcherGeneric(".xml", false));	// Glossaries, objective details

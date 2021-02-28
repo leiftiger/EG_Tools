@@ -21,7 +21,7 @@ namespace RL
 
 		// TODO: Determine what sound IDs are
 
-		// Parse all animation definitions
+		// Parse all sound definitions
 		while (util::getline(*fs, line))
 		{
 			if (line.length() >= strlen("Class=") && line.substr(0, strlen("Class=")) == "Class=")

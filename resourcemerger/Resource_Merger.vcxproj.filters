@@ -51,6 +51,9 @@
     <ClInclude Include="PatchIni.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PatchPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="PatchCSV.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PatchIni.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PatchCSV.cpp">

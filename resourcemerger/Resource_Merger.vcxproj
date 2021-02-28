@@ -28,6 +28,7 @@
     <ClInclude Include="PatchDesc.h" />
     <ClInclude Include="PatchGeneric.h" />
     <ClInclude Include="PatchIni.h" />
+    <ClInclude Include="PatchPattern.h" />
     <ClInclude Include="PatchStrings.h" />
     <ClInclude Include="ResourceMerger.h" />
     <ClInclude Include="IResourcePatch.h" />
@@ -43,6 +44,7 @@
     <ClCompile Include="PatchDesc.cpp" />
     <ClCompile Include="PatchGeneric.cpp" />
     <ClCompile Include="PatchIni.cpp" />
+    <ClCompile Include="PatchPattern.cpp" />
     <ClCompile Include="PatchStrings.cpp" />
     <ClCompile Include="ResourceMerger.cpp" />
     <ClCompile Include="IResourcePatch.cpp" />
