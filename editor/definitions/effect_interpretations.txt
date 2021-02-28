@@ -94,7 +94,7 @@ TATNEffectAdjustPlayerHeat
 ::param2::		increase player heat by ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1::		set player heat to ::param0:: in region ::param1:: (relative: ::param2::)
 
 TATNEffectSetCharacterTag
-tag ::resource0:: as ::param0::
+set ::param0:: tag on ::resource0::
 
 TATNEffectSubstituteObject
 replace ::resource0:: with instance of ::param0::
