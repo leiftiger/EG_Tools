@@ -1073,16 +1073,17 @@ namespace ATN
 				{
 					if (state->networkTransition() == this)
 					{
-						std::int64_t transitionIndex = -1;
+						// As the resource we removed was internal, it must at least start from here
+						std::int64_t transitionIndex = 0;
 
-						// Because the transitions only refer to the input indices, we have to take care to remove that index instead
-						for (Resource *r : m_resources)
+						// Because the transitions only refer to the input indices,
+						// we have to take care to only count those indices up to the removed one.
+						for (std::int64_t i = 0; i < index; i++)
 						{
+							const Resource *r = m_resources[i];
+
 							if (!r->m_internalResource)
 								transitionIndex++;
-
-							if (r == &resource)
-								break;
 						}
 
 						for (size_t i = transitionIndex; i < state->resourceMarshalls().size() - 1; i++)
