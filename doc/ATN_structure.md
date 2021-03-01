@@ -42,7 +42,7 @@ To summarize, when a transition can be taken, the effect is executed and then th
 # Object networks
 If the network is spawned by an object being interacted with by an entity description interaction slot containing the key `ATNNetworkName`, then it will be passed two resources automatically as input by the game. The first resource being the `Character` that interacted with it and the second resource being the `Object` that's being interacted with.
 
-It's important that the order is preserved as it is uncertain how rigid these structures are, as all existing networks seem to require that structure. However, in certain cases, such as loot admiration, the `Object` resource is seemingly not needed, so if the network doesn't use that resource, it doesn't have to include it.
+It's important that the order is preserved - otherwise the game will instantly crash when the object is interacted with. However, in certain cases, such as loot admiration, the `Object` resource is seemingly not needed, so if the network doesn't use that resource, it doesn't have to include it.
 
 This stucture is used by almost all objects, including training/trainee, stat recharging, tourist interactions, loot and more. Certain exceptions are noted below.
 
