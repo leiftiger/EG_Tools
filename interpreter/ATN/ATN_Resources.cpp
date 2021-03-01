@@ -182,6 +182,17 @@ namespace ATN
 		}
 	}
 
+	void ParameterMarshall::decrementIndex(std::int64_t index)
+	{
+		if (m_type == ParameterMarshallType::ParameterIndex)
+		{
+			if (m_value > index)
+			{
+				m_value--;
+			}
+		}
+	}
+
 	ResourceMarshall::ResourceMarshall(ResourceMarshallType type, std::int64_t value) : m_type(type), m_value(value)
 	{
 
@@ -260,6 +271,14 @@ namespace ATN
 			m_value = index2;
 		else if (m_value == index2)
 			m_value = index1;
+	}
+
+	void ResourceMarshall::decrementIndex(std::int64_t index)
+	{
+		if (m_value > index)
+		{
+			m_value--;
+		}
 	}
 
 	bool ResourceMarshall::acceptsResourceType(const ResourceType &t) const

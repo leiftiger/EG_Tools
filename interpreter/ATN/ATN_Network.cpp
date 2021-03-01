@@ -935,15 +935,24 @@ namespace ATN
 		for (State *state : m_states)
 		{
 			for (ParameterMarshall *paramMarshall : state->parameterMarshalls())
+			{
 				paramMarshall->resetConstant(index);
+				paramMarshall->decrementIndex(index);
+			}
 
 			for (Transition *transition : state->transitions())
 			{
 				for (ParameterMarshall *paramMarshall : transition->effectParameterMarshalls())
+				{
 					paramMarshall->resetConstant(index);
+					paramMarshall->decrementIndex(index);
+				}
 
 				for (ParameterMarshall *paramMarshall : transition->perceptParameterMarshalls())
+				{
 					paramMarshall->resetConstant(index);
+					paramMarshall->decrementIndex(index);
+				}
 			}
 		}
 
@@ -1030,16 +1039,28 @@ namespace ATN
 		{
 			for (ResourceMarshall *resourceMarshall : state->resourceMarshalls())
 			{
-				resourceMarshall->reset(resources(), index);
+				// To ensure that we won't inadvertently get pointers mixed up, we reset
+				// it to an invalid pointer first before trying to link a valid resource.
+				resourceMarshall->reset(index);
+				resourceMarshall->decrementIndex(index);
+				resourceMarshall->reset(resources(), ResourceMarshall::INVALID_POINTER);
 			}
 
 			for (Transition *transition : state->transitions())
 			{
 				for (ResourceMarshall *resourceMarshall : transition->effectResourceMarshalls())
-					resourceMarshall->reset(resources(), index);
+				{
+					resourceMarshall->reset(index);
+					resourceMarshall->decrementIndex(index);
+					resourceMarshall->reset(resources(), ResourceMarshall::INVALID_POINTER);
+				}
 
 				for (ResourceMarshall *resourceMarshall : transition->perceptResourceMarshalls())
-					resourceMarshall->reset(resources(), index);
+				{
+					resourceMarshall->reset(index);
+					resourceMarshall->decrementIndex(index);
+					resourceMarshall->reset(resources(), ResourceMarshall::INVALID_POINTER);
+				}
 			}
 		}
 

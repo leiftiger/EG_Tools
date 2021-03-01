@@ -124,6 +124,9 @@ namespace ATN
 		// Swaps the given indices if this marshall points to any of them
 		void swapIndices(std::int64_t index1, std::int64_t index2);
 
+		// Decrements the marshall's pointer reference if its index is greater than the specified one, to reflect a removed parameter
+		void decrementIndex(std::int64_t index);
+
 		// Deserialize from ATN string
 		friend std::istream &operator>>(std::istream &stream, std::vector<ParameterMarshall*> &params);
 		// Serialize to ATN string
@@ -163,6 +166,9 @@ namespace ATN
 
 		// Swaps the given indices if this marshall points to any of them
 		void swapIndices(std::int64_t index1, std::int64_t index2);
+
+		// Decrements the marshall's pointer reference if its index is greater than the specified one, to reflect a removed resource
+		void decrementIndex(std::int64_t index);
 
 		bool acceptsResourceType(const ResourceType &t) const;
 
