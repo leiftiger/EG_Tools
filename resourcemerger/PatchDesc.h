@@ -87,6 +87,11 @@ public:
 	virtual std::vector<std::string> apply(const ModPack &mod, std::vector<std::ostream*> &outStreams) const override;
 
 	void addSubPatch(SubPatch patch);
+
+	// Update all desc ID references to the ones defined in the mod pack
+	static void updateDescIDs(EntityDesc &desc, const ModPack &mod);
+	// Update all desc ID references to the ones defined in the mod pack and reserved by the resource merger
+	static void updateDescIDs(EntityDesc &desc, ModPack &mod, ResourceMerger &merger);
 };
 
 class PatcherDesc : public IResourcePatcher

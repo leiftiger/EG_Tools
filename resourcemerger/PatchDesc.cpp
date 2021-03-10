@@ -272,17 +272,7 @@ std::vector<std::string> PatchDesc::apply(const ModPack &mod, std::vector<std::o
 	*modFile >> desc;
 
 	// Process the file for any desc ID references that may have to be updated
-	for (std::size_t i = 0; i < desc.size(); i++)
-	{
-		const std::string &key = desc.keys()[i], &value = desc.values()[i];
-
-		if (key == "EntityDescription" || key == "AgentEntry" || (key.length() >= 2 && key.substr(key.length() - 2) == "ID"))
-		{
-			int descID = std::stoi(value);
-
-			desc.set(i, key, std::to_string(mod.translateDescID(descID)));
-		}
-	}
+	PatchDesc::updateDescIDs(desc, mod);
 
 	*out << desc;
 
@@ -296,6 +286,82 @@ std::vector<std::string> PatchDesc::apply(const ModPack &mod, std::vector<std::o
 void PatchDesc::addSubPatch(SubPatch patch)
 {
 	m_subPatches.push_back(patch);
+}
+
+void PatchDesc::updateDescIDs(EntityDesc &desc, const ModPack &mod)
+{
+	for (std::size_t i = 0; i < desc.size(); i++)
+	{
+		const std::string &key = desc.keys()[i], &value = desc.values()[i];
+
+		if (key == "EntityDescription" || key == "AgentEntry" || key == "MinionRequired" || (key.length() >= 2 && key.substr(key.length() - 2) == "ID" && key != "RegionID"))
+		{
+			// Some definitions have comma separators after the desc ID
+			int posSeparator = (int)value.find_first_of(',');
+
+			std::string strDescID(value);
+			std::string strRest;
+
+			if (posSeparator != -1)
+			{
+				strDescID = value.substr(0, posSeparator);
+				strRest = value.substr(posSeparator);
+			}
+			else
+			{
+				// And others are separated by spaces
+				posSeparator = (int)value.find_first_of(' ');
+
+				if (posSeparator != -1)
+				{
+					strDescID = value.substr(0, posSeparator);
+					strRest = value.substr(posSeparator);
+				}
+			}
+
+			int descID = std::stoi(strDescID);
+
+			desc.set(i, key, std::to_string(mod.translateDescID(descID)) + strRest);
+		}
+	}
+}
+
+void PatchDesc::updateDescIDs(EntityDesc &desc, ModPack &mod, ResourceMerger &merger)
+{
+	for (std::size_t i = 0; i < desc.size(); i++)
+	{
+		const std::string &key = desc.keys()[i], &value = desc.values()[i];
+
+		if (key == "EntityDescription" || key == "AgentEntry" || key == "MinionRequired" || (key.length() >= 2 && key.substr(key.length() - 2) == "ID" && key != "RegionID"))
+		{
+			// Some definitions have comma separators after the desc ID
+			int posSeparator = (int)value.find_first_of(',');
+
+			std::string strDescID(value);
+			std::string strRest;
+
+			if (posSeparator != -1)
+			{
+				strDescID = value.substr(0, posSeparator);
+				strRest = value.substr(posSeparator);
+			}
+			else
+			{
+				// And others are separated by spaces
+				posSeparator = (int)value.find_first_of(' ');
+
+				if (posSeparator != -1)
+				{
+					strDescID = value.substr(0, posSeparator);
+					strRest = value.substr(posSeparator);
+				}
+			}
+
+			int descID = std::stoi(strDescID);
+
+			desc.set(i, key, std::to_string(mod.translateDescID(descID, merger)) + strRest);
+		}
+	}
 }
 
 void PatcherDesc::buildPatch(ResourceMerger &merger, ModPack &mod, PatchDesc *patch, const EntityDesc &baseDesc, const EntityDesc &modDesc) const
@@ -519,17 +585,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 			m_baseTranslations[filename] = vecTranslations;
 
 			// Process the file for any desc ID references that may have to be updated
-			for (std::size_t i = 0; i < descMod.size(); i++)
-			{
-				const std::string &key = descMod.keys()[i], &value = descMod.values()[i];
-
-				if (key == "EntityDescription" || key == "AgentEntry" || (key.length() >= 2 && key.substr(key.length() - 2) == "ID"))
-				{
-					int descID = std::stoi(value);
-
-					descMod.set(i, key, std::to_string(mod.translateDescID(descID, merger)));
-				}
-			}
+			PatchDesc::updateDescIDs(descMod, mod, merger);
 
 			buildPatch(merger, mod, patch, descBase, descMod);
 
@@ -559,17 +615,7 @@ std::vector<IResourcePatch*> PatcherDesc::createPatches(ResourceMerger &merger, 
 
 			// Process the file for any desc ID references that may have to be updated
 			// The purpose here is not to change anything being written, but to make sure references are updated (since elsewhere we don't have access to the merger)
-			for (std::size_t i = 0; i < desc.size(); i++)
-			{
-				const std::string &key = desc.keys()[i], &value = desc.values()[i];
-
-				if (key == "EntityDescription" || key == "AgentEntry" || (key.length() >= 2 && key.substr(key.length() - 2) == "ID"))
-				{
-					int descID = std::stoi(value);
-
-					desc.set(i, key, std::to_string(mod.translateDescID(descID, merger)));
-				}
-			}
+			PatchDesc::updateDescIDs(desc, mod, merger);
 
 			// Since the file won't possibly conflict with anything, we won't need any subpatching
 			patches.push_back(new PatchDesc(strDesc + descName, modFile, *this));
