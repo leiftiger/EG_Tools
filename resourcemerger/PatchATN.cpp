@@ -95,7 +95,7 @@ const std::vector<PatchATN::SubPatch> &PatchATN::subPatches() const
 	return m_subPatches;
 }
 
-void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::Entry *entry, bool changeIDs = true) const
+void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, const ATN::List<ATN::Entry> &baseList, ATN::Entry *entry, bool changeIDs = true) const
 {
 	// As effects and percepts depend on the executable to work, we won't perform any modification on those entries
 	// they may just be a duplicate from another ATN list, which is prevalent in the base files
@@ -119,8 +119,8 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 				param->m_defaultValue = mod.translateDescID((int)param->m_defaultValue, merger);
 			}
 
-			// Also update network IDs
-			if (param->m_type == "Network ID")
+			// Also update network IDs, unless it's a base game ID
+			if (param->m_type == "Network ID" && !baseList.contains((std::uint32_t)param->m_defaultValue))
 			{
 				param->m_defaultValue = mod.translateUniqueID((int)param->m_defaultValue, merger);
 			}
@@ -151,8 +151,8 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 					marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
 				}
 
-				// Also update network IDs
-				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+				// Also update network IDs, unless it's a base game ID
+				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID" && !baseList.contains((std::uint32_t)marshall->m_value))
 				{
 					marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
 				}
@@ -189,8 +189,8 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 					marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
 				}
 
-				// Also update network IDs
-				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+				// Also update network IDs, unless it's a base game ID
+				if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID" && !baseList.contains((std::uint32_t)marshall->m_value))
 				{
 					marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
 				}
@@ -210,8 +210,8 @@ void PatcherATN::modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::
 				marshall->m_value = mod.translateDescID((int)marshall->m_value, merger);
 			}
 
-			// Also update network IDs
-			if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID")
+			// Also update network IDs, unless it's a base game ID
+			if (marshall->m_type != ATN::ParameterMarshallType::ParameterIndex && param->m_type == "Network ID" && !baseList.contains((std::uint32_t)marshall->m_value))
 			{
 				marshall->m_value = mod.translateUniqueID((int)marshall->m_value, merger);
 			}
@@ -230,7 +230,7 @@ PatchATN *PatcherATN::buildPatch(ResourceMerger &merger, ModPack &mod, int listN
 		if (!baseList.contains(modEntry->id()))
 		{
 			// New addition, can add entire entry without issues
-			modifyEntryPointers(merger, mod, modEntry, true);
+			modifyEntryPointers(merger, mod, baseList, modEntry, true);
 
 			patch->addSubPatch(PatchATN::SubPatch{ listNum, PatchATN::ADD_ENTRY, modEntry, nullptr });
 		}
@@ -242,7 +242,7 @@ PatchATN *PatcherATN::buildPatch(ResourceMerger &merger, ModPack &mod, int listN
 			if (*modEntry != *baseEntry)
 			{
 				// We only modify desc ID pointers since the unique ID was already present in the base game
-				modifyEntryPointers(merger, mod, modEntry, false);
+				modifyEntryPointers(merger, mod, baseList, modEntry, false);
 
 				if (typeid(*modEntry) != typeid(*baseEntry))
 					throw ATN::Exception("Illegal mod entry, modified type of existing ID (%s != %s)", modEntry->typeName(),  baseEntry->typeName());

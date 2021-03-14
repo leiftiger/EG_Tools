@@ -61,7 +61,7 @@ protected:
 	std::unordered_map<int, std::unordered_map<std::int32_t, ATN::DeltaMemory>> m_baseTranslations;
 
 	// Modifies an ATN entry so that it won't conflict with any other mod
-	void modifyEntryPointers(ResourceMerger &merger, ModPack &mod, ATN::Entry *entry, bool changeIDs) const;
+	void modifyEntryPointers(ResourceMerger &merger, ModPack &mod, const ATN::List<ATN::Entry> &baseList, ATN::Entry *entry, bool changeIDs) const;
 
 	// Constructs a patch for the given lists
 	PatchATN *buildPatch(ResourceMerger &merger, ModPack &mod, int listNum, ATN::List<ATN::Entry> &baseList, ATN::List<ATN::Entry> &modList);
